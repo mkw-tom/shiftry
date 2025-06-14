@@ -1,7 +1,6 @@
+import type { GetAssigShiftResponse } from "@shared/shift/assign/types/get-by-shift-request-id";
 import { useCallback, useState } from "react";
 import { getAssignShift } from "./api";
-import { GetAssigShiftResponse } from "@shared/shift/assign/types/get-by-shift-request-id";
-
 
 export const useGetAssignShift = () => {
 	const [isLoading, setIsLoading] = useState(false);
