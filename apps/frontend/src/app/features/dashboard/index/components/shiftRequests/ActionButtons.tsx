@@ -1,7 +1,7 @@
 "use client";
 import type { RequestStatus } from "@shared/common/types/prisma";
 import type { ShiftRequest } from "@shared/common/types/prisma";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import {
 	DrawerView,
 	type ShiftRequestWithJson,
@@ -18,7 +18,6 @@ const ActionButtons = ({
 	const { darawerOpen } = useBottomDrawer();
 	const router = useRouter();
 	const goToShiftPage = (id: string) => router.push(`/dashboard/shift/${id}`);
-
 
 	switch (status) {
 		case "HOLD":

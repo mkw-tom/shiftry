@@ -14,7 +14,7 @@ export const getAssignShift = async ({
 	storeToken: string;
 	shiftRequestId: string;
 }): Promise<
-GetAssigShiftResponse | ErrorResponse | ValidationErrorResponse
+	GetAssigShiftResponse | ErrorResponse | ValidationErrorResponse
 > => {
 	if (!userToken) {
 		throw new Error("code is not found");
