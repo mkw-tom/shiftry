@@ -251,7 +251,7 @@ const HandleAdjustModal = ({
 					<form method="dialog" className="w-full flex items-center gap-1">
 						{/* if there is a button in form, it will close the modal */}
 						<button
-							type="button"
+							type="submit"
 							className="btn bg-gray02 text-white rounded-full w-1/3"
 							onClick={clearHandleAdjustForm}
 						>
