@@ -217,7 +217,7 @@ const AdjustModal = () => {
 					<form method="dialog" className="flex justify-end w-full">
 						{/* if there is a button in form, it will close the modal */}
 						<button
-							type="button"
+							type="submit"
 							className="btn rounded-full text-white bg-gray02 border-none mr-1 w-1/3 shadow-md"
 							onClick={clearAdjustForm}
 						>

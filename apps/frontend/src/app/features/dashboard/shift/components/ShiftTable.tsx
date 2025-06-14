@@ -119,7 +119,13 @@ const ShiftTable = ({
 									<td
 										key={date.key}
 										className="border border-gray01 text-center min-w-16 align-middle bg-white hover:bg-green03 cursor-pointer"
-										onKeyDown={() => {
+										onTouchStart={() => {
+											const dialog = document.getElementById(
+												`handle_adjust_modal_${date.key}${shift?.time}${data.userId}`,
+											) as HTMLDialogElement | null;
+											dialog?.showModal();
+										}}
+										onMouseDown={() => {
 											const dialog = document.getElementById(
 												`handle_adjust_modal_${date.key}${shift?.time}${data.userId}`,
 											) as HTMLDialogElement | null;
