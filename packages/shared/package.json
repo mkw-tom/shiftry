@@ -1,0 +1,27 @@
+{
+  "name": "shared",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "tsc",
+    "biome": "npx @biomejs/biome check --write ./src",
+    "biome:fix": "npx @biomejs/biome check  --fix --unsafe ./src"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@prisma/client": "^6.7.0",
+    "prisma": "^6.7.0",
+    "zod": "^3.24.3"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@types/node": "^22.15.3",
+    "turbo": "^2.5.2"
+  }
+}

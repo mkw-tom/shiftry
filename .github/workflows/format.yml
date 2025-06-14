@@ -1,0 +1,44 @@
+name: Format Code with Biome
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+      
+permissions:
+  contents: write  # 👈 GitHub Actions に書き込み権限を付与
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}  # GitHub Actions用トークン
+          ref: ${{ github.head_ref }}  # PR のブランチをチェックアウト
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.17.0
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Biome Format
+        run: npm run biome
+
+      - name: Check for changes
+        run: |
+          if git diff --quiet; then
+            echo "✅ No formatting changes needed."
+          else
+            echo "🔧 Formatting changes detected, committing changes..."
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+            git commit -am "style: apply Biome formatting"
+            git push
+          fi

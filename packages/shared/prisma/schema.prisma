@@ -1,0 +1,162 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String           @id @default(uuid())
+  lineId         String           @unique
+  name           String
+  pictureUrl     String?
+  role           UserRole
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @default(now())
+
+  userStores     UserStore[]
+  submittedShifts SubmittedShift[]
+}
+
+enum UserRole {
+  OWNER
+  MANAGER
+  STAFF
+}
+
+model Store {
+  id               String           @id @default(uuid())
+  groupId          String?           @unique
+  storeId          String?          @unique @default(uuid())
+  name             String           @unique
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @default(now())
+
+  userStores       UserStore[]      
+  shiftRequests    ShiftRequest[]   
+  assignShifts     AssignShift[]   
+  submittedShifts  SubmittedShift[] 
+  payment          Payment?
+}
+
+// 中間テーブル（ユーザーと店舗の M:N 関係）
+model UserStore {
+  userId   String
+  storeId  String
+  role     UserRole
+
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  store    Store  @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@id([userId, storeId])
+}
+
+// シフト募集データ
+model ShiftRequest {
+  id              String          @id @default(uuid())
+  storeId         String
+  weekStart       DateTime
+  weekEnd         DateTime?
+  requests        Json
+  type            ShiftType       @default(WEEKLY)
+  status          RequestStatus   @default(HOLD)
+  deadline        DateTime?
+
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  store           Store           @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  assignShift     AssignShift?    
+  submittedShifts SubmittedShift[]
+
+  @@unique([storeId, weekStart])
+}
+
+enum ShiftType {
+  MONTHLY
+  WEEKLY
+}
+
+enum RequestStatus {
+  HOLD
+  REQUEST
+  ADJUSTMENT
+  CONFIRMED
+}
+
+// 確定シフトデータ（店舗用）
+model AssignShift {
+  id              String        @id @default(uuid())
+  storeId         String
+  shiftRequestId  String        @unique 
+  shifts          Json
+  status          ShiftStatus   @default(ADJUSTMENT)
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  store           Store         @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  shiftRequest    ShiftRequest  @relation(fields: [shiftRequestId], references: [id], onDelete: Cascade)
+}
+
+
+enum ShiftStatus {
+  ADJUSTMENT
+  CONFIRMED
+}
+
+// ユーザーの提出シフト
+model SubmittedShift {
+  id              String         @id @default(uuid())
+  userId          String
+  storeId         String
+  shiftRequestId  String
+  shifts          Json
+  status          ShiftStatus
+
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  store           Store          @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  shiftRequest    ShiftRequest   @relation(fields: [shiftRequestId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, shiftRequestId])
+}
+
+
+// Stripe連携などの支払い情報
+model Payment {
+  id                          String   @id @default(uuid())
+  storeId                     String   @unique
+  userId                      String
+  customerId                  String
+  subscriptionId              String
+  productId                   String?   // Stript 商品ID
+  priceId                     String   // Stripe Price ID
+  price_amount                Int?      // 単位: 円
+  price_interval              String?   // "month" | "year"
+  subscription_status         String   // active, trialing, canceled, etc.
+
+  isTrial                     Boolean  @default(false) // 無料トライアル中かどうか
+  trial_end_date              DateTime?                // トライアル終了日
+  trial_end_notification_sent Boolean  @default(false) // トライアル終了通知済か
+
+  cancel_requested_at         DateTime?                // 解約予約日
+  cancel_at_period_end        Boolean  @default(false) // 次回請求で自動キャンセルか
+  delete_scheduled_at         DateTime?                // データ削除予定日時
+  deleted_at                  DateTime?                // 実際の削除日（or 論理削除用）
+
+  current_plan                String   // 例: "basic", "pro", etc
+  next_billing_date           DateTime?
+
+  createdAt                   DateTime @default(now())
+  updatedAt                   DateTime @updatedAt
+
+  store                       Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+}
+

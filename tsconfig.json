@@ -1,0 +1,10 @@
+// tsconfig.json (ルート直下)
+{
+  "files": [],
+  "references": [
+    { "path": "apps/backend" },
+    { "path": "apps/frontend" },
+    { "path": "packages/shared" }
+  ],
+  "composite": true
+}

@@ -1,0 +1,41 @@
+{
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "name": "shiftry",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "biome": "turbo run biome --concurrency=1",
+    "build:skip-backend": "turbo run build --filter=!backend",
+    "build:frontend": "turbo run build --filter=frontend",
+    "lint": "turbo run lint",
+    "generate:prod": "npm run generate --workspace=backend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mkw-tom/SHIFTRY.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/mkw-tom/SHIFTRY/issues"
+  },
+  "homepage": "https://github.com/mkw-tom/SHIFTRY#readme",
+  "packageManager": "npm@11.3.0",
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.15.3",
+    "turbo": "^2.5.2"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.7.0",
+    "clsx": "^2.1.1"
+  }
+}

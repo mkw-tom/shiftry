@@ -1,0 +1,20 @@
+# Mac固有
+.DS_Store
+
+# Node
+node_modules/
+dist/
+.next/
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Turborepo
+.turbo/
+.turbo/cookies/
+.turbo/cookies/
