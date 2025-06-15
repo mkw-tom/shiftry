@@ -161,66 +161,75 @@ const AdjustModal = () => {
 						</span>
 						<div className="flex items-center justify-start gap-1">
 							<div
-								className={`dropdown dropdown-top ${openDropdown === "template" ? "dropdown-open" : ""}`}
+								className={`dropdown dropdown-top ${openDropdown === "template" && "dropdown-open"}`}
 							>
 								<button
 									type="button"
 									className="btn btn-sm bg-gray01 text-black border-none m-1"
 									onClick={() => setOpenDropdown("template")}
-									onBlur={() => setOpenDropdown(null)}
 								>
 									テンプレ入力
 								</button>
-								<div className="flex flex-col items-start dropdown-content menu bg-base rounded-box z-1 w-52 p-2 shadow-sm text-black">
+								<ul
+									className={`flex flex-col items-start dropdown-content menu bg-base rounded-box z-1 w-52 p-4 shadow-sm text-black ${openDropdown !== "template" && "hidden"}`}
+								>
 									<button
 										type="button"
-										onClick={() =>
-											setAdjustContent((prev) => `${prev}\nスタッフ交代`)
-										}
+										onClick={() => {
+											setAdjustContent((prev) => `${prev}\nスタッフ交代`);
+											setOpenDropdown(null);
+										}}
+										className="py-1 px-2 hover:bg-gray01 w-full rounded-md text-left"
 									>
 										<span>スタッフ交代</span>
 									</button>
 									<button
 										type="button"
-										onClick={() =>
+										onClick={() => {
 											setAdjustContent(
 												(prev) => `${prev}\nスタッフ交代（ランダム）`,
-											)
-										}
+											);
+											setOpenDropdown(null);
+										}}
+										className="py-1 px-2 hover:bg-gray01 w-full rounded-md text-left"
 									>
 										<span>スタッフ交代（ランダム）</span>
 									</button>
 									<button
 										type="button"
-										onClick={() =>
-											setAdjustContent((prev) => `${prev}\nスタッフ優先度`)
-										}
+										onClick={() => {
+											setAdjustContent((prev) => `${prev}\nスタッフ優先度`);
+											setOpenDropdown(null);
+										}}
+										className="py-1 px-2 hover:bg-gray01 w-full rounded-md text-left"
 									>
 										<span>スタッフ優先度</span>
 									</button>
-								</div>
+								</ul>
 							</div>
 
 							<div
-								className={`dropdown dropdown-top ${openDropdown === "staff" ? "dropdown-open" : ""}`}
+								className={`dropdown dropdown-top ${openDropdown === "staff" && "dropdown-open"}`}
 							>
 								<button
 									type="button"
 									className="btn btn-sm bg-gray01 text-black border-none m-1"
 									onClick={() => setOpenDropdown("staff")}
-									onBlur={() => setOpenDropdown(null)}
 								>
 									@スタッフ
 								</button>
-								<ul className="flex flex-col items-start dropdown-content menu bg-base rounded-box z-1 w-40 p-2 shadow-sm text-black">
+								<ul
+									className={`flex flex-col items-start dropdown-content menu bg-base rounded-box z-1 w-40 p-4 shadow-md text-black ${openDropdown !== "staff" && "hidden"}`}
+								>
 									{dummyMembers.map((member) => (
 										<button
 											type="button"
 											key={member.id}
-											onClick={() =>
-												setAdjustContent((prev) => `${prev}@${member.name} `)
-											}
-											className=""
+											onClick={() => {
+												setAdjustContent((prev) => `${prev}@${member.name} `);
+												setOpenDropdown(null);
+											}}
+											className="py-1 px-2 hover:bg-gray01 w-full rounded-md text-left"
 										>
 											<span>{member.name}</span>
 										</button>
@@ -231,7 +240,7 @@ const AdjustModal = () => {
 						<textarea
 							name=""
 							id=""
-							className="textarea textarea-bordered w-full h-24 bg-gray01 text-black"
+							className="textarea textarea-bordered w-full h-24 bg-gray01 text-black text-[16px]"
 							value={adjustContent}
 							onChange={(e) => setAdjustContent(e.target.value)}
 						/>
@@ -240,7 +249,6 @@ const AdjustModal = () => {
 
 				<div className="modal-action">
 					<form method="dialog" className="flex justify-end w-full">
-						{/* if there is a button in form, it will close the modal */}
 						<button
 							type="submit"
 							className="btn rounded-full text-white bg-gray02 border-none mr-1 w-1/3 shadow-md"
