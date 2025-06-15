@@ -3,26 +3,29 @@ import type {
 	ErrorResponse,
 	ValidationErrorResponse,
 } from "@shared/common/types/errors";
-import type { GetAssigShiftResponse } from "@shared/shift/assign/types/get-by-shift-request-id";
+import type { UpsertAssigShiftResponse } from "@shared/shift/assign/types/put";
+import type { upsertAssignShfitInputType } from "@shared/shift/assign/validations/put";
 
-export const getAssignShift = async ({
+export const upsertAssignShift = async ({
 	userToken,
 	storeToken,
-	shiftRequestId,
+	upsertAssingShfitData,
 }: {
 	userToken: string;
 	storeToken: string;
-	shiftRequestId: string;
+	upsertAssingShfitData: upsertAssignShfitInputType;
 }): Promise<
-	GetAssigShiftResponse | ErrorResponse | ValidationErrorResponse
+	UpsertAssigShiftResponse | ErrorResponse | ValidationErrorResponse
 > => {
+	const { shiftRequestId } = upsertAssingShfitData;
 	const res = await fetch(`${API_URL}/api/shift/assign/${shiftRequestId}`, {
-		method: "GET",
+		method: "PUT",
 		headers: {
 			"Content-Type": "application/json",
 			Authorization: `Bearer ${userToken}`,
 			"x-store-id": storeToken,
 		},
+		body: JSON.stringify(upsertAssingShfitData),
 	});
 
 	const data = await res.json();

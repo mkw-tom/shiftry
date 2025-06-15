@@ -1,8 +1,9 @@
 import type { RootState } from "@/app/redux/store";
 import type { GetAssigShiftResponse } from "@shared/shift/assign/types/get-by-shift-request-id";
+import type { upsertAssignShfitInputType } from "@shared/shift/assign/validations/put";
 import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
-import { getAssignShift } from "./api";
+import { upsertAssignShift } from "./api";
 
 export const useGetAssignShift = () => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -11,23 +12,24 @@ export const useGetAssignShift = () => {
 		(state: RootState) => state.token,
 	);
 
-	const handleGetAssignShift = useCallback(
+	const handleUpsertAssignShift = useCallback(
 		async ({
-			shiftRequestId,
+			upsertAssingShfitData,
 		}: {
-			shiftRequestId: string;
+			upsertAssingShfitData: upsertAssignShfitInputType;
 		}): Promise<GetAssigShiftResponse | undefined> => {
 			setIsLoading(true);
 			setError(null);
 			try {
 				if (!userToken) throw new Error("code is not found");
 				if (!storeToken) throw new Error("code is not found");
-				if (!shiftRequestId) throw new Error("shiftRequestId is not found");
+				if (!upsertAssingShfitData)
+					throw new Error("shiftRequestId is not found");
 
-				const res = await getAssignShift({
+				const res = await upsertAssignShift({
 					userToken,
 					storeToken,
-					shiftRequestId,
+					upsertAssingShfitData,
 				});
 				if (!res.ok) {
 					if ("errors" in res) {
@@ -50,5 +52,5 @@ export const useGetAssignShift = () => {
 		[userToken, storeToken],
 	);
 
-	return { handleGetAssignShift, isLoading, error };
+	return { handleUpsertAssignShift, isLoading, error };
 };
