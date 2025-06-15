@@ -16,57 +16,15 @@ const ShiftTable = ({
 }) => {
 	const ShiftsContents = assignShift.shifts;
 
-	const handleAddShift = (addDate: string, userId: string, newTime: string) => {
-		const userShifts =
-			assignShift.shifts.find((shift) => shift.userId === userId)?.shifts || [];
-		const updatedShifts = [...userShifts, { date: addDate, time: newTime }];
-
-		setAssignShift({
-			...assignShift,
-			shifts: assignShift.shifts.map((shift) =>
-				shift.userId === userId ? { ...shift, shifts: updatedShifts } : shift,
-			),
-		});
-	};
-
-	const handleUpdateShift = (
-		editDate: string,
+	const openHandleAdjustModal = (
+		date: string,
+		shift: string | undefined,
 		userId: string,
-		newTime: string,
 	) => {
-		const userShifts = assignShift.shifts.find(
-			(shift) => shift.userId === userId,
-		)?.shifts;
-		const updatedShift = Object.entries(
-			userShifts as { date: string; time: string }[],
-		).map(([date, time]) => {
-			if (date === editDate) {
-				return { date, time: newTime };
-			}
-			return { date, time };
-		}) as { date: string; time: string }[];
-
-		setAssignShift({
-			...assignShift,
-			shifts: assignShift.shifts.map((shift) =>
-				shift.userId === userId ? { ...shift, shifts: updatedShift } : shift,
-			),
-		});
-	};
-
-	const handleRemoveShift = (editDate: string, userId: string) => {
-		const userShifts = assignShift.shifts.find(
-			(shift) => shift.userId === userId,
-		)?.shifts;
-		const updatedShift = (
-			userShifts as { date: string; time: string }[]
-		).filter((shift) => shift.date !== editDate);
-		setAssignShift({
-			...assignShift,
-			shifts: assignShift.shifts.map((shift) =>
-				shift.userId === userId ? { ...shift, shifts: updatedShift } : shift,
-			),
-		});
+		const dialog = document.getElementById(
+			`handle_adjust_modal_${date}${shift}${userId}`,
+		) as HTMLDialogElement | null;
+		dialog?.showModal();
 	};
 
 	return (
@@ -119,17 +77,18 @@ const ShiftTable = ({
 									<td
 										key={date.key}
 										className="border border-gray01 text-center min-w-16 align-middle bg-white hover:bg-green03 cursor-pointer"
-										onTouchStart={() => {
-											const dialog = document.getElementById(
-												`handle_adjust_modal_${date.key}${shift?.time}${data.userId}`,
-											) as HTMLDialogElement | null;
-											dialog?.showModal();
-										}}
-										onMouseDown={() => {
-											const dialog = document.getElementById(
-												`handle_adjust_modal_${date.key}${shift?.time}${data.userId}`,
-											) as HTMLDialogElement | null;
-											dialog?.showModal();
+										onClick={() =>
+											openHandleAdjustModal(date.key, shift?.time, data.userId)
+										}
+										onKeyDown={(e) => {
+											if (e.key === "Enter" || e.key === " ") {
+												e.preventDefault();
+												openHandleAdjustModal(
+													date.key,
+													shift?.time,
+													data.userId,
+												);
+											}
 										}}
 									>
 										<div className="flex flex-col items-center justify-center h-full">

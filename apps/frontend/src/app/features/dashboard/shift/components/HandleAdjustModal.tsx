@@ -83,14 +83,12 @@ const HandleAdjustModal = ({
 		selectedPosition: string,
 	) => {
 		if (!shift) {
-			// shiftが存在しない → 新規追加
 			if (selectedPosition === "free") {
 				handleAddShift(date.key, assignUser.userId, `${startTime}-${endTime}`);
 			} else {
 				handleAddShift(date.key, assignUser.userId, selectedPosition);
 			}
 		} else {
-			// shiftが存在する → 更新 or 削除
 			if (selectedPosition === "holiday") {
 				handleRemoveShift(date.key, assignUser.userId);
 			} else if (selectedPosition === "free") {
