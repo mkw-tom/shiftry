@@ -50,6 +50,9 @@ const AdjustModal = () => {
 		end: string;
 	}>({ start: "", end: "" });
 	const [adjustContent, setAdjustContent] = useState<string>("");
+	const [openDropdown, setOpenDropdown] = useState<"template" | "staff" | null>(
+		null,
+	);
 
 	const handleStartDateChange = (start: string) => {
 		const startDate = new Date(start);
@@ -157,37 +160,59 @@ const AdjustModal = () => {
 							調整内容
 						</span>
 						<div className="flex items-center justify-start gap-1">
-							<div className="dropdown dropdown-right">
-								<div className="btn btn-sm bg-gray01 text-black border-none m-1">
+							<div
+								className={`dropdown dropdown-top ${openDropdown === "template" ? "dropdown-open" : ""}`}
+							>
+								<button
+									type="button"
+									className="btn btn-sm bg-gray01 text-black border-none m-1"
+									onClick={() => setOpenDropdown("template")}
+									onBlur={() => setOpenDropdown(null)}
+								>
 									テンプレ入力
-								</div>
-								<div className="dropdown-content menu bg-base rounded-box z-1 w-52 p-2 shadow-sm text-black">
+								</button>
+								<div className="flex flex-col items-start dropdown-content menu bg-base rounded-box z-1 w-52 p-2 shadow-sm text-black">
 									<button
 										type="button"
-										onClick={() => setAdjustContent("スタッフ交代")}
+										onClick={() =>
+											setAdjustContent((prev) => `${prev}\nスタッフ交代`)
+										}
 									>
 										<span>スタッフ交代</span>
 									</button>
 									<button
 										type="button"
-										onClick={() => setAdjustContent("スタッフ交代（ランダム）")}
+										onClick={() =>
+											setAdjustContent(
+												(prev) => `${prev}\nスタッフ交代（ランダム）`,
+											)
+										}
 									>
 										<span>スタッフ交代（ランダム）</span>
 									</button>
 									<button
 										type="button"
-										onClick={() => setAdjustContent("スタッフ優先度")}
+										onClick={() =>
+											setAdjustContent((prev) => `${prev}\nスタッフ優先度`)
+										}
 									>
 										<span>スタッフ優先度</span>
 									</button>
 								</div>
 							</div>
 
-							<div className="dropdown dropdown-right">
-								<div className="btn btn-sm bg-gray01 text-black border-none m-1">
+							<div
+								className={`dropdown dropdown-top ${openDropdown === "staff" ? "dropdown-open" : ""}`}
+							>
+								<button
+									type="button"
+									className="btn btn-sm bg-gray01 text-black border-none m-1"
+									onClick={() => setOpenDropdown("staff")}
+									onBlur={() => setOpenDropdown(null)}
+								>
 									@スタッフ
-								</div>
-								<ul className="dropdown-content menu bg-base rounded-box z-1 w-52 p-2 shadow-sm text-black">
+								</button>
+								<ul className="flex flex-col items-start dropdown-content menu bg-base rounded-box z-1 w-40 p-2 shadow-sm text-black">
 									{dummyMembers.map((member) => (
 										<button
 											type="button"
