@@ -5,6 +5,7 @@ import express from "express";
 import helmet from "helmet";
 import authRoutes from "./features/auth/route";
 import paymentRoutes from "./features/payment/route";
+import aiRoutes from "./features/shift/ai/route";
 import assignShiftRoutes from "./features/shift/assign/route";
 import shiftRequestRoutes from "./features/shift/request/route";
 import submittedShiftRoutes from "./features/shift/submit/route";
@@ -12,6 +13,7 @@ import storeRoutes from "./features/store/route";
 import userRoutes from "./features/user/route";
 import lineRoutes from "./features/webhook/line/route";
 import stripeRoutes from "./features/webhook/stripe/route";
+
 import {
 	CROSS_ORIGIN_DEV,
 	CROSS_ORIGIN_LIFF,
@@ -52,6 +54,7 @@ app.use("/api/shift/submit", submittedShiftRoutes);
 app.use("/api/shift/assign", assignShiftRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/webhook/strip", stripeRoutes);
+app.use("/api/shift/ai", aiRoutes);
 
 app.use(
 	(
