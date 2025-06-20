@@ -21,9 +21,9 @@ import {
 } from "../../../common/authorization.service";
 import { parsePrioritiesFromAi } from "./parsePriorities.ai";
 import { adjustShiftByPriorities } from "./service/adjustShiftByPriorities";
+import { generateInitialShift } from "./service/generateInitialShift";
 import { findUsersBelowMin } from "./utils/findUsersBelowMin";
 import { generateDateWeekList } from "./utils/generateDateWeekList";
-import { generateInitialShift } from "./service/generateInitialShift";
 import { getUnassignedShift } from "./utils/getUnassignedShift";
 import { parseAIJsonBlock } from "./utils/pareseAiJsonBlock";
 
