@@ -41,3 +41,5 @@ export const URI_SHIFT_CONFIRMATIOIN = process.env
 	.URI_SHIFT_CONFIRMATIOIN as string;
 
 export const STRIPE_TRIAL_DAYS = process.env.STRIPE_TRIAL_DAYS as string;
+
+export const OPENAI_API_KEY = process.env.OPENAI_API_KEY as string;
