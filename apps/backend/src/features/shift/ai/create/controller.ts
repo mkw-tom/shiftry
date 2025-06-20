@@ -7,6 +7,7 @@ import type {
 	ShiftsOfAssignType,
 	shiftsOfSubmittedType,
 } from "@shared/common/types/json";
+import { ShiftStatus } from "@shared/common/types/prisma";
 import {
 	type ShiftsOfRequestsType,
 	ShiftsOfRequestsValidate,
@@ -15,6 +16,7 @@ import { shiftsOfSubmittedValidate } from "@shared/shift/submit/validations/put"
 import express from "express";
 import type { Request, Response } from "express";
 import { z } from "zod";
+import { upsertAssignShfit } from "../../../../repositories/assingShift.repostory";
 import {
 	verifyUserForOwner,
 	verifyUserStoreForOwner,
@@ -22,6 +24,7 @@ import {
 import { parsePrioritiesFromAi } from "./parsePriorities.ai";
 import { adjustShiftByPriorities } from "./service/adjustShiftByPriorities";
 import { generateInitialShift } from "./service/generateInitialShift";
+import upsertAssignShfitService from "./service/upsertAssignShift";
 import { findUsersBelowMin } from "./utils/findUsersBelowMin";
 import { generateDateWeekList } from "./utils/generateDateWeekList";
 import { getUnassignedShift } from "./utils/getUnassignedShift";
@@ -104,6 +107,7 @@ export const priorityValidate = z.object({
 export type PriorityType = z.infer<typeof priorityValidate>;
 
 const CreateShiftValidate = z.object({
+	shiftReqeustId: z.string().uuid(),
 	startDate: z.string(),
 	endDate: z.string(),
 	shiftRequest: ShiftsOfRequestsValidate,
@@ -140,9 +144,9 @@ const createShiftController = async (
 	res: Response<CreateShiftResponse | ValidationErrorResponse | ErrorResponse>,
 ): Promise<void> => {
 	try {
-		// const userId = req.userId as string;
-		// const storeId = req.storeId as string;
-		// await verifyUserStoreForOwner(userId, storeId);
+		const userId = req.userId as string;
+		const storeId = req.storeId as string;
+		await verifyUserStoreForOwner(userId, storeId);
 
 		const parsed = CreateShiftValidate.safeParse(req.body);
 		if (!parsed.success) {
@@ -153,8 +157,14 @@ const createShiftController = async (
 			});
 			return;
 		}
-		const { submittedShifts, shiftRequest, startDate, endDate, ownerRequests } =
-			parsed.data;
+		const {
+			shiftReqeustId,
+			submittedShifts,
+			shiftRequest,
+			startDate,
+			endDate,
+			ownerRequests,
+		} = parsed.data;
 
 		const assignedShifts = generateInitialShift(
 			submittedShifts,
@@ -190,6 +200,14 @@ const createShiftController = async (
 			adjustedShifts,
 			totalWeeks,
 		);
+
+		const upsertData = {
+			shiftReqeustId,
+			shiftRequestId: shiftReqeustId,
+			shifts: adjustedShifts,
+			status: ShiftStatus.ADJUSTMENT,
+		};
+		await upsertAssignShfitService({ storeId, upsertData });
 
 		res.status(200).json({
 			ok: true,
