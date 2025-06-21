@@ -1,7 +1,10 @@
 import { MDW } from "@/app/features/common/hooks/useFormatDate";
+import type {
+	AssignShiftWithJson,
+	ShiftRequestWithJson,
+} from "@shared/common/types/merged";
 import type { Dispatch, SetStateAction } from "react";
 import HandleAdjustModal from "./HandleAdjustModal";
-import type { AssignShiftWithJson, ShiftRequestWithJson } from "./ShiftContent";
 
 const ShiftTable = ({
 	dates,
@@ -58,13 +61,26 @@ const ShiftTable = ({
 								const shift = data.shifts.find(
 									(s: { date: string; time: string }) => s.date === date.key,
 								);
+								// Assuming shiftRequest.requests is an array and you want the first element
+								const request =
+									Array.isArray(shiftRequest.requests) &&
+									shiftRequest.requests.length > 0
+										? shiftRequest.requests[0]
+										: { defaultTimePositions: {}, overrideDates: {} };
+
 								const dayOfWeek = new Date(date.key).toLocaleDateString(
 									"en-US",
 									{ weekday: "long" },
-								) as keyof typeof shiftRequest.requests.defaultTimePositions;
+								) as keyof typeof request.defaultTimePositions;
+								const overrideDates = request.overrideDates;
 								const positions =
-									shiftRequest.requests.overrideDates[date.key] ||
-									shiftRequest.requests.defaultTimePositions[dayOfWeek] ||
+									(typeof overrideDates === "object" &&
+									overrideDates !== null &&
+									!Array.isArray(overrideDates) &&
+									Object.prototype.hasOwnProperty.call(overrideDates, date.key)
+										? (overrideDates as Record<string, string[]>)[date.key]
+										: undefined) ||
+									request.defaultTimePositions[dayOfWeek] ||
 									[];
 								if (positions.length === 0)
 									return (
