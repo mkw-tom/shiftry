@@ -1,8 +1,7 @@
-import type { DayOfWeek } from "../controller";
-
-export type DateWeekListResponse = {
-	[date: string]: DayOfWeek;
-};
+import {
+	type DateWeekListResponse,
+	DayOfWeek,
+} from "@shared/shift/ai/types/post-create";
 
 export function generateDateWeekList(
 	startDate: string,

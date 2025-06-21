@@ -2,7 +2,8 @@ import type {
 	ShiftsOfAssignType,
 	ShiftsOfRequestsType,
 } from "@shared/common/types/json";
-import type { DayOfWeek, shiftOfSubmittdWithUserId } from "../controller";
+import type { DayOfWeek } from "@shared/shift/ai/types/post-create";
+import type { shiftOfSubmittdWithUserId } from "@shared/shift/ai/validations/post-create";
 
 // 対象期間の週数を算出（例: 12/01〜12/31 → 5週）
 function getWeeksBetween(start: Date, end: Date): number {
@@ -15,7 +16,7 @@ export const generateInitialShift = (
 	shiftRequest: ShiftsOfRequestsType,
 	startDate: string,
 	endDate: string,
-): ShiftsOfAssignType => {
+): ShiftsOfAssignType[] => {
 	const slots: { [key: string]: { count: number; assigned: string[] } } = {};
 
 	const overrideDateSet = new Set(Object.keys(shiftRequest.overrideDates));
@@ -53,7 +54,7 @@ export const generateInitialShift = (
 	}
 
 	// ③ 各ユーザーに対して希望に基づいて割り当て
-	const assignments: ShiftsOfAssignType = [];
+	const assignments: ShiftsOfAssignType[] = [];
 
 	for (const submittedData of submittedShifts) {
 		const {
