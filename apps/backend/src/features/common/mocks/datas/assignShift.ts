@@ -4,7 +4,7 @@ import type { $Enums } from "@prisma/client";
 import type { ShiftsOfAssignType } from "@shared/common/types/json";
 import { mockRequests } from "./shiftRequest";
 
-export const assignShiftMock: ShiftsOfAssignType = [
+export const assignShiftMock: ShiftsOfAssignType[] = [
 	{
 		userId: "user-001",
 		userName: "たろう",

@@ -2,12 +2,11 @@ import type {
 	ShiftsOfAssignType,
 	ShiftsOfRequestsType,
 } from "@shared/common/types/json";
+import type { DayOfWeek } from "@shared/shift/ai/types/post-create";
 import type {
-	DayOfWeek,
 	PriorityType,
 	shiftOfSubmittdWithUserId,
-} from "../controller";
-
+} from "@shared/shift/ai/validations/post-create";
 // 対象日付群から週数を推定（例: 月曜~日曜で1週カウント）
 function estimateTotalWeeks(dateWeekMap: {
 	[date: string]: DayOfWeek;
@@ -29,7 +28,7 @@ export const adjustShiftByPriorities = ({
 	shiftRequest: ShiftsOfRequestsType;
 	priorities: PriorityType[];
 	dateWeekMap: { [date: string]: DayOfWeek };
-}): ShiftsOfAssignType => {
+}): ShiftsOfAssignType[] => {
 	const priorityMap = new Map(priorities.map((p) => [p.userId, p]));
 	const assignCount = new Map<string, number>();
 	const resultMap = new Map<string, { date: string; time: string }[]>();

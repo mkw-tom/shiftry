@@ -10,16 +10,12 @@ import Head from "./Head";
 
 import type { ShiftsOfAssignType } from "@shared/common/types/json";
 import type { ShiftsOfRequestsType } from "@shared/common/types/json";
+import type {
+	AssignShiftWithJson,
+	ShiftRequestWithJson,
+} from "@shared/common/types/merged";
 import ShiftButtons from "./ShiftButtons";
 import ShiftTable from "./ShiftTable";
-
-export type AssignShiftWithJson = Omit<AssignShift, "shifts"> & {
-	shifts: ShiftsOfAssignType;
-};
-
-export type ShiftRequestWithJson = Omit<ShiftRequest, "requests"> & {
-	requests: ShiftsOfRequestsType;
-};
 
 export const dummyAssignShift: AssignShiftWithJson = {
 	id: "4",
@@ -56,7 +52,7 @@ export const dummyAssignShift: AssignShiftWithJson = {
 			userName: "さぶろう",
 			shifts: [{ date: "2025-04-15", time: "10:00-14:00" }],
 		},
-	] as ShiftsOfAssignType,
+	],
 };
 
 const ShiftContent = () => {
@@ -76,21 +72,23 @@ const ShiftContent = () => {
 		status: "CONFIRMED",
 		weekStart: new Date("2025-03-31"),
 		weekEnd: new Date("2025-04-28"),
-		requests: {
-			overrideDates: {
-				"2025-04-10": ["08:00-12:00"],
-				"2025-04-14": [],
+		requests: [
+			{
+				overrideDates: {
+					"2025-04-10": ["08:00-12:00*1"],
+					"2025-04-14": [],
+				},
+				defaultTimePositions: {
+					Monday: ["09:00-13:00*1", "14:00-18:00*1", "19:00-23:00*1"],
+					Tuesday: ["10:00-14:00*1", "15:00-19:00*1", "20:00-23:00*1"],
+					Wednesday: ["10:00-14:00*1", "15:00-19:00*1", "20:00-23:00*1"],
+					Thursday: ["10:00-14:00*1", "15:00-19:00*1", "20:00-23:00*1"],
+					Friday: ["10:00-14:00*1", "15:00-19:00*1", "20:00-23:00*1"],
+					Saturday: [],
+					Sunday: [],
+				},
 			},
-			defaultTimePositions: {
-				Friday: ["10:00-14:00", "15:00-19:00", "20:00-23:00"],
-				Monday: ["09:00-13:00", "14:00-18:00", "19:00-23:00"],
-				Sunday: [],
-				Tuesday: ["10:00-14:00", "15:00-19:00", "20:00-23:00"],
-				Saturday: [],
-				Thursday: ["10:00-14:00", "15:00-19:00", "20:00-23:00"],
-				Wednesday: ["10:00-14:00", "15:00-19:00", "20:00-23:00"],
-			},
-		},
+		],
 		deadline: new Date("2025-05-06"),
 	};
 

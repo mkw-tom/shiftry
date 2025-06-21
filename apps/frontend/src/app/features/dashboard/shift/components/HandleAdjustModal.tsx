@@ -1,8 +1,8 @@
+import type { AssignShiftWithJson } from "@shared/common/types/merged";
 import { type Dispatch, type SetStateAction, useState } from "react";
 import { BiArrowToRight } from "react-icons/bi";
 import { PiUser } from "react-icons/pi";
 import { RiTimeLine } from "react-icons/ri";
-import type { AssignShiftWithJson } from "./ShiftContent";
 
 const HandleAdjustModal = ({
 	assignUser,
@@ -128,7 +128,7 @@ const HandleAdjustModal = ({
 			className="modal modal-bottom sm:modal-middle "
 		>
 			<div className="modal-box bg-base">
-				<h3 className="font-bold text-lg opacity-70 font-thin text-black text-start">
+				<h3 className="font-bold text-lg opacity-70 text-black text-start">
 					手動シフト調整
 				</h3>
 				<ul className="mt-2 flex flex-col gap-1 md:flex-row md:gap-5 pl-1">

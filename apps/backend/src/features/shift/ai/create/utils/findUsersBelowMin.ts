@@ -1,13 +1,9 @@
-import {
-	type ShiftsOfAssignType,
-	shiftsOfSubmittedType,
-} from "@shared/common/types/json";
-import { SubmittedShift } from "@shared/common/types/prisma";
-import type { shiftOfSubmittdWithUserId } from "../controller";
+import type { ShiftsOfAssignType } from "@shared/common/types/json";
+import type { shiftOfSubmittdWithUserId } from "@shared/shift/ai/validations/post-create";
 
 export const findUsersBelowMin = (
 	submittedShifts: shiftOfSubmittdWithUserId[],
-	assignedShifts: ShiftsOfAssignType,
+	assignedShifts: ShiftsOfAssignType[],
 	totalWeeks: number, // ← 週数を追加
 ): {
 	userId: string;
