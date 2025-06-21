@@ -1,10 +1,5 @@
-import {
-	ShiftsOfAssignType,
-	ShiftsOfRequestsType,
-	shiftsOfSubmittedType,
-} from "@shared/common/types/json";
+import type { parsePrioritiesFromAiInput } from "@shared/shift/ai/types/post-create";
 import openai from "../../../../config/openai";
-import type { parsePrioritiesFromAiInput } from "./controller";
 
 export const parsePrioritiesFromAi = async ({
 	ownerRequests,
