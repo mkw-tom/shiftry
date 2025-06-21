@@ -2,7 +2,7 @@ import { z } from "zod";
 import { ShiftStatus } from "../../../common/types/prisma";
 
 // ✅ 曜日 + optional 時間帯の形式（例: "Monday&11:00-17:00"）
-const availableWeekValidate = z.string().refine(
+export const availableWeekValidate = z.string().refine(
 	(val) => {
 		const [day, time] = val.split("&");
 		const validDays = [
@@ -26,7 +26,7 @@ const availableWeekValidate = z.string().refine(
 export type availableWeekType = z.infer<typeof availableWeekValidate>;
 
 // ✅ 日付 + optional 時間帯の形式（例: "2025-11-12&08:00-15:00"）
-const specificDatesValidate = z.string().refine(
+export const specificDatesValidate = z.string().refine(
 	(val) => {
 		const [date, time] = val.split("&");
 		const isDateValid = /^\d{4}-\d{2}-\d{2}$/.test(date);
