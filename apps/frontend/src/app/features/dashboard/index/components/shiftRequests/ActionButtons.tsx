@@ -24,7 +24,7 @@ const ActionButtons = ({
 			return (
 				<button
 					type="button"
-					className="w-28 h-7 rounded-full bg-gray02 text-xs text-white font-bold shadow-sm"
+					className="btn btn-sm w-28 bg-gray02 text-xs text-white font-bold shadow-sm border-none"
 					onClick={() => darawerOpen(DrawerView.CREATE_REQUEST, data)}
 				>
 					作成再開
@@ -36,14 +36,14 @@ const ActionButtons = ({
 				<>
 					<button
 						type="button"
-						className="w-28 h-7 rounded-full bg-green03 text-xs text-green02 font-bold shadow-sm"
+						className="btn btn-sm w-28 bg-green03 text-xs text-green02 font-bold shadow-sm border-none"
 						onClick={() => darawerOpen(DrawerView.STATUS, data)}
 					>
 						提出確認・回収
 					</button>
 					<button
 						type="button"
-						className="w-28 h-7 rounded-full bg-green02 text-xs text-white font-bold shadow-sm"
+						className="btn btn-sm w-28 bg-green02 text-xs text-white font-bold shadow-sm border-none"
 						onClick={() => darawerOpen(DrawerView.SUBMIT, data)}
 					>
 						シフト提出
@@ -55,7 +55,7 @@ const ActionButtons = ({
 			return (
 				<button
 					type="button"
-					className="w-28 h-7 rounded-full bg-blue01 text-xs text-white font-bold shadow-sm"
+					className="btn btn-sm w-28 bg-blue01 text-xs text-white font-bold shadow-sm border-none"
 					onClick={() => goToShiftPage(data.id)}
 				>
 					調整を見る
@@ -66,7 +66,7 @@ const ActionButtons = ({
 			return (
 				<button
 					type="button"
-					className="w-28 h-7 rounded-full bg-orange-400 text-xs text-white font-bold shadow-sm"
+					className="btn btn-sm w-28 bg-orange-400 text-xs text-white font-bold shadow-sm border-none"
 					onClick={() => goToShiftPage(data.id)}
 				>
 					完成確認

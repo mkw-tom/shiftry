@@ -12,7 +12,7 @@ const AddShiftButton = () => {
 	return (
 		<button
 			type="button"
-			className="btn w-24 h-7 rounded-full bg-green02 text-white text-[11px] font-bold shadow-md flex items-center px-3 gap-1 border-none"
+			className="btn btn-sm w-24 bg-green02 text-white text-[11px] font-bold shadow-md flex items-center px-3 gap-1 border-none"
 			onClick={() => darawerOpen(DrawerView.CREATE_REQUEST, null)}
 		>
 			<MdAdd className="text-white font-bold" />

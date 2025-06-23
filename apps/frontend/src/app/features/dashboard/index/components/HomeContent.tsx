@@ -56,7 +56,7 @@ const HomeContent = () => {
 
 	return (
 		<div className="w-full h-auto">
-			<HeadSwitch select={select} setSelect={setSelect} />
+			{/* <HeadSwitch select={select} setSelect={setSelect} /> */}
 			{select === "SHIFT" && <ShiftRequestList />}
 			{select === "MEMBER" && <MembersContent />}
 		</div>
