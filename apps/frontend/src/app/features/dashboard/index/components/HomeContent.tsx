@@ -7,6 +7,7 @@ import { useAutoLogin } from "../../common/hook/useAutoLogin";
 import AutoLoginError from "./AutoLoginError";
 import AutoLoginLoading from "./AutoLoginLoading";
 import HeadSwitch from "./HeadSwitch";
+import Head from "./head/Head";
 import MembersContent from "./members/MembersContent";
 import ShiftRequestList from "./shiftRequests/ShiftRequestList";
 
@@ -56,6 +57,7 @@ const HomeContent = () => {
 
 	return (
 		<div className="w-full h-auto">
+			<Head />
 			<HeadSwitch select={select} setSelect={setSelect} />
 			{select === "SHIFT" && <ShiftRequestList />}
 			{select === "MEMBER" && <MembersContent />}
