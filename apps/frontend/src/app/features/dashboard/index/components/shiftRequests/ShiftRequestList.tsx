@@ -149,7 +149,7 @@ const ShiftRequestList = () => {
 	}
 
 	return (
-		<section className="w-11/12 h-auto mx-auto mt-8 overflow-hidden bg-white rounded-sm border-t-6 border-t-green02 shadow-md">
+		<section className="w-11/12 h-auto mx-auto mt-8 overflow-hidden bg-white rounded-sm border-t-6 border-t-green02 mb-1 shadow-md">
 			{/* <Head /> */}
 			<div className="w-full mx-auto h-auto flex flex-col bg-white pt-5 pb-3 mb-1 rounded-t-sm shadow-md">
 				<div className="w-full flex items-center justify-between mx-auto border-b-1 border-green02 pb-1 px-5">

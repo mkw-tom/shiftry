@@ -1,17 +1,65 @@
 import { RootState } from "@/app/redux/store";
-import React from "react";
+import type React from "react";
 import { useSelector } from "react-redux";
 
-const SearchBar = () => {
+const SearchBar = ({
+	membersFilter,
+	setMembersFilter,
+}: {
+	membersFilter: "all" | "registed" | "notRegist";
+	setMembersFilter: React.Dispatch<
+		React.SetStateAction<"all" | "registed" | "notRegist">
+	>;
+}) => {
 	return (
-		<div className="w-11/12 mx-auto mt-2 border-b-1 border-b-gray01 pb-1">
-			<input className="w-4/5 bg-gray01 rounded-l-full input input-xs input-success outline-none" />
-			<button
-				type="button"
-				className="btn btn-xs w-1/5 btn-success bg-green01 text-white rounded-r-full "
-			>
-				Filter
-			</button>
+		<div className="w-full mx-auto mt-2 shadow-md mb-1 ">
+			<div className="w-full h-auto bg-white flex items-center rounded-t-sm pt-4">
+				<button
+					type="button"
+					className={`${
+						membersFilter === "all"
+							? "border-green02"
+							: "border-white opacity-50"
+					} text-center w-1/3 border-b-4 text-green02 `}
+					onClick={() => setMembersFilter("all")}
+				>
+					全員
+				</button>
+				<button
+					type="button"
+					className={`${
+						membersFilter === "registed"
+							? "border-green02"
+							: "border-white opacity-50"
+					} text-center w-1/3 border-b-4 text-green02 `}
+					onClick={() => setMembersFilter("registed")}
+				>
+					登録済み
+				</button>
+				<button
+					type="button"
+					className={`${
+						membersFilter === "notRegist"
+							? "border-green02"
+							: "border-white opacity-50"
+					} text-center w-1/3 border-b-4 text-green02`}
+					onClick={() => setMembersFilter("notRegist")}
+				>
+					未登録
+				</button>
+			</div>
+			<div className="flex items-center gap-1 bg-white p-2 shadow">
+				<input
+					className="w-full bg-gray01 rounded-sm input input-sm text-[15px] outline-none"
+					placeholder="検索：スタッフ名"
+				/>
+				<button
+					type="button"
+					className="btn btn-sm bg-gray02 text-white border-gray02"
+				>
+					未登録スタッフ追加
+				</button>
+			</div>
 		</div>
 	);
 };
