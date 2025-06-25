@@ -4,18 +4,23 @@ import Sideber from "./Sideber";
 
 const Header = () => {
 	return (
-		<header className="bg-green01 w-full h-11">
-			<div className="flex justify-between items-center mx-5 h-full">
+		<header className="w-full h-12 lg:h-14  bg-[rgba(255,255,255,0.2)] fixed top-0 z-50 border-t-[6px] border-green02">
+			<div className="flex justify-between items-center h-full">
 				<h1>
-					<Image
-						src="/logo-top.png"
-						alt="register"
-						width={100}
-						height={20}
-						className="object-cover mx-auto "
-					/>
+					<div className="flex items-center  gap-1 ml-4 lg:ml-6">
+						<Image
+							src="/shiftry_logo.png"
+							alt="register"
+							width={100}
+							height={20}
+							className="object-cover mx-auto w-7 h-7 lg:w-9 lg:h-9"
+						/>
+						<h1 className="text-green02 font-bold text-lg lg:text-2xl tracking-wide lg:traking-wider">
+							Shiftry
+						</h1>
+					</div>
 				</h1>
-				<div>
+				<div className="w-auto h-full">
 					<Sideber />
 				</div>
 			</div>
