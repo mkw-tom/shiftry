@@ -11,8 +11,8 @@ const HeadSwitch = ({
 	setSelect: Dispatch<React.SetStateAction<"SHIFT" | "MEMBER">>;
 }) => {
 	return (
-		<div className="w-full mt-3">
-			<div className="relative w-11/12 h-8  mx-auto bg-gray-200 rounded-md flex items-center transition-all duration-300">
+		<div className="w-11/12 h-9  mx-auto bg-gray-200 rounded-b-sm shadow-sm">
+			<div className="w-full h-full relative flex items-center transition-all duration-300">
 				{/* スライドする背景 */}
 				{/* <div
 					className={clsx(
@@ -25,8 +25,8 @@ const HeadSwitch = ({
 					<button
 						type="button"
 						className={`
-							w-1/2 h-auto rounded-sm font-bold text-xs text-center z-10
-							${select === "SHIFT" ? "text-black bg-white" : "text-gray-500"}
+							w-1/2 h-auto rounded-sm font-bold text-sm text-center z-10
+							${select === "SHIFT" ? "text-green02 bg-white" : "text-gray-500"}
 						`}
 						onClick={() => setSelect("SHIFT")}
 					>
@@ -35,8 +35,8 @@ const HeadSwitch = ({
 					<button
 						type="button"
 						className={`
-							w-1/2 h-full rounded-sm font-bold text-xs text-center z-10
-							${select === "MEMBER" ? "text-black bg-white" : "text-gray-500"}
+							w-1/2 h-full rounded-sm font-bold text-sm text-center z-10
+							${select === "MEMBER" ? "text-green02 bg-white" : "text-gray-500"}
 						`}
 						onClick={() => setSelect("MEMBER")}
 					>

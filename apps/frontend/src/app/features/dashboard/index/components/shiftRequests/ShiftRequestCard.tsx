@@ -9,10 +9,10 @@ const statusBadgeMap: Record<
 	RequestStatus,
 	{ text: string; colorClass: string }
 > = {
-	HOLD: { text: "下書き", colorClass: "bg-gray02" },
-	REQUEST: { text: "提出期間中", colorClass: "bg-green01" },
-	ADJUSTMENT: { text: "調整中", colorClass: "bg-blue01" },
-	CONFIRMED: { text: "確定", colorClass: "bg-orange-400" },
+	HOLD: { text: "下書き", colorClass: "bg-gray02 text-white" },
+	REQUEST: { text: "提出期間中", colorClass: "bg-green01 text-white" },
+	ADJUSTMENT: { text: "調整中", colorClass: "bg-green01 text-white" },
+	CONFIRMED: { text: "確定", colorClass: "bg-green02 text-white" },
 };
 
 const ShiftRequestCard = ({ data }: { data: ShiftRequestWithJson }) => {
@@ -24,19 +24,22 @@ const ShiftRequestCard = ({ data }: { data: ShiftRequestWithJson }) => {
 	return (
 		<li
 			key={data.id}
-			className="bg-white h-auto w-full p-4 shadow-md rounded-sm"
+			className="bg-gray-100 h-auto w-full rounded-sm p-4 shadow-md"
 		>
 			<div className="flex justify-between items-center">
 				<div
-					className={`badge badge-sm ${colorClass} text-white rounded-full font-bold text-[10px] w-18 border-none`}
+					className={`badge badge-sm ${colorClass}  rounded-full font-bold text-[10px] w-20 border-none`}
 				>
+					{data.status === "ADJUSTMENT" && (
+						<div className="loading loading-xs loading-bars" />
+					)}
 					{text}
 				</div>
 				<p className="text-xs text-gray02">
 					更新：{YMDHM(new Date(data.updatedAt))}
 				</p>
 			</div>
-			<h2 className="w-full text-left mt-5 text-black font-bold border-b border-gray01 pl-1">
+			<h2 className="w-full text-left mt-4 text-black font-bold border-b border-gray01 pl-1">
 				{YMDW(new Date(data.weekStart))} ~ {MDW(new Date(data.weekEnd as Date))}
 			</h2>
 			<p className="w-full text-left text-error text-xs font-bold pt-0.5 pl-1">
