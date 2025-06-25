@@ -39,7 +39,7 @@ const ShiftRequestCard = ({ data }: { data: ShiftRequestWithJson }) => {
 					更新：{YMDHM(new Date(data.updatedAt))}
 				</p>
 			</div>
-			<h2 className="w-full text-left mt-4 text-black font-bold border-b border-gray01 pl-1">
+			<h2 className="w-full text-left text-lg mt-4 text-black font-bold border-b border-gray01 pl-1">
 				{YMDW(new Date(data.weekStart))} ~ {MDW(new Date(data.weekEnd as Date))}
 			</h2>
 			<p className="w-full text-left text-error text-xs font-bold pt-0.5 pl-1">

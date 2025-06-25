@@ -11,7 +11,7 @@ const HeadSwitch = ({
 	setSelect: Dispatch<React.SetStateAction<"SHIFT" | "MEMBER">>;
 }) => {
 	return (
-		<div className="w-11/12 h-9  mx-auto bg-gray-200 rounded-b-sm shadow-sm">
+		<div className="w-11/12 h-9  mx-auto bg-gray-200 rounded-b-sm shadow-md">
 			<div className="w-full h-full relative flex items-center transition-all duration-300">
 				{/* スライドする背景 */}
 				{/* <div

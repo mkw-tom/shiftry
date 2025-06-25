@@ -149,9 +149,9 @@ const ShiftRequestList = () => {
 	}
 
 	return (
-		<section className="w-11/12 mx-auto max-h-[700px] mt-5 overflow-hidden bg-white rounded-sm border-t-6 border-t-green02">
+		<section className="w-11/12 h-auto mx-auto mt-8 overflow-hidden bg-white rounded-sm border-t-6 border-t-green02 shadow-md">
 			{/* <Head /> */}
-			<div className="w-full mx-auto h-auto flex flex-col bg-white pt-5 pb-3 mb-3 rounded-t-sm shadow-md">
+			<div className="w-full mx-auto h-auto flex flex-col bg-white pt-5 pb-3 mb-1 rounded-t-sm shadow-md">
 				<div className="w-full flex items-center justify-between mx-auto border-b-1 border-green02 pb-1 px-5">
 					<IoIosArrowDropleft className="text-2xl text-green02" />
 					<p className="text-green02  text-lg ">2025年 5月</p>
@@ -161,7 +161,7 @@ const ShiftRequestList = () => {
 					<AddShiftButton />
 				</div>
 			</div>
-			<ul className="w-11/12 mx-auto flex flex-col gap-5 overflow-y-scroll max-h-[580px] pb-50 ">
+			<ul className="w-11/12 h-auto mx-auto flex flex-col gap-5 overflow-y-scroll pb-10 pt-3">
 				{shiftRequests.map((data) => (
 					<ShiftRequestCard key={data.id} data={data as ShiftRequestWithJson} />
 				))}
