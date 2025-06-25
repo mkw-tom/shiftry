@@ -11,6 +11,10 @@ import {
 } from "../../../common/context/useBottomDrawer";
 import ShiftRequestCard from "./ShiftRequestCard";
 
+import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
+import AddShiftButton from "../head/AddShiftButton";
+import Head from "../head/Head";
+
 const ShiftRequestList = () => {
 	const shiftRequests = [
 		{
@@ -135,7 +139,7 @@ const ShiftRequestList = () => {
 					<h2 className="font-bold text-sm text-black opacity-60">
 						シフトデータがありません。
 					</h2>
-					<div className="btn w-auto border-none h-7 rounded-full bg-green02 text-xs text-white font-bold shadow-sm">
+					<div className="btn w-auto border-none h-7 rounded-full bg-green02 text-xs text-white font-bold">
 						<MdAdd className="text-white font-bold" />
 						シフト提出依頼を作成する
 					</div>
@@ -145,8 +149,19 @@ const ShiftRequestList = () => {
 	}
 
 	return (
-		<section className="w-full max-h-[600px] mt-5 overflow-hidden">
-			<ul className="w-11/12 h-auto mx-auto flex flex-col gap-5 overflow-y-scroll max-h-[580px] pb-96">
+		<section className="w-11/12 mx-auto max-h-[700px] mt-5 overflow-hidden bg-white rounded-sm border-t-6 border-t-green02">
+			{/* <Head /> */}
+			<div className="w-full mx-auto h-auto flex flex-col bg-white pt-5 pb-3 mb-3 rounded-t-sm shadow-md">
+				<div className="w-full flex items-center justify-between mx-auto border-b-1 border-green02 pb-1 px-5">
+					<IoIosArrowDropleft className="text-2xl text-green02" />
+					<p className="text-green02  text-lg ">2025年 5月</p>
+					<IoIosArrowDropright className="text-2xl text-green02" />
+				</div>
+				<div className="w-11/12 mx-auto mt-3 flex  ">
+					<AddShiftButton />
+				</div>
+			</div>
+			<ul className="w-11/12 mx-auto flex flex-col gap-5 overflow-y-scroll max-h-[580px] pb-50 ">
 				{shiftRequests.map((data) => (
 					<ShiftRequestCard key={data.id} data={data as ShiftRequestWithJson} />
 				))}
