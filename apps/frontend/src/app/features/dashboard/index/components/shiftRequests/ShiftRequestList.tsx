@@ -130,7 +130,7 @@ const ShiftRequestList = () => {
 
 	if (shiftRequests.length === 0) {
 		return (
-			<section className="w-11/12 mx-auto mt-5 border-2 border-dashed border-gray01 h-44 rounded-sm hover:bg-gray02">
+			<section className="w-11/12 mx-auto mt-7 border-2 border-dashed border-gray01 h-44 rounded-sm hover:bg-gray02">
 				<button
 					type="button"
 					className="w-full flex flex-col gap-5 items-center justify-center h-full bg-green03"
@@ -149,7 +149,7 @@ const ShiftRequestList = () => {
 	}
 
 	return (
-		<section className="w-11/12 h-auto mx-auto mt-8 overflow-hidden bg-white rounded-sm border-t-6 border-t-green02 mb-1 shadow-md">
+		<section className="w-11/12 h-auto mx-auto mt-8 overflow-hidden bg-white rounded-sm border-t-4 border-t-green02 mb-1 shadow-md">
 			{/* <Head /> */}
 			<div className="w-full mx-auto h-auto flex flex-col bg-white pt-5 pb-3 mb-1 rounded-t-sm shadow-md">
 				<div className="w-full flex items-center justify-between mx-auto border-b-1 border-green02 pb-1 px-5">

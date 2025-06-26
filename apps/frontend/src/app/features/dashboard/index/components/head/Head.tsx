@@ -4,6 +4,7 @@ import React from "react";
 import { CiSettings } from "react-icons/ci";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 import { LuUsersRound } from "react-icons/lu";
+import { LuArrowUpDown } from "react-icons/lu";
 import { useSelector } from "react-redux";
 import { useBottomDrawer } from "../../../common/context/useBottomDrawer";
 import AddShiftButton from "./AddShiftButton";
@@ -26,21 +27,19 @@ const Head = () => {
 	}
 
 	return (
-		<div className="w-11/12 h-auto mx-auto bg-white rounded-t-sm shadow-sm">
+		<div className="w-11/12 h-auto mx-auto bg-white rounded-t-sm shadow-md">
 			<div className="w-full mx-auto h-auto flex flex-col gap-3">
 				<div className="flex items-center justify-between gap-2 bg-green02 px-5 pt-5 pb-3 rounded-t-sm">
-					<h2 className="text-white tracking-wide font-bold">
-						アイウエオ保育園
-					</h2>
-					<div className="flex gap-1">
-						<span className="text-sm text-white">設定</span>
-						<CiSettings className="text-xl text-white" />
+					<h2 className="text-white tracking-wide font-bold">アイウエオ店舗</h2>
+					<button type="button" className="flex items-center gap-1">
+						<span className="text-sm text-white">店舗切り替え</span>
+						<LuArrowUpDown className="text-lg text-white opacity-90" />
+						{/* <CiSettings className="text-xl text-white" /> */}
 						{/* <AddShiftButton /> */}
-					</div>
+					</button>
 				</div>
 
 				<div className="flex items-center text-gray02 px-7 gap-3 pb-5 pt-3 rounded-b-sm">
-					{/* <LuUsersRound className="mr-2 text-lg" /> */}
 					<div className="bg-gray02 rounded-full w-8 h-8 " />
 					<p className="mr-3 flex items-center gap-6">
 						<span className="mr-3 text-black opacity-80">山田 太朗</span>

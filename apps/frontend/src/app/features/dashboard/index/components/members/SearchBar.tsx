@@ -13,14 +13,14 @@ const SearchBar = ({
 }) => {
 	return (
 		<div className="w-full mx-auto mt-2 shadow-md mb-1 ">
-			<div className="w-full h-auto bg-white flex items-center rounded-t-sm pt-4">
+			<div className="w-full h-auto bg-white flex items-center rounded-t-sm pt-4 px-1">
 				<button
 					type="button"
 					className={`${
 						membersFilter === "all"
 							? "border-green02"
 							: "border-white opacity-50"
-					} text-center w-1/3 border-b-4 text-green02 `}
+					} text-center w-1/3 border-b-4 text-green02 pb-1 `}
 					onClick={() => setMembersFilter("all")}
 				>
 					全員
@@ -31,7 +31,7 @@ const SearchBar = ({
 						membersFilter === "registed"
 							? "border-green02"
 							: "border-white opacity-50"
-					} text-center w-1/3 border-b-4 text-green02 `}
+					} text-center w-1/3 border-b-4 text-green02 pb-1`}
 					onClick={() => setMembersFilter("registed")}
 				>
 					登録済み
@@ -42,7 +42,7 @@ const SearchBar = ({
 						membersFilter === "notRegist"
 							? "border-green02"
 							: "border-white opacity-50"
-					} text-center w-1/3 border-b-4 text-green02`}
+					} text-center w-1/3 border-b-4 text-green02 pb-1`}
 					onClick={() => setMembersFilter("notRegist")}
 				>
 					未登録

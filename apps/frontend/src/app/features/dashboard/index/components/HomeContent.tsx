@@ -1,16 +1,13 @@
 "use client";
-import { useNavigation } from "@/app/lib/navigation";
 import type { RootState } from "@/app/redux/store";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useAutoLogin } from "../../common/hook/useAutoLogin";
-import AutoLoginError from "./AutoLoginError";
 import AutoLoginLoading from "./AutoLoginLoading";
 import HeadSwitch from "./HeadSwitch";
 import Head from "./head/Head";
 import MembersContent from "./members/MembersContent";
 import ShiftRequestList from "./shiftRequests/ShiftRequestList";
-
 const HomeContent = () => {
 	const [select, setSelect] = useState<"SHIFT" | "MEMBER">("SHIFT");
 	const { userToken, storeToken, groupToken } = useSelector(
@@ -57,8 +54,10 @@ const HomeContent = () => {
 
 	return (
 		<div className="w-full h-auto">
-			<Head />
-			<HeadSwitch select={select} setSelect={setSelect} />
+			<div className="w-full h-full bg-gradient-to-br from-green02 to-green03 py-6 pb-7">
+				<Head />
+				<HeadSwitch select={select} setSelect={setSelect} />
+			</div>
 			{select === "SHIFT" && <ShiftRequestList />}
 			{select === "MEMBER" && <MembersContent />}
 		</div>
