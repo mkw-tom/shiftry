@@ -7,7 +7,7 @@ const MembersContent = () => {
 		"all" | "registed" | "notRegist"
 	>("all");
 	return (
-		<div className="w-11/12 h-auto mx-auto mt-7 bg-white shadow-md rounded-sm">
+		<div className="w-full h-auto mx-auto">
 			<SearchBar
 				membersFilter={membersFilter}
 				setMembersFilter={setMembersFilter}

@@ -208,8 +208,8 @@ const MembersList = ({
 	}
 
 	return (
-		<section className="w-full mx-auto h-[450px]  bg-white shadow-md rounded-b-sm">
-			<ul className="w-full h-full p-2 flex flex-col gap-0.5 overflow-y-scroll">
+		<section className="w-full mx-auto h-[400px] overflow-hidden bg-gradient-to-b from-gray01 to-white">
+			<ul className="w-11/12 h-[500px] mx-auto flex flex-col gap-1 overflow-y-scroll pt-2 pb-96">
 				{members.map((user: User) => (
 					<Member key={user.id} user={user} />
 				))}

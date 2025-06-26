@@ -2,6 +2,11 @@
 import type { RequestStatus } from "@shared/common/types/prisma";
 import type { ShiftRequest } from "@shared/common/types/prisma";
 import { useRouter } from "next/navigation";
+import { FaRegEdit } from "react-icons/fa";
+import { FaScaleBalanced } from "react-icons/fa6";
+import { LuSend } from "react-icons/lu";
+import { SiOpenai } from "react-icons/si";
+import { TbCalendarCheck } from "react-icons/tb";
 import {
 	DrawerView,
 	type ShiftRequestWithJson,
@@ -24,9 +29,10 @@ const ActionButtons = ({
 			return (
 				<button
 					type="button"
-					className="btn flex-1 font-bold shadow-sm bg-gray02 text-white border-none"
+					className="btn btn-sm btn-outline flex-1 text-gray02 bg-white  font-bold shadow-sm border-gray02"
 					onClick={() => darawerOpen(DrawerView.CREATE_REQUEST, data)}
 				>
+					<FaRegEdit />
 					作成再開
 				</button>
 			);
@@ -36,16 +42,18 @@ const ActionButtons = ({
 				<>
 					<button
 						type="button"
-						className="btn flex-1 text-green01 bg-white  font-bold shadow-sm border-1 border-green01"
+						className="btn btn-sm flex-1 text-green01 bg-white  font-bold shadow-sm border-green01"
 						onClick={() => darawerOpen(DrawerView.STATUS, data)}
 					>
-						回収・作成
+						<SiOpenai />
+						シフト作成
 					</button>
 					<button
 						type="button"
-						className="btn flex-1 text-white bg-green01  font-bold shadow-sm border-none"
+						className="btn btn-sm flex-1 text-green01 bg-white  font-bold shadow-sm border-green01"
 						onClick={() => darawerOpen(DrawerView.SUBMIT, data)}
 					>
+						<LuSend />
 						提出
 					</button>
 				</>
@@ -55,9 +63,10 @@ const ActionButtons = ({
 			return (
 				<button
 					type="button"
-					className="btn flex-1 font-bold shadow-sm bg-green01 text-white border-none"
+					className="btn btn-sm flex-1 text-green01 bg-white  font-bold shadow-sm border-green01"
 					onClick={() => goToShiftPage(data.id)}
 				>
+					<FaScaleBalanced />
 					シフト調整
 				</button>
 			);
@@ -66,9 +75,10 @@ const ActionButtons = ({
 			return (
 				<button
 					type="button"
-					className="btn flex-1 font-bold shadow-sm bg-green02 border-none text-white"
+					className="btn btn-sm flex-1 text-green02 bg-white  font-bold shadow-sm border-green02"
 					onClick={() => goToShiftPage(data.id)}
 				>
+					<TbCalendarCheck />
 					完成確認
 				</button>
 			);

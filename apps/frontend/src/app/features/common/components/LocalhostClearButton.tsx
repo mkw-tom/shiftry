@@ -10,7 +10,11 @@ const LocalhostClearButton = () => {
 	}
 
 	return (
-		<button type="button" className="btn btn-sm" onClick={handleClear}>
+		<button
+			type="button"
+			className="btn btn-sm fixed bottom-2 right-2 opacity-70"
+			onClick={handleClear}
+		>
 			🧹 ストレージ初期化
 		</button>
 	);

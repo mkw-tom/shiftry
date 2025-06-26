@@ -53,8 +53,8 @@ const HomeContent = () => {
 	}
 
 	return (
-		<div className="w-full h-auto">
-			<div className="w-full h-full bg-gradient-to-br from-green02 to-green03 py-6 pb-7">
+		<div className="w-full h-full">
+			<div className="w-full h-auto bg-green02 rounded-md pt-10">
 				<Head />
 				<HeadSwitch select={select} setSelect={setSelect} />
 			</div>
