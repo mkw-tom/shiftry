@@ -10,7 +10,7 @@ const Sideber = () => {
 			<input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
 			<div className="drawer-content">
 				<label htmlFor="my-drawer-4" className="drawer-button lg:hidden ">
-					<FiMenu className="text-xl lg:text-2xl text-green02 m-2 mr-4" />
+					<FiMenu className="text-xl lg:text-2xl text-white m-2 mr-4" />
 				</label>
 			</div>
 			<div className="drawer-side ">

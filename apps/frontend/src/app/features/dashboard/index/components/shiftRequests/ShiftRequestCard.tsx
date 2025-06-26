@@ -24,7 +24,7 @@ const ShiftRequestCard = ({ data }: { data: ShiftRequestWithJson }) => {
 	return (
 		<li
 			key={data.id}
-			className="bg-base h-auto w-full rounded-sm p-4 shadow-sm"
+			className="bg-white h-auto w-full rounded-sm p-4 shadow-md"
 		>
 			<div className="flex justify-between items-center">
 				<div

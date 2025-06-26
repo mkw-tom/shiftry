@@ -12,14 +12,14 @@ const SearchBar = ({
 	>;
 }) => {
 	return (
-		<div className="w-full mx-auto mt-2 shadow-md mb-1 ">
-			<div className="w-full h-auto bg-white flex items-center rounded-t-sm pt-4 px-1">
+		<div className="w-full mx-auto border-b-0 mb-1 shadow-sm pt-3">
+			<div className="w-full h-auto flex items-center rounded-t-sm pt-4 px-1 text-sm">
 				<button
 					type="button"
 					className={`${
 						membersFilter === "all"
 							? "border-green02"
-							: "border-white opacity-50"
+							: "border-base opacity-50"
 					} text-center w-1/3 border-b-4 text-green02 pb-1 `}
 					onClick={() => setMembersFilter("all")}
 				>
@@ -30,7 +30,7 @@ const SearchBar = ({
 					className={`${
 						membersFilter === "registed"
 							? "border-green02"
-							: "border-white opacity-50"
+							: "border-base opacity-50"
 					} text-center w-1/3 border-b-4 text-green02 pb-1`}
 					onClick={() => setMembersFilter("registed")}
 				>
@@ -41,16 +41,16 @@ const SearchBar = ({
 					className={`${
 						membersFilter === "notRegist"
 							? "border-green02"
-							: "border-white opacity-50"
+							: "border-base opacity-50"
 					} text-center w-1/3 border-b-4 text-green02 pb-1`}
 					onClick={() => setMembersFilter("notRegist")}
 				>
 					未登録
 				</button>
 			</div>
-			<div className="flex items-center gap-1 bg-white p-2 shadow">
+			<div className="flex items-center gap-1 p-2 border-b-1">
 				<input
-					className="w-full bg-gray01 rounded-sm input input-sm text-[15px] outline-none"
+					className="w-full bg-gray01 text-black rounded-sm input input-sm text-[15px] outline-none border-gray01"
 					placeholder="検索：スタッフ名"
 				/>
 				<button

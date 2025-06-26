@@ -3,7 +3,7 @@ import React from "react";
 
 const Member = ({ user }: { user: User }) => {
 	return (
-		<li className="w-full h-20 bg-white flex items-center rounded-sm shadow-sm">
+		<li className="w-full h-20 bg-white  flex items-center rounded-sm shadow-sm">
 			<div className="flex justify-between px-4 py-3 w-full">
 				<div className="w-1/2 flex items-center gap-3">
 					{user.pictureUrl === null ? (
