@@ -25,8 +25,8 @@ const HeadSwitch = ({
 					<button
 						type="button"
 						className={`
-							w-1/2 h-auto rounded-sm font-bold text-sm text-center z-10
-							${select === "SHIFT" ? "text-green02 bg-white" : "text-gray-500"}
+							w-1/2 h-auto rounded-sm text-sm text-center z-10
+							${select === "SHIFT" ? "text-green02 bg-white font-bold" : "text-gray-500"}
 						`}
 						onClick={() => setSelect("SHIFT")}
 					>
@@ -35,8 +35,8 @@ const HeadSwitch = ({
 					<button
 						type="button"
 						className={`
-							w-1/2 h-full rounded-sm font-bold text-sm text-center z-10
-							${select === "MEMBER" ? "text-green02 bg-white" : "text-gray-500"}
+							w-1/2 h-full rounded-sm text-sm text-center z-10
+							${select === "MEMBER" ? "text-green02 bg-white font-bold" : "text-gray-500"}
 						`}
 						onClick={() => setSelect("MEMBER")}
 					>
