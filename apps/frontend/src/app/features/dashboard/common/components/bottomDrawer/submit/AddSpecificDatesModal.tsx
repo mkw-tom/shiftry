@@ -53,7 +53,7 @@ const AddSpecificDatesModal = ({
 		<>
 			<button
 				type="submit"
-				className="btn btn-sm rounded-full bg-green03 text-green02 border-none"
+				className="btn btn-sm rounded-md bg-green03 text-green02 border-none"
 				onClick={openAddSpecialDatesModal}
 			>
 				希望を追加
@@ -186,13 +186,13 @@ const AddSpecificDatesModal = ({
 						<form method="dialog">
 							<button
 								type="submit"
-								className="btn rounded-full border-none mr-1 bg-gray02 text-white"
+								className="btn rounded-md border-none mr-1 bg-gray02 text-white"
 							>
 								中止
 							</button>
 							<button
 								type="submit"
-								className="btn rounded-full bg-green03 text-green02 border-none"
+								className="btn rounded-md bg-green03 text-green02 border-none"
 								onClick={() =>
 									addSpecificDateToForm(inputSpecificDate, inputTimeValues)
 								}

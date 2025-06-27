@@ -239,7 +239,7 @@ const AddSpecialShiftModal = ({
 						<div className="w-2/3 flex items-center gap-1 ml-auto mb-5">
 							<button
 								type="button"
-								className="btn btn-sm border-buttom bg-gray02 border-none w-1/3 text-white rounded-full"
+								className="btn btn-sm border-buttom bg-gray02 border-none w-1/3 text-white rounded-md"
 								onClick={() => clearInputValues()}
 								disabled={edit.status}
 							>
@@ -247,7 +247,7 @@ const AddSpecialShiftModal = ({
 							</button>
 							<button
 								type="button"
-								className="btn btn-sm border-2 bg-green03 text-green02  w-2/3 border-none rounded-full"
+								className="btn btn-sm border-2 bg-green03 text-green02  w-2/3 border-none rounded-md"
 								onClick={() => addPosition(day as string, inputValues)}
 								disabled={
 									!inputValues.startTime ||
@@ -327,14 +327,14 @@ const AddSpecialShiftModal = ({
 												<div className="flex items-center gap-1 ml-auto w-2/3">
 													<button
 														type="button"
-														className="btn btn-sm w-1/3 bg-gray02 border-none rounded-full"
+														className="btn btn-sm w-1/3 bg-gray02 border-none rounded-md"
 														onClick={() => closeEdit()}
 													>
 														中止
 													</button>
 													<button
 														type="button"
-														className="btn btn-sm bg-green03 text-green02 w-2/3 border-none rounded-full"
+														className="btn btn-sm bg-green03 text-green02 w-2/3 border-none rounded-md"
 														onClick={() => editPosition(edit)}
 													>
 														保存
@@ -361,7 +361,7 @@ const AddSpecialShiftModal = ({
 												<div className="flex items-center gap-1 ml-auto ">
 													<button
 														type="button"
-														className="btn btn-xs bg-gray02 border-none text-white rounded-full"
+														className="btn btn-xs bg-gray02 border-none text-white rounded-md"
 														onClick={() => removePosition(day, idx)}
 														disabled={edit.status && edit.idx !== idx}
 													>
@@ -369,7 +369,7 @@ const AddSpecialShiftModal = ({
 													</button>
 													<button
 														type="button"
-														className="btn btn-xs bg-blue01 border-none text-white rounded-full"
+														className="btn btn-xs bg-blue01 border-none text-white rounded-md"
 														onClick={() =>
 															setEdit((prev) => ({
 																...prev,
@@ -401,7 +401,7 @@ const AddSpecialShiftModal = ({
 						{inputDay === "" ? (
 							<button
 								type="submit"
-								className="btn btn-error text-white mr-1 rounded-full"
+								className="btn btn-error text-white mr-1 rounded-md"
 								onClick={() => {
 									if (
 										confirm(`${YMDW(new Date(day))}のデータを削除しますか？`)
@@ -415,7 +415,7 @@ const AddSpecialShiftModal = ({
 						) : (
 							<button
 								type="submit"
-								className="btn bg-gray01 rounded-full"
+								className="btn bg-gray01 rounded-md"
 								onClick={() => {
 									const dialog = document.getElementById(
 										"special_modal",
@@ -431,7 +431,7 @@ const AddSpecialShiftModal = ({
 
 						<button
 							type="submit"
-							className={`btn   border-none rounded-full ${
+							className={`btn   border-none rounded-md ${
 								shifts.length === 0
 									? "pointer-events-none bg-gray01 text-gray02 "
 									: "bg-gray02 text-white "

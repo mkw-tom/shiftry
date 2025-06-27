@@ -118,7 +118,7 @@ const ActionButton = () => {
 				const { weekEnd, weekStart, deadline, type } = formData;
 				return {
 					text: "次へ",
-					color: "bg-green01",
+					color: "bg-green02",
 					disabled: !(weekEnd && weekStart && deadline && type),
 				};
 			}
@@ -135,7 +135,7 @@ const ActionButton = () => {
 				];
 				return {
 					text: "次へ",
-					color: "bg-green01",
+					color: "bg-green02",
 					disabled: !days.some(
 						(day) => requests.defaultTimePositions[day].length > 0,
 					),
@@ -144,11 +144,11 @@ const ActionButton = () => {
 			case CreateRequestStep.Special:
 				return {
 					text: "データを保存",
-					color: "bg-green01",
+					color: "bg-green02",
 					disabled: false,
 				};
 			default:
-				return { text: "操作を選択", color: "bg-green01", disabled: false };
+				return { text: "操作を選択", color: "bg-green02", disabled: false };
 		}
 	}
 
@@ -157,7 +157,7 @@ const ActionButton = () => {
 			{step !== CreateRequestStep.Period && (
 				<button
 					type="button"
-					className="btn w-1/3 h-10 bg-gray02 shadow-xl rounded-full font-bold text-sm text-white border-none mr-2"
+					className="btn w-1/3 h-10 bg-gray02 shadow-xl rounded-md font-bold text-sm text-white border-none mr-2"
 					onClick={() => changeFormStep(step, "prev")}
 				>
 					前へ戻る
@@ -167,7 +167,7 @@ const ActionButton = () => {
 				type="button"
 				className={`btn flex-1 h-10 ${
 					handleBtnTextAndStyle(step).color
-				} shadow-xl rounded-full font-bold text-sm text-white border-none`}
+				} shadow-xl rounded-md font-bold text-sm text-white border-none`}
 				onClick={() => changeFormStep(step, "next")}
 				disabled={handleBtnTextAndStyle(step).disabled}
 			>

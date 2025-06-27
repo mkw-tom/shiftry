@@ -125,10 +125,10 @@ const HandleAdjustModal = ({
 	return (
 		<dialog
 			id={`handle_adjust_modal_${date.key}${shift?.time}${assignUser.userId}`}
-			className="modal modal-bottom sm:modal-middle "
+			className="modal modal-bottom sm:modal-middle"
 		>
-			<div className="modal-box bg-base">
-				<h3 className="font-bold text-lg opacity-70 text-black text-start">
+			<div className="modal-box bg-white relative">
+				<h3 className="font-bold text-lg opacity-70 text-black text-start mt-5">
 					手動シフト調整
 				</h3>
 				<ul className="mt-2 flex flex-col gap-1 md:flex-row md:gap-5 pl-1">
@@ -140,15 +140,21 @@ const HandleAdjustModal = ({
 					</li>
 					<li className="text-start flex items-center gap-2">
 						<RiTimeLine
-							className={`inline-block text-lg ${shift?.time !== undefined ? "text-green02" : "text-error"}`}
+							className={`inline-block text-lg ${
+								shift?.time !== undefined ? "text-green02" : "text-error"
+							}`}
 						/>
 						<span
-							className={`text-start ${shift?.time !== undefined ? "text-green02" : "text-error"}`}
+							className={`text-start ${
+								shift?.time !== undefined ? "text-green02" : "text-error"
+							}`}
 						>
 							{date.label}
 						</span>
 						<span
-							className={`text-start ${shift?.time !== undefined ? "text-green02" : "text-error"}`}
+							className={`text-start ${
+								shift?.time !== undefined ? "text-green02" : "text-error"
+							}`}
 						>
 							{shift?.time !== undefined ? shift.time : "休み"}
 						</span>
@@ -247,17 +253,14 @@ const HandleAdjustModal = ({
 				</div>
 				<div className="modal-action">
 					<form method="dialog" className="w-full flex items-center gap-1">
-						{/* if there is a button in form, it will close the modal */}
 						<button
 							type="submit"
-							className="btn bg-gray02 text-white rounded-full w-1/3"
+							className="fixed top-3 right-0 left-0 w-32 bg-gray02 h-2 mx-auto rounded-sm pointer-events-auto"
 							onClick={clearHandleAdjustForm}
-						>
-							閉じる
-						</button>
+						/>
 						<button
 							type="submit"
-							className="btn bg-green02 text-white rounded-full w-2/3"
+							className="btn bg-green02 text-white rounded-md w-full shadow-lg border-none"
 							disabled={handleSubmitDisabled()}
 							onClick={() =>
 								handleSubmit(
