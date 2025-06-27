@@ -12,8 +12,8 @@ const SearchBar = ({
 	>;
 }) => {
 	return (
-		<div className="w-full mx-auto border-b-0 mb-1 shadow-sm pt-3">
-			<div className="w-full h-auto flex items-center rounded-t-sm pt-4 px-1 text-sm">
+		<div className="w-full mx-auto shadow-sm pt-3">
+			<div className="w-full h-auto flex items-center pt-4 px-1 text-sm">
 				<button
 					type="button"
 					className={`${
@@ -48,14 +48,14 @@ const SearchBar = ({
 					未登録
 				</button>
 			</div>
-			<div className="flex items-center gap-1 p-2 border-b-1">
+			<div className="flex items-center gap-1 p-2">
 				<input
-					className="w-full bg-gray01 text-black rounded-sm input input-sm text-[15px] outline-none border-gray01"
+					className="w-full bg-gray01 text-black input input-sm text-[15px] outline-none border-gray01 rounded-md"
 					placeholder="検索：スタッフ名"
 				/>
 				<button
 					type="button"
-					className="btn btn-sm bg-gray02 text-white border-gray02"
+					className="btn btn-sm bg-gray02 text-white border-none rounded-md"
 				>
 					未登録スタッフ追加
 				</button>

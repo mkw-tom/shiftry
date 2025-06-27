@@ -1,22 +1,44 @@
 import { MDW, YMDHM, YMDW } from "@/app/features/common/hooks/useFormatDate";
 import type { ShiftRequest } from "@shared/common/types/prisma";
 import type { RequestStatus } from "@shared/common/types/prisma";
-import React from "react";
+import React, { type JSX, JSXElementConstructor } from "react";
+import { BiCheck, BiEdit, BiEditAlt } from "react-icons/bi";
+import { FaRegEdit } from "react-icons/fa";
+import { FaScaleBalanced } from "react-icons/fa6";
+import { LuSend } from "react-icons/lu";
+import { SiOpenai } from "react-icons/si";
+import { TbCalendarCheck } from "react-icons/tb";
 import type { ShiftRequestWithJson } from "../../../common/context/useBottomDrawer";
 import ActionButtons from "./ActionButtons";
 
 const statusBadgeMap: Record<
 	RequestStatus,
-	{ text: string; colorClass: string }
+	{ text: string; colorClass: string; icon: JSX.Element }
 > = {
-	HOLD: { text: "下書き", colorClass: "bg-gray02 text-white" },
-	REQUEST: { text: "提出期間中", colorClass: "bg-green01 text-white" },
-	ADJUSTMENT: { text: "調整中", colorClass: "bg-green01 text-white" },
-	CONFIRMED: { text: "確定", colorClass: "bg-green02 text-white" },
+	HOLD: {
+		text: "下書き",
+		colorClass: "bg-gray02 text-white",
+		icon: <BiEditAlt />,
+	},
+	REQUEST: {
+		text: "提出期間中",
+		colorClass: "bg-green01 text-white",
+		icon: <LuSend />,
+	},
+	ADJUSTMENT: {
+		text: "調整中",
+		colorClass: "bg-green01 text-white",
+		icon: <div className="loading loading-bars loading-xs" />,
+	},
+	CONFIRMED: {
+		text: "確定",
+		colorClass: "bg-green02 text-white",
+		icon: <BiCheck />,
+	},
 };
 
 const ShiftRequestCard = ({ data }: { data: ShiftRequestWithJson }) => {
-	const { text, colorClass } = statusBadgeMap[data.status] ?? {
+	const { text, colorClass, icon } = statusBadgeMap[data.status] ?? {
 		text: "不明",
 		colorClass: "bg-gray-400",
 	};
@@ -24,25 +46,23 @@ const ShiftRequestCard = ({ data }: { data: ShiftRequestWithJson }) => {
 	return (
 		<li
 			key={data.id}
-			className="bg-white h-auto w-full rounded-sm p-4 shadow-md"
+			className="bg-white h-auto w-full rounded-sm p-4 shadow-md "
 		>
 			<div className="flex justify-between items-center">
 				<div
-					className={`badge badge-sm ${colorClass}  rounded-full font-bold text-[10px] w-20 border-none`}
+					className={`badge badge-sm ${colorClass}  rounded-full font-bold text-[11px] px-3 border-none flex items-center`}
 				>
-					{data.status === "ADJUSTMENT" && (
-						<div className="loading loading-xs loading-bars" />
-					)}
+					{icon}
 					{text}
 				</div>
-				<p className="text-xs text-gray02">
+				<p className="text-xs text-gray02 tracking-wide">
 					更新：{YMDHM(new Date(data.updatedAt))}
 				</p>
 			</div>
-			<h2 className="w-full text-left text-lg mt-4 text-black font-bold border-b border-gray01 pl-1">
+			<h2 className="w-full text-left text-lg mt-4 text-black font-bold border-b border-gray01 pl- opacity-90 tracking-wide pl-1">
 				{YMDW(new Date(data.weekStart))} ~ {MDW(new Date(data.weekEnd as Date))}
 			</h2>
-			<p className="w-full text-left text-error text-xs font-bold pt-0.5 pl-1">
+			<p className="w-full text-left text-error text-xs pt-0.5 pl-1 tracking-wide">
 				提出期限：{YMDHM(new Date(data.deadline as Date))}
 			</p>
 			<div className="mt-3 flex items-center justify-end gap-2">

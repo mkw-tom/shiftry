@@ -140,7 +140,7 @@ const ShiftContent = () => {
 	// if(error) return <div>Error: {error}</div>
 
 	return (
-		<main className="bg-base w-full h-lvh">
+		<main className="bg-white w-full h-lvh mt-12">
 			<div className="w-full h-full pt-4 flex flex-col items-center gap-5">
 				<Head
 					dates={dates}

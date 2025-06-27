@@ -29,11 +29,11 @@ const ActionButtons = ({
 			return (
 				<button
 					type="button"
-					className="btn btn-sm btn-outline flex-1 text-gray02 bg-white  font-bold shadow-sm border-gray02"
+					className="btn btn-outline flex-1 text-gray02 bg-white  font-bold shadow-sm border-gray02 rounded-md"
 					onClick={() => darawerOpen(DrawerView.CREATE_REQUEST, data)}
 				>
-					<FaRegEdit />
-					作成再開
+					{/* <FaRegEdit /> */}
+					下書き再開
 				</button>
 			);
 
@@ -42,7 +42,7 @@ const ActionButtons = ({
 				<>
 					<button
 						type="button"
-						className="btn btn-sm flex-1 text-green01 bg-white  font-bold shadow-sm border-green01"
+						className="btn flex-1 text-green01 bg-white  font-bold shadow-sm border-green01 rounded-md"
 						onClick={() => darawerOpen(DrawerView.STATUS, data)}
 					>
 						<SiOpenai />
@@ -50,10 +50,10 @@ const ActionButtons = ({
 					</button>
 					<button
 						type="button"
-						className="btn btn-sm flex-1 text-green01 bg-white  font-bold shadow-sm border-green01"
+						className="btn flex-1 text-white bg-green01  font-bold shadow-sm border-green01 rounded-md"
 						onClick={() => darawerOpen(DrawerView.SUBMIT, data)}
 					>
-						<LuSend />
+						{/* <LuSend /> */}
 						提出
 					</button>
 				</>
@@ -63,10 +63,9 @@ const ActionButtons = ({
 			return (
 				<button
 					type="button"
-					className="btn btn-sm flex-1 text-green01 bg-white  font-bold shadow-sm border-green01"
+					className="btn flex-1 text-green01 bg-white  font-bold shadow-sm border-green01 rounded-md"
 					onClick={() => goToShiftPage(data.id)}
 				>
-					<FaScaleBalanced />
 					シフト調整
 				</button>
 			);
@@ -75,10 +74,10 @@ const ActionButtons = ({
 			return (
 				<button
 					type="button"
-					className="btn btn-sm flex-1 text-green02 bg-white  font-bold shadow-sm border-green02"
+					className="btn flex-1 text-white bg-green02  font-bold shadow-sm border-green02 rounded-md"
 					onClick={() => goToShiftPage(data.id)}
 				>
-					<TbCalendarCheck />
+					{/* <TbCalendarCheck /> */}
 					完成確認
 				</button>
 			);
