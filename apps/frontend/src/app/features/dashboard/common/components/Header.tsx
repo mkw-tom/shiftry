@@ -4,7 +4,7 @@ import Sideber from "./Sideber";
 
 const Header = () => {
 	return (
-		<header className="w-full h-12 lg:h-14  bg-green02 fixed top-0 z-20">
+		<header className="w-full h-12 lg:h-14  bg-white fixed top-0 z-20 border-t-5 border-green02">
 			<div className="flex justify-between items-center h-full">
 				<h1>
 					<div className="flex items-center  gap-1 ml-4 lg:ml-6">
@@ -15,7 +15,7 @@ const Header = () => {
 							height={20}
 							className="object-cover mx-auto w-7 h-7 lg:w-9 lg:h-9"
 						/>
-						<h1 className="text-white font-bold text-lg lg:text-2xl tracking-wide lg:traking-wider">
+						<h1 className="text-green02 font-bold text-lg lg:text-2xl tracking-wide lg:traking-wider">
 							Shiftry
 						</h1>
 					</div>
