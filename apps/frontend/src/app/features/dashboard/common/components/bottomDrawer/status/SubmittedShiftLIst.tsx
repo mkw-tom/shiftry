@@ -68,7 +68,7 @@ const SubmittedShiftList = ({
 							<span className="text-sm  text-black">{data.shifts.name}</span>
 						</div>
 						<div className="flex items-center gap-5 pl-1">
-							<span className="text-xs text-gray02 text-black">
+							<span className="text-xs text-gray02">
 								出勤：週{data.shifts.weekCountMin}回～{data.shifts.weekCountMax}
 								回
 							</span>

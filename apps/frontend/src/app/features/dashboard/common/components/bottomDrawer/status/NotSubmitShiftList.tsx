@@ -33,7 +33,7 @@ const NotSubmitShiftList = ({
 				>
 					<div className="flex flex-col items-start gap-2 w-full">
 						<div className=" flex items-center w-full gap-2">
-							<div className="w-7 h-7 bg-gray01 rounded-full" />
+							<div className="w-7 h-7 bg-gray01 rounded-md" />
 							<span className="text-sm  text-black">{user.name}</span>
 						</div>
 					</div>

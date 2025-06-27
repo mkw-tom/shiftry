@@ -50,7 +50,7 @@ const SubmittedShiftListModal = ({
 		<>
 			<button
 				type="button"
-				className="btn btn-sm bg-green03 text-green02 rounded-full border-none"
+				className="btn btn-sm bg-green03 text-green02 rounded-md border-none"
 				onClick={() => {
 					const modal = document.getElementById(`show_submit_data_${data.id}`);
 					if (modal instanceof HTMLDialogElement) {
@@ -150,7 +150,7 @@ const SubmittedShiftListModal = ({
 						<form method="dialog">
 							<button
 								type="submit"
-								className="btn bg-gray02 text-white rounded-full border-none"
+								className="btn bg-gray02 text-white rounded-md border-none"
 							>
 								閉じる
 							</button>

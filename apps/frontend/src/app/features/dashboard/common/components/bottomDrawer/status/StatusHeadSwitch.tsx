@@ -16,11 +16,11 @@ const StatusHeadSwitch = ({
 }) => {
 	return (
 		<div className="w-full mt-3">
-			<div className="relative w-full mx-auto bg-gray-200 h-8 rounded-full flex items-center transition-all duration-300">
+			<div className="relative w-full mx-auto bg-gray-200 h-8 rounded-md flex items-center transition-all duration-300">
 				{/* スライドする背景 */}
 				<div
 					className={clsx(
-						"absolute top-1 left-1 h-6 w-[49%]  rounded-full bg-white transition-all duration-300",
+						"absolute top-1 left-1 h-6 w-[49%]  rounded-sm bg-white transition-all duration-300",
 						select === "NOT_SUBMIT" && "translate-x-full",
 					)}
 				/>
@@ -29,7 +29,7 @@ const StatusHeadSwitch = ({
 					<button
 						type="button"
 						className={clsx(
-							"w-1/2 h-6 rounded-full font-bold text-xs text-center z-10 flex items-center justify-center",
+							"w-1/2 h-6 rounded-md font-bold text-xs text-center z-10 flex items-center justify-center",
 							select === "SUBMITTED" ? "text-black" : "text-gray-500",
 						)}
 						onClick={() => setSelect("SUBMITTED")}
@@ -38,7 +38,7 @@ const StatusHeadSwitch = ({
 							提出済み
 							<div
 								className={clsx(
-									"w-4 h-4 bg-green01 opacity-50 rounded-full text-white text-xs flex items-center justify-center",
+									"w-4 h-4 bg-green01 opacity-50 rounded-md text-white text-xs flex items-center justify-center",
 									select === "SUBMITTED" && "bg-green01 opacity-100",
 								)}
 							>
@@ -49,7 +49,7 @@ const StatusHeadSwitch = ({
 					<button
 						type="button"
 						className={clsx(
-							"w-1/2 h-6 rounded-full font-bold text-xs text-center z-10 flex items-center justify-center",
+							"w-1/2 h-6 rounded-md font-bold text-xs text-center z-10 flex items-center justify-center",
 							select === "NOT_SUBMIT" ? "text-black" : "text-gray-500",
 						)}
 						onClick={() => setSelect("NOT_SUBMIT")}
@@ -58,7 +58,7 @@ const StatusHeadSwitch = ({
 							未提出
 							<div
 								className={clsx(
-									"w-4 h-4 bg-gray02 opacity-50 rounded-full text-white text-xs flex items-center justify-center",
+									"w-4 h-4 bg-gray02 opacity-50 rounded-md text-white text-xs flex items-center justify-center",
 									select === "NOT_SUBMIT" && "opacity-100",
 								)}
 							>

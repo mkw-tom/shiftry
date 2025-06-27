@@ -51,7 +51,7 @@ const ShiftTable = ({
 				<tbody>
 					{ShiftsContents.map((data) => (
 						<tr key={data.userId}>
-							<td className="border border-gray01 flex flex-col items-center py-2 min-w-16 sticky left-0 bg-white z-30 h-full ">
+							<td className="border border-gray01 flex flex-col items-center py-2 min-w-16 sticky left-0 bg-white z-10 h-full ">
 								<div className="w-7 h-7 rounded-full bg-gray-300 mb-1" />
 								<span className="text-black opacity-70 text-xs sm:text-sm md:text-md">
 									{data.userName}

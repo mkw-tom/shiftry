@@ -1,5 +1,6 @@
 import { MDW, YMDW } from "@/app/features/common/hooks/useFormatDate";
 import React, { useEffect, useState } from "react";
+import { MdAdd } from "react-icons/md";
 import { PiUser } from "react-icons/pi";
 import { TbCancel } from "react-icons/tb";
 import { useCreateRequest } from "../../../context/useCreateRequest";
@@ -81,7 +82,7 @@ const SpecialShiftForm = () => {
 			<div className="w-full grid grid-cols-2 gap-2 items-center justify-between my-2 pl-2">
 				<button
 					type="button"
-					className="btn text-white btn-sm bg-green01 border-none rounded-full"
+					className="btn text-white btn-sm bg-green01 border-none rounded-md"
 					onClick={() => {
 						const dialog = document.getElementById(
 							"special_modal",
@@ -89,6 +90,7 @@ const SpecialShiftForm = () => {
 						dialog?.showModal();
 					}}
 				>
+					<MdAdd />
 					特別な日のシフト
 				</button>
 				<dialog id="special_modal" className="modal">
@@ -110,13 +112,13 @@ const SpecialShiftForm = () => {
 								{/* if there is a button in form, it will close the modal */}
 								<button
 									type="submit"
-									className="btn bg-gray02 text-white border-none rounded-full"
+									className="btn bg-gray02 text-white border-none rounded-md"
 								>
 									戻る
 								</button>
 								<button
 									type="submit"
-									className={`btn  border-none w-32 ml-1 rounded-full ${
+									className={`btn  border-none w-32 ml-1 rounded-md ${
 										!inputDay
 											? "text-gray02 bg-gray01 pointer-events-none"
 											: "text-green02 bg-green03 "
@@ -135,7 +137,7 @@ const SpecialShiftForm = () => {
 				{/* 臨時休業日モーダル */}
 				<button
 					type="button"
-					className="text-white btn btn-sm bg-gray02 border-none rounded-full "
+					className="text-white btn btn-sm bg-gray02 border-none rounded-md "
 					onClick={() => {
 						const dialog = document.getElementById(
 							"holiday_modal",
@@ -143,6 +145,7 @@ const SpecialShiftForm = () => {
 						dialog?.showModal();
 					}}
 				>
+					<MdAdd />
 					臨時休業日
 				</button>
 				<dialog id="holiday_modal" className="modal">
@@ -165,13 +168,13 @@ const SpecialShiftForm = () => {
 							<form method="dialog">
 								<button
 									type="submit"
-									className="btn bg-gray02 text-white border-none rounded-full"
+									className="btn bg-gray02 text-white border-none rounded-md"
 								>
 									戻る
 								</button>
 								<button
 									type="submit"
-									className={`btn   border-none w-32 ml-1 rounded-full ${
+									className={`btn   border-none w-32 ml-1 rounded-md ${
 										!inputDay
 											? "text-gray02 bg-gray01 pointer-events-none"
 											: "text-green02 bg-green03 "
@@ -226,7 +229,7 @@ const SpecialShiftForm = () => {
 						{shifts.length > 0 ? (
 							<button
 								type="button"
-								className="btn btn-sm rounded-full bg-green03 text-green02 border-none rounded-full"
+								className="btn btn-sm bg-green03 text-green02 border-none rounded-md"
 								onClick={() => {
 									// setInputDay(day)
 									const dialog = document.getElementById(
@@ -240,7 +243,7 @@ const SpecialShiftForm = () => {
 						) : (
 							<button
 								type="button"
-								className="text-white btn btn-sm btn-error shadow-none border-none rounded-full "
+								className="text-white btn btn-sm btn-error shadow-none border-none rounded-md "
 								onClick={() => {
 									if (
 										confirm(

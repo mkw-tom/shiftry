@@ -107,7 +107,7 @@ const SpecificDatesForm = ({
 						)}
 						<button
 							type="button"
-							className="text-white btn btn-sm btn-error shadow-none border-none rounded-full ml-auto"
+							className="text-white btn btn-sm btn-error shadow-none border-none rounded-md ml-auto"
 							onClick={() => removeSpecificDateEntry(data)}
 						>
 							削除

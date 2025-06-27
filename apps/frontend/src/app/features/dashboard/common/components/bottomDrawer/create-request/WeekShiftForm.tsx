@@ -69,7 +69,7 @@ const WeekShiftForm = () => {
 						{/* Open the modal using document.getElementById('ID').showModal() method */}
 						<button
 							type="button"
-							className="btn btn-sm rounded-full bg-green03 text-green02 border-none"
+							className="btn btn-sm rounded-md bg-green03 text-green02 border-none"
 							onClick={() => {
 								const dialog = document.getElementById(
 									`modal_${day}`,

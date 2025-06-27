@@ -31,7 +31,7 @@ const Head = () => {
 			<div className="w-full mx-auto h-auto flex flex-col gap-3">
 				<div className="flex items-center justify-between gap-3 bg-white px-5 pt-5 pb-3">
 					<h2 className="text-green02 tracking-wide font-bold text-sm">
-						ファミリーマート松本店
+						テストストア沖縄店
 					</h2>
 					<button type="button" className="flex items-center gap-1">
 						<span className="text-xs text-green02 w-20">店舗切り替え</span>
