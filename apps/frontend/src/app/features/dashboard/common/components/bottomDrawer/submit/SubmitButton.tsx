@@ -16,7 +16,7 @@ const SubmitButton = ({
 		<div className="w-full flex items-center justify-between mx-auto">
 			<button
 				type="button"
-				className="btn flex-1 h-10 shadow-xl rounded-full font-bold text-sm text-white border-none bg-green01"
+				className="btn flex-1 h-10 shadow-xl rounded-md font-bold text-sm text-white border-none bg-green01"
 				disabled={isSubmitDisabled || submitDataLoading}
 				onClick={saveSubmitShift}
 			>

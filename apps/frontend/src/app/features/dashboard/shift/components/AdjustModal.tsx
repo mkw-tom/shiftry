@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { $Enums } from "@prisma/client"; // 必要に応じて調整してください
 import type { User } from "@shared/common/types/prisma";
+import { SiOpenai } from "react-icons/si";
 
 const dummyMembers: User[] = [
 	{
@@ -73,8 +74,8 @@ const AdjustModal = () => {
 
 	return (
 		<dialog id="adjust_modal" className="modal modal-bottom sm:modal-middle">
-			<div className="modal-box bg-base">
-				<h3 className="font-bold text-lg opacity-70 font-thin text-black">
+			<div className="modal-box bg-white">
+				<h3 className="font-bold text-lg opacity-70 text-black mt-5">
 					AIシフト調整
 				</h3>
 				<ul className="flex gap-2 items-center my-3">
@@ -161,7 +162,9 @@ const AdjustModal = () => {
 						</span>
 						<div className="flex items-center justify-start gap-1">
 							<div
-								className={`dropdown dropdown-top ${openDropdown === "template" && "dropdown-open"}`}
+								className={`dropdown dropdown-top ${
+									openDropdown === "template" && "dropdown-open"
+								}`}
 							>
 								<button
 									type="button"
@@ -171,7 +174,9 @@ const AdjustModal = () => {
 									テンプレ入力
 								</button>
 								<ul
-									className={`flex flex-col items-start dropdown-content menu bg-base rounded-box z-1 w-52 p-4 shadow-sm text-black ${openDropdown !== "template" && "hidden"}`}
+									className={`flex flex-col items-start dropdown-content menu bg-base rounded-box z-1 w-52 p-4 shadow-sm text-black ${
+										openDropdown !== "template" && "hidden"
+									}`}
 								>
 									<button
 										type="button"
@@ -209,7 +214,9 @@ const AdjustModal = () => {
 							</div>
 
 							<div
-								className={`dropdown dropdown-top ${openDropdown === "staff" && "dropdown-open"}`}
+								className={`dropdown dropdown-top ${
+									openDropdown === "staff" && "dropdown-open"
+								}`}
 							>
 								<button
 									type="button"
@@ -219,7 +226,9 @@ const AdjustModal = () => {
 									@スタッフ
 								</button>
 								<ul
-									className={`flex flex-col items-start dropdown-content menu bg-base rounded-box z-1 w-40 p-4 shadow-md text-black ${openDropdown !== "staff" && "hidden"}`}
+									className={`flex flex-col items-start dropdown-content menu bg-base rounded-box z-1 w-40 p-4 shadow-md text-black ${
+										openDropdown !== "staff" && "hidden"
+									}`}
 								>
 									{dummyMembers.map((member) => (
 										<button
@@ -251,16 +260,15 @@ const AdjustModal = () => {
 					<form method="dialog" className="flex justify-end w-full">
 						<button
 							type="submit"
-							className="btn rounded-full text-white bg-gray02 border-none mr-1 w-1/3 shadow-md"
+							className="fixed top-3 right-0 left-0 w-32 bg-gray02 h-2 mx-auto rounded-sm pointer-events-auto"
 							onClick={clearAdjustForm}
-						>
-							閉じる
-						</button>
+						/>
 						<button
 							type="submit"
-							className="btn rounded-full text-white bg-green02 border-none w-2/3 shadow-md"
+							className="flex gap-2 items-center btn rounded-md text-white bg-green02 border-none w-full shadow-md"
 						>
-							調整
+							<SiOpenai className="text-lg" />
+							<span>AIで調整</span>
 						</button>
 					</form>
 				</div>

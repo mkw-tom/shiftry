@@ -227,7 +227,7 @@ const AddWeekShiftModal = ({
 						<div className="w-2/3 flex items-center gap-1 ml-auto mb-5">
 							<button
 								type="button"
-								className="btn btn-sm border-buttom bg-gray02 border-none w-1/3 text-white rounded-full"
+								className="btn btn-sm border-buttom bg-gray02 border-none w-1/3 text-white rounded-md"
 								onClick={() => clearInputValues()}
 								disabled={edit.status}
 							>
@@ -235,7 +235,7 @@ const AddWeekShiftModal = ({
 							</button>
 							<button
 								type="button"
-								className="btn btn-sm border-2 bg-green03 text-green02  w-2/3 border-none rounded-full"
+								className="btn btn-sm border-2 bg-green03 text-green02  w-2/3 border-none rounded-md"
 								onClick={() => addPosition(day as DayOfWeekType, inputValues)}
 								disabled={
 									!inputValues.startTime ||
@@ -315,14 +315,14 @@ const AddWeekShiftModal = ({
 												<div className="flex items-center gap-1 ml-auto w-2/3">
 													<button
 														type="button"
-														className="btn btn-sm w-1/3 bg-gray02 border-none rounded-full"
+														className="btn btn-sm w-1/3 bg-gray02 border-none rounded-md"
 														onClick={() => closeEdit()}
 													>
 														中止
 													</button>
 													<button
 														type="button"
-														className="btn btn-sm bg-green03 text-green02 w-2/3 border-none rounded-full"
+														className="btn btn-sm bg-green03 text-green02 w-2/3 border-none rounded-md"
 														onClick={() => editPosition(edit)}
 													>
 														保存
@@ -347,7 +347,7 @@ const AddWeekShiftModal = ({
 												<div className="flex items-center gap-1 ml-auto">
 													<button
 														type="button"
-														className="btn btn-xs bg-gray02 border-none text-white rounded-full"
+														className="btn btn-xs bg-gray02 border-none text-white rounded-md"
 														onClick={() =>
 															removePosition(day as DayOfWeekType, idx)
 														}
@@ -357,7 +357,7 @@ const AddWeekShiftModal = ({
 													</button>
 													<button
 														type="button"
-														className="btn btn-xs bg-blue01 border-none text-white rounded-full"
+														className="btn btn-xs bg-blue01 border-none text-white rounded-md"
 														onClick={() =>
 															setEdit((prev) => ({
 																...prev,
@@ -387,7 +387,7 @@ const AddWeekShiftModal = ({
 					<form method="dialog">
 						<button
 							type="submit"
-							className="btn bg-gray02 text-white border-none rounded-full"
+							className="btn bg-gray02 text-white border-none rounded-md"
 							disabled={edit.status}
 						>
 							閉じる

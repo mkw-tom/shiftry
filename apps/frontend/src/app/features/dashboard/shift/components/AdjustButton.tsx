@@ -1,4 +1,4 @@
-import { LuBrain } from "react-icons/lu";
+import { SiOpenai } from "react-icons/si";
 import AdjustModal from "./AdjustModal";
 
 const AdjustButton = () => {
@@ -6,7 +6,7 @@ const AdjustButton = () => {
 		<div className="w-1/2 h-10">
 			<button
 				type="submit"
-				className="btn rounded-full bg-green02 text-white border-none flex items-center gap-2 w-full shadow-md"
+				className="btn rounded-md bg-green02 text-white border-none flex items-center gap-2 w-full shadow-md"
 				onClick={() => {
 					const dialog = document.getElementById(
 						"adjust_modal",
@@ -14,7 +14,7 @@ const AdjustButton = () => {
 					dialog?.showModal();
 				}}
 			>
-				<LuBrain className="text-lg" />
+				<SiOpenai className="text-lg" />
 				<span className="mr-2">シフト調整</span>
 			</button>
 			<AdjustModal />

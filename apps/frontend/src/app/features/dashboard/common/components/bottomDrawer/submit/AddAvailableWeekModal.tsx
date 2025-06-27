@@ -67,7 +67,7 @@ const AddAvailableWeekModal = ({
 		<>
 			<button
 				type="button"
-				className={`btn btn-sm rounded-full  border-none ${
+				className={`btn btn-sm rounded-md  border-none ${
 					!formData.shifts.availableWeeks.some((d) => d.startsWith(day))
 						? "bg-gray01"
 						: " bg-green03 text-green02"
@@ -149,7 +149,7 @@ const AddAvailableWeekModal = ({
 									<button
 										key={entry}
 										type="submit"
-										className="btn bg-error text-white border-none rounded-full mr-2"
+										className="btn bg-error text-white border-none rounded-md mr-2"
 										onClick={() => {
 											RemoveAvailableWeekTime(day as DayOfWeekType);
 											clearInputTimeValues();
@@ -160,14 +160,14 @@ const AddAvailableWeekModal = ({
 								))}
 							<button
 								type="submit"
-								className="btn bg-gray02 text-white border-none rounded-full mr-2"
+								className="btn bg-gray02 text-white border-none rounded-md mr-2"
 								onClick={() => clearInputTimeValues()}
 							>
 								戻る
 							</button>
 							<button
 								type="submit"
-								className="btn bg-green03 text-green02 border-none rounded-full"
+								className="btn bg-green03 text-green02 border-none rounded-md"
 								disabled={isDisabledAddTime}
 								onClick={() =>
 									UpdateAvailableWeekTime(
