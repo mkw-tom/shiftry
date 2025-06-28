@@ -6,7 +6,6 @@ import { useAutoLogin } from "../../common/hook/useAutoLogin";
 import AutoLoginLoading from "./AutoLoginLoading";
 import HeadSwitch from "./HeadSwitch";
 import Head from "./head/Head";
-import MembersContent from "./members/MembersContent";
 import ShiftRequestList from "./shiftRequests/ShiftRequestList";
 import SubmitStatusList from "./submitStatusList/SubmitStatusList";
 const HomeContent = () => {

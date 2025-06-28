@@ -1,3 +1,4 @@
+"use client";
 import type { RootState } from "@/app/redux/store";
 import type { UserRole } from "@shared/common/types/prisma";
 import React from "react";
