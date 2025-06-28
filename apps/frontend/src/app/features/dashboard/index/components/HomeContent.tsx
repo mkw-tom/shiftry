@@ -8,8 +8,9 @@ import HeadSwitch from "./HeadSwitch";
 import Head from "./head/Head";
 import MembersContent from "./members/MembersContent";
 import ShiftRequestList from "./shiftRequests/ShiftRequestList";
+import SubmitStatusList from "./submitStatusList/SubmitStatusList";
 const HomeContent = () => {
-	const [select, setSelect] = useState<"SHIFT" | "MEMBER">("SHIFT");
+	const [select, setSelect] = useState<"SHIFT" | "SUBMIT">("SHIFT");
 	const { userToken, storeToken, groupToken } = useSelector(
 		(state: RootState) => state.token,
 	);
@@ -59,7 +60,7 @@ const HomeContent = () => {
 				<HeadSwitch select={select} setSelect={setSelect} />
 			</div>
 			{select === "SHIFT" && <ShiftRequestList />}
-			{select === "MEMBER" && <MembersContent />}
+			{select === "SUBMIT" && <SubmitStatusList />}
 		</div>
 	);
 };

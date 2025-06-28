@@ -154,9 +154,7 @@ const ShiftRequestList = () => {
 			<div className="w-full mx-auto h-auto flex flex-col pt-7 shadow-sm bg-green02">
 				<div className="w-full flex items-center justify-between mx-auto border-b-1 border-white pb-1 px-5">
 					<IoIosArrowDropleft className="text-2xl text-white" />
-					<p className="text-white  text-lg tracking-wide  ">
-						2025年 5月
-					</p>
+					<p className="text-white  text-lg tracking-wide  ">2025年 5月</p>
 					<IoIosArrowDropright className="text-2xl text-white" />
 				</div>
 				<div className="w-full mx-auto px-3 py-3 flex">
