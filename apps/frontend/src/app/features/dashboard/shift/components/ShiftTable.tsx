@@ -68,20 +68,31 @@ const ShiftTable = ({
 										? shiftRequest.requests[0]
 										: { defaultTimePositions: {}, overrideDates: {} };
 
-								const dayOfWeek = new Date(date.key).toLocaleDateString(
-									"en-US",
-									{ weekday: "long" },
-								) as keyof typeof request.defaultTimePositions;
-								const overrideDates = request.overrideDates;
-								const positions =
-									(typeof overrideDates === "object" &&
-									overrideDates !== null &&
-									!Array.isArray(overrideDates) &&
-									Object.prototype.hasOwnProperty.call(overrideDates, date.key)
-										? (overrideDates as Record<string, string[]>)[date.key]
-										: undefined) ||
-									request.defaultTimePositions[dayOfWeek] ||
-									[];
+								let positions: string[] = [];
+								if (
+									typeof request === "object" &&
+									request !== null &&
+									"defaultTimePositions" in request &&
+									"overrideDates" in request
+								) {
+									const dayOfWeek = new Date(date.key).toLocaleDateString(
+										"en-US",
+										{ weekday: "long" },
+									) as keyof typeof request.defaultTimePositions;
+									const overrideDates = request.overrideDates;
+									positions =
+										(typeof overrideDates === "object" &&
+										overrideDates !== null &&
+										!Array.isArray(overrideDates) &&
+										Object.prototype.hasOwnProperty.call(
+											overrideDates,
+											date.key,
+										)
+											? (overrideDates as Record<string, string[]>)[date.key]
+											: undefined) ||
+										request.defaultTimePositions?.[dayOfWeek] ||
+										[];
+								}
 								if (positions.length === 0)
 									return (
 										<td

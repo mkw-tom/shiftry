@@ -6,7 +6,7 @@ import type {
 import type { AssignShift, ShiftRequest, SubmittedShift } from "./prisma";
 
 export type ShiftRequestWithJson = ShiftRequest & {
-	requests: ShiftsOfRequestsType[];
+	requests: ShiftsOfRequestsType;
 };
 export type SubmittedShiftWithJson = SubmittedShift & {
 	shifts: shiftsOfSubmittedType[];
