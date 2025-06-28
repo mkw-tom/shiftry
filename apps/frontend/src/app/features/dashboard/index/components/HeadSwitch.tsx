@@ -1,59 +1,53 @@
 "use client";
-import clsx from "clsx";
 import type React from "react";
-import { type Dispatch, useState } from "react";
+import { type Dispatch } from "react";
 
 const HeadSwitch = ({
-	select,
-	setSelect,
+  select,
+  setSelect,
 }: {
-	select: "SHIFT" | "MEMBER";
-	setSelect: Dispatch<React.SetStateAction<"SHIFT" | "MEMBER">>;
+  select: "SHIFT" | "MEMBER";
+  setSelect: Dispatch<React.SetStateAction<"SHIFT" | "MEMBER">>;
 }) => {
-	return (
-		<div className="w-full h-9  mx-auto rounded-b-lg shadow-md">
-			<div className="w-full h-full relative flex items-center transition-all duration-300">
-				{/* スライドする背景 */}
-				{/* <div
-					className={clsx(
-						"absolute top-1 left-1 h-6 w-[49%]  rounded-sm bg-white transition-all duration-300",
-						select === "MEMBER" && "translate-x-full",
-					)}
-				/> */}
-
-				<div className="relative z-10 flex w-full h-full gap-1 px-4">
-					<button
-						type="button"
-						className={`
-							w-1/2 h-auto text-sm text-center z-10
-							${
-								select === "SHIFT"
-									? "text-green02 bg-white font-bold border-b-4"
-									: "text-gray-500 border-b-4 border-white"
-							}
+  return (
+    <div className="w-full h-9 mx-auto bg-white rounded-b-md -mt-1">
+      <div className="w-full h-full flex flex-col  transition-all duration-300">
+        <div className="flex w-full h-full px-4">
+          <button
+            type="button"
+            className={`
+							w-1/2 h-auto text-sm text-center z-10 flex flex-col justify-end gap-1
+							${select === "SHIFT" ? "text-green02 bg-white font-bold " : "text-gray-500"}
 						`}
-						onClick={() => setSelect("SHIFT")}
-					>
-						シフト管理
-					</button>
-					<button
-						type="button"
-						className={`
-							w-1/2 h-full text-sm text-center z-10
-							${
-								select === "MEMBER"
-									? "text-green02 bg-white font-bold  border-b-4"
-									: "text-gray-500 border-b-4 border-white"
-							}
+            onClick={() => setSelect("SHIFT")}
+          >
+            <span>シフト管理</span>
+          </button>
+          <button
+            type="button"
+            className={`
+							w-1/2 h-full text-sm text-center z-10 flex flex-col justify-end gap-1
+							${select === "MEMBER" ? "text-green02 bg-white font-bold" : "text-gray-500 "}
 						`}
-						onClick={() => setSelect("MEMBER")}
-					>
-						メンバー管理
-					</button>
-				</div>
-			</div>
-		</div>
-	);
+            onClick={() => setSelect("MEMBER")}
+          >
+            <span>メンバー管理</span>
+          </button>
+        </div>
+        <div className="w-full mx-auto px-4 pt-1">
+          <div
+            className={`flex items-center w-1/2 h-1 transition-transform duration-200 ease-linear  ${
+              select === "SHIFT" ? " translate-x-0" : "translate-x-full"
+            } `}
+          >
+            <div
+              className={`w-full mx-auto h-1.5 rounded-t-full bg-green02 opacity-80`}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default HeadSwitch;

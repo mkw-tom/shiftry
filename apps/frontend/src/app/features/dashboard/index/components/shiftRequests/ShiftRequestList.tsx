@@ -151,18 +151,20 @@ const ShiftRequestList = () => {
 	return (
 		<section className="w-full h-auto mx-auto overflow-hidden">
 			{/* <Head /> */}
-			<div className="w-full mx-auto h-auto flex flex-col pt-7 shadow-sm">
-				<div className="w-full flex items-center justify-between mx-auto border-b-1 border-green02 pb-1 px-5">
-					<IoIosArrowDropleft className="text-2xl text-green02" />
-					<p className="text-green02  text-lg ">2025年 5月</p>
-					<IoIosArrowDropright className="text-2xl text-green02" />
+			<div className="w-full mx-auto h-auto flex flex-col pt-7 shadow-sm bg-green02">
+				<div className="w-full flex items-center justify-between mx-auto border-b-1 border-white pb-1 px-5">
+					<IoIosArrowDropleft className="text-2xl text-white" />
+					<p className="text-white  text-lg tracking-wide  ">
+						2025年 5月
+					</p>
+					<IoIosArrowDropright className="text-2xl text-white" />
 				</div>
 				<div className="w-full mx-auto px-3 py-3 flex">
 					<AddShiftButton />
 				</div>
 			</div>
-			<div className="w-full h-full overflow-hidden bg-gradient-to-b from-green03 to-white pt-1">
-				<ul className="w-full px-3 h-[420px] mx-auto flex flex-col gap-6 overflow-y-scroll pt-5 pb-80 ">
+			<div className="w-full h-full overflow-hidden bg-white mt-1">
+				<ul className="w-full h-[420px] mx-auto flex flex-col overflow-y-scroll pt-1 pb-80 ">
 					{shiftRequests.map((data) => (
 						<ShiftRequestCard
 							key={data.id}
