@@ -25,7 +25,7 @@ const BottomDrawer = () => {
 			<div className="w-full h-full ">
 				<div
 					className={`fixed h-[620px] w-full bottom-0  bg-white z-30 rounded-t-lg transition duration-300 ease-in-out  ${
-						!isOpen && "translate-y-[600px]"
+						!isOpen && "translate-y-[620px]"
 					} `}
 				>
 					<button
