@@ -10,13 +10,13 @@ const HeadSwitch = ({
 	setSelect: Dispatch<React.SetStateAction<"SHIFT" | "SUBMIT">>;
 }) => {
 	return (
-		<div className="w-full h-9 mx-auto bg-white rounded-b-md -mt-1">
+		<div className="w-full h-auto mx-auto bg-white rounded-b-md -mt-1 pt-3">
 			<div className="w-full h-full flex flex-col  transition-all duration-300">
 				<div className="flex w-full h-full px-4">
 					<button
 						type="button"
 						className={`
-							w-1/2 h-auto text-sm text-center z-10 flex flex-col justify-end gap-1
+							w-1/2 h-auto text-sm text-center z-10 
 							${select === "SHIFT" ? "text-green02 bg-white font-bold " : "text-gray-500"}
 						`}
 						onClick={() => setSelect("SHIFT")}
@@ -26,7 +26,7 @@ const HeadSwitch = ({
 					<button
 						type="button"
 						className={`
-							w-1/2 h-full text-sm text-center z-10 flex flex-col justify-end gap-1
+							w-1/2 h-full text-sm text-center z-10
 							${select === "SUBMIT" ? "text-green02 bg-white font-bold" : "text-gray-500 "}
 						`}
 						onClick={() => setSelect("SUBMIT")}

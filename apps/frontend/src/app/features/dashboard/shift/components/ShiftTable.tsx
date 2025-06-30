@@ -61,38 +61,18 @@ const ShiftTable = ({
 								const shift = data.shifts.find(
 									(s: { date: string; time: string }) => s.date === date.key,
 								);
-								// Assuming shiftRequest.requests is an array and you want the first element
-								const request =
-									Array.isArray(shiftRequest.requests) &&
-									shiftRequest.requests.length > 0
-										? shiftRequest.requests[0]
-										: { defaultTimePositions: {}, overrideDates: {} };
+								const { defaultTimePositions, overrideDates } =
+									shiftRequest.requests;
+								const dayOfWeek = new Date(date.key).toLocaleDateString(
+									"en-US",
+									{ weekday: "long" },
+								) as keyof typeof defaultTimePositions;
+								const override = overrideDates?.[date.key];
+								const defaultPositions = defaultTimePositions?.[dayOfWeek];
+								const positions = override?.length
+									? override
+									: (defaultPositions ?? []);
 
-								let positions: string[] = [];
-								if (
-									typeof request === "object" &&
-									request !== null &&
-									"defaultTimePositions" in request &&
-									"overrideDates" in request
-								) {
-									const dayOfWeek = new Date(date.key).toLocaleDateString(
-										"en-US",
-										{ weekday: "long" },
-									) as keyof typeof request.defaultTimePositions;
-									const overrideDates = request.overrideDates;
-									positions =
-										(typeof overrideDates === "object" &&
-										overrideDates !== null &&
-										!Array.isArray(overrideDates) &&
-										Object.prototype.hasOwnProperty.call(
-											overrideDates,
-											date.key,
-										)
-											? (overrideDates as Record<string, string[]>)[date.key]
-											: undefined) ||
-										request.defaultTimePositions?.[dayOfWeek] ||
-										[];
-								}
 								if (positions.length === 0)
 									return (
 										<td
@@ -100,6 +80,7 @@ const ShiftTable = ({
 											className="border border-gray01 text-center min-w-16 align-middle cursor-pointer bg-gray-100"
 										/>
 									);
+
 								return (
 									<td
 										key={date.key}
