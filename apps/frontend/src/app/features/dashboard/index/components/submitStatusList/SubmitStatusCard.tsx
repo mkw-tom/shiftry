@@ -73,11 +73,11 @@ const SubmitStatusCard = ({ data }: { data: ShiftRequestWithJson }) => {
 				</div>
 				<button
 					type="button"
-					className="btn btn-sm border-green02 text-green02"
+					className="btn btn-sm border-green02 text-green02 bg-white"
 					onClick={() => darawerOpen(DrawerView.SUBMIT, data)}
 				>
 					<LuSend />
-					提出
+					再提出
 				</button>
 			</div>
 		</li>

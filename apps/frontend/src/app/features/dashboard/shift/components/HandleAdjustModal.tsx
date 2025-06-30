@@ -27,9 +27,10 @@ const HandleAdjustModal = ({
 		endTime: string;
 	}>({ startTime: "", endTime: "" });
 	const handleAddShift = (addDate: string, userId: string, newTime: string) => {
+		const [parsedTime, people] = newTime.split("*");
 		const userShifts =
 			assignShift.shifts.find((shift) => shift.userId === userId)?.shifts || [];
-		const updatedShifts = [...userShifts, { date: addDate, time: newTime }];
+		const updatedShifts = [...userShifts, { date: addDate, time: parsedTime }];
 
 		setAssignShift({
 			...assignShift,
@@ -122,6 +123,11 @@ const HandleAdjustModal = ({
 		setFreeInput({ startTime: "", endTime: "" });
 	};
 
+	const parsePositon = (position: string) => {
+		const [time, peopleNum] = position.split("*");
+		return { time, peopleNum };
+	};
+
 	return (
 		<dialog
 			id={`handle_adjust_modal_${date.key}${shift?.time}${assignUser.userId}`}
@@ -188,7 +194,8 @@ const HandleAdjustModal = ({
 									<option value="holiday">休み</option>
 									{positions.map((position) => (
 										<option key={position} value={position}>
-											{position}{" "}
+											{parsePositon(position).time}{" "}
+											{parsePositon(position).peopleNum}名
 										</option>
 									))}
 								</select>
@@ -211,7 +218,8 @@ const HandleAdjustModal = ({
 									<option value="free">自由入力</option>
 									{positions.map((position) => (
 										<option key={position} value={position}>
-											{position}{" "}
+											{parsePositon(position).time}{" "}
+											{parsePositon(position).peopleNum}名
 										</option>
 									))}
 								</select>
