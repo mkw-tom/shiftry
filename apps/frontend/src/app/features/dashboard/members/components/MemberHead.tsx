@@ -10,14 +10,14 @@ const MemberHead = ({
 	>;
 }) => {
 	return (
-		<div className="w-full h-9 mx-auto bg-white rounded-b-md -mt-1">
+		<div className="w-full h-auto mx-auto bg-white rounded-b-md -mt-1 pt-4">
 			<div className="w-full h-full flex flex-col  transition-all duration-300">
-				<div className="w-full h-full flex items-center px-1 text-sm bg-white -mt-1 rounded-b-md shadow-2xl ">
+				<div className="w-full h-full flex items-center px-1 text-sm bg-white -mt-1 rounded-b-md ">
 					<button
 						type="button"
 						className={`${
 							membersFilter === "all" ? "font-bold" : "opacity-60"
-						} text-center w-1/3 text-green02 -mb-2 `}
+						} text-center w-1/3 text-green02 pb-1`}
 						onClick={() => setMembersFilter("all")}
 					>
 						全員
@@ -26,7 +26,7 @@ const MemberHead = ({
 						type="button"
 						className={`${
 							membersFilter === "registed" ? "font-bold" : " opacity-60"
-						} text-center w-1/3 text-green02 -mb-2`}
+						} text-center w-1/3 text-green02 pb-1`}
 						onClick={() => setMembersFilter("registed")}
 					>
 						登録済み
@@ -35,7 +35,7 @@ const MemberHead = ({
 						type="button"
 						className={`${
 							membersFilter === "notRegist" ? "font-bold" : " opacity-60"
-						} text-center w-1/3 text-green02 -mb-2`}
+						} text-center w-1/3 text-green02 pb-1`}
 						onClick={() => setMembersFilter("notRegist")}
 					>
 						未登録

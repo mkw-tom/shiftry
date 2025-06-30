@@ -25,25 +25,12 @@ const Header = () => {
 				</h1>
 
 				<div className="flex items-center w-auto h-full gap-6">
-					{/* <Link
-            href={isOnMembersPage ? "/dashboard" : "/dashboard/members"}
-            className="text-sm text-green02 flex items-center gap-1  "
-          >
-            {isOnMembersPage ? (
-              <BiHome className="" />
-            ) : (
-              <LuUsersRound className="" />
-            )}
-            <p className="text-xs mx-auto w-28">
-              {isOnMembersPage ? "ダッシュボードへ →" : "スタッフ一覧へ →"}
-            </p>
-          </Link> */}
 					<div className="w-auto text-green02 flex items-center gap-4">
 						<Link href={"/dashboard"}>
-							<BiHome />
+							<BiHome className="text-lg" />
 						</Link>
 						<Link href={"/dashboard/members"}>
-							<LuUsersRound />
+							<LuUsersRound className="text-lg" />
 						</Link>
 					</div>
 					<Sideber />
