@@ -16,6 +16,7 @@ export enum DrawerView {
 	STATUS = "STATUS", // 提出状況確認 & 回収作成
 	ADJUSTMENT = "ADJUSTMENT", // 調整
 	CONFIRM = "CONFIRM", // 出来上がり確認
+	GENERATE = "GENERATE",
 }
 
 export type ShiftRequestWithJson = Omit<ShiftRequest, "requests"> & {

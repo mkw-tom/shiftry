@@ -43,7 +43,7 @@ const ActionButtons = ({
 					<button
 						type="button"
 						className="btn flex-1 text-green01 bg-white  font-bold shadow-sm border-green01 rounded-md"
-						onClick={() => darawerOpen(DrawerView.STATUS, data)}
+						onClick={() => darawerOpen(DrawerView.GENERATE, data)}
 					>
 						<SiOpenai />
 						シフト作成
