@@ -6,9 +6,10 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useGetSubmittedShiftsSpecific } from "../../../api/get-shift-submit-specific/hook";
 import { useBottomDrawer } from "../../../context/useBottomDrawer";
-import CreateShiftButton from "./CreateShiftButton";
+import GenerateShiftButton from "./GenareteShiftButton";
 import NotSubmitShiftList from "./NotSubmitShiftList";
 import StatusHeadSwitch from "./StatusHeadSwitch";
+import StepBar from "./StepBar";
 import SubmittedShiftList from "./SubmittedShiftLIst";
 
 export type SubmittedShiftWithJson = Omit<SubmittedShift, "shifts"> & {
@@ -20,7 +21,7 @@ export type SubmitStatusDataType = {
 	notSubmittedShifts: User[];
 };
 
-const Status = () => {
+const PreviewSubmitsForm = () => {
 	const [select, setSelect] = useState<"SUBMITTED" | "NOT_SUBMIT">("SUBMITTED");
 	const { userToken, storeToken } = useSelector(
 		(state: RootState) => state.token,
@@ -99,9 +100,9 @@ const Status = () => {
 					)}
 				</div>
 			</div>
-			<CreateShiftButton />
+			{/* <GenerateShiftButton /> */}
 		</div>
 	);
 };
 
-export default Status;
+export default PreviewSubmitsForm;

@@ -2,12 +2,13 @@
 import React from "react";
 import { DrawerView, useBottomDrawer } from "../../context/useBottomDrawer";
 import { CreateRequestProvider } from "../../context/useCreateRequest";
+import { GenereateShiftProvider } from "../../context/useGenerateShift";
 import Confirm from "./Confirm";
 import Adjustment from "./adjustment/Adjustment";
 import ActionButton from "./create-request/ActionButton";
 import CreateRequest from "./create-request/CreateRequest";
 import DrawerHead from "./elements/DrawerHead";
-import Status from "./status/Status";
+import Status from "./generate/Status";
 import Submit from "./submit/Submit";
 
 const BottomDrawer = () => {
@@ -44,7 +45,11 @@ const BottomDrawer = () => {
 							</CreateRequestProvider>
 						)}
 						{view === DrawerView.SUBMIT && <Submit />}
-						{view === DrawerView.STATUS && <Status />}
+						{view === DrawerView.GENERATE && (
+							<GenereateShiftProvider>
+								<Status />
+							</GenereateShiftProvider>
+						)}
 						{view === DrawerView.ADJUSTMENT && <Adjustment />}
 						{view === DrawerView.CONFIRM && <Confirm />}
 					</div>
