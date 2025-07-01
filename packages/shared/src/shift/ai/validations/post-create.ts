@@ -98,6 +98,20 @@ export const priorityValidate = z.object({
 });
 export type PriorityType = z.infer<typeof priorityValidate>;
 
+export const ownerRequestsValidate = z
+	.object({
+		text: z
+			.string()
+			.min(1, "空のテキストは無効です")
+			.max(50, "テキストは50文字以内で入力してください"),
+		weight: z
+			.number()
+			.min(1, "重みは1以上の整数で入力してください")
+			.max(5, "重みは1~3の整数で入力してください"),
+	})
+	.array();
+export type OwnerRequestsType = z.infer<typeof ownerRequestsValidate>;
+
 //// リクエストボディのバリデーション
 export const CreateShiftAiValidate = z.object({
 	shiftReqeustId: z.string().uuid(),
@@ -105,17 +119,6 @@ export const CreateShiftAiValidate = z.object({
 	endDate: z.string(),
 	shiftRequest: ShiftsOfRequestsValidate,
 	submittedShifts: z.array(shiftsOfSubmittedWithIdValidate),
-	ownerRequests: z
-		.object({
-			text: z
-				.string()
-				.min(1, "空のテキストは無効です")
-				.max(50, "テキストは50文字以内で入力してください"),
-			weight: z
-				.number()
-				.min(1, "重みは1以上の整数で入力してください")
-				.max(5, "重みは1~3の整数で入力してください"),
-		})
-		.array(),
+	ownerRequests: ownerRequestsValidate,
 });
 export type CreateShiftValidateType = z.infer<typeof CreateShiftAiValidate>;

@@ -1,6 +1,6 @@
 import { SiOpenai } from "react-icons/si";
 
-const CreateShiftButton = () => {
+const GenerateShiftButton = () => {
 	return (
 		<div className="w-full flex items-center justify-between mx-auto">
 			<button
@@ -49,4 +49,4 @@ const CreateShiftButton = () => {
 	);
 };
 
-export default CreateShiftButton;
+export default GenerateShiftButton;
