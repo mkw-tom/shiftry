@@ -2,11 +2,13 @@ import { OwnerRequestsType } from "@shared/shift/ai/validations/post-create";
 import React, { useState } from "react";
 import { CgEditFlipV } from "react-icons/cg";
 import { MdAdd } from "react-icons/md";
+import { useGenerateShiftWithAI } from "../../../api/generate-shift-ai/hook";
 import { useGenareteShift } from "../../../context/useGenerateShift";
 import AddEditOwnerRequestModal from "./AddEditOwnerRequestModal";
 
 const OwnerRequestsForm = () => {
 	const { ownerRequests, setOwnerRequests } = useGenareteShift();
+	const { isLoading, error } = useGenerateShiftWithAI();
 	const [ownerRequestInput, setOwnerRequestInput] = useState<{
 		text: string;
 		weight: number;
@@ -57,6 +59,17 @@ const OwnerRequestsForm = () => {
 
 	return (
 		<div className="w-full h-[450px] overflow-hidden">
+			{isLoading && (
+				<div className="w-full h-full flex items-center justify-center">
+					<span className="loading loading-spinner loading-lg text-green02" />
+				</div>
+			)}
+			{error && (
+				<div className="w-full h-full flex items-center justify-center">
+					<p className="text-red-500">優先度ルールの取得に失敗しました。</p>
+				</div>
+			)}
+
 			<AddEditOwnerRequestModal
 				edit={edit}
 				clearEdit={clearEdit}

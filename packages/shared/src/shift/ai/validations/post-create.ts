@@ -114,9 +114,13 @@ export type OwnerRequestsType = z.infer<typeof ownerRequestsValidate>;
 
 //// リクエストボディのバリデーション
 export const CreateShiftAiValidate = z.object({
-	shiftReqeustId: z.string().uuid(),
-	startDate: z.string(),
-	endDate: z.string(),
+	shiftRequestId: z.string().uuid(),
+	startDate: z.string().refine((val) => !Number.isNaN(Date.parse(val)), {
+		message: "Invalid date format",
+	}),
+	endDate: z.string().refine((val) => !Number.isNaN(Date.parse(val)), {
+		message: "Invalid date format",
+	}),
 	shiftRequest: ShiftsOfRequestsValidate,
 	submittedShifts: z.array(shiftsOfSubmittedWithIdValidate),
 	ownerRequests: ownerRequestsValidate,

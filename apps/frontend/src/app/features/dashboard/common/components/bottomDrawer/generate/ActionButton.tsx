@@ -5,6 +5,7 @@ import React from "react";
 import { SiOpenai } from "react-icons/si";
 import { useDispatch, useSelector } from "react-redux";
 import { string } from "zod";
+import { useGenerateShiftWithAI } from "../../../api/generate-shift-ai/hook";
 import { useSendShiftReqeust } from "../../../api/send-shift-request-line/hook";
 import { useUpsertShiftReqeust } from "../../../api/upsert-shift-request/hook";
 import { DrawerView, useBottomDrawer } from "../../../context/useBottomDrawer";
@@ -12,15 +13,12 @@ import {
 	type GenerateShiftStep,
 	useGenareteShift,
 } from "../../../context/useGenerateShift";
+import { useGenerateShiftHook } from "../../../hook/useGenerateShiftHook";
 
 const ActionButton = () => {
 	const { view, currentData, drawerClose } = useBottomDrawer();
-	const { step, setStep, formData, nextStep, prevStep } = useGenareteShift();
-	const dispatch = useDispatch<AppDispatch>();
-
-	const { userToken, storeToken, groupToken } = useSelector(
-		(state: RootState) => state.token,
-	);
+	const { step } = useGenareteShift();
+	const { nextStep, prevStep } = useGenerateShiftHook();
 
 	function handleBtnTextAndStyle(step: GenerateShiftStep) {
 		switch (step) {
@@ -51,6 +49,7 @@ const ActionButton = () => {
 				return { text: "操作を選択", color: "bg-green02", disabled: false };
 		}
 	}
+
 	return (
 		<div className="w-full flex items-center justify-between mx-auto mb-5">
 			{step !== "PREVIEW_SUBMITS" && (
@@ -67,7 +66,7 @@ const ActionButton = () => {
 				className={`btn flex-1 h-10 ${
 					handleBtnTextAndStyle(step).color
 				} shadow-xl rounded-md font-bold text-sm text-white border-none`}
-				onClick={() => nextStep("4")}
+				onClick={() => nextStep()}
 				disabled={handleBtnTextAndStyle(step).disabled}
 			>
 				{handleBtnTextAndStyle(step).icon}
