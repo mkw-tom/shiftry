@@ -1,3 +1,5 @@
+import type { SubmittedShiftWithJson } from "@shared/common/types/merged";
+import type { User } from "@shared/common/types/prisma";
 import type {
 	CreateShiftValidateType,
 	OwnerRequestsType,
@@ -11,6 +13,7 @@ import {
 	useContext,
 	useState,
 } from "react";
+import { useGenerateShiftWithAI } from "../api/generate-shift-ai/hook";
 import { useBottomDrawer } from "./useBottomDrawer";
 
 export type GenerateShiftStep =
@@ -18,39 +21,25 @@ export type GenerateShiftStep =
 	| "INPUT_REQUESTS"
 	| "GENERATE";
 
+type SubmittedDatasType = {
+	submittedShifts: SubmittedShiftWithJson[];
+	notSubmittedShifts: User[];
+};
+
 type GenerateShiftContextType = {
 	step: GenerateShiftStep;
 	setStep: Dispatch<SetStateAction<GenerateShiftStep>>;
-	formData: CreateShiftValidateType;
-	setFormData: Dispatch<SetStateAction<CreateShiftValidateType>>;
+	formData: CreateShiftValidateType | null;
+	setFormData: Dispatch<SetStateAction<CreateShiftValidateType | null>>;
 	ownerRequests: OwnerRequestsType;
 	setOwnerRequests: Dispatch<SetStateAction<OwnerRequestsType>>;
-	nextStep: (shiftReqeustId: string) => void;
-	prevStep: () => void;
+	submittedDatas: SubmittedDatasType;
+	setSubmittedDatas: Dispatch<SetStateAction<SubmittedDatasType>>;
 };
 
 const generateShiftContext = createContext<
 	GenerateShiftContextType | undefined
 >(undefined);
-export const GereateShiftFormInitData: CreateShiftValidateType = {
-	shiftReqeustId: "", // 初期は空文字でOK、実際にはUUIDが入る
-	startDate: "", // フォーム入力前提で空
-	endDate: "", // 同上
-	shiftRequest: {
-		overrideDates: {},
-		defaultTimePositions: {
-			Monday: [],
-			Tuesday: [],
-			Wednesday: [],
-			Thursday: [],
-			Friday: [],
-			Saturday: [],
-			Sunday: [],
-		},
-	},
-	submittedShifts: [],
-	ownerRequests: [],
-};
 
 export const useGenareteShift = () => {
 	const context = useContext(generateShiftContext);
@@ -67,30 +56,20 @@ export const GenereateShiftProvider = ({
 }: {
 	children: ReactNode;
 }) => {
+	const { drawerClose, currentData } = useBottomDrawer();
 	const [step, setStep] = useState<GenerateShiftStep>("PREVIEW_SUBMITS");
 	const router = useRouter();
-	const [formData, setFormData] = useState<CreateShiftValidateType>(
-		GereateShiftFormInitData,
+
+	const [formData, setFormData] = useState<CreateShiftValidateType | null>(
+		null,
 	);
+	const [submittedDatas, setSubmittedDatas] = useState<SubmittedDatasType>({
+		submittedShifts: [],
+		notSubmittedShifts: [],
+	});
+
 	const [ownerRequests, setOwnerRequests] = useState<OwnerRequestsType>([]);
-	const { drawerClose } = useBottomDrawer();
-
-	function nextStep(shfitRequestId: string) {
-		if (step === "GENERATE") {
-			router.push("/dashboard/shift/4");
-			drawerClose();
-			return;
-		}
-		setStep((prev) =>
-			prev === "PREVIEW_SUBMITS" ? "INPUT_REQUESTS" : "GENERATE",
-		);
-	}
-
-	function prevStep() {
-		setStep((prev) =>
-			prev === "GENERATE" ? "INPUT_REQUESTS" : "PREVIEW_SUBMITS",
-		);
-	}
+	const { handleGenerateShiftWithAI } = useGenerateShiftWithAI();
 
 	const values = {
 		step,
@@ -99,8 +78,8 @@ export const GenereateShiftProvider = ({
 		setFormData,
 		ownerRequests,
 		setOwnerRequests,
-		nextStep,
-		prevStep,
+		submittedDatas,
+		setSubmittedDatas,
 	};
 
 	return (

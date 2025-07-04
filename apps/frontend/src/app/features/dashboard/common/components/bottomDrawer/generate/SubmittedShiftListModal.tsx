@@ -1,7 +1,7 @@
 import { MDW } from "@/app/features/common/hooks/useFormatDate";
+import type { SubmittedShiftWithJson } from "@shared/common/types/merged";
 import { MdOutlineHolidayVillage } from "react-icons/md";
 import { RiTimeLine } from "react-icons/ri";
-import type { SubmittedShiftWithJson } from "./Status";
 import type { DayOfWeekType } from "./SubmittedShiftLIst";
 
 const SubmittedShiftListModal = ({

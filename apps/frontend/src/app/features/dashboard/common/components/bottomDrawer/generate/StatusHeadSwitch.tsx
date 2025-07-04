@@ -2,18 +2,17 @@
 import clsx from "clsx";
 import type React from "react";
 import { type Dispatch, useState } from "react";
+import { useGenareteShift } from "../../../context/useGenerateShift";
 
 const StatusHeadSwitch = ({
 	select,
 	setSelect,
-	submittedCount,
-	notSubmittedCount,
 }: {
 	select: "SUBMITTED" | "NOT_SUBMIT";
 	setSelect: Dispatch<React.SetStateAction<"SUBMITTED" | "NOT_SUBMIT">>;
-	submittedCount: number;
-	notSubmittedCount: number;
 }) => {
+	const { submittedDatas } = useGenareteShift();
+	const { submittedShifts, notSubmittedShifts } = submittedDatas;
 	return (
 		<div className="w-full mt-3">
 			<div className="relative w-full mx-auto bg-gray-200 h-8 rounded-md flex items-center transition-all duration-300">
@@ -42,7 +41,7 @@ const StatusHeadSwitch = ({
 									select === "SUBMITTED" && "bg-green01 opacity-100",
 								)}
 							>
-								{submittedCount}
+								{submittedShifts.length}
 							</div>
 						</p>
 					</button>
@@ -62,7 +61,7 @@ const StatusHeadSwitch = ({
 									select === "NOT_SUBMIT" && "opacity-100",
 								)}
 							>
-								{notSubmittedCount}
+								{notSubmittedShifts.length}
 							</div>
 						</p>
 					</button>
