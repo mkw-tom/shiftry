@@ -10,12 +10,7 @@ const upsertAssignShfitService = async ({
 	upsertData: upsertAssignShfitInputType;
 }): Promise<AssignShift> => {
 	try {
-		const { shiftRequestId, shifts } = upsertData;
-		const assignShift = await upsertAssignShfit(storeId, {
-			shiftRequestId: shiftRequestId,
-			shifts: shifts,
-			status: "ADJUSTMENT",
-		});
+		const assignShift = await upsertAssignShfit(storeId, upsertData);
 		return assignShift;
 	} catch (e) {
 		console.error("アップサート失敗", e);
