@@ -1,90 +1,19 @@
 "use client";
-import { getAssignShift } from "@/app/features/dashboard/shift/api/get-assign-shift/api";
 import { useGetAssignShift } from "@/app/features/dashboard/shift/api/get-assign-shift/hook";
 import type { RootState } from "@/app/redux/store";
-import type { AssignShift, ShiftRequest } from "@shared/common/types/prisma";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import Head from "./Head";
-
-import type { ShiftsOfAssignType } from "@shared/common/types/json";
-import type { ShiftsOfRequestsType } from "@shared/common/types/json";
 import type {
 	AssignShiftWithJson,
 	ShiftRequestWithJson,
 } from "@shared/common/types/merged";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import Head from "./Head";
 import ShiftButtons from "./ShiftButtons";
 import ShiftTable from "./ShiftTable";
 
-// export const dummyAssignShift: AssignShiftWithJson = {
-// 	id: "4",
-// 	createdAt: new Date(),
-// 	updatedAt: new Date(),
-// 	storeId: "4",
-// 	status: "ADJUSTMENT",
-// 	shiftRequestId: "4",
-// 	shifts: [
-// 		{
-// 			userId: "user-001",
-// 			userName: "たろう",
-// 			shifts: [
-// 				{ date: "2025-04-15", time: "09:00-13:00" },
-// 				{ date: "2025-04-16", time: "14:00-18:00" },
-// 			],
-// 		},
-// 		{
-// 			userId: "user-002",
-// 			userName: "じろう",
-// 			shifts: [
-// 				{ date: "2025-04-15", time: "10:00-14:00" },
-// 				{ date: "2025-04-17", time: "12:00-16:00" },
-// 				{ date: "2025-04-18", time: "09:00-12:00" },
-// 			],
-// 		},
-// 		{
-// 			userId: "user-003",
-// 			userName: "すけどう",
-// 			shifts: [{ date: "2025-04-15", time: "10:00-14:00" }],
-// 		},
-// 		{
-// 			userId: "user-004",
-// 			userName: "さぶろう",
-// 			shifts: [{ date: "2025-04-15", time: "10:00-14:00" }],
-// 		},
-// 	],
-// };
-
-// const shiftRequest: ShiftRequestWithJson = {
-// 	id: "4",
-// 	createdAt: new Date(),
-// 	updatedAt: new Date(),
-// 	storeId: "4",
-// 	type: "MONTHLY",
-// 	status: "CONFIRMED",
-// 	weekStart: new Date("2025-03-31"),
-// 	weekEnd: new Date("2025-04-28"),
-// 	requests: {
-// 		overrideDates: {
-// 			"2025-04-10": ["08:00-12:00*1"],
-// 			"2025-04-14": [],
-// 		},
-// 		defaultTimePositions: {
-// 			Monday: ["09:00-13:00*1", "14:00-18:00*1", "19:00-23:00*1"],
-// 			Tuesday: ["10:00-14:00*1", "15:00-19:00*1", "20:00-23:00*1"],
-// 			Wednesday: ["10:00-14:00*1", "15:00-19:00*1", "20:00-23:00*1"],
-// 			Thursday: ["10:00-14:00*1", "15:00-19:00*1", "20:00-23:00*1"],
-// 			Friday: ["10:00-14:00*1", "15:00-19:00*1", "20:00-23:00*1"],
-// 			Saturday: [],
-// 			Sunday: [],
-// 		},
-// 	},
-// 	deadline: new Date("2025-05-06"),
-// };
-
 const ShiftContent = () => {
 	const { id } = useParams();
-
 	const [assignShift, setAssignShift] = useState<AssignShiftWithJson | null>(
 		null,
 	);
@@ -93,9 +22,18 @@ const ShiftContent = () => {
 		(state: RootState) => state.shiftReuqests,
 	);
 
-	const shiftRequest = shiftRequests.find(
-		(data) => data.id === id,
-	) as ShiftRequestWithJson;
+	const shiftRequest = shiftRequests.find((data) => data.id === id) as
+		| ShiftRequestWithJson
+		| undefined;
+
+	// 🧱 nullチェック（先に返す）
+	if (!shiftRequest) {
+		return (
+			<div className="text-center text-red-500 mt-10">
+				shiftRequestが見つかりませんでした
+			</div>
+		);
+	}
 
 	function getDatesArray(
 		weekStart: Date,
@@ -110,25 +48,30 @@ const ShiftContent = () => {
 			const m = current.getMonth() + 1;
 			const d = current.getDate();
 			const w = daysOfWeek[current.getDay()];
-			const key = `${y}-${String(m).padStart(2, "0")}-${String(d).padStart(
-				2,
-				"0",
-			)}`;
+			const key = `${y}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
 			const label = `${m}/${d}(${w})`;
 			result.push({ label, key });
 			current.setDate(current.getDate() + 1);
 		}
 		return result;
 	}
+
 	const [tableSlice, setTableSlice] = useState<{ start: number; end: number }>({
 		start: 0,
 		end: 7,
 	});
+
+	// ✅ Date変換（string対策）
 	const dates = getDatesArray(
-		shiftRequest.weekStart as Date,
-		shiftRequest.weekEnd as Date,
+		new Date(shiftRequest.weekStart),
+		new Date(shiftRequest.weekEnd as Date),
 	);
-	const slicedDates = dates.slice(tableSlice.start, tableSlice.end);
+
+	// ✅ dates.length を超えないようにslice
+	const slicedDates = dates.slice(
+		tableSlice.start,
+		Math.min(tableSlice.end, dates.length),
+	);
 
 	useEffect(() => {
 		const fetchAssignShift = async () => {
@@ -141,11 +84,17 @@ const ShiftContent = () => {
 		};
 		fetchAssignShift();
 	}, [handleGetAssignShift, id]);
-	if (isLoading) return <div>Loading...</div>;
-	if (error || !assignShift) return <div>Error: {error}</div>;
-	if (!shiftRequest) {
-		return <div>shiftRequestが見つかりませんでした</div>;
-	}
+
+	// ✅ 描画分岐
+	if (isLoading) return <div className="text-center mt-10">Loading...</div>;
+	if (error)
+		return <div className="text-center text-red-500 mt-10">Error: {error}</div>;
+	if (!assignShift)
+		return (
+			<div className="text-center text-gray-500 mt-10">
+				シフトデータが取得できませんでした
+			</div>
+		);
 
 	return (
 		<main className="bg-white w-full h-lvh mt-12">
