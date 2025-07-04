@@ -37,7 +37,7 @@ const createShiftController = async (
 			return;
 		}
 		const {
-			shiftReqeustId,
+			shiftRequestId,
 			submittedShifts,
 			shiftRequest,
 			startDate,
@@ -81,8 +81,7 @@ const createShiftController = async (
 		);
 
 		const upsertData = {
-			shiftReqeustId,
-			shiftRequestId: shiftReqeustId,
+			shiftRequestId,
 			shifts: adjustedShifts,
 			status: ShiftStatus.ADJUSTMENT,
 		};
