@@ -16,6 +16,16 @@ export const generateInitialShift = (
 	startDate: string,
 	endDate: string,
 ): ShiftsOfAssignType[] => {
+	const weekdayMap: Record<number, DayOfWeek> = {
+		0: "Sunday",
+		1: "Monday",
+		2: "Tuesday",
+		3: "Wednesday",
+		4: "Thursday",
+		5: "Friday",
+		6: "Saturday",
+	};
+
 	const slots: { [key: string]: { count: number; assigned: string[] } } = {};
 
 	const overrideDateSet = new Set(Object.keys(shiftRequest.overrideDates));
@@ -32,18 +42,15 @@ export const generateInitialShift = (
 		const dateStr = date.toISOString().split("T")[0];
 		if (overrideDateSet.has(dateStr)) continue;
 
-		const weekday = date.toLocaleDateString("en-US", { weekday: "long" });
-		const defaultSlots =
-			shiftRequest.defaultTimePositions[weekday as DayOfWeek] || [];
+		const weekday = weekdayMap[date.getDay()];
+		const defaultSlots = shiftRequest.defaultTimePositions[weekday] || [];
 
 		for (const timeWithCount of defaultSlots) {
 			const [time, countStr] = timeWithCount.split("*");
-			const count = Number.parseInt(countStr);
-
-			// 無効な時間（例: "15:53-15:53"）を除外
 			const [startT, endT] = time.split("-");
 			if (startT === endT) continue;
 
+			const count = Number.parseInt(countStr);
 			slots[`${dateStr}&${time}`] = { count, assigned: [] };
 		}
 	}
@@ -52,11 +59,10 @@ export const generateInitialShift = (
 	for (const [date, timeArray] of Object.entries(shiftRequest.overrideDates)) {
 		for (const timeWithCount of timeArray) {
 			const [time, countStr] = timeWithCount.split("*");
-			const count = Number.parseInt(countStr);
-
 			const [startT, endT] = time.split("-");
 			if (startT === endT) continue;
 
+			const count = Number.parseInt(countStr);
 			slots[`${date}&${time}`] = { count, assigned: [] };
 		}
 	}
@@ -76,7 +82,12 @@ export const generateInitialShift = (
 		const preferencesWithTime: string[] = [];
 		const preferencesWithoutTime: DayOfWeek[] = [];
 
-		// ③-a availableWeeks を分離（"Monday" or "Monday&15:00-17:00"）
+		// specificDatesのうち、時間なし（完全休み）を除外リストに追加
+		const unavailableDateSet = new Set<string>(
+			specificDates.filter((d) => !d.includes("&")).map((d) => d.split("&")[0]),
+		);
+
+		// ③-a availableWeeks を分離
 		for (const entry of availableWeeks) {
 			if (entry.includes("&")) {
 				const [day, time] = entry.split("&") as [DayOfWeek, string];
@@ -85,9 +96,10 @@ export const generateInitialShift = (
 					date <= end;
 					date.setDate(date.getDate() + 1)
 				) {
-					const weekday = date.toLocaleDateString("en-US", { weekday: "long" });
+					const weekday = weekdayMap[date.getDay()];
 					if (weekday === day) {
 						const dateStr = date.toISOString().split("T")[0];
+						if (unavailableDateSet.has(dateStr)) continue;
 						preferencesWithTime.push(`${dateStr}&${time}`);
 					}
 				}
@@ -96,23 +108,14 @@ export const generateInitialShift = (
 			}
 		}
 
-		// ③-b specificDates → 時間あり/なしを考慮して追加
+		// ③-b specificDates（時間あり or default）
 		for (const dateEntry of specificDates) {
+			if (!dateEntry.includes("&")) continue; // 休み指定なので無視
+
 			const [dateStr, time] = dateEntry.split("&");
 			const date = new Date(dateStr);
 			if (date < start || date > end) continue;
-
-			if (time) {
-				preferencesWithTime.push(`${dateStr}&${time}`);
-			} else {
-				const weekday = date.toLocaleDateString("en-US", { weekday: "long" });
-				const defaultTimes =
-					shiftRequest.defaultTimePositions[weekday as DayOfWeek] || [];
-				for (const timeWithCount of defaultTimes) {
-					const [defaultTime] = timeWithCount.split("*");
-					preferencesWithTime.push(`${dateStr}&${defaultTime}`);
-				}
-			}
+			preferencesWithTime.push(`${dateStr}&${time}`);
 		}
 
 		// ③-c 時間指定あり → 優先的に割り当て
@@ -129,6 +132,8 @@ export const generateInitialShift = (
 				!slot.assigned.includes(userId)
 			) {
 				const [date, time] = pref.split("&");
+				if (unavailableDateSet.has(date)) continue;
+
 				const alreadyAssigned = assignedShifts.some(
 					(shift) => shift.date === date && shift.time === time,
 				);
@@ -140,7 +145,7 @@ export const generateInitialShift = (
 			}
 		}
 
-		// ③-d 時間未指定（曜日のみ） → 残り枠に後からアサイン
+		// ③-d 曜日のみ希望 → 残り枠にアサイン
 		for (const day of preferencesWithoutTime) {
 			for (
 				let date = new Date(start);
@@ -149,17 +154,18 @@ export const generateInitialShift = (
 			) {
 				if (count >= maxShiftCount) break;
 
-				const weekday = date.toLocaleDateString("en-US", { weekday: "long" });
+				const weekday = weekdayMap[date.getDay()];
 				if (weekday !== day) continue;
 
 				const dateStr = date.toISOString().split("T")[0];
-				const defaultTimes =
-					shiftRequest.defaultTimePositions[weekday as DayOfWeek] || [];
+				if (unavailableDateSet.has(dateStr)) continue;
+
+				const defaultTimes = shiftRequest.defaultTimePositions[weekday] || [];
 
 				for (const timeWithCount of defaultTimes) {
 					const [time] = timeWithCount.split("*");
 					const [startT, endT] = time.split("-");
-					if (startT === endT) continue; // 無効な時間除外
+					if (startT === endT) continue;
 
 					const key = `${dateStr}&${time}`;
 					const slot = slots[key];
@@ -176,7 +182,7 @@ export const generateInitialShift = (
 							slot.assigned.push(userId);
 							assignedShifts.push({ date: dateStr, time });
 							count++;
-							break; // 同日複数禁止
+							break;
 						}
 					}
 				}
