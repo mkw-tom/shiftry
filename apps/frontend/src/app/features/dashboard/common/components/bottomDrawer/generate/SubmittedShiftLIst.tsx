@@ -1,7 +1,8 @@
 import type { shiftsOfSubmittedType } from "@shared/common/types/json";
+import { SubmittedShiftWithJson } from "@shared/common/types/merged";
 import { ShiftStatus, type SubmittedShift } from "@shared/common/types/prisma";
 import React, { useEffect } from "react";
-import type { SubmittedShiftWithJson } from "./Status";
+import { useGenareteShift } from "../../../context/useGenerateShift";
 import SubmittedShiftListModal from "./SubmittedShiftListModal";
 
 export type DayOfWeekType =
@@ -52,9 +53,9 @@ export type DayOfWeekType =
 // 	},
 // ];
 
-const SubmittedShiftList = ({
-	submittedShifts,
-}: { submittedShifts: SubmittedShiftWithJson[] }) => {
+const SubmittedShiftList = () => {
+	const { submittedDatas } = useGenareteShift();
+	const { submittedShifts } = submittedDatas;
 	return (
 		<ul className="flex flex-col">
 			{submittedShifts.map((data) => (
@@ -74,7 +75,11 @@ const SubmittedShiftList = ({
 							</span>
 							{/* <span className="text-xs text-gray02 text-black">出勤回数（週）：{data.shifts.weekCountMin}回～{data.shifts.weekCountMax}回</span> */}
 							<span
-								className={`text-xs ${data.shifts.specificDates.length > 0 ? "text-green01" : "text-gray02"}`}
+								className={`text-xs ${
+									data.shifts.specificDates.length > 0
+										? "text-green01"
+										: "text-gray02"
+								}`}
 							>
 								特定日の希望：
 								{data.shifts.specificDates.length > 0 ? "あり" : "なし"}

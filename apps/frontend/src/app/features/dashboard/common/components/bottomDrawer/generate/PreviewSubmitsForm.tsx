@@ -1,25 +1,18 @@
 import { useMembersHook } from "@/app/features/common/api/get-members/hook";
 import type { RootState } from "@/app/redux/store";
 import type { shiftsOfSubmittedType } from "@shared/common/types/json";
+import type { SubmittedShiftWithJson } from "@shared/common/types/merged";
 import type { SubmittedShift, User } from "@shared/common/types/prisma";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useGetSubmittedShiftsSpecific } from "../../../api/get-shift-submit-specific/hook";
 import { useBottomDrawer } from "../../../context/useBottomDrawer";
+import { useGenareteShift } from "../../../context/useGenerateShift";
 import GenerateShiftButton from "./GenareteShiftButton";
 import NotSubmitShiftList from "./NotSubmitShiftList";
 import StatusHeadSwitch from "./StatusHeadSwitch";
 import StepBar from "./StepBar";
 import SubmittedShiftList from "./SubmittedShiftLIst";
-
-export type SubmittedShiftWithJson = Omit<SubmittedShift, "shifts"> & {
-	shifts: shiftsOfSubmittedType;
-};
-
-export type SubmitStatusDataType = {
-	submittedShifts: SubmittedShiftWithJson[];
-	notSubmittedShifts: User[];
-};
 
 const PreviewSubmitsForm = () => {
 	const [select, setSelect] = useState<"SUBMITTED" | "NOT_SUBMIT">("SUBMITTED");
@@ -35,13 +28,7 @@ const PreviewSubmitsForm = () => {
 	} = useGetSubmittedShiftsSpecific();
 	const { error: errorMembers, isLoading: isLoadingMembers } =
 		useMembersHook(true);
-
-	const [submitStatusData, setSubmitStatusData] =
-		useState<SubmitStatusDataType>({
-			submittedShifts: [],
-			notSubmittedShifts: [],
-		});
-	console.log(submitStatusData, errorMembers);
+	const { submittedDatas, setSubmittedDatas } = useGenareteShift();
 	useEffect(() => {
 		const fetchData = async () => {
 			if (!userToken || !storeToken || !currentData?.id) {
@@ -56,7 +43,7 @@ const PreviewSubmitsForm = () => {
 							(submittedShift) => submittedShift.userId === member.id,
 						),
 				);
-				setSubmitStatusData({
+				setSubmittedDatas({
 					submittedShifts: res.submittedShifts as SubmittedShiftWithJson[],
 					notSubmittedShifts: notSubmitShiftUsers,
 				});
@@ -69,6 +56,7 @@ const PreviewSubmitsForm = () => {
 		currentData?.id,
 		handleGetSubmitShiftsSpecific,
 		members,
+		setSubmittedDatas,
 	]);
 
 	return (
@@ -80,24 +68,11 @@ const PreviewSubmitsForm = () => {
 						<p className="text-xs text-gray-500 mt-2">読み込み中...</p>
 					</div>
 				))}
-			<StatusHeadSwitch
-				select={select}
-				setSelect={setSelect}
-				submittedCount={submitStatusData.submittedShifts.length}
-				notSubmittedCount={submitStatusData.notSubmittedShifts.length}
-			/>
+			<StatusHeadSwitch select={select} setSelect={setSelect} />
 			<div className="h-[410px] pb-56 overflow-y-auto">
 				<div className="flex gap-1 flex-col px-2 pt-4">
-					{select === "SUBMITTED" && (
-						<SubmittedShiftList
-							submittedShifts={submitStatusData.submittedShifts}
-						/>
-					)}
-					{select === "NOT_SUBMIT" && (
-						<NotSubmitShiftList
-							notSubmittedShifts={submitStatusData.notSubmittedShifts}
-						/>
-					)}
+					{select === "SUBMITTED" && <SubmittedShiftList />}
+					{select === "NOT_SUBMIT" && <NotSubmitShiftList />}
 				</div>
 			</div>
 			{/* <GenerateShiftButton /> */}

@@ -3,6 +3,7 @@ import type { RootState } from "@/app/redux/store";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useAutoLogin } from "../../common/hook/useAutoLogin";
+import AutoLoginError from "./AutoLoginError";
 import AutoLoginLoading from "./AutoLoginLoading";
 import HeadSwitch from "./HeadSwitch";
 import Head from "./head/Head";
@@ -45,9 +46,9 @@ const HomeContent = () => {
 		handleAutoLogin,
 	]);
 
-	// if (error === true) {
-	// 	return <AutoLoginError />;
-	// }
+	if (error === true) {
+		return <AutoLoginError />;
+	}
 	if (isLoading) {
 		return <AutoLoginLoading />;
 	}

@@ -16,17 +16,9 @@ import StatusHeadSwitch from "./StatusHeadSwitch";
 import StepBar from "./StepBar";
 import SubmittedShiftList from "./SubmittedShiftLIst";
 
-export type SubmittedShiftWithJson = Omit<SubmittedShift, "shifts"> & {
-	shifts: shiftsOfSubmittedType;
-};
-
-export type SubmitStatusDataType = {
-	submittedShifts: SubmittedShiftWithJson[];
-	notSubmittedShifts: User[];
-};
-
 const Status = () => {
 	const { step } = useGenareteShift();
+	useEffect(() => {}, []);
 	return (
 		<div>
 			<StepBar />

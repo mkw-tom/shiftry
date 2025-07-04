@@ -1,4 +1,5 @@
 import type { User } from "@shared/common/types/prisma";
+import { useGenareteShift } from "../../../context/useGenerateShift";
 
 // const users: User[] = [
 // 	{
@@ -21,9 +22,9 @@ import type { User } from "@shared/common/types/prisma";
 // 	},
 // ];
 
-const NotSubmitShiftList = ({
-	notSubmittedShifts,
-}: { notSubmittedShifts: User[] }) => {
+const NotSubmitShiftList = () => {
+	const { submittedDatas } = useGenareteShift();
+	const { notSubmittedShifts } = submittedDatas;
 	return (
 		<div>
 			{notSubmittedShifts.map((user) => (
