@@ -22,7 +22,7 @@ export const generateInitialShift = (
 	const overrideDateSet = new Set(Object.keys(shiftRequest.overrideDates));
 	const start = new Date(startDate);
 	const end = new Date(endDate);
-	const totalWeeks = getWeeksBetween(start, end); // ← 週数補正に使う
+	const totalWeeks = getWeeksBetween(start, end);
 
 	// ① defaultTimePositions → 日付化、overrideDates と重複してたらスキップ
 	for (
@@ -69,7 +69,7 @@ export const generateInitialShift = (
 
 		// ③-a availableWeeks → startDate〜endDateの範囲で展開
 		for (const entry of availableWeeks) {
-			const [day, time] = entry.split("&") as [DayOfWeek, string];
+			const [day, time] = entry.split("&") as [DayOfWeek, string | undefined];
 			for (
 				let date = new Date(start);
 				date <= end;
@@ -78,7 +78,16 @@ export const generateInitialShift = (
 				const weekday = date.toLocaleDateString("en-US", { weekday: "long" });
 				if (weekday === day) {
 					const dateStr = date.toISOString().split("T")[0];
-					preferences.push(`${dateStr}&${time}`);
+					if (time) {
+						preferences.push(`${dateStr}&${time}`);
+					} else {
+						const defaultTimes =
+							shiftRequest.defaultTimePositions[weekday as DayOfWeek] || [];
+						for (const timeWithCount of defaultTimes) {
+							const [defaultTime] = timeWithCount.split("*");
+							preferences.push(`${dateStr}&${defaultTime}`);
+						}
+					}
 				}
 			}
 		}
@@ -105,7 +114,7 @@ export const generateInitialShift = (
 		// ③-c 空いている枠に割り当てていく（週数補正あり）
 		const assignedShifts: { date: string; time: string }[] = [];
 		let count = 0;
-		const shiftLimit = weekCountMax * totalWeeks; // ← 補正後の上限
+		const shiftLimit = weekCountMax * totalWeeks;
 
 		for (const pref of preferences) {
 			if (count >= shiftLimit) break;
