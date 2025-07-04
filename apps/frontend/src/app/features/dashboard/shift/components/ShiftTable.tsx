@@ -15,7 +15,7 @@ const ShiftTable = ({
 	dates: { label: string; key: string }[];
 	assignShift: AssignShiftWithJson;
 	shiftRequest: ShiftRequestWithJson;
-	setAssignShift: Dispatch<SetStateAction<AssignShiftWithJson>>;
+	setAssignShift: Dispatch<SetStateAction<AssignShiftWithJson | null>>;
 }) => {
 	const ShiftsContents = assignShift.shifts;
 

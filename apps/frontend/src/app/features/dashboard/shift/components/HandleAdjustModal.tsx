@@ -16,7 +16,7 @@ const HandleAdjustModal = ({
 	shift: { date: string; time: string } | undefined;
 	date: { label: string; key: string };
 	positions: string[];
-	setAssignShift: Dispatch<SetStateAction<AssignShiftWithJson>>;
+	setAssignShift: Dispatch<SetStateAction<AssignShiftWithJson | null>>;
 	assignShift: AssignShiftWithJson;
 }) => {
 	const [selectedPosition, setSelectedPosition] = useState<
