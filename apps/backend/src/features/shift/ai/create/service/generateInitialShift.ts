@@ -5,7 +5,6 @@ import type {
 import type { DayOfWeek } from "@shared/shift/ai/types/post-create";
 import type { shiftOfSubmittdWithUserId } from "@shared/shift/ai/validations/post-create";
 
-// 対象期間の週数を算出（例: 12/01〜12/31 → 5週）
 function getWeeksBetween(start: Date, end: Date): number {
 	const diffTime = Math.abs(end.getTime() - start.getTime());
 	return Math.ceil(diffTime / (7 * 24 * 60 * 60 * 1000));
@@ -24,7 +23,7 @@ export const generateInitialShift = (
 	const end = new Date(endDate);
 	const totalWeeks = getWeeksBetween(start, end);
 
-	// ① defaultTimePositions → 日付化、overrideDates と重複してたらスキップ
+	// ① defaultTimePositions → 日付化、overrideDatesと重複してたらスキップ
 	for (
 		let date = new Date(start);
 		date <= end;
@@ -40,6 +39,11 @@ export const generateInitialShift = (
 		for (const timeWithCount of defaultSlots) {
 			const [time, countStr] = timeWithCount.split("*");
 			const count = Number.parseInt(countStr);
+
+			// 無効な時間（例: "15:53-15:53"）を除外
+			const [startT, endT] = time.split("-");
+			if (startT === endT) continue;
+
 			slots[`${dateStr}&${time}`] = { count, assigned: [] };
 		}
 	}
@@ -49,6 +53,10 @@ export const generateInitialShift = (
 		for (const timeWithCount of timeArray) {
 			const [time, countStr] = timeWithCount.split("*");
 			const count = Number.parseInt(countStr);
+
+			const [startT, endT] = time.split("-");
+			if (startT === endT) continue;
+
 			slots[`${date}&${time}`] = { count, assigned: [] };
 		}
 	}
@@ -68,10 +76,10 @@ export const generateInitialShift = (
 		const preferencesWithTime: string[] = [];
 		const preferencesWithoutTime: DayOfWeek[] = [];
 
-		// ③-a availableWeeks を分離（時間指定あり or なし）
+		// ③-a availableWeeks を分離（"Monday" or "Monday&15:00-17:00"）
 		for (const entry of availableWeeks) {
-			const [day, time] = entry.split("&") as [DayOfWeek, string | undefined];
-			if (time) {
+			if (entry.includes("&")) {
+				const [day, time] = entry.split("&") as [DayOfWeek, string];
 				for (
 					let date = new Date(start);
 					date <= end;
@@ -84,7 +92,7 @@ export const generateInitialShift = (
 					}
 				}
 			} else {
-				preferencesWithoutTime.push(day);
+				preferencesWithoutTime.push(entry as DayOfWeek);
 			}
 		}
 
@@ -110,10 +118,10 @@ export const generateInitialShift = (
 		// ③-c 時間指定あり → 優先的に割り当て
 		const assignedShifts: { date: string; time: string }[] = [];
 		let count = 0;
-		const shiftLimit = weekCountMax * totalWeeks;
+		const maxShiftCount = weekCountMax * totalWeeks;
 
 		for (const pref of preferencesWithTime) {
-			if (count >= shiftLimit) break;
+			if (count >= maxShiftCount) break;
 			const slot = slots[pref];
 			if (
 				slot &&
@@ -139,7 +147,7 @@ export const generateInitialShift = (
 				date <= end;
 				date.setDate(date.getDate() + 1)
 			) {
-				if (count >= shiftLimit) break;
+				if (count >= maxShiftCount) break;
 
 				const weekday = date.toLocaleDateString("en-US", { weekday: "long" });
 				if (weekday !== day) continue;
@@ -150,6 +158,9 @@ export const generateInitialShift = (
 
 				for (const timeWithCount of defaultTimes) {
 					const [time] = timeWithCount.split("*");
+					const [startT, endT] = time.split("-");
+					if (startT === endT) continue; // 無効な時間除外
+
 					const key = `${dateStr}&${time}`;
 					const slot = slots[key];
 
@@ -165,7 +176,7 @@ export const generateInitialShift = (
 							slot.assigned.push(userId);
 							assignedShifts.push({ date: dateStr, time });
 							count++;
-							break; // 同じ日で2枠以上入れない（1日1枠ルール）
+							break; // 同日複数禁止
 						}
 					}
 				}
