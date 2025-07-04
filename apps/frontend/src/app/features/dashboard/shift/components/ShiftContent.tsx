@@ -1,37 +1,43 @@
 "use client";
 import { useGetAssignShift } from "@/app/features/dashboard/shift/api/get-assign-shift/hook";
 import type { RootState } from "@/app/redux/store";
+import type {
+	AssignShiftWithJson,
+	ShiftRequestWithJson,
+} from "@shared/common/types/merged";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Head from "./Head";
 import ShiftButtons from "./ShiftButtons";
 import ShiftTable from "./ShiftTable";
-import type {
-	AssignShiftWithJson,
-	ShiftRequestWithJson,
-} from "@shared/common/types/merged";
 
 const ShiftContent = () => {
 	const { id } = useParams();
-	const [assignShift, setAssignShift] = useState<AssignShiftWithJson | null>(null);
+	const [assignShift, setAssignShift] = useState<AssignShiftWithJson | null>(
+		null,
+	);
 	const { handleGetAssignShift, isLoading, error } = useGetAssignShift();
 	const { shiftRequests } = useSelector(
 		(state: RootState) => state.shiftReuqests,
 	);
 
-	const shiftRequest = shiftRequests.find(
-		(data) => data.id === id,
-	) as ShiftRequestWithJson | undefined;
+	const shiftRequest = shiftRequests.find((data) => data.id === id) as
+		| ShiftRequestWithJson
+		| undefined;
 
 	// 🧱 nullチェック（先に返す）
 	if (!shiftRequest) {
-		return <div className="text-center text-red-500 mt-10">shiftRequestが見つかりませんでした</div>;
+		return (
+			<div className="text-center text-red-500 mt-10">
+				shiftRequestが見つかりませんでした
+			</div>
+		);
 	}
 
 	function getDatesArray(
 		weekStart: Date,
-		weekEnd: Date
+		weekEnd: Date,
 	): { label: string; key: string }[] {
 		const daysOfWeek = ["日", "月", "火", "水", "木", "金", "土"];
 		const result = [];
@@ -58,13 +64,13 @@ const ShiftContent = () => {
 	// ✅ Date変換（string対策）
 	const dates = getDatesArray(
 		new Date(shiftRequest.weekStart),
-		new Date(shiftRequest.weekEnd as Date)
+		new Date(shiftRequest.weekEnd as Date),
 	);
 
 	// ✅ dates.length を超えないようにslice
 	const slicedDates = dates.slice(
 		tableSlice.start,
-		Math.min(tableSlice.end, dates.length)
+		Math.min(tableSlice.end, dates.length),
 	);
 
 	useEffect(() => {
@@ -81,8 +87,14 @@ const ShiftContent = () => {
 
 	// ✅ 描画分岐
 	if (isLoading) return <div className="text-center mt-10">Loading...</div>;
-	if (error) return <div className="text-center text-red-500 mt-10">Error: {error}</div>;
-	if (!assignShift) return <div className="text-center text-gray-500 mt-10">シフトデータが取得できませんでした</div>;
+	if (error)
+		return <div className="text-center text-red-500 mt-10">Error: {error}</div>;
+	if (!assignShift)
+		return (
+			<div className="text-center text-gray-500 mt-10">
+				シフトデータが取得できませんでした
+			</div>
+		);
 
 	return (
 		<main className="bg-white w-full h-lvh mt-12">
