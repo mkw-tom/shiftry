@@ -5,11 +5,11 @@ import type {
 } from "./json";
 import type { AssignShift, ShiftRequest, SubmittedShift } from "./prisma";
 
-export type ShiftRequestWithJson = ShiftRequest & {
+export type ShiftRequestWithJson = Omit<ShiftRequest, "requests"> & {
 	requests: ShiftsOfRequestsType;
 };
-export type SubmittedShiftWithJson = SubmittedShift & {
-	shifts: shiftsOfSubmittedType[];
+export type SubmittedShiftWithJson = Omit<SubmittedShift, "shifts"> & {
+	shifts: shiftsOfSubmittedType;
 };
 export type AssignShiftWithJson = AssignShift & {
 	shifts: ShiftsOfAssignType[];
