@@ -23,39 +23,39 @@ const ActionButton = () => {
 		(state: RootState) => state.token,
 	);
 
-	function testSave() {
-		// Transform formData to match the expected type for saveShiftRequest
-		if (!formData.weekStart) {
-			return alert("週の開始日がありません");
-		}
-		const transformedData = {
-			...formData,
-			weekStart: new Date(formData.weekStart),
-			weekEnd: formData.weekEnd ? new Date(formData.weekEnd) : null,
-			deadline: formData.deadline ? new Date(formData.deadline) : null,
-			requests: formData.requests, // keep as object if expected type is JsonValue
-			id: "",
-			storeId: "",
-			createdAt: new Date(),
-			updatedAt: new Date(),
-		};
-		dispatch(saveShiftRequest(transformedData));
-		if (confirm("lineグループに提出依頼を送信しますか？")) {
-			const transformedDataWithStatus = {
-				...formData,
-				weekStart: new Date(formData.weekStart),
-				weekEnd: formData.weekEnd ? new Date(formData.weekEnd) : null,
-				deadline: formData.deadline ? new Date(formData.deadline) : null,
-				requests: formData.requests,
-				id: "",
-				storeId: "",
-				createdAt: new Date(),
-				updatedAt: new Date(),
-				status: RequestStatus.REQUEST,
-			};
-			dispatch(saveShiftRequest(transformedDataWithStatus));
-		}
-	}
+	// function testSave() {
+	// 	// Transform formData to match the expected type for saveShiftRequest
+	// 	if (!formData.weekStart) {
+	// 		return alert("週の開始日がありません");
+	// 	}
+	// 	const transformedData = {
+	// 		...formData,
+	// 		weekStart: new Date(formData.weekStart),
+	// 		weekEnd: formData.weekEnd ? new Date(formData.weekEnd) : null,
+	// 		deadline: formData.deadline ? new Date(formData.deadline) : null,
+	// 		requests: formData.requests, // keep as object if expected type is JsonValue
+	// 		id: "",
+	// 		storeId: "",
+	// 		createdAt: new Date(),
+	// 		updatedAt: new Date(),
+	// 	};
+	// 	dispatch(saveShiftRequest(transformedData));
+	// 	if (confirm("lineグループに提出依頼を送信しますか？")) {
+	// 		const transformedDataWithStatus = {
+	// 			...formData,
+	// 			weekStart: new Date(formData.weekStart),
+	// 			weekEnd: formData.weekEnd ? new Date(formData.weekEnd) : null,
+	// 			deadline: formData.deadline ? new Date(formData.deadline) : null,
+	// 			requests: formData.requests,
+	// 			id: "",
+	// 			storeId: "",
+	// 			createdAt: new Date(),
+	// 			updatedAt: new Date(),
+	// 			status: RequestStatus.REQUEST,
+	// 		};
+	// 		dispatch(saveShiftRequest(transformedDataWithStatus));
+	// 	}
+	// }
 
 	async function saveShiftReqeust(
 		userToken: string | null,
@@ -101,8 +101,8 @@ const ActionButton = () => {
 					setStep(CreateRequestStep.Weekly);
 					return;
 				}
-				testSave();
-				// await saveShiftReqeust(userToken, storeToken, groupToken);
+				// testSave();
+				await saveShiftReqeust(userToken, storeToken, groupToken);
 				drawerClose();
 				setStep(CreateRequestStep.Period);
 				console.log("Submitting form with data:", formData);
