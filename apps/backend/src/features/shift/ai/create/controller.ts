@@ -52,48 +52,58 @@ const createShiftController = async (
 			endDate,
 		);
 
-		const prioritiesResultText = await parsePrioritiesFromAi({
-			submittedShifts: submittedShifts,
-			ownerRequests: ownerRequests,
-		});
-		const priorities = parseAIJsonBlock(prioritiesResultText);
+		let adjustedShifts = assignedShifts;
+		let priorities = [];
+		if (ownerRequests.length > 0) {
+			const prioritiesResultText = await parsePrioritiesFromAi({
+				submittedShifts,
+				ownerRequests,
+			});
+			priorities = parseAIJsonBlock(prioritiesResultText);
 
-		const dateWeekList = generateDateWeekList(startDate, endDate);
-		const adjustedShifts = adjustShiftByPriorities({
-			shiftRequest,
-			submittedShifts,
-			priorities,
-			dateWeekMap: dateWeekList,
-		});
+			const dateWeekList = generateDateWeekList(startDate, endDate);
+			adjustedShifts = adjustShiftByPriorities({
+				shiftRequest,
+				submittedShifts,
+				priorities,
+				dateWeekMap: dateWeekList,
+			});
+		}
 
-		const unassignedShift = getUnassignedShift(
-			shiftRequest,
-			adjustedShifts,
-			startDate,
-			endDate,
+		const totalWeeks = Math.ceil(
+			Object.entries(generateDateWeekList(startDate, endDate)).length / 7,
 		);
 
-		const totalWeeks = Math.ceil(Object.entries(dateWeekList).length / 7);
-		const usersBelowMin = findUsersBelowMin(
-			submittedShifts,
-			adjustedShifts,
-			totalWeeks,
-		);
+		const resultShift =
+			ownerRequests.length === 0 ? assignedShifts : adjustedShifts;
 
 		const upsertData = {
 			shiftRequestId,
-			shifts: adjustedShifts,
+			shifts: resultShift,
 			status: ShiftStatus.ADJUSTMENT,
 		};
 		await upsertAssignShfitService({ storeId, upsertData });
 
+		const unassignedShift = getUnassignedShift(
+			shiftRequest,
+			resultShift,
+			startDate,
+			endDate,
+		);
+
+		const usersBelowMin = findUsersBelowMin(
+			submittedShifts,
+			resultShift,
+			totalWeeks,
+		);
+
 		res.status(200).json({
 			ok: true,
-			assignedShifts: assignedShifts,
-			priorities: priorities,
-			adjustedShifts: adjustedShifts,
-			unassignedShift: unassignedShift,
-			usersBelowMin: usersBelowMin,
+			assignedShifts,
+			priorities,
+			adjustedShifts,
+			unassignedShift,
+			usersBelowMin,
 		});
 	} catch (error) {
 		console.error("[/api/shift/ai/create] error:", error);
