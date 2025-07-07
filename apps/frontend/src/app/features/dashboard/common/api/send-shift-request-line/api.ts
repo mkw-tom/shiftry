@@ -4,15 +4,18 @@ import type {
 	ValidationErrorResponse,
 } from "@shared/common/types/errors";
 import type { LineMessageAPIResponse } from "@shared/webhook/line/types";
+import type { RequestShiftMessageType } from "@shared/webhook/line/validatioins";
 
 export const sendShiftRequest = async ({
 	userToken,
 	storeToken,
 	groupToken,
+	sendData,
 }: {
 	userToken: string;
 	storeToken: string;
 	groupToken: string;
+	sendData: RequestShiftMessageType;
 }): Promise<
 	LineMessageAPIResponse | ErrorResponse | ValidationErrorResponse
 > => {
@@ -33,6 +36,7 @@ export const sendShiftRequest = async ({
 			"x-store-id": storeToken,
 			"x-group-id": groupToken,
 		},
+		body: JSON.stringify(sendData),
 	});
 
 	const data = await res.json();
