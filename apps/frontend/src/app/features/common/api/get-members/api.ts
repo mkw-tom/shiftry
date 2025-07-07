@@ -2,8 +2,8 @@ import { API_URL } from "@/app/lib/env";
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/common/types/errors";
-import type { GetUsersFromStoreResponse } from "@shared/user/types/get";
+} from "@shared/api/common/types/errors";
+import type { GetUsersFromStoreResponse } from "@shared/api/user/types/get";
 
 export const getMembers = async (
 	userToken: string | null,

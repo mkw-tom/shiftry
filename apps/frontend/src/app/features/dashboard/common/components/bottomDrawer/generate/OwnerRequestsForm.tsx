@@ -1,4 +1,3 @@
-import { OwnerRequestsType } from "@shared/shift/ai/validations/post-create";
 import React, { useState } from "react";
 import { CgEditFlipV } from "react-icons/cg";
 import { MdAdd } from "react-icons/md";

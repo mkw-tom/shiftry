@@ -1,4 +1,4 @@
-import type { ShiftType } from "@shared/common/types/prisma";
+import type { ShiftType } from "@shared/api/common/types/prisma";
 import type React from "react";
 import { useCreateRequest } from "../../../context/useCreateRequest";
 

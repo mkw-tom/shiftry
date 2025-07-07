@@ -1,5 +1,5 @@
 import type { RootState } from "@/app/redux/store";
-import type { GetAssigShiftResponse } from "@shared/shift/assign/types/get-by-shift-request-id";
+import type { GetAssigShiftResponse } from "@shared/api/shift/assign/types/get-by-shift-request-id";
 import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { getAssignShift } from "./api";

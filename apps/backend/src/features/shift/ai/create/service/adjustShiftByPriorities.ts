@@ -1,12 +1,12 @@
 import type {
 	ShiftsOfAssignType,
 	ShiftsOfRequestsType,
-} from "@shared/common/types/json";
-import type { DayOfWeek } from "@shared/shift/ai/types/post-create";
+} from "@shared/api/common/types/json";
+import type { DayOfWeek } from "@shared/api/shift/ai/types/post-create";
 import type {
 	PriorityType,
 	shiftOfSubmittdWithUserId,
-} from "@shared/shift/ai/validations/post-create";
+} from "@shared/api/shift/ai/validations/post-create";
 // 対象日付群から週数を推定（例: 月曜~日曜で1週カウント）
 function estimateTotalWeeks(dateWeekMap: {
 	[date: string]: DayOfWeek;

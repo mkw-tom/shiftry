@@ -1,5 +1,5 @@
-import type { AssignShift } from "@shared/common/types/prisma";
-import type { upsertAssignShfitInputType } from "@shared/shift/assign/validations/put";
+import type { AssignShift } from "@shared/api/common/types/prisma";
+import type { upsertAssignShfitInputType } from "@shared/api/shift/assign/validations/put";
 import { upsertAssignShfit } from "../../../../../repositories/assingShift.repostory";
 
 const upsertAssignShfitService = async ({

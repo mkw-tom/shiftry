@@ -1,4 +1,4 @@
-import type { productIdType } from "@shared/payment/validations/change-plan";
+import type { productIdType } from "@shared/api/payment/validations/change-plan";
 import { stripe } from "../../../config/stripe";
 import {
 	getPaymentByStoreId,

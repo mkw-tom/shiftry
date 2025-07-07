@@ -1,4 +1,4 @@
-import type { UpsertSubmittedShiftInputType } from "@shared/shift/submit/validations/put";
+import type { UpsertSubmittedShiftInputType } from "@shared/api/shift/submit/validations/put";
 import React, { type Dispatch, type SetStateAction } from "react";
 
 const WeekCountForm = ({

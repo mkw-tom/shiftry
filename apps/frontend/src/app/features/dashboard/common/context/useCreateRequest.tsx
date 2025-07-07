@@ -1,5 +1,5 @@
 "use client";
-import type { UpsertShiftRequetType } from "@shared/shift/request/validations/put";
+import type { UpsertShiftRequetType } from "@shared/api/shift/request/validations/put";
 import { type ReactNode, createContext, useContext, useState } from "react";
 
 type CreateRequestContextType = {

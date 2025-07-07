@@ -1,6 +1,5 @@
 "use client";
 import type { RootState } from "@/app/redux/store";
-import type { ShiftRequest } from "@shared/common/types/prisma";
 import React from "react";
 import { MdAdd } from "react-icons/md";
 import { useSelector } from "react-redux";
@@ -13,7 +12,6 @@ import ShiftRequestCard from "./ShiftRequestCard";
 
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import AddShiftButton from "../head/AddShiftButton";
-import Head from "../head/Head";
 
 const ShiftRequestList = () => {
 	// const shiftRequests = [

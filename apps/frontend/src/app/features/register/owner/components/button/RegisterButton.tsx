@@ -1,5 +1,5 @@
 import type { RootState } from "@/app/redux/store";
-import type { userInputType } from "@shared/auth/validations/register-owner";
+import type { userInputType } from "@shared/api/auth/validations/register-owner";
 import type { FieldError } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useRegisterLoadingUI } from "../../../common/context/useRegisterLoadingUI";

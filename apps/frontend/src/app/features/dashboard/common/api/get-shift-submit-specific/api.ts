@@ -2,8 +2,8 @@ import { API_URL } from "@/app/lib/env";
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/common/types/errors";
-import type { GetSubmittedShiftsSpecificResponse } from "@shared/shift/submit/types/get-by-shift-request-id";
+} from "@shared/api/common/types/errors";
+import type { GetSubmittedShiftsSpecificResponse } from "@shared/api/shift/submit/types/get-by-shift-request-id";
 
 export const getSubmittedShiftsSpecific = async ({
 	userToken,

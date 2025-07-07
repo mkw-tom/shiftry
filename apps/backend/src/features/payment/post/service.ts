@@ -1,6 +1,6 @@
 import type { Payment } from "@prisma/client";
 
-import type { createPaymentType } from "@shared/payment/validations/post";
+import type { createPaymentType } from "@shared/api/payment/validations/post";
 import { stripe } from "../../../config/stripe";
 import { STRIPE_TRIAL_DAYS } from "../../../lib/env";
 import { createPayment } from "../../../repositories/payment.repositroy";

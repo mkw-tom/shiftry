@@ -1,9 +1,9 @@
 import { API_URL } from "@/app/lib/env";
-import type { LineAuthResponse } from "@shared/auth/types/line-auth";
+import type { LineAuthResponse } from "@shared/api/auth/types/line-auth";
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/common/types/errors";
+} from "@shared/api/common/types/errors";
 
 export const postlineAuth = async (
 	code: string,

@@ -1,5 +1,5 @@
 import type { RootState } from "@/app/redux/store";
-import type { GetSubmittedShiftsSpecificResponse } from "@shared/shift/submit/types/get-by-shift-request-id"; // 任意
+import type { GetSubmittedShiftsSpecificResponse } from "@shared/api/shift/submit/types/get-by-shift-request-id"; // 任意
 import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { getSubmittedShiftsSpecific } from "./api";

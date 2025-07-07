@@ -1,12 +1,12 @@
-import type { RegisterOwnerResponse } from "@shared/auth/types/register-owner";
+import type { RegisterOwnerResponse } from "@shared/api/auth/types/register-owner";
 import {
 	storeNameValidate,
 	userInputValidate,
-} from "@shared/auth/validations/register-owner";
+} from "@shared/api/auth/validations/register-owner";
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/common/types/errors";
+} from "@shared/api/common/types/errors";
 import type { Request, Response } from "express";
 import { generateJWT } from "../../../utils/JWT/jwt";
 import registerOwner from "./service";

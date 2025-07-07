@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { $Enums } from "@prisma/client"; // 必要に応じて調整してください
-import type { User } from "@shared/common/types/prisma";
+import type { User } from "@shared/api/common/types/prisma";
 import { SiOpenai } from "react-icons/si";
 
 const dummyMembers: User[] = [

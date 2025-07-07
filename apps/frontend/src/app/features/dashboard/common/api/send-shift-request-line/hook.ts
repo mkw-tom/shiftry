@@ -1,5 +1,5 @@
 import type { RootState } from "@/app/redux/store";
-import type { RequestShiftMessageType } from "@shared/webhook/line/validatioins";
+import type { RequestShiftMessageType } from "@shared/api/webhook/line/validatioins";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { sendShiftRequest } from "./api";

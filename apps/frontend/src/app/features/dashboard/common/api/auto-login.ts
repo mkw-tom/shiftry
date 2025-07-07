@@ -1,9 +1,9 @@
 import { API_URL } from "@/app/lib/env";
-import type { AutoLoginResponse } from "@shared/auth/types/auto-login";
+import type { AutoLoginResponse } from "@shared/api/auth/types/auto-login";
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/common/types/errors";
+} from "@shared/api/common/types/errors";
 
 export const autoLogin = async ({
 	userToken,

@@ -1,6 +1,6 @@
 "use client";
-import type { ShiftsOfRequestsType } from "@shared/common/types/json";
-import type { ShiftRequest } from "@shared/common/types/prisma";
+import type { ShiftsOfRequestsType } from "@shared/api/common/types/json";
+import type { ShiftRequest } from "@shared/api/common/types/prisma";
 import {
 	Dispatch,
 	type ReactNode,

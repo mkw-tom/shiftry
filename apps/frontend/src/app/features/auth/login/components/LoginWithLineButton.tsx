@@ -3,7 +3,7 @@
 import { generateLineLoginUrl } from "@/app/lib/line";
 import { setStores } from "@/app/redux/slices/stores";
 import { setLineToken } from "@/app/redux/slices/token";
-import type { Store } from "@shared/common/types/prisma";
+import type { Store } from "@shared/api/common/types/prisma";
 import React from "react";
 import { useDispatch } from "react-redux";
 

@@ -1,5 +1,5 @@
 import type { RootState } from "@/app/redux/store";
-import type { CreateShiftValidateType } from "@shared/shift/ai/validations/post-create";
+import type { CreateShiftValidateType } from "@shared/api/shift/ai/validations/post-create";
 import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { generateShiftWithAI } from "./api";

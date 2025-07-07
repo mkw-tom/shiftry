@@ -1,13 +1,7 @@
-import { RootState } from "@/app/redux/store";
-import { ShiftsOfRequestsType } from "@shared/common/types/json";
-import type { ShiftRequestWithJson } from "@shared/common/types/merged";
+import type { ShiftRequestWithJson } from "@shared/api/common/types/merged";
 import React from "react";
 import { LuSend } from "react-icons/lu";
-import { useSelector } from "react-redux";
-import {
-	DrawerView,
-	useBottomDrawer,
-} from "../../../common/context/useBottomDrawer";
+import { useBottomDrawer } from "../../../common/context/useBottomDrawer";
 import SubmitStatusCard from "./SubmitStatusCard";
 
 const SubmitStatusList = () => {

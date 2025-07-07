@@ -1,8 +1,6 @@
 import { useMembersHook } from "@/app/features/common/api/get-members/hook";
 import type { RootState } from "@/app/redux/store";
-import type { shiftsOfSubmittedType } from "@shared/common/types/json";
-import type { SubmittedShiftWithJson } from "@shared/common/types/merged";
-import type { SubmittedShift, User } from "@shared/common/types/prisma";
+import type { SubmittedShiftWithJson } from "@shared/api/common/types/merged";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useGetSubmittedShiftsSpecific } from "../../../api/get-shift-submit-specific/hook";

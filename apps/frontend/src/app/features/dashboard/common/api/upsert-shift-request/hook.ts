@@ -1,6 +1,6 @@
 import { saveShiftRequest } from "@/app/redux/slices/shiftRequests";
 import type { AppDispatch, RootState } from "@/app/redux/store";
-import type { UpsertShiftRequetType } from "@shared/shift/request/validations/put";
+import type { UpsertShiftRequetType } from "@shared/api/shift/request/validations/put";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { upsertShiftRequest } from "./api";

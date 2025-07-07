@@ -1,5 +1,5 @@
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
-import type { Store } from "@shared/common/types/prisma";
+import type { Store } from "@shared/api/common/types/prisma";
 
 type StoresState = {
 	stores: Store[];

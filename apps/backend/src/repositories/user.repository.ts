@@ -1,4 +1,4 @@
-import type { User, UserRole } from "@shared/common/types/prisma";
+import type { User, UserRole } from "@shared/api/common/types/prisma";
 import prisma from "../config/database";
 import type { UpsertUserInput, updateUserProlfileType } from "../types/inputs";
 

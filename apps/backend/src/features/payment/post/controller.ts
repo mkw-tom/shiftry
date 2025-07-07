@@ -1,9 +1,9 @@
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/common/types/errors";
-import type { CreatePaymentResponse } from "@shared/payment/types/post";
-import { createPaymentValidate } from "@shared/payment/validations/post";
+} from "@shared/api/common/types/errors";
+import type { CreatePaymentResponse } from "@shared/api/payment/types/post";
+import { createPaymentValidate } from "@shared/api/payment/validations/post";
 import type { Request, Response } from "express";
 import { verifyUserStoreForOwner } from "../../common/authorization.service";
 import createPaymentService from "./service";

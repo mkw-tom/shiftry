@@ -1,9 +1,9 @@
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/common/types/errors";
-import type { UpdateStoreNameResponse } from "@shared/store/types/update-store-name";
-import { updateStoreNameValidate } from "@shared/store/validations/update-store-name";
+} from "@shared/api/common/types/errors";
+import type { UpdateStoreNameResponse } from "@shared/api/store/types/update-store-name";
+import { updateStoreNameValidate } from "@shared/api/store/validations/update-store-name";
 import type { Request, Response } from "express";
 import { updateStoreName } from "../../../repositories/store.repository";
 import { verifyUserStoreForOwnerAndManager } from "../../common/authorization.service";

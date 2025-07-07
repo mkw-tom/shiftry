@@ -1,4 +1,4 @@
-import type { AutoLoginServiceResponse } from "@shared/auth/types/auto-login";
+import type { AutoLoginServiceResponse } from "@shared/api/auth/types/auto-login";
 import { getShiftRequestByStoreId } from "../../../repositories/shiftRequest.repository";
 import { getStoreById } from "../../../repositories/store.repository";
 import { getUserById } from "../../../repositories/user.repository";

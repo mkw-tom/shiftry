@@ -1,7 +1,7 @@
 import { saveShiftRequest } from "@/app/redux/slices/shiftRequests";
 import type { AppDispatch, RootState } from "@/app/redux/store";
-import { RequestStatus } from "@shared/common/types/prisma";
-import type { RequestShiftMessageType } from "@shared/webhook/line/validatioins";
+import { RequestStatus } from "@shared/api/common/types/prisma";
+import type { RequestShiftMessageType } from "@shared/api/webhook/line/validatioins";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { string } from "zod";

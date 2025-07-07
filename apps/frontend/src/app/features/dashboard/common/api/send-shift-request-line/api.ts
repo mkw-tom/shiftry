@@ -2,9 +2,9 @@ import { API_URL } from "@/app/lib/env";
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/common/types/errors";
-import type { LineMessageAPIResponse } from "@shared/webhook/line/types";
-import type { RequestShiftMessageType } from "@shared/webhook/line/validatioins";
+} from "@shared/api/common/types/errors";
+import type { LineMessageAPIResponse } from "@shared/api/webhook/line/types";
+import type { RequestShiftMessageType } from "@shared/api/webhook/line/validatioins";
 
 export const sendShiftRequest = async ({
 	userToken,

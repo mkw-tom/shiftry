@@ -1,5 +1,5 @@
-import type { ShiftsOfAssignType } from "@shared/common/types/json";
-import type { shiftOfSubmittdWithUserId } from "@shared/shift/ai/validations/post-create";
+import type { ShiftsOfAssignType } from "@shared/api/common/types/json";
+import type { shiftOfSubmittdWithUserId } from "@shared/api/shift/ai/validations/post-create";
 
 export const findUsersBelowMin = (
 	submittedShifts: shiftOfSubmittdWithUserId[],

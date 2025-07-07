@@ -1,4 +1,4 @@
-import type { LineAuthServiceResponse } from "@shared/auth/types/line-auth";
+import type { LineAuthServiceResponse } from "@shared/api/auth/types/line-auth";
 import {
 	LINE_AUTH_CHANNEL_ID,
 	LINE_AUTH_CHANNEL_SECRET,

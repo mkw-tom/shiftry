@@ -1,5 +1,5 @@
-import type { AutoLoginResponse } from "@shared/auth/types/auto-login";
-import type { ErrorResponse } from "@shared/common/types/errors";
+import type { AutoLoginResponse } from "@shared/api/auth/types/auto-login";
+import type { ErrorResponse } from "@shared/api/common/types/errors";
 import type { Request, Response } from "express";
 import { generateJWT } from "../../../utils/JWT/jwt";
 import autoLogin from "./service";
