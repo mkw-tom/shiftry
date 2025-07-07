@@ -1,5 +1,5 @@
-import type { ErrorResponse } from "@shared/common/types/errors";
-import type { GetAssigShiftResponse } from "@shared/shift/assign/types/get-by-shift-request-id";
+import type { ErrorResponse } from "@shared/api/common/types/errors";
+import type { GetAssigShiftResponse } from "@shared/api/shift/assign/types/get-by-shift-request-id";
 import type { Request, Response } from "express";
 import { getAssignShift } from "../../../../repositories/assingShift.repostory";
 import { verifyUserStore } from "../../../common/authorization.service";

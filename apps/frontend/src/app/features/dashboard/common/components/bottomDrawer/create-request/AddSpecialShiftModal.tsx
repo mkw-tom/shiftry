@@ -1,4 +1,4 @@
-import { YMDW } from "@/app/features/common/hooks/useFormatDate";
+import { YMDW } from "@shared/utils/formatDate";
 import type React from "react";
 import { useState } from "react";
 import { PiUser } from "react-icons/pi";

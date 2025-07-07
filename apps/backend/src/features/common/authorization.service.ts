@@ -1,4 +1,4 @@
-import type { Store, User, UserStore } from "@shared/common/types/prisma";
+import type { Store, User, UserStore } from "@shared/api/common/types/prisma";
 import { getShiftRequestById } from "../../repositories/shiftRequest.repository";
 import { getStoreById } from "../../repositories/store.repository";
 import {

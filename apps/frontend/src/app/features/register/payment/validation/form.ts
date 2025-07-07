@@ -1,4 +1,4 @@
-import { createPaymentValidate } from "@shared/payment/validations/post";
+import { createPaymentValidate } from "@shared/api/payment/validations/post";
 import type { z } from "zod";
 
 // export const emailValidate = z.object({

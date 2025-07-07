@@ -1,4 +1,4 @@
-import { MDW } from "@/app/features/common/hooks/useFormatDate";
+import { MDW } from "@shared/utils/formatDate";
 import type { Dispatch, SetStateAction } from "react";
 import { BiSolidLeftArrow } from "react-icons/bi";
 import { BiSolidRightArrow } from "react-icons/bi";

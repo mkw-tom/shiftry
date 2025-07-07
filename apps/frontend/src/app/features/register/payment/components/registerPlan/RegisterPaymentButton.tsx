@@ -1,4 +1,4 @@
-import type { createPaymentType } from "@shared/payment/validations/post";
+import type { createPaymentType } from "@shared/api/payment/validations/post";
 import React from "react";
 import { useRegisterPaymentHandler } from "../../hooks/useRegisterPaymentHandler";
 

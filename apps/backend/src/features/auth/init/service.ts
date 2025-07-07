@@ -1,4 +1,4 @@
-import type { InitServiceResponse } from "@shared/auth/types/init";
+import type { InitServiceResponse } from "@shared/api/auth/types/init";
 import { getShiftRequestByStoreId } from "../../../repositories/shiftRequest.repository";
 import { getStoreById } from "../../../repositories/store.repository";
 import { getUserById } from "../../../repositories/user.repository";

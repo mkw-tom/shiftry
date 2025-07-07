@@ -1,4 +1,4 @@
-import type { MessageContens } from "@shared/webhook/line/types";
+import type { MessageContens } from "@shared/api/webhook/line/types";
 import apiClient from "../../../config/axios";
 
 //☑️ トリガーを受け取ってメッセージ送信する

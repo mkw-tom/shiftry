@@ -1,14 +1,9 @@
 "use client";
 import type { RootState } from "@/app/redux/store";
-import type { UserRole } from "@shared/common/types/prisma";
+import type { UserRole } from "@shared/api/common/types/prisma";
 import React from "react";
-import { CiSettings } from "react-icons/ci";
-import { FaArrowUpRightFromSquare } from "react-icons/fa6";
-import { LuUsersRound } from "react-icons/lu";
 import { LuArrowUpDown } from "react-icons/lu";
 import { useSelector } from "react-redux";
-import { useBottomDrawer } from "../../../common/context/useBottomDrawer";
-import AddShiftButton from "./AddShiftButton";
 
 const Head = () => {
 	const { user } = useSelector((state: RootState) => state.user);

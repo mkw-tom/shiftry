@@ -1,9 +1,9 @@
-import type { SubmittedShiftWithJson } from "@shared/common/types/merged";
-import type { User } from "@shared/common/types/prisma";
+import type { SubmittedShiftWithJson } from "@shared/api/common/types/merged";
+import type { User } from "@shared/api/common/types/prisma";
 import type {
 	CreateShiftValidateType,
 	OwnerRequestsType,
-} from "@shared/shift/ai/validations/post-create";
+} from "@shared/api/shift/ai/validations/post-create";
 import { useRouter } from "next/navigation";
 import {
 	type Dispatch,

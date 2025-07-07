@@ -1,9 +1,9 @@
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/common/types/errors";
-import type { UpsertShiftRequetResponse } from "@shared/shift/request/types/put";
-import { upsertShfitRequestValidate } from "@shared/shift/request/validations/put";
+} from "@shared/api/common/types/errors";
+import type { UpsertShiftRequetResponse } from "@shared/api/shift/request/types/put";
+import { upsertShfitRequestValidate } from "@shared/api/shift/request/validations/put";
 import type { Request, Response } from "express";
 import { upsertShiftRequest } from "../../../../repositories/shiftRequest.repository";
 import { verifyUserStoreForOwnerAndManager } from "../../../common/authorization.service";

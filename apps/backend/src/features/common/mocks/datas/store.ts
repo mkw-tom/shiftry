@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import type { Store } from "@shared/common/types/prisma";
+import type { Store } from "@shared/api/common/types/prisma";
 
 export const createMockStoreInput = () => ({
 	name: faker.company.name(),

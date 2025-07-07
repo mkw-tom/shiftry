@@ -1,5 +1,5 @@
-import type { ErrorResponse } from "@shared/common/types/errors";
-import type { DeleteUserResponse } from "@shared/user/types/delete";
+import type { ErrorResponse } from "@shared/api/common/types/errors";
+import type { DeleteUserResponse } from "@shared/api/user/types/delete";
 import type { Request, Response } from "express";
 import { deleteUser } from "../../../repositories/user.repository";
 import { verifyUser } from "../../common/authorization.service";

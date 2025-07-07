@@ -1,4 +1,4 @@
-import { MDW } from "@/app/features/common/hooks/useFormatDate";
+import { MDW } from "@shared/utils/formatDate";
 import React from "react";
 import { DrawerView, useBottomDrawer } from "../../../context/useBottomDrawer";
 

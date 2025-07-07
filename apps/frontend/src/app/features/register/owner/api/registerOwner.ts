@@ -1,13 +1,13 @@
 import { API_URL } from "@/app/lib/env";
-import type { RegisterOwnerResponse } from "@shared/auth/types/register-owner";
+import type { RegisterOwnerResponse } from "@shared/api/auth/types/register-owner";
 import type {
 	StoreNameType,
 	userInputType,
-} from "@shared/auth/validations/register-owner";
+} from "@shared/api/auth/validations/register-owner";
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/common/types/errors";
+} from "@shared/api/common/types/errors";
 
 export const postRegisterOwner = async (
 	lineToken: string,

@@ -1,5 +1,5 @@
 "use client";
-import type { ShiftsOfRequestsType } from "@shared/common/types/json";
+import type { ShiftsOfRequestsType } from "@shared/api/common/types/json";
 import React, { useEffect } from "react";
 import { useUpsertShiftReqeust } from "../../../api/upsert-shift-request/hook";
 import { DrawerView, useBottomDrawer } from "../../../context/useBottomDrawer";

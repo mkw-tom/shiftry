@@ -1,15 +1,15 @@
 import type { Request, Response } from "express";
 import { generateJWT } from "../../../utils/JWT/jwt";
 
-import type { RegisterStaffResponse } from "@shared/auth/types/register-staff";
+import type { RegisterStaffResponse } from "@shared/api/auth/types/register-staff";
 import {
 	storeIdandShfitReruestIdValidate,
 	userInputValidate,
-} from "@shared/auth/validations/register-staff";
+} from "@shared/api/auth/validations/register-staff";
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/common/types/errors";
+} from "@shared/api/common/types/errors";
 import { registerStaff } from "./service";
 
 const registerStaffController = async (

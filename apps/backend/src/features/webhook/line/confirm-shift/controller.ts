@@ -1,9 +1,10 @@
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/common/types/errors";
-import type { LineMessageAPIResponse } from "@shared/webhook/line/types";
-import { ConfirmShiftMessageValidate } from "@shared/webhook/line/validatioins";
+} from "@shared/api/common/types/errors";
+import type { LineMessageAPIResponse } from "@shared/api/webhook/line/types";
+import { ConfirmShiftMessageValidate } from "@shared/api/webhook/line/validatioins";
+import { MDW } from "@shared/utils/formatDate";
 import type { Request, Response } from "express";
 import { URI_SHIFT_CONFIRMATION } from "../../../../lib/env";
 import { verifyUserStoreForOwnerAndManager } from "../../../common/authorization.service";
@@ -35,7 +36,7 @@ const sendConfirmShiftFuncController = async (
 		await sendGroupFlexMessage(groupId, {
 			text1: "シフトが出来上がりました！",
 			text2: "以下のボタンからシフト確認をお願いします！",
-			text3: `期間: ${startDate} 〜 ${endDate}`,
+			text3: `期間：${MDW(new Date(startDate))} 〜 ${MDW(new Date(endDate))}`,
 			label: "シフト確認",
 			uri: `${URI_SHIFT_CONFIRMATION}/${shiftRequestId}`,
 		});

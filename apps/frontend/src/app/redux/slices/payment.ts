@@ -1,5 +1,5 @@
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
-import type { Payment } from "@shared/common/types/prisma";
+import type { Payment } from "@shared/api/common/types/prisma";
 
 type PaymentState = {
 	Payment: Payment | null;

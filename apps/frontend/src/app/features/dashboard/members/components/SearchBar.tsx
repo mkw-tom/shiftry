@@ -1,9 +1,5 @@
-import { RootState } from "@/app/redux/store";
-import Link from "next/link";
 import type React from "react";
-import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import { MdAdd } from "react-icons/md";
-import { useSelector } from "react-redux";
 
 const SearchBar = ({
 	membersFilter,

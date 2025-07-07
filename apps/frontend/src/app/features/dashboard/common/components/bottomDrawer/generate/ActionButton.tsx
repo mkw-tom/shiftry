@@ -1,14 +1,6 @@
-import { saveShiftRequest } from "@/app/redux/slices/shiftRequests";
-import type { AppDispatch, RootState } from "@/app/redux/store";
-import { RequestStatus } from "@shared/common/types/prisma";
 import React from "react";
 import { SiOpenai } from "react-icons/si";
-import { useDispatch, useSelector } from "react-redux";
-import { string } from "zod";
-import { useGenerateShiftWithAI } from "../../../api/generate-shift-ai/hook";
-import { useSendShiftReqeust } from "../../../api/send-shift-request-line/hook";
-import { useUpsertShiftReqeust } from "../../../api/upsert-shift-request/hook";
-import { DrawerView, useBottomDrawer } from "../../../context/useBottomDrawer";
+import { useBottomDrawer } from "../../../context/useBottomDrawer";
 import {
 	type GenerateShiftStep,
 	useGenareteShift,

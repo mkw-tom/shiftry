@@ -1,4 +1,4 @@
-import type { User } from "@shared/common/types/prisma";
+import type { User } from "@shared/api/common/types/prisma";
 import React from "react";
 
 const Member = ({ user }: { user: User }) => {

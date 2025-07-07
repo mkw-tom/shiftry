@@ -1,9 +1,9 @@
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/common/types/errors";
-import type { AddManageStoreResponse } from "@shared/store/types/add-store";
-import { storeNameValidate } from "@shared/store/validations/add-store";
+} from "@shared/api/common/types/errors";
+import type { AddManageStoreResponse } from "@shared/api/store/types/add-store";
+import { storeNameValidate } from "@shared/api/store/validations/add-store";
 import type { Request, Response } from "express";
 import { createStore } from "../../../repositories/store.repository";
 import { createUserStore } from "../../../repositories/userStore.repository";

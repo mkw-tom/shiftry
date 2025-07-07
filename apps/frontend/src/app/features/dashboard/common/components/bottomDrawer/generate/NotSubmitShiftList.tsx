@@ -1,4 +1,4 @@
-import type { User } from "@shared/common/types/prisma";
+import type { User } from "@shared/api/common/types/prisma";
 import { useGenareteShift } from "../../../context/useGenerateShift";
 
 // const users: User[] = [

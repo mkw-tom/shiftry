@@ -3,7 +3,7 @@ import type {
 	User,
 	UserRole,
 	UserStore,
-} from "@shared/common/types/prisma";
+} from "@shared/api/common/types/prisma";
 import prisma from "../config/database";
 
 export const createUserStore = async (

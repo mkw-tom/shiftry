@@ -1,4 +1,4 @@
-import type { Store } from "@shared/common/types/prisma";
+import type { Store } from "@shared/api/common/types/prisma";
 import prisma from "../config/database";
 
 export const createStore = async (name: string): Promise<Store> => {

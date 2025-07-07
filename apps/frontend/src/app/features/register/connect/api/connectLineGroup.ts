@@ -3,8 +3,8 @@ import { API_URL } from "@/app/lib/env";
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/common/types/errors";
-import type { StoreConnectLineGroupResponse } from "@shared/store/types/connect-line-group";
+} from "@shared/api/common/types/errors";
+import type { StoreConnectLineGroupResponse } from "@shared/api/store/types/connect-line-group";
 
 export const postConnectLineGroup = async (
 	userToken: string | null,

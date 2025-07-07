@@ -1,5 +1,5 @@
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
-import type { ShiftRequest } from "@shared/common/types/prisma";
+import type { ShiftRequest } from "@shared/api/common/types/prisma";
 
 type shiftRequestsState = {
 	shiftRequests: ShiftRequest[];

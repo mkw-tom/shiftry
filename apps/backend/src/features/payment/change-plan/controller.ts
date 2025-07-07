@@ -1,9 +1,9 @@
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/common/types/errors";
-import type { ChangePalnResponse } from "@shared/payment/types/change-plan";
-import { productIdValidate } from "@shared/payment/validations/change-plan";
+} from "@shared/api/common/types/errors";
+import type { ChangePalnResponse } from "@shared/api/payment/types/change-plan";
+import { productIdValidate } from "@shared/api/payment/validations/change-plan";
 import type { Request, Response } from "express";
 import { verifyUserStoreForOwner } from "../../common/authorization.service";
 import changePlanService from "./service";

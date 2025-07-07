@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 
 import type { $Enums } from "@prisma/client";
-import type { ShiftsOfAssignType } from "@shared/common/types/json";
+import type { ShiftsOfAssignType } from "@shared/api/common/types/json";
 import { mockRequests } from "./shiftRequest";
 
 export const assignShiftMock: ShiftsOfAssignType[] = [

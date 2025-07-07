@@ -1,5 +1,5 @@
-import type { LoginResponse } from "@shared/auth/types/login";
-import type { ErrorResponse } from "@shared/common/types/errors";
+import type { LoginResponse } from "@shared/api/auth/types/login";
+import type { ErrorResponse } from "@shared/api/common/types/errors";
 import type { Request, Response } from "express";
 import { getStoreFromUser } from "../../../repositories/userStore.repository";
 import { generateJWT } from "../../../utils/JWT/jwt";

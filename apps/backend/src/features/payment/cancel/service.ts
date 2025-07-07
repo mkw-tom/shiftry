@@ -1,4 +1,4 @@
-import type { CancelSubscriptionServiceResponse } from "@shared/payment/types/cancel";
+import type { CancelSubscriptionServiceResponse } from "@shared/api/payment/types/cancel";
 import { stripe } from "../../../config/stripe";
 import {
 	cancelSubscription,

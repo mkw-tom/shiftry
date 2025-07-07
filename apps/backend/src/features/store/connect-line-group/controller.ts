@@ -1,5 +1,5 @@
-import type { ErrorResponse } from "@shared/common/types/errors";
-import type { StoreConnectLineGroupResponse } from "@shared/store/types/connect-line-group";
+import type { ErrorResponse } from "@shared/api/common/types/errors";
+import type { StoreConnectLineGroupResponse } from "@shared/api/store/types/connect-line-group";
 import type { Request, Response } from "express";
 import { updateStoreGroupId } from "../../../repositories/store.repository";
 import { getUserById } from "../../../repositories/user.repository";

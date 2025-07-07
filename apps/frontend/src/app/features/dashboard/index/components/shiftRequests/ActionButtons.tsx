@@ -1,12 +1,7 @@
 "use client";
-import type { RequestStatus } from "@shared/common/types/prisma";
-import type { ShiftRequest } from "@shared/common/types/prisma";
+import type { RequestStatus } from "@shared/api/common/types/prisma";
 import { useRouter } from "next/navigation";
-import { FaRegEdit } from "react-icons/fa";
-import { FaScaleBalanced } from "react-icons/fa6";
-import { LuSend } from "react-icons/lu";
 import { SiOpenai } from "react-icons/si";
-import { TbCalendarCheck } from "react-icons/tb";
 import {
 	DrawerView,
 	type ShiftRequestWithJson,

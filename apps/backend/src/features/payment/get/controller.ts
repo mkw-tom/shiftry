@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 
-import type { ErrorResponse } from "@shared/common/types/errors";
-import type { GetPaymentResponse } from "@shared/payment/types/get";
+import type { ErrorResponse } from "@shared/api/common/types/errors";
+import type { GetPaymentResponse } from "@shared/api/payment/types/get";
 import { getPaymentByStoreId } from "../../../repositories/payment.repositroy";
 import { verifyUserStoreForOwner } from "../../common/authorization.service";
 

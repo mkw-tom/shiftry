@@ -1,4 +1,4 @@
-import { UserIdParamValidate } from "@shared/common/validations/userIdParam";
+import { UserIdParamValidate } from "@shared/api/common/validations/userIdParam";
 import type { NextFunction, Request, Response } from "express";
 
 interface UserIdRequest extends Request {

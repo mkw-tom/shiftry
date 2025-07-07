@@ -1,5 +1,5 @@
-import type { ErrorResponse } from "@shared/common/types/errors";
-import type { LineMessageAPIResponse } from "@shared/webhook/line/types";
+import type { ErrorResponse } from "@shared/api/common/types/errors";
+import type { LineMessageAPIResponse } from "@shared/api/webhook/line/types";
 import type { Request, Response } from "express";
 import {
 	URI_CONNECT_LINE_GROUP,

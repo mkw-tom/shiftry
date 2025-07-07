@@ -1,4 +1,4 @@
-import type { Payment } from "@shared/common/types/prisma";
+import type { Payment } from "@shared/api/common/types/prisma";
 import { stripe } from "../../../config/stripe";
 import {
 	cancelRevert,
