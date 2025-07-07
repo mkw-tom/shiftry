@@ -1,6 +1,7 @@
 import { saveShiftRequest } from "@/app/redux/slices/shiftRequests";
 import type { AppDispatch, RootState } from "@/app/redux/store";
 import { RequestStatus } from "@shared/common/types/prisma";
+import type { RequestShiftMessageType } from "@shared/webhook/line/validatioins";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { string } from "zod";
@@ -18,11 +19,6 @@ const ActionButton = () => {
 	const { handleUpsertShiftRequest } = useUpsertShiftReqeust();
 	const { handleSendShiftRequest } = useSendShiftReqeust();
 	const dispatch = useDispatch<AppDispatch>();
-
-	const { userToken, storeToken, groupToken } = useSelector(
-		(state: RootState) => state.token,
-	);
-
 	// function testSave() {
 	// 	// Transform formData to match the expected type for saveShiftRequest
 	// 	if (!formData.weekStart) {
@@ -57,29 +53,28 @@ const ActionButton = () => {
 	// 	}
 	// }
 
-	async function saveShiftReqeust(
-		userToken: string | null,
-		storeToken: string | null,
-		groupToken: string | null,
-	) {
-		if (!userToken || !storeToken || !groupToken) {
-			return alert("トークン情報がありません");
-		}
+	const saveShiftReqeust = async () => {
 		if (confirm("lineグループにシフト提出を依頼しますか？")) {
 			const updateStatusFormData = {
 				...formData,
 				status: RequestStatus.REQUEST,
 			};
-			await handleUpsertShiftRequest({
-				userToken,
-				storeToken,
+			const upsertShift = await handleUpsertShiftRequest({
 				formData: updateStatusFormData,
 			});
-			await handleSendShiftRequest({ userToken, storeToken, groupToken });
+
+			const sendData: RequestShiftMessageType = {
+				shiftRequestId: upsertShift?.id || "",
+				startDate: String(upsertShift?.weekStart),
+				endDate: String(upsertShift?.weekEnd),
+				deadline: String(upsertShift?.deadline),
+			};
+
+			await handleSendShiftRequest({ sendData });
 			return;
 		}
-		await handleUpsertShiftRequest({ userToken, storeToken, formData });
-	}
+		await handleUpsertShiftRequest({ formData });
+	};
 
 	async function changeFormStep(
 		step: CreateRequestStep,
@@ -102,7 +97,7 @@ const ActionButton = () => {
 					return;
 				}
 				// testSave();
-				await saveShiftReqeust(userToken, storeToken, groupToken);
+				await saveShiftReqeust();
 				drawerClose();
 				setStep(CreateRequestStep.Period);
 				console.log("Submitting form with data:", formData);

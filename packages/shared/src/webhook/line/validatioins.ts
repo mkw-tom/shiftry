@@ -5,8 +5,12 @@ export const RequestShiftMessageValidate = z.object({
 		.string()
 		.uuid("this id format is invalid")
 		.min(1, "Shift request ID is required"),
-	startDate: z.string().min(1, "Start date is required"),
-	endDate: z.string().min(1, "End date is required"),
+	startDate: z.string().refine((val) => !Number.isNaN(Date.parse(val)), {
+		message: "Invalid date format",
+	}),
+	endDate: z.string().refine((val) => !Number.isNaN(Date.parse(val)), {
+		message: "Invalid date format",
+	}),
 	deadline: z.string().min(1, "Deadline is required"),
 });
 export type RequestShiftMessageType = z.infer<
@@ -18,8 +22,12 @@ export const ConfirmShiftMessageValidate = z.object({
 		.string()
 		.uuid("this id format is invalid")
 		.min(1, "Shift request ID is required"),
-	startDate: z.string().min(1, "Start date is required"),
-	endDate: z.string().min(1, "End date is required"),
+	startDate: z.string().refine((val) => !Number.isNaN(Date.parse(val)), {
+		message: "Invalid date format",
+	}),
+	endDate: z.string().refine((val) => !Number.isNaN(Date.parse(val)), {
+		message: "Invalid date format",
+	}),
 });
 export type ConfirmShiftMessageType = z.infer<
 	typeof ConfirmShiftMessageValidate

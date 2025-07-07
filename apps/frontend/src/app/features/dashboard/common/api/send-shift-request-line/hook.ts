@@ -1,23 +1,34 @@
+import type { RootState } from "@/app/redux/store";
+import type { RequestShiftMessageType } from "@shared/webhook/line/validatioins";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { sendShiftRequest } from "./api";
 
 export const useSendShiftReqeust = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+	const { userToken, storeToken, groupToken } = useSelector(
+		(state: RootState) => state.token,
+	);
 
 	const handleSendShiftRequest = async ({
-		userToken,
-		storeToken,
-		groupToken,
+		sendData,
 	}: {
-		userToken: string;
-		storeToken: string;
-		groupToken: string;
+		sendData: RequestShiftMessageType;
 	}) => {
 		setIsLoading(true);
 		setError(null);
 		try {
-			const res = await sendShiftRequest({ userToken, storeToken, groupToken });
+			if (!userToken || !storeToken || !groupToken) {
+				setError("トークンが見つかりません。");
+				return;
+			}
+			const res = await sendShiftRequest({
+				userToken,
+				storeToken,
+				groupToken,
+				sendData,
+			});
 			if (!res.ok) {
 				if ("errors" in res) {
 					setError("通信エラーが発生しました");

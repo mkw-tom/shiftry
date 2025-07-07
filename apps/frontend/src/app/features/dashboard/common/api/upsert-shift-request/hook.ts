@@ -1,27 +1,30 @@
 import { saveShiftRequest } from "@/app/redux/slices/shiftRequests";
-import type { AppDispatch } from "@/app/redux/store";
+import type { AppDispatch, RootState } from "@/app/redux/store";
 import type { UpsertShiftRequetType } from "@shared/shift/request/validations/put";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { upsertShiftRequest } from "./api";
 
 export const useUpsertShiftReqeust = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const dispatch = useDispatch<AppDispatch>();
+	const { userToken, storeToken } = useSelector(
+		(state: RootState) => state.token,
+	);
 
 	const handleUpsertShiftRequest = async ({
-		userToken,
-		storeToken,
 		formData,
 	}: {
-		userToken: string;
-		storeToken: string;
 		formData: UpsertShiftRequetType;
 	}) => {
 		setIsLoading(true);
 		setError(null);
 		try {
+			if (!userToken || !storeToken) {
+				setError("トークンが見つかりません。");
+				return;
+			}
 			const res = await upsertShiftRequest({ userToken, storeToken, formData });
 			if (!res.ok) {
 				if ("errors" in res) {
@@ -35,6 +38,7 @@ export const useUpsertShiftReqeust = () => {
 			}
 
 			dispatch(saveShiftRequest(res.shiftRequest));
+			return res.shiftRequest;
 		} catch (err) {
 			setError("通信エラーが発生しました。");
 			console.warn("エラー:", error);
