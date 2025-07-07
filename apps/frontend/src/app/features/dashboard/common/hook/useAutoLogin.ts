@@ -25,7 +25,7 @@ export const useAutoLogin = () => {
 		userToken: string;
 		storeToken: string;
 		groupToken: string;
-	}) => {
+	}): Promise<{ ok: boolean }> => {
 		setIsLoading(true);
 		setError(false);
 		try {
@@ -35,11 +35,11 @@ export const useAutoLogin = () => {
 					setError(true);
 
 					console.warn(res.message, res.errors);
-					return;
+					return { ok: false };
 				}
 				setError(true);
 				console.warn("エラー:", res.message);
-				return;
+				return { ok: false };
 			}
 
 			dispatch(setUserToken(res.user_token));
@@ -48,8 +48,10 @@ export const useAutoLogin = () => {
 			dispatch(setUser(res.user));
 			dispatch(setStore(res.store));
 			dispatch(setShiftRequests(res.shiftRequests));
+			return { ok: true };
 		} catch (err) {
 			console.warn("通信エラー:", err);
+			return { ok: false };
 		} finally {
 			setIsLoading(false);
 		}

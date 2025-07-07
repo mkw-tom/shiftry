@@ -1,7 +1,9 @@
 "use client";
 import type { RootState } from "@/app/redux/store";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { set } from "zod/v4-mini";
 import { useAutoLogin } from "../../common/hook/useAutoLogin";
 import AutoLoginError from "./AutoLoginError";
 import AutoLoginLoading from "./AutoLoginLoading";
@@ -18,13 +20,25 @@ const HomeContent = () => {
 	const { store } = useSelector((state: RootState) => state.store);
 	const { stores } = useSelector((state: RootState) => state.stores);
 	const { handleAutoLogin, error, isLoading, setError } = useAutoLogin();
+	const router = useRouter();
+	const searchParams = useSearchParams();
+	const storeId = searchParams.get("storeId");
+	const shiftRequestId = searchParams.get("shiftRequestId");
+
 	const hasRun = useRef(false);
 
 	useEffect(() => {
 		const autoLoginFunc = async () => {
+			const tokenRaw = localStorage.getItem("persist:root");
+			if (!tokenRaw) {
+				router.replace(
+					`/register/staff?storeId=${storeId}&shiftRequestId=${shiftRequestId}`,
+				);
+				return;
+			}
+
 			const isLoggedIn = !!user?.id && !!store?.id && stores.length > 0;
 			const hasTokens = !!userToken && !!storeToken && !!groupToken;
-
 			if (isLoggedIn || hasRun.current) return;
 			if (!hasTokens) {
 				setError(true);
@@ -32,7 +46,18 @@ const HomeContent = () => {
 			}
 
 			hasRun.current = true;
-			await handleAutoLogin({ userToken: userToken, storeToken, groupToken });
+			const res = await handleAutoLogin({
+				userToken,
+				storeToken,
+				groupToken,
+			});
+			if (!res.ok) {
+				setError(true);
+			}
+
+			if (storeId || shiftRequestId) {
+				setSelect("SUBMIT");
+			}
 		};
 		autoLoginFunc();
 	}, [
@@ -44,10 +69,13 @@ const HomeContent = () => {
 		groupToken,
 		setError,
 		handleAutoLogin,
+		storeId,
+		shiftRequestId,
+		router,
 	]);
 
 	if (error === true) {
-		return <AutoLoginError />;
+		return <AutoLoginError storeId={storeId} shiftRequestId={shiftRequestId} />;
 	}
 	if (isLoading) {
 		return <AutoLoginLoading />;

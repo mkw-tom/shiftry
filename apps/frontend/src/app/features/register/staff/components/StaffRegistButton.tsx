@@ -1,8 +1,6 @@
-import type { RootState } from "@/app/redux/store";
-import { userInputType } from "@shared/api/auth/validations/register-staff";
+import { useSearchParams } from "next/navigation";
 import React from "react";
 import type { FieldError } from "react-hook-form";
-import { useSelector } from "react-redux";
 import { useStaffRegisterStep } from "../context/useStaffRegisterStep";
 
 const StaffRegistButton = ({
@@ -13,19 +11,24 @@ const StaffRegistButton = ({
 	isDisabled: boolean | FieldError;
 }) => {
 	const { stepLoading, changeStep } = useStaffRegisterStep();
-	const { user } = useSelector((state: RootState) => state.user);
+	const searchParams = useSearchParams();
+	const storeId = searchParams.get("storeId");
+	const shiftRequestId = searchParams.get("shiftRequestId");
 
-	// const userInput = {
-	//   name: name,
-	//   role: user?.role,
-	//   pictureUrl: user?.pictureUrl,
-	// } as userInputType;
+	const storeInput =
+		storeId && shiftRequestId ? { storeId, shiftRequestId } : null;
 
 	return (
 		<button
 			type="button"
 			className="btn btn-sm sm:btn-md  bg-green02  rounded-full border-none w-2/3  mx-auto text-white"
-			onClick={() => changeStep(name)}
+			onClick={() => {
+				if (!storeInput) {
+					alert("店舗情報が不正です。LINE連携からやり直してください。");
+					return;
+				}
+				changeStep(name, storeInput);
+			}}
 			disabled={!!isDisabled}
 		>
 			{!stepLoading ? (

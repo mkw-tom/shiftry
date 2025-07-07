@@ -8,6 +8,7 @@ import {
 } from "@/app/redux/slices/token";
 import { setUser } from "@/app/redux/slices/user";
 import type { userInputType } from "@shared/api/auth/validations/register-owner";
+import type { storeIdandShfitReruestIdType } from "@shared/api/auth/validations/register-staff";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { postRegisterStaff } from "./registerStaff";
@@ -21,8 +22,10 @@ export const usePostRegisterStaff = () => {
 
 	const handleRegisterStaff = async ({
 		name,
+		storeInput,
 	}: {
 		name: string;
+		storeInput: storeIdandShfitReruestIdType;
 	}): Promise<{ ok: boolean }> => {
 		setIsLoading(true);
 		setError(null);
@@ -38,11 +41,6 @@ export const usePostRegisterStaff = () => {
 				role: user?.role,
 				pictureUrl: user?.pictureUrl,
 			} as userInputType;
-
-			const storeInput = {
-				storeId: "ghigheg",
-				shiftRequestId: "ghehiagh",
-			};
 
 			const res = await postRegisterStaff({ lineToken, userInput, storeInput });
 			if (!res.ok) {
