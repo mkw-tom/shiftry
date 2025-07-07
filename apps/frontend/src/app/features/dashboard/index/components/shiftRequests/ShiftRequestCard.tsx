@@ -1,5 +1,5 @@
-import { MDW, YMDHM, YMDW } from "@/app/features/common/hooks/useFormatDate";
 import type { RequestStatus } from "@shared/api/common/types/prisma";
+import { MDW, YMDHM, YMDW } from "@shared/utils/formatDate";
 import React, { type JSX, JSXElementConstructor } from "react";
 import { BiCheck, BiEdit, BiEditAlt } from "react-icons/bi";
 import { LuSend } from "react-icons/lu";

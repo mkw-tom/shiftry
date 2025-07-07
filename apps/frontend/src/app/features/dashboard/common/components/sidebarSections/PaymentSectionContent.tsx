@@ -1,5 +1,5 @@
-import { YMDHM } from "@/app/features/common/hooks/useFormatDate";
 import type { RootState } from "@/app/redux/store";
+import { YMDHM } from "@shared/utils/formatDate";
 import React from "react";
 import { useSelector } from "react-redux";
 
