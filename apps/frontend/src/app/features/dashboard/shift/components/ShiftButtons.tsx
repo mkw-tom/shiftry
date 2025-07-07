@@ -1,4 +1,4 @@
-import type { ShiftStatus } from "@shared/common/types/prisma";
+import type { ShiftStatus } from "@shared/api/common/types/prisma";
 import AdjustButton from "./AdjustButton";
 import ConfirmButton from "./ConfirmButton";
 import DownloadButton from "./DownloadButton";

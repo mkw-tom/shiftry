@@ -1,9 +1,9 @@
 import { API_URL } from "@/app/lib/env";
-import type { LoginResponse } from "@shared/auth/types/login";
+import type { LoginResponse } from "@shared/api/auth/types/login";
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/common/types/errors";
+} from "@shared/api/common/types/errors";
 
 export const login = async (
 	lineToken: string,

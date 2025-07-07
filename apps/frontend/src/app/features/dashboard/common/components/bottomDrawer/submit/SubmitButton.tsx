@@ -1,4 +1,4 @@
-import { UpsertSubmittedShiftInputType } from "@shared/shift/submit/validations/put";
+import { UpsertSubmittedShiftInputType } from "@shared/api/shift/submit/validations/put";
 import React from "react";
 
 const SubmitButton = ({

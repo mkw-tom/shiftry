@@ -2,8 +2,8 @@ import { API_URL } from "@/app/lib/env";
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/common/types/errors";
-import type { GetPaymentResponse } from "@shared/payment/types/get";
+} from "@shared/api/common/types/errors";
+import type { GetPaymentResponse } from "@shared/api/payment/types/get";
 
 export const getMyPayment = async (
 	userToken: string | null,

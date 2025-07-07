@@ -1,5 +1,5 @@
 import type { RootState } from "@/app/redux/store";
-import type { createPaymentType } from "@shared/payment/validations/post";
+import type { createPaymentType } from "@shared/api/payment/validations/post";
 import { useSelector } from "react-redux";
 import { useRegisterLoadingUI } from "../../common/context/useRegisterLoadingUI";
 import { postCreatePayment } from "../api/registerPayment";

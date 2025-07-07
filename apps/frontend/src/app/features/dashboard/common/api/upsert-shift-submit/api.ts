@@ -2,9 +2,9 @@ import { API_URL } from "@/app/lib/env";
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/common/types/errors";
-import type { UpsertSubmittedShfitResponse } from "@shared/shift/submit/types/put";
-import type { UpsertSubmittedShiftInputType } from "@shared/shift/submit/validations/put";
+} from "@shared/api/common/types/errors";
+import type { UpsertSubmittedShfitResponse } from "@shared/api/shift/submit/types/put";
+import type { UpsertSubmittedShiftInputType } from "@shared/api/shift/submit/validations/put";
 
 export const upsertSubmitShift = async ({
 	userToken,

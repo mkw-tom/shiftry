@@ -1,6 +1,6 @@
 import { YMDW } from "@/app/features/common/hooks/useFormatDate";
 import type { RootState } from "@/app/redux/store";
-import type { Store } from "@shared/common/types/prisma";
+import type { Store } from "@shared/api/common/types/prisma";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useInit } from "../hooks/useInit";

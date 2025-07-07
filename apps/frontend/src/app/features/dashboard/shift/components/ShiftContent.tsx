@@ -4,7 +4,7 @@ import type { RootState } from "@/app/redux/store";
 import type {
 	AssignShiftWithJson,
 	ShiftRequestWithJson,
-} from "@shared/common/types/merged";
+} from "@shared/api/common/types/merged";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";

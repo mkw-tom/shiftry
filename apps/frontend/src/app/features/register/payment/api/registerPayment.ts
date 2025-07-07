@@ -2,9 +2,9 @@ import { API_URL } from "@/app/lib/env";
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/common/types/errors";
-import type { CreatePaymentResponse } from "@shared/payment/types/post";
-import type { createPaymentType } from "@shared/payment/validations/post";
+} from "@shared/api/common/types/errors";
+import type { CreatePaymentResponse } from "@shared/api/payment/types/post";
+import type { createPaymentType } from "@shared/api/payment/validations/post";
 
 export const postCreatePayment = async (
 	userToken: string | null,

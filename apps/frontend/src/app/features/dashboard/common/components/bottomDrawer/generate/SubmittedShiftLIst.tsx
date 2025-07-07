@@ -1,6 +1,6 @@
-import type { shiftsOfSubmittedType } from "@shared/common/types/json";
-import { SubmittedShiftWithJson } from "@shared/common/types/merged";
-import { ShiftStatus, type SubmittedShift } from "@shared/common/types/prisma";
+import type { shiftsOfSubmittedType } from "@shared/api/common/types/json";
+import { SubmittedShiftWithJson } from "@shared/api/common/types/merged";
+import { ShiftStatus, type SubmittedShift } from "@shared/api/common/types/prisma";
 import React, { useEffect } from "react";
 import { useGenareteShift } from "../../../context/useGenerateShift";
 import SubmittedShiftListModal from "./SubmittedShiftListModal";

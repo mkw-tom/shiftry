@@ -2,8 +2,8 @@ import { API_URL } from "@/app/lib/env";
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/common/types/errors";
-import type { GetStoresFromUserResponse } from "@shared/store/types/me";
+} from "@shared/api/common/types/errors";
+import type { GetStoresFromUserResponse } from "@shared/api/store/types/me";
 
 export const getMyStores = async (
 	userToken: string | null,

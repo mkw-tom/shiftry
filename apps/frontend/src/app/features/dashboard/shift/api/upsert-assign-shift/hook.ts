@@ -1,6 +1,6 @@
 import type { RootState } from "@/app/redux/store";
-import type { GetAssigShiftResponse } from "@shared/shift/assign/types/get-by-shift-request-id";
-import type { upsertAssignShfitInputType } from "@shared/shift/assign/validations/put";
+import type { GetAssigShiftResponse } from "@shared/api/shift/assign/types/get-by-shift-request-id";
+import type { upsertAssignShfitInputType } from "@shared/api/shift/assign/validations/put";
 import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { upsertAssignShift } from "./api";

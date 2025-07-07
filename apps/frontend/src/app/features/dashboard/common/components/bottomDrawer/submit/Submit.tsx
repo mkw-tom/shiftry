@@ -1,8 +1,8 @@
 "use client";
 import type { RootState } from "@/app/redux/store";
-import type { shiftsOfSubmittedType } from "@shared/common/types/json";
-import { ShiftStatus } from "@shared/common/types/prisma";
-import type { UpsertSubmittedShiftInputType } from "@shared/shift/submit/validations/put";
+import type { shiftsOfSubmittedType } from "@shared/api/common/types/json";
+import { ShiftStatus } from "@shared/api/common/types/prisma";
+import type { UpsertSubmittedShiftInputType } from "@shared/api/shift/submit/validations/put";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useGetSubmittedShiftUserOne } from "../../../api/get-shift-submit-one/hook";

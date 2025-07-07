@@ -1,4 +1,4 @@
-import type { AssignShiftWithJson } from "@shared/common/types/merged";
+import type { AssignShiftWithJson } from "@shared/api/common/types/merged";
 import { type Dispatch, type SetStateAction, useState } from "react";
 import { BiArrowToRight } from "react-icons/bi";
 import { PiUser } from "react-icons/pi";

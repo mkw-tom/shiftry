@@ -1,13 +1,8 @@
 import { MDW, YMDHM, YMDW } from "@/app/features/common/hooks/useFormatDate";
-import type { ShiftRequest } from "@shared/common/types/prisma";
-import type { RequestStatus } from "@shared/common/types/prisma";
+import type { RequestStatus } from "@shared/api/common/types/prisma";
 import React, { type JSX, JSXElementConstructor } from "react";
 import { BiCheck, BiEdit, BiEditAlt } from "react-icons/bi";
-import { FaRegEdit } from "react-icons/fa";
-import { FaScaleBalanced } from "react-icons/fa6";
 import { LuSend } from "react-icons/lu";
-import { SiOpenai } from "react-icons/si";
-import { TbCalendarCheck } from "react-icons/tb";
 import type { ShiftRequestWithJson } from "../../../common/context/useBottomDrawer";
 import ActionButtons from "./ActionButtons";
 

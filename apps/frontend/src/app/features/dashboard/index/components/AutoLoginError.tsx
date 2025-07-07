@@ -1,11 +1,7 @@
 import { useNavigation } from "@/app/lib/navigation";
-import { clearStore } from "@/app/redux/slices/store";
-import { clearStores, setStores } from "@/app/redux/slices/stores";
-import { clearAllTokens, clearLineToken } from "@/app/redux/slices/token";
-import { clearUser } from "@/app/redux/slices/user";
-import { RootState } from "@/app/redux/store";
+import { clearAllTokens } from "@/app/redux/slices/token";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const AutoLoginError = () => {
 	const dispatch = useDispatch();

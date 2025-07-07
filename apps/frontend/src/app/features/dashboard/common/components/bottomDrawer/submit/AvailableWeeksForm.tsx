@@ -1,6 +1,6 @@
-import { availableWeekType } from "@shared/common/types/json";
-import type { DefaultTimePositionsType } from "@shared/common/types/json";
-import type { UpsertSubmittedShiftInputType } from "@shared/shift/submit/validations/put";
+import { availableWeekType } from "@shared/api/common/types/json";
+import type { DefaultTimePositionsType } from "@shared/api/common/types/json";
+import type { UpsertSubmittedShiftInputType } from "@shared/api/shift/submit/validations/put";
 import type React from "react";
 import type { Dispatch, SetStateAction } from "react";
 import { RiTimeLine } from "react-icons/ri";

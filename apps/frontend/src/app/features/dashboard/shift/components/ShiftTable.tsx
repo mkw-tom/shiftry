@@ -2,7 +2,7 @@ import { MDW } from "@/app/features/common/hooks/useFormatDate";
 import type {
 	AssignShiftWithJson,
 	ShiftRequestWithJson,
-} from "@shared/common/types/merged";
+} from "@shared/api/common/types/merged";
 import type { Dispatch, SetStateAction } from "react";
 import HandleAdjustModal from "./HandleAdjustModal";
 

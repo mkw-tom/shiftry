@@ -2,9 +2,9 @@ import { API_URL } from "@/app/lib/env";
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/common/types/errors";
-import type { CreateShiftAiResponse } from "@shared/shift/ai/types/post-create";
-import type { CreateShiftValidateType } from "@shared/shift/ai/validations/post-create";
+} from "@shared/api/common/types/errors";
+import type { CreateShiftAiResponse } from "@shared/api/shift/ai/types/post-create";
+import type { CreateShiftValidateType } from "@shared/api/shift/ai/validations/post-create";
 
 export const generateShiftWithAI = async ({
 	userToken,

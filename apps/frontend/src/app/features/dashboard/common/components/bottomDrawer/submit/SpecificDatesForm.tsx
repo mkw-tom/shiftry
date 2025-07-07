@@ -1,5 +1,5 @@
 import { MDW } from "@/app/features/common/hooks/useFormatDate";
-import type { UpsertSubmittedShiftInputType } from "@shared/shift/submit/validations/put";
+import type { UpsertSubmittedShiftInputType } from "@shared/api/shift/submit/validations/put";
 import React, { type Dispatch, type SetStateAction, useState } from "react";
 import { MdOutlineHolidayVillage } from "react-icons/md";
 import { RiTimeLine } from "react-icons/ri";

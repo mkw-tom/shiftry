@@ -1,6 +1,6 @@
 import { useMembersHook } from "@/app/features/common/api/get-members/hook";
 import type { RootState } from "@/app/redux/store";
-import { type User, UserRole } from "@shared/common/types/prisma";
+import { type User, UserRole } from "@shared/api/common/types/prisma";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import Member from "./Member";

@@ -1,6 +1,6 @@
 import { setStoreToken, setUserToken } from "@/app/redux/slices/token";
 import type { AppDispatch, RootState } from "@/app/redux/store";
-import type { userInputType } from "@shared/auth/validations/register-owner";
+import type { userInputType } from "@shared/api/auth/validations/register-owner";
 import { useDispatch, useSelector } from "react-redux";
 import { useRegisterLoadingUI } from "../../common/context/useRegisterLoadingUI";
 import { postRegisterOwner } from "../api/registerOwner";
