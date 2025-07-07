@@ -37,9 +37,10 @@ export const URI_CONNECT_LINE_GROUP = process.env
 	.URI_CONNECT_LINE_GROUP as string;
 export const URI_REGISTER_STAFF = process.env.URI_REGISTER_STAFF as string;
 export const URI_SHIFT_SUBMITTED = process.env.URI_SHIFT_SUBMITTED as string;
-export const URI_SHIFT_CONFIRMATIOIN = process.env
-	.URI_SHIFT_CONFIRMATIOIN as string;
+export const URI_SHIFT_CONFIRMATION = process.env
+	.URI_SHIFT_CONFIRMATION as string;
 
 export const STRIPE_TRIAL_DAYS = process.env.STRIPE_TRIAL_DAYS as string;
 
 export const OPENAI_API_KEY = process.env.OPENAI_API_KEY as string;
+export const URI_DASHBOARD = process.env.URI_DASHBOARD as string;
