@@ -42,9 +42,9 @@ export const useInit = () => {
 			dispatch(setShiftRequests(res.shiftRequests));
 			dispatch(setGroupToken(res.group_token));
 			dispatch(setStoreToken(res.store_token));
-			if(shiftRequestId) {
+			if (shiftRequestId) {
 				router.replace(`/dashboard?shiftRequestId=${shiftRequestId}`);
-				return 
+				return;
 			}
 			return router.replace("/dashboard");
 		} catch (err) {
