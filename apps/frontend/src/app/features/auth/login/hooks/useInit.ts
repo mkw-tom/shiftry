@@ -3,6 +3,7 @@ import { setShiftRequests } from "@/app/redux/slices/shiftRequests";
 import { setStore } from "@/app/redux/slices/store";
 import { setGroupToken, setStoreToken } from "@/app/redux/slices/token";
 import type { AppDispatch } from "@/app/redux/store";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { init } from "../api/init";
@@ -11,7 +12,9 @@ export const useInit = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const dispatch = useDispatch<AppDispatch>();
-	const { navigateDashboard } = useNavigation();
+	const searchParams = useSearchParams();
+	const router = useRouter();
+	const shiftRequestId = searchParams.get("shiftRequestId");
 
 	const handleInit = async ({
 		userToken,
@@ -39,7 +42,11 @@ export const useInit = () => {
 			dispatch(setShiftRequests(res.shiftRequests));
 			dispatch(setGroupToken(res.group_token));
 			dispatch(setStoreToken(res.store_token));
-			navigateDashboard();
+			if (shiftRequestId) {
+				router.replace(`/dashboard?shiftRequestId=${shiftRequestId}`);
+				return;
+			}
+			return router.replace("/dashboard");
 		} catch (err) {
 			setError("通信エラーが発生しました。");
 			console.warn("エラー:", error);
