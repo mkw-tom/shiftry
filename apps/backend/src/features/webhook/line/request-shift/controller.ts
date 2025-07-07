@@ -1,13 +1,19 @@
-import type { ErrorResponse } from "@shared/common/types/errors";
+import type {
+	ErrorResponse,
+	ValidationErrorResponse,
+} from "@shared/common/types/errors";
 import type { LineMessageAPIResponse } from "@shared/webhook/line/types";
+import { RequestShiftMessageValidate } from "@shared/webhook/line/validatioins";
 import type { Request, Response } from "express";
-import { URI_SHIFT_SUBMITTED } from "../../../../lib/env";
+import { URI_DASHBOARD } from "../../../../lib/env";
 import { verifyUserStoreForOwnerAndManager } from "../../../common/authorization.service";
 import { sendGroupFlexMessage } from "../service";
 
 const sendShiftRequestFuncController = async (
 	req: Request,
-	res: Response<LineMessageAPIResponse | ErrorResponse>,
+	res: Response<
+		LineMessageAPIResponse | ErrorResponse | ValidationErrorResponse
+	>,
 ) => {
 	try {
 		const userId = req.userId as string;
@@ -15,15 +21,29 @@ const sendShiftRequestFuncController = async (
 		const groupId = req.groupId as string;
 		await verifyUserStoreForOwnerAndManager(userId, storeId);
 
+		const parsed = RequestShiftMessageValidate.safeParse(req.body);
+		if (!parsed.success) {
+			console.error("❌ リクエストのバリデーションエラー:", parsed.error);
+			res.status(400).json({
+				ok: false,
+				message: "Invalid request data",
+				errors: parsed.error.errors,
+			});
+			return;
+		}
+		const { shiftRequestId, startDate, endDate, deadline } = parsed.data;
+
 		await sendGroupFlexMessage(groupId, {
-			text1: "スタッフの皆さんへ🎉",
-			text2: "以下のボタンから希望提出を必ずお願いします！",
-			text3: "提出期限：",
+			text1: "シフト希望提出のお知らせ🔔",
+			text2: `シフト期間：${startDate} 〜 ${endDate}`,
+			text3: `提出期限：${deadline}`,
 			label: "シフト希望提出",
-			uri: URI_SHIFT_SUBMITTED,
+			uri: `${URI_DASHBOARD}?storeId=${storeId}&shiftRequestId=${shiftRequestId}`,
 		});
 
-		res.status(200).json({ ok: true, message: "sucess send a shift request" });
+		res
+			.status(200)
+			.json({ ok: true, message: "successfully sent shift request" });
 	} catch (error) {
 		console.error("❌ Webhook処理エラー:", error);
 		res.status(500).json({ ok: false, message: "Failed to send message " });
