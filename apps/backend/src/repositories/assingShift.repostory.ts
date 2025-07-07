@@ -1,4 +1,4 @@
-import type { AssignShift } from "@shared/common/types/prisma";
+import type { AssignShift } from "@shared/api/common/types/prisma";
 import prisma from "../config/database";
 import type { upsertAssignShfitInputType } from "../types/inputs";
 

@@ -1,10 +1,10 @@
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/common/types/errors";
-import { ShiftStatus } from "@shared/common/types/prisma";
-import type { CreateShiftAiResponse } from "@shared/shift/ai/types/post-create";
-import { CreateShiftAiValidate } from "@shared/shift/ai/validations/post-create";
+} from "@shared/api/common/types/errors";
+import { ShiftStatus } from "@shared/api/common/types/prisma";
+import type { CreateShiftAiResponse } from "@shared/api/shift/ai/types/post-create";
+import { CreateShiftAiValidate } from "@shared/api/shift/ai/validations/post-create";
 import type { Request, Response } from "express";
 import { verifyUserStoreForOwner } from "../../../common/authorization.service";
 import { parsePrioritiesFromAi } from "./parsePriorities.ai";

@@ -1,5 +1,5 @@
 import type { UserRole } from "@prisma/client";
-import type { ChangeUserRoleServiceResponse } from "@shared/user/types/change-role";
+import type { ChangeUserRoleServiceResponse } from "@shared/api/user/types/change-role";
 import { changeUserRole } from "../../../repositories/user.repository";
 import { changeUserRoleToUserStore } from "../../../repositories/userStore.repository";
 

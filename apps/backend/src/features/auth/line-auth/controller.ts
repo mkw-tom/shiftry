@@ -1,5 +1,5 @@
-import type { LineAuthResponse } from "@shared/auth/types/line-auth";
-import type { ErrorResponse } from "@shared/common/types/errors";
+import type { LineAuthResponse } from "@shared/api/auth/types/line-auth";
+import type { ErrorResponse } from "@shared/api/common/types/errors";
 import type { Request, Response } from "express";
 import { generateJWT } from "../../../utils/JWT/jwt";
 import lineAuth from "./service";

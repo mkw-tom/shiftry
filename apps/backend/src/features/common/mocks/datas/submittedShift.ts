@@ -1,4 +1,4 @@
-import type { shiftsOfSubmittedType } from "@shared/common/types/json";
+import type { shiftsOfSubmittedType } from "@shared/api/common/types/json";
 
 export const mockShiftsOfSubmitted: shiftsOfSubmittedType = {
 	name: "テスト人間",

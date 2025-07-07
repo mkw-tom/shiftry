@@ -1,9 +1,9 @@
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/common/types/errors";
-import type { UpdateUserProfileResponse } from "@shared/user/types/put";
-import { updateUserProlfileValidate } from "@shared/user/validations/put";
+} from "@shared/api/common/types/errors";
+import type { UpdateUserProfileResponse } from "@shared/api/user/types/put";
+import { updateUserProlfileValidate } from "@shared/api/user/validations/put";
 import type { Request, Response } from "express";
 import { updateUser } from "../../../repositories/user.repository";
 import { verifyUser } from "../../common/authorization.service";

@@ -1,5 +1,5 @@
-import type { ErrorResponse } from "@shared/common/types/errors";
-import type { DeleteUserByOwnerResponse } from "@shared/user/types/delete-by-user-id";
+import type { ErrorResponse } from "@shared/api/common/types/errors";
+import type { DeleteUserByOwnerResponse } from "@shared/api/user/types/delete-by-user-id";
 import type { Request, Response } from "express";
 import { deleteUser } from "../../../repositories/user.repository";
 import { verifyUserForOwner } from "../../common/authorization.service";

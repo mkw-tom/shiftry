@@ -1,5 +1,5 @@
-import type { ErrorResponse } from "@shared/common/types/errors";
-import type { GetShiftRequestResponse } from "@shared/shift/request/types/get";
+import type { ErrorResponse } from "@shared/api/common/types/errors";
+import type { GetShiftRequestResponse } from "@shared/api/shift/request/types/get";
 import type { Request, Response } from "express";
 import { getShiftRequestByStoreId } from "../../../../repositories/shiftRequest.repository";
 import { verifyUserStore } from "../../../common/authorization.service";

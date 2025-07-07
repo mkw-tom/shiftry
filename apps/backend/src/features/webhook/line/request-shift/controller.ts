@@ -1,9 +1,9 @@
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/common/types/errors";
-import type { LineMessageAPIResponse } from "@shared/webhook/line/types";
-import { RequestShiftMessageValidate } from "@shared/webhook/line/validatioins";
+} from "@shared/api/common/types/errors";
+import type { LineMessageAPIResponse } from "@shared/api/webhook/line/types";
+import { RequestShiftMessageValidate } from "@shared/api/webhook/line/validatioins";
 import type { Request, Response } from "express";
 import { URI_DASHBOARD } from "../../../../lib/env";
 import { verifyUserStoreForOwnerAndManager } from "../../../common/authorization.service";

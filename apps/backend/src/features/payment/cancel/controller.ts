@@ -1,5 +1,5 @@
-import type { ErrorResponse } from "@shared/common/types/errors";
-import type { CancelSubscriptionResponse } from "@shared/payment/types/cancel";
+import type { ErrorResponse } from "@shared/api/common/types/errors";
+import type { CancelSubscriptionResponse } from "@shared/api/payment/types/cancel";
 import type { Request, Response } from "express";
 import { verifyUserStoreForOwner } from "../../common/authorization.service";
 import cancelSubscriptionService from "./service";

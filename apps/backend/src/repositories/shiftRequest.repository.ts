@@ -1,4 +1,4 @@
-import type { ShiftRequest } from "@shared/common/types/prisma";
+import type { ShiftRequest } from "@shared/api/common/types/prisma";
 import prisma from "../config/database";
 import type { UpsertShiftRequetType } from "../types/inputs";
 

@@ -1,5 +1,5 @@
 import type { Prisma } from "@prisma/client";
-import type { SubmittedShift } from "@shared/common/types/prisma";
+import type { SubmittedShift } from "@shared/api/common/types/prisma";
 import prisma from "../config/database";
 import type { UpsertSubmittedShiftInputType } from "../types/inputs";
 

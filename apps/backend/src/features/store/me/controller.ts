@@ -1,5 +1,5 @@
-import type { ErrorResponse } from "@shared/common/types/errors";
-import type { GetStoresFromUserResponse } from "@shared/store/types/me";
+import type { ErrorResponse } from "@shared/api/common/types/errors";
+import type { GetStoresFromUserResponse } from "@shared/api/store/types/me";
 import type { Request, Response } from "express";
 import { getStoreFromUser } from "../../../repositories/userStore.repository";
 import { verifyUser } from "../../common/authorization.service";

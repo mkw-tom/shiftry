@@ -1,5 +1,5 @@
-import type { ErrorResponse } from "@shared/common/types/errors";
-import type { GetSubmittedShiftUserOneResponse } from "@shared/shift/submit/types/get-one";
+import type { ErrorResponse } from "@shared/api/common/types/errors";
+import type { GetSubmittedShiftUserOneResponse } from "@shared/api/shift/submit/types/get-one";
 import type { Request, Response } from "express";
 import { getSubmittedShiftUserOne } from "../../../../repositories/submittedShift.repository";
 // import { getSubmittedShiftUser } from "../../../../repositories/submittedShift.repository";

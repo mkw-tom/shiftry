@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 
-import type { ErrorResponse } from "@shared/common/types/errors";
-import type { GetShiftRequestSpecificResponse } from "@shared/shift/request/types/get-by-week-start";
+import type { ErrorResponse } from "@shared/api/common/types/errors";
+import type { GetShiftRequestSpecificResponse } from "@shared/api/shift/request/types/get-by-week-start";
 import { getShiftRequestSpecific } from "../../../../repositories/shiftRequest.repository";
 import { verifyUserStore } from "../../../common/authorization.service";
 
