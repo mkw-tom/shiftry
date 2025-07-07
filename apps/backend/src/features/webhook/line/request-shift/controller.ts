@@ -4,6 +4,7 @@ import type {
 } from "@shared/api/common/types/errors";
 import type { LineMessageAPIResponse } from "@shared/api/webhook/line/types";
 import { RequestShiftMessageValidate } from "@shared/api/webhook/line/validatioins";
+import { MDW, YMDHM } from "@shared/utils/formatDate";
 import type { Request, Response } from "express";
 import { URI_DASHBOARD } from "../../../../lib/env";
 import { verifyUserStoreForOwnerAndManager } from "../../../common/authorization.service";
@@ -35,8 +36,8 @@ const sendShiftRequestFuncController = async (
 
 		await sendGroupFlexMessage(groupId, {
 			text1: "シフト希望提出のお知らせ🔔",
-			text2: `シフト期間：${startDate} 〜 ${endDate}`,
-			text3: `提出期限：${deadline}`,
+			text2: `期間：${MDW(new Date(startDate))} 〜 ${MDW(new Date(endDate))}`,
+			text3: `提出期限：${YMDHM(new Date(deadline))}`,
 			label: "シフト希望提出",
 			uri: `${URI_DASHBOARD}?storeId=${storeId}&shiftRequestId=${shiftRequestId}`,
 		});
