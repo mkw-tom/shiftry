@@ -5,7 +5,6 @@ import type {
 } from "@shared/common/types/errors";
 import type { UpsertShiftRequetResponse } from "@shared/shift/request/types/put";
 import type { UpsertShiftRequetType } from "@shared/shift/request/validations/put";
-import type { UpsertSubmittedShfitResponse } from "@shared/shift/submit/types/put";
 
 export const upsertShiftRequest = async ({
 	userToken,
