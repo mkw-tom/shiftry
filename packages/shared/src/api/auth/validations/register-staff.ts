@@ -6,7 +6,7 @@ export const userInputValidate = z.object({
 	pictureUrl: z.string().url().optional(),
 	role: z.nativeEnum(UserRole),
 });
-export type userInput = z.infer<typeof userInputValidate>;
+export type userInputType = z.infer<typeof userInputValidate>;
 
 export const storeIdandShfitReruestIdValidate = z.object({
 	storeId: z.string({ message: "Invalid storeId format" }).uuid(),

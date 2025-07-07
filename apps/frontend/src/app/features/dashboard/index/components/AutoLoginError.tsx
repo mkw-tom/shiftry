@@ -1,14 +1,21 @@
 import { useNavigation } from "@/app/lib/navigation";
 import { clearAllTokens } from "@/app/redux/slices/token";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { useDispatch } from "react-redux";
 
-const AutoLoginError = () => {
+const AutoLoginError = ({
+	storeId,
+	shiftRequestId,
+}: { storeId: string | null; shiftRequestId: string | null }) => {
 	const dispatch = useDispatch();
-	const { navigateLogin } = useNavigation();
+	const router = useRouter();
+
 	const reTryLogin = () => {
 		dispatch(clearAllTokens());
-		navigateLogin();
+		router.replace(
+			`/auth/login?storeId=${storeId}&shiftRequestId=${shiftRequestId}`,
+		);
 	};
 
 	return (
