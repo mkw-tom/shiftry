@@ -9,23 +9,7 @@ import {
 	useBottomDrawer,
 } from "../../../common/context/useBottomDrawer";
 
-const statusBadgeMap: Record<
-	ShiftStatus,
-	{ text: string; colorClass: string; icon: JSX.Element }
-> = {
-	ADJUSTMENT: {
-		text: "調整中",
-		colorClass: "bg-green01 text-white",
-		icon: <div className="loading loading-bars loading-xs" />,
-	},
-	CONFIRMED: {
-		text: "確定",
-		colorClass: "bg-green02 text-white",
-		icon: <BiCheck />,
-	},
-};
-
-const SubmitStatusCard = ({ data }: { data: ShiftRequestWithJson }) => {
+const SubmittedCard = ({ data }: { data: ShiftRequestWithJson }) => {
 	// const { text, colorClass, icon } = statusBadgeMap[data.status] ?? {
 	//   text: "不明",
 	//   colorClass: "bg-gray-400",
@@ -38,12 +22,6 @@ const SubmitStatusCard = ({ data }: { data: ShiftRequestWithJson }) => {
 			className="bg-white h-auto w-full p-4 border-b-1 border-b-gray01 py-6 "
 		>
 			<div className="flex justify-between items-center">
-				{/* <div
-          className={`badge badge-sm bg-gray02 text-white  rounded-full font-bold text-[11px] px-3 border-none flex items-center`}
-        >
-          <FaRegEdit />
-					<span>未提出</span>
-        </div> */}
 				<div
 					className={
 						"badge badge-sm bg-green01 text-white  rounded-full font-bold text-[11px] px-3 border-none flex items-center"
@@ -71,12 +49,12 @@ const SubmitStatusCard = ({ data }: { data: ShiftRequestWithJson }) => {
 					className="btn btn-sm border-green02 text-green02 bg-white"
 					onClick={() => darawerOpen(DrawerView.SUBMIT, data)}
 				>
-					<LuSend />
-					再提出
+					{/* <LuSend /> */}
+					確認
 				</button>
 			</div>
 		</li>
 	);
 };
 
-export default SubmitStatusCard;
+export default SubmittedCard;
