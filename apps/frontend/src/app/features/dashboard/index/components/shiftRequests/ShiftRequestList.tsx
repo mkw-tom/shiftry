@@ -14,116 +14,116 @@ import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import AddShiftButton from "../head/AddShiftButton";
 
 const ShiftRequestList = () => {
-	const shiftRequests = [
-		{
-			id: "1",
-			createdAt: new Date(),
-			updatedAt: new Date(),
-			storeId: "1",
-			type: "SHIFT",
-			status: "ADJUSTMENT",
-			weekStart: new Date("2025-05-01"),
-			weekEnd: new Date("2025-05-07"),
-			requests: {
-				overrideDates: {
-					"2025-04-10": ["08:00-12:00"],
-					"2025-04-14": [],
-				},
-				defaultTimePositions: {
-					Friday: ["10:00-14:00", "15:00-19:00", "20:00-23:00"],
-					Monday: ["09:00-13:00", "14:00-18:00", "19:00-23:00"],
-					Sunday: ["10:00-14:00", "15:00-19:00", "20:00-23:00"],
-					Tuesday: ["10:00-14:00", "15:00-19:00", "20:00-23:00"],
-					Saturday: ["10:00-14:00", "15:00-19:00", "20:00-23:00"],
-					Thursday: [],
-					Wednesday: [],
-				},
-			},
-			deadline: new Date("2025-04-29"),
-		},
-		{
-			id: "2",
-			createdAt: new Date(),
-			updatedAt: new Date(),
-			storeId: "2",
-			type: "SHIFT",
-			status: "HOLD",
-			weekStart: new Date("2025-05-08"),
-			weekEnd: new Date("2025-05-15"),
-			requests: {
-				overrideDates: {
-					"2025-04-10": ["08:00-12:00"],
-					"2025-04-14": [],
-				},
-				defaultTimePositions: {
-					Friday: [],
-					Monday: ["09:00-13:00"],
-					Sunday: [],
-					Tuesday: ["10:00-14:00"],
-					Saturday: [],
-					Thursday: [],
-					Wednesday: [],
-				},
-			},
-			deadline: new Date("2025-05-06"),
-		},
-		{
-			id: "3",
-			createdAt: new Date(),
-			updatedAt: new Date(),
-			storeId: "3",
-			type: "SHIFT",
-			status: "REQUEST",
-			weekStart: new Date("2025-05-08"),
-			weekEnd: new Date("2025-05-15"),
-			requests: {
-				overrideDates: {
-					"2025-04-10": ["08:00-12:00"],
-					"2025-04-14": [],
-				},
-				defaultTimePositions: {
-					Friday: [],
-					Monday: ["09:00-13:00"],
-					Sunday: [],
-					Tuesday: ["10:00-14:00"],
-					Saturday: [],
-					Thursday: [],
-					Wednesday: [],
-				},
-			},
-			deadline: new Date("2025-05-06"),
-		},
-		{
-			id: "4",
-			createdAt: new Date(),
-			updatedAt: new Date(),
-			storeId: "4",
-			type: "SHIFT",
-			status: "CONFIRMED",
-			weekStart: new Date("2025-05-08"),
-			weekEnd: new Date("2025-05-15"),
-			requests: {
-				overrideDates: {
-					"2025-04-10": ["08:00-12:00"],
-					"2025-04-14": [],
-				},
-				defaultTimePositions: {
-					Friday: ["10:00-14:00", "15:00-19:00", "20:00-23:00"],
-					Monday: ["09:00-13:00", "14:00-18:00", "19:00-23:00"],
-					Sunday: [],
-					Tuesday: ["10:00-14:00", "15:00-19:00", "20:00-23:00"],
-					Saturday: [],
-					Thursday: ["10:00-14:00", "15:00-19:00", "20:00-23:00"],
-					Wednesday: ["10:00-14:00", "15:00-19:00", "20:00-23:00"],
-				},
-			},
-			deadline: new Date("2025-05-06"),
-		},
-	] as unknown as ShiftRequestWithJson[];
+	// 	const shiftRequests = [
+	// 		{
+	// 			id: "1",
+	// 			createdAt: new Date(),
+	// 			updatedAt: new Date(),
+	// 			storeId: "1",
+	// 			type: "SHIFT",
+	// 			status: "ADJUSTMENT",
+	// 			weekStart: new Date("2025-05-01"),
+	// 			weekEnd: new Date("2025-05-07"),
+	// 			requests: {
+	// 				overrideDates: {
+	// 					"2025-04-10": ["08:00-12:00"],
+	// 					"2025-04-14": [],
+	// 				},
+	// 				defaultTimePositions: {
+	// 					Friday: ["10:00-14:00", "15:00-19:00", "20:00-23:00"],
+	// 					Monday: ["09:00-13:00", "14:00-18:00", "19:00-23:00"],
+	// 					Sunday: ["10:00-14:00", "15:00-19:00", "20:00-23:00"],
+	// 					Tuesday: ["10:00-14:00", "15:00-19:00", "20:00-23:00"],
+	// 					Saturday: ["10:00-14:00", "15:00-19:00", "20:00-23:00"],
+	// 					Thursday: [],
+	// 					Wednesday: [],
+	// 				},
+	// 			},
+	// 			deadline: new Date("2025-04-29"),
+	// 		},
+	// 		{
+	// 			id: "2",
+	// 			createdAt: new Date(),
+	// 			updatedAt: new Date(),
+	// 			storeId: "2",
+	// 			type: "SHIFT",
+	// 			status: "HOLD",
+	// 			weekStart: new Date("2025-05-08"),
+	// 			weekEnd: new Date("2025-05-15"),
+	// 			requests: {
+	// 				overrideDates: {
+	// 					"2025-04-10": ["08:00-12:00"],
+	// 					"2025-04-14": [],
+	// 				},
+	// 				defaultTimePositions: {
+	// 					Friday: [],
+	// 					Monday: ["09:00-13:00"],
+	// 					Sunday: [],
+	// 					Tuesday: ["10:00-14:00"],
+	// 					Saturday: [],
+	// 					Thursday: [],
+	// 					Wednesday: [],
+	// 				},
+	// 			},
+	// 			deadline: new Date("2025-05-06"),
+	// 		},
+	// 		{
+	// 			id: "3",
+	// 			createdAt: new Date(),
+	// 			updatedAt: new Date(),
+	// 			storeId: "3",
+	// 			type: "SHIFT",
+	// 			status: "REQUEST",
+	// 			weekStart: new Date("2025-05-08"),
+	// 			weekEnd: new Date("2025-05-15"),
+	// 			requests: {
+	// 				overrideDates: {
+	// 					"2025-04-10": ["08:00-12:00"],
+	// 					"2025-04-14": [],
+	// 				},
+	// 				defaultTimePositions: {
+	// 					Friday: [],
+	// 					Monday: ["09:00-13:00"],
+	// 					Sunday: [],
+	// 					Tuesday: ["10:00-14:00"],
+	// 					Saturday: [],
+	// 					Thursday: [],
+	// 					Wednesday: [],
+	// 				},
+	// 			},
+	// 			deadline: new Date("2025-05-06"),
+	// 		},
+	// 		{
+	// 			id: "4",
+	// 			createdAt: new Date(),
+	// 			updatedAt: new Date(),
+	// 			storeId: "4",
+	// 			type: "SHIFT",
+	// 			status: "CONFIRMED",
+	// 			weekStart: new Date("2025-05-08"),
+	// 			weekEnd: new Date("2025-05-15"),
+	// 			requests: {
+	// 				overrideDates: {
+	// 					"2025-04-10": ["08:00-12:00"],
+	// 					"2025-04-14": [],
+	// 				},
+	// 				defaultTimePositions: {
+	// 					Friday: ["10:00-14:00", "15:00-19:00", "20:00-23:00"],
+	// 					Monday: ["09:00-13:00", "14:00-18:00", "19:00-23:00"],
+	// 					Sunday: [],
+	// 					Tuesday: ["10:00-14:00", "15:00-19:00", "20:00-23:00"],
+	// 					Saturday: [],
+	// 					Thursday: ["10:00-14:00", "15:00-19:00", "20:00-23:00"],
+	// 					Wednesday: ["10:00-14:00", "15:00-19:00", "20:00-23:00"],
+	// 				},
+	// 			},
+	// 			deadline: new Date("2025-05-06"),
+	// 		},
+	// 	] as unknown as ShiftRequestWithJson[];
 	const { user } = useSelector((state: RootState) => state.user);
-	// const { shiftRequests } = useSelector(
-	//   (state: RootState) => state.shiftReuqests
-	// );
+	const { shiftRequests } = useSelector(
+		(state: RootState) => state.shiftReuqests,
+	);
 
 	const showShiftRequests = useMemo(() => {
 		if (user?.role === "STAFF") {
