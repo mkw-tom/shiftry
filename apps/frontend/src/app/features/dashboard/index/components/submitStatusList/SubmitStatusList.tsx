@@ -9,6 +9,9 @@ import NotSubmitCard from "./NotSubmitCard";
 import SubmittedCard from "./SubmittedCard";
 
 const SubmitStatusList = () => {
+	const { userToken, storeToken } = useSelector(
+		(state: RootState) => state.token,
+	);
 	const { handleGetSubmitShiftUser, isLoading, error } =
 		useGetSubmittedShiftUser();
 	const { shiftRequests } = useSelector(
@@ -26,7 +29,7 @@ const SubmitStatusList = () => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const res = await handleGetSubmitShiftUser();
+			const res = await handleGetSubmitShiftUser({ userToken, storeToken });
 			if (res?.ok) {
 				const submitted = res.submittedShifts;
 
@@ -46,7 +49,12 @@ const SubmitStatusList = () => {
 		};
 
 		fetchData();
-	}, [handleGetSubmitShiftUser, shiftRequestStatusRequest]);
+	}, [
+		handleGetSubmitShiftUser,
+		shiftRequestStatusRequest,
+		userToken,
+		storeToken,
+	]);
 
 	// const dummyShiftRequestSubmitted: ShiftRequestWithJson[] = [
 	//   {
