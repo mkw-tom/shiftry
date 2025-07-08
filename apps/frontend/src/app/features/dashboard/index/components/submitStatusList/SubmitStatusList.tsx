@@ -1,6 +1,6 @@
 import type { RootState } from "@/app/redux/store";
 import type { ShiftRequestWithJson } from "@shared/api/common/types/merged";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { LuSend } from "react-icons/lu";
 import { MdErrorOutline } from "react-icons/md";
 import { useSelector } from "react-redux";
@@ -17,9 +17,10 @@ const SubmitStatusList = () => {
 	const { shiftRequests } = useSelector(
 		(state: RootState) => state.shiftReuqests,
 	);
-	const shiftRequestStatusRequest = shiftRequests.filter(
-		(data) => data.status === "REQUEST",
-	);
+	const shiftRequestStatusRequest = useMemo(() => {
+		return shiftRequests.filter((data) => data.status === "REQUEST");
+	}, [shiftRequests]);
+
 	const [shiftRequestsSubmitted, setShiftRequestsSubmitted] = useState<
 		ShiftRequestWithJson[]
 	>([]);
@@ -40,6 +41,7 @@ const SubmitStatusList = () => {
 				const submittedIds = new Set(submitted.map((s) => s.shiftRequestId));
 				const onSubmit: ShiftRequestWithJson[] = [];
 				const notSubmit: ShiftRequestWithJson[] = [];
+
 				shiftRequestStatusRequest.map((data) => {
 					if (submittedIds.has(data.id)) {
 						onSubmit.push(data as ShiftRequestWithJson);
