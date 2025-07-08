@@ -57,9 +57,11 @@ const ShiftRequestCard = ({ data }: { data: ShiftRequestWithJson }) => {
 			<h2 className="w-full text-left text-lg mt-4 text-black font-bold border-b border-gray01 pl- opacity-90 tracking-wide pl-1">
 				{YMDW(new Date(data.weekStart))} ~ {MDW(new Date(data.weekEnd as Date))}
 			</h2>
-			<p className="w-full text-left text-error text-xs pt-0.5 pl-1 tracking-wide">
-				提出期限：{YMDHM(new Date(data.deadline as Date))}
-			</p>
+			{data.status !== "CONFIRMED" && (
+				<p className="w-full text-left text-error text-xs pt-0.5 pl-1 tracking-wide">
+					提出期限：{YMDHM(new Date(data.deadline as Date))}
+				</p>
+			)}
 			<div className="mt-3 flex items-center justify-end gap-2">
 				<ActionButtons status={data.status} data={data} />
 			</div>

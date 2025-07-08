@@ -1,8 +1,10 @@
 "use client";
 import { useMyPaymentHook } from "@/app/features/common/api/get-my-payment/hook";
 import Skeleton from "@/app/features/common/components/Skeleton";
+import type { RootState } from "@/app/redux/store";
 import React, { useState } from "react";
 import { AiOutlinePayCircle } from "react-icons/ai";
+import { useSelector } from "react-redux";
 import PaymentSectionContent from "./PaymentSectionContent";
 
 const PaymentSectionSkeleton = () => (
@@ -26,8 +28,9 @@ const PaymentSectionSkeleton = () => (
 const PaymentSectioin = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const { isLoading, error } = useMyPaymentHook(isOpen);
+	const { user } = useSelector((state: RootState) => state.user);
 	return (
-		<section className="w-full">
+		<section className={`w-full ${user?.role === "STAFF" && "hidden"}`}>
 			<div className="collapse collapse-arrow">
 				<input type="checkbox" onChange={(e) => setIsOpen(e.target.checked)} />
 				<div className="collapse-title text-black font-bold text-xs text-left flex items-center">
