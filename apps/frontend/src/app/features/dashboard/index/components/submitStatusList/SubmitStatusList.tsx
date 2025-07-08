@@ -12,7 +12,7 @@ const SubmitStatusList = () => {
 	const { userToken, storeToken } = useSelector(
 		(state: RootState) => state.token,
 	);
-	const { handleGetSubmitShiftUser, isLoading, error } =
+	const { handleGetSubmitShiftUser, isLoading, error, setError } =
 		useGetSubmittedShiftUser();
 	const { shiftRequests } = useSelector(
 		(state: RootState) => state.shiftReuqests,
@@ -29,6 +29,10 @@ const SubmitStatusList = () => {
 
 	useEffect(() => {
 		const fetchData = async () => {
+			if (!userToken || !storeToken) {
+				setError("ユーザートークンまたはストアトークンが見つかりません");
+				return;
+			}
 			const res = await handleGetSubmitShiftUser({ userToken, storeToken });
 			if (res?.ok) {
 				const submitted = res.submittedShifts;
@@ -54,6 +58,7 @@ const SubmitStatusList = () => {
 		shiftRequestStatusRequest,
 		userToken,
 		storeToken,
+		setError,
 	]);
 
 	// const dummyShiftRequestSubmitted: ShiftRequestWithJson[] = [
