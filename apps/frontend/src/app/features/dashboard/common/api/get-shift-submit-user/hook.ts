@@ -13,8 +13,8 @@ export const useGetSubmittedShiftUser = () => {
 			userToken,
 			storeToken,
 		}: {
-			userToken: string | null;
-			storeToken: string | null;
+			userToken: string;
+			storeToken: string;
 		}) => {
 			setIsLoading(true);
 			setError(null);
@@ -44,5 +44,5 @@ export const useGetSubmittedShiftUser = () => {
 		[],
 	);
 
-	return { handleGetSubmitShiftUser, isLoading, error };
+	return { handleGetSubmitShiftUser, isLoading, error, setError };
 };
