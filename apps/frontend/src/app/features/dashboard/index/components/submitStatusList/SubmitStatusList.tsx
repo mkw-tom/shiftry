@@ -2,23 +2,25 @@ import type { RootState } from "@/app/redux/store";
 import type { ShiftRequestWithJson } from "@shared/api/common/types/merged";
 import React, { useEffect, useState } from "react";
 import { LuSend } from "react-icons/lu";
+import { MdErrorOutline } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { useGetSubmittedShiftUser } from "../../../common/api/get-shift-submit-user/hook";
 import NotSubmitCard from "./NotSubmitCard";
 import SubmittedCard from "./SubmittedCard";
 
 const SubmitStatusList = () => {
-	const { handleGetSubmitShiftUser } = useGetSubmittedShiftUser();
+	const { handleGetSubmitShiftUser, isLoading, error } =
+		useGetSubmittedShiftUser();
 	const { shiftRequests } = useSelector(
 		(state: RootState) => state.shiftReuqests,
 	);
 	const shiftRequestStatusRequest = shiftRequests.filter(
 		(data) => data.status === "REQUEST",
 	);
-	const [shiftRequestsSubmitted, setsetshiftRequestsSubmitted] = useState<
+	const [shiftRequestsSubmitted, setShiftRequestsSubmitted] = useState<
 		ShiftRequestWithJson[]
 	>([]);
-	const [shiftRequestsNotSubmit, setshiftRequestsNotSubmit] = useState<
+	const [shiftRequestsNotSubmit, setShiftRequestsNotSubmit] = useState<
 		ShiftRequestWithJson[]
 	>([]);
 
@@ -38,8 +40,8 @@ const SubmitStatusList = () => {
 						notSubmit.push(data as ShiftRequestWithJson);
 					}
 				});
-				setsetshiftRequestsSubmitted(onSubmit);
-				setshiftRequestsNotSubmit(notSubmit);
+				setShiftRequestsSubmitted(onSubmit);
+				setShiftRequestsNotSubmit(notSubmit);
 			}
 		};
 
@@ -173,8 +175,20 @@ const SubmitStatusList = () => {
 					</h2>
 				</div>
 			</div>
-			{shiftRequestStatusRequest.length === 0 ? (
-				<div className="w-full flex flex-col items-center gap-4 mt-10">
+			{isLoading && (
+				<div className="w-full h-lvh flex flex-col items-center bg-gray01">
+					<p className="loading loading-spinner text-green02 mt-20" />
+					<p className="text-green02 mt-2">読み込み中...</p>
+				</div>
+			)}
+			{error !== null && (
+				<div className="w-full h-lvh flex flex-col gap-2 items-center ">
+					<MdErrorOutline className="text-gray02 text-2xl mt-20" />
+					<p className="text-gray02">読み込みに失敗しました</p>
+				</div>
+			)}
+			{!isLoading && !error && shiftRequestStatusRequest.length === 0 ? (
+				<div className="w-full flex flex-col items-center gap-2 mt-20">
 					<LuSend className="text-center text-gray02 font-bold text-2xl" />
 					<p className="text-center text-gray02 font-bold tracking-wide">
 						データが存在しません
@@ -183,18 +197,19 @@ const SubmitStatusList = () => {
 			) : (
 				<div className="w-full h-full overflow-hidden bg-white mt-1">
 					<ul className="w-full h-[420px] mx-auto flex flex-col overflow-y-scroll pt-1 pb-80 ">
-						{shiftRequestsSubmitted.map((data) => (
-							<SubmittedCard
-								key={data.id}
-								data={data as ShiftRequestWithJson}
-							/>
-						))}
 						{shiftRequestsNotSubmit.map((data) => (
 							<NotSubmitCard
 								key={data.id}
 								data={data as ShiftRequestWithJson}
 							/>
 						))}
+						{shiftRequestsSubmitted.map((data) => (
+							<SubmittedCard
+								key={data.id}
+								data={data as ShiftRequestWithJson}
+							/>
+						))}
+
 						{/* {dummyShiftRequestNotSubmitted.map((data) => (
               <NotSubmitCard key={data.id} data={data} />
             ))}

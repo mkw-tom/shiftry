@@ -14,33 +14,25 @@ export const useGetSubmittedShiftUser = () => {
 	const handleGetSubmitShiftUser = useCallback(async () => {
 		setIsLoading(true);
 		setError(null);
-		if (!userToken || !storeToken) {
-			setError("ユーザートークンまたはストアトークンが見つかりません");
-			return;
-		}
+
 		try {
-			const res = await getSubmittedShiftUser({
-				userToken,
-				storeToken,
-			});
+			if (!userToken || !storeToken) {
+				throw new Error("ユーザートークンまたはストアトークンが見つかりません");
+			}
+
+			const res = await getSubmittedShiftUser({ userToken, storeToken });
 
 			if (!res.ok) {
-				if ("errors" in res) {
-					setError("通信エラーが発生しました");
-					console.warn(res.message, res.errors);
-					return;
-				}
-				setError("通信エラーが発生しました");
-				console.warn("エラー:", res.message);
-				return;
+				const message = res.message ?? "通信エラーが発生しました";
+				throw new Error(message);
 			}
 
 			return res;
 		} catch (err) {
-			setError("通信エラーが発生しました。");
-			window.alert("通信エラーが発生しました");
+			setError("通信エラーが発生しました");
+			return null;
 		} finally {
-			setIsLoading(false);
+			setIsLoading(false); // どんな場合でもここでOFFになる
 		}
 	}, [userToken, storeToken]);
 
