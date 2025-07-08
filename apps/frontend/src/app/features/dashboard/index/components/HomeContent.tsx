@@ -74,9 +74,9 @@ const HomeContent = () => {
 		router,
 	]);
 
-	// if (error === true) {
-	// 	return <AutoLoginError storeId={storeId} shiftRequestId={shiftRequestId} />;
-	// }
+	if (error === true) {
+		return <AutoLoginError storeId={storeId} shiftRequestId={shiftRequestId} />;
+	}
 	if (isLoading) {
 		return <AutoLoginLoading />;
 	}
