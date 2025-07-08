@@ -1,9 +1,13 @@
+"use client";
+import type { RootState } from "@/app/redux/store";
 import React from "react";
 import { TbCancel } from "react-icons/tb";
+import { useSelector } from "react-redux";
 
 const CancelSection = () => {
+	const { user } = useSelector((state: RootState) => state.user);
 	return (
-		<section className="w-full">
+		<section className={`w-full ${user?.role === "STAFF" && "hidden"}`}>
 			<div className="collapse  collapse-arrow">
 				<input type="checkbox" />
 				<div className="collapse-title text-black font-bold text-xs text-left flex items-center">

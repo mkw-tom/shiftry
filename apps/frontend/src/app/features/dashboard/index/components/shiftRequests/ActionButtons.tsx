@@ -1,7 +1,10 @@
 "use client";
+import type { RootState } from "@/app/redux/store";
 import type { RequestStatus } from "@shared/api/common/types/prisma";
 import { useRouter } from "next/navigation";
+import { LuSend } from "react-icons/lu";
 import { SiOpenai } from "react-icons/si";
+import { useSelector } from "react-redux";
 import {
 	DrawerView,
 	type ShiftRequestWithJson,
@@ -18,6 +21,14 @@ const ActionButtons = ({
 	const { darawerOpen } = useBottomDrawer();
 	const router = useRouter();
 	const goToShiftPage = (id: string) => router.push(`/dashboard/shift/${id}`);
+	const { user } = useSelector((state: RootState) => state.user);
+
+	const switchAdjustmentBtnAction = (data: ShiftRequestWithJson) => {
+		if (user?.role === "STAFF") {
+			return darawerOpen(DrawerView.SUBMIT, data);
+		}
+		return goToShiftPage(data.id);
+	};
 
 	switch (status) {
 		case "HOLD":
@@ -37,7 +48,7 @@ const ActionButtons = ({
 				<>
 					<button
 						type="button"
-						className="btn flex-1 text-green01 bg-white  font-bold shadow-sm border-green01 rounded-md"
+						className={`btn flex-1 text-green01 bg-white  font-bold shadow-sm border-green01 rounded-md ${user?.role === "STAFF" && "hidden"}`}
 						onClick={() => darawerOpen(DrawerView.GENERATE, data)}
 					>
 						<SiOpenai />
@@ -48,7 +59,7 @@ const ActionButtons = ({
 						className="btn flex-1 text-white bg-green01  font-bold shadow-sm border-green01 rounded-md"
 						onClick={() => darawerOpen(DrawerView.SUBMIT, data)}
 					>
-						{/* <LuSend /> */}
+						<LuSend />
 						提出
 					</button>
 				</>
@@ -58,10 +69,12 @@ const ActionButtons = ({
 			return (
 				<button
 					type="button"
-					className="btn flex-1 text-green01 bg-white  font-bold shadow-sm border-green01 rounded-md"
-					onClick={() => goToShiftPage(data.id)}
+					className={
+						"btn flex-1 text-green01 bg-white  font-bold shadow-sm border-green01 rounded-md	 "
+					}
+					onClick={() => switchAdjustmentBtnAction(data)}
 				>
-					シフト調整
+					{user?.role === "STAFF" ? "提出データを確認" : "シフト調整"}
 				</button>
 			);
 
