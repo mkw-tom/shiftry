@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { BsArrowRight } from "react-icons/bs";
-import Head from "../../index/components/head/Head";
+import Head from "../../common/components/Head";
 import MemberHead from "./MemberHead";
 import MembersList from "./MembersList";
 import SearchBar from "./SearchBar";

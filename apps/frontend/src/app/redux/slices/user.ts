@@ -11,7 +11,7 @@ const initialState: UserState = {
 		lineId: "",
 		name: "",
 		pictureUrl: "",
-		role: "STAFF",
+		role: "OWNER",
 		createdAt: new Date(),
 		updatedAt: new Date(),
 	},
