@@ -1,5 +1,5 @@
+import Head from "../features/dashboard/common/components/Head";
 import HomeContent from "../features/dashboard/index/components/HomeContent";
-import Head from "../features/dashboard/index/components/head/Head";
 
 const Page = () => {
 	return (

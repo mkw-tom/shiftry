@@ -4,11 +4,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { set } from "zod/v4-mini";
+import Head from "../../common/components/Head";
 import { useAutoLogin } from "../../common/hook/useAutoLogin";
 import AutoLoginError from "./AutoLoginError";
 import AutoLoginLoading from "./AutoLoginLoading";
 import HeadSwitch from "./HeadSwitch";
-import Head from "./head/Head";
 import ShiftRequestList from "./shiftRequests/ShiftRequestList";
 import SubmitStatusList from "./submitStatusList/SubmitStatusList";
 const HomeContent = () => {
@@ -74,9 +74,9 @@ const HomeContent = () => {
 		router,
 	]);
 
-	if (error === true) {
-		return <AutoLoginError storeId={storeId} shiftRequestId={shiftRequestId} />;
-	}
+	// if (error === true) {
+	// 	return <AutoLoginError storeId={storeId} shiftRequestId={shiftRequestId} />;
+	// }
 	if (isLoading) {
 		return <AutoLoginLoading />;
 	}
