@@ -1,7 +1,9 @@
 import type { ShiftRequest } from "@shared/api/common/types/prisma";
-import { startOfToday, subDays } from "date-fns";
+import { addHours, startOfToday, subDays } from "date-fns";
 import prisma from "../config/database";
 import type { UpsertShiftRequetType } from "../types/inputs";
+
+const jstStartOfToday = addHours(startOfToday(), 9);
 
 export const upsertShiftRequest = async (
 	storeId: string,
@@ -79,11 +81,12 @@ export const getActiveShiftRequests = async (
 		where: {
 			storeId,
 			weekEnd: {
-				gte: startOfToday(), // 今日以降のweekEndのみ取得
+				not: null,
+				gte: jstStartOfToday, // 今日以降のweekEndのみ取得
 			},
 		},
 		orderBy: {
-			weekStart: "asc", // オプション：時系列順で取得したい場合
+			weekStart: "asc", //昇順
 		},
 	});
 };
@@ -95,11 +98,12 @@ export const getArchivedShiftRequests = async (
 		where: {
 			storeId,
 			weekEnd: {
-				lt: startOfToday(), // 今日より前
+				not: null,
+				lt: jstStartOfToday, // 今日より前
 			},
 		},
 		orderBy: {
-			weekStart: "desc",
+			weekStart: "desc", //降順
 		},
 	});
 };
