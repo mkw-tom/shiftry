@@ -1,5 +1,5 @@
 import type { InitServiceResponse } from "@shared/api/auth/types/init";
-import { getShiftRequestByStoreId } from "../../../repositories/shiftRequest.repository";
+import { getActiveShiftRequests } from "../../../repositories/shiftRequest.repository";
 import { getStoreById } from "../../../repositories/store.repository";
 import { getUserById } from "../../../repositories/user.repository";
 
@@ -10,7 +10,7 @@ const Init = async (
 	const [user, store, shiftRequests] = await Promise.all([
 		getUserById(userId),
 		getStoreById(storeId),
-		getShiftRequestByStoreId(storeId),
+		getActiveShiftRequests(storeId),
 	]);
 	if (!user || !store) {
 		throw new Error("data is not found");
