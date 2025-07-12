@@ -1,4 +1,4 @@
-import { saveShiftRequest } from "@/app/redux/slices/shiftRequests";
+import { saveActiveShiftRequest } from "@/app/redux/slices/activeShiftRequests";
 import type { AppDispatch, RootState } from "@/app/redux/store";
 import type { UpsertShiftRequetType } from "@shared/api/shift/request/validations/put";
 import { useState } from "react";
@@ -37,7 +37,7 @@ export const useUpsertShiftReqeust = () => {
 				return;
 			}
 
-			dispatch(saveShiftRequest(res.shiftRequest));
+			dispatch(saveActiveShiftRequest(res.shiftRequest));
 			return res.shiftRequest;
 		} catch (err) {
 			setError("通信エラーが発生しました。");

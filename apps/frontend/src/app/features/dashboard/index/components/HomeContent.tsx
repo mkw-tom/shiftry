@@ -74,16 +74,16 @@ const HomeContent = () => {
 		router,
 	]);
 
-	// if (error === true) {
-	// 	return <AutoLoginError storeId={storeId} shiftRequestId={shiftRequestId} />;
-	// }
+	if (error === true) {
+		return <AutoLoginError storeId={storeId} shiftRequestId={shiftRequestId} />;
+	}
 	if (isLoading) {
 		return <AutoLoginLoading />;
 	}
 
 	return (
 		<div className="w-full h-full">
-			<div className="w-full h-auto pt-10 bg-green02 shadow-2xl ">
+			<div className="w-full h-auto pt-10  shadow-md ">
 				<Head />
 				<HeadSwitch select={select} setSelect={setSelect} />
 			</div>
