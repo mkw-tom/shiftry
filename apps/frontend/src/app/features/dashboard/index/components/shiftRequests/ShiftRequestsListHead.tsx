@@ -17,10 +17,10 @@ const ShiftRequestsListHead = ({
 		<div className="w-full mx-auto h-auto flex flex-col pt-5 shadow-sm bg-green02">
 			<div className="w-full flex items-center justify-between mx-auto border-b-1 border-white pb-3 px-5">
 				<div className="flex items-center flex-1 gap-2">
-					<span className="text-sm">表示：</span>
+					<span className="text-sm text-white">表示：</span>
 					<select
 						defaultValue="ALL"
-						className="select select-sm bg-base shadow-none w-40 font-bold border-gray-300 text-green02 "
+						className="select select-sm bg-base shadow-none w-32 font-bold border-gray-300 text-green02 "
 						onChange={(e) =>
 							setShiftListFilter(e.target.value as RequestStatus)
 						}

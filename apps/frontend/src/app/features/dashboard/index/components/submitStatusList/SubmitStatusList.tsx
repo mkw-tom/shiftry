@@ -14,12 +14,12 @@ const SubmitStatusList = () => {
 	);
 	const { handleGetSubmitShiftUser, isLoading, error, setError } =
 		useGetSubmittedShiftUser();
-	const { shiftRequests } = useSelector(
-		(state: RootState) => state.shiftReuqests,
+	const { activeShiftRequests } = useSelector(
+		(state: RootState) => state.activeShiftReuqests,
 	);
 	const shiftRequestStatusRequest = useMemo(() => {
-		return shiftRequests.filter((data) => data.status === "REQUEST");
-	}, [shiftRequests]);
+		return activeShiftRequests.filter((data) => data.status === "REQUEST");
+	}, [activeShiftRequests]);
 
 	const [shiftRequestsSubmitted, setShiftRequestsSubmitted] = useState<
 		ShiftRequestWithJson[]

@@ -1,4 +1,4 @@
-import { saveShiftRequest } from "@/app/redux/slices/shiftRequests";
+import { saveActiveShiftRequest } from "@/app/redux/slices/activeShiftRequests";
 import type { AppDispatch, RootState } from "@/app/redux/store";
 import { RequestStatus } from "@shared/api/common/types/prisma";
 import type { RequestShiftMessageType } from "@shared/api/webhook/line/validatioins";

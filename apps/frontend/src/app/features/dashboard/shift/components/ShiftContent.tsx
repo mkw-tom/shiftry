@@ -18,11 +18,11 @@ const ShiftContent = () => {
 		null,
 	);
 	const { handleGetAssignShift, isLoading, error } = useGetAssignShift();
-	const { shiftRequests } = useSelector(
-		(state: RootState) => state.shiftReuqests,
+	const { activeShiftRequests } = useSelector(
+		(state: RootState) => state.activeShiftReuqests,
 	);
 
-	const shiftRequest = shiftRequests.find((data) => data.id === id) as
+	const shiftRequest = activeShiftRequests.find((data) => data.id === id) as
 		| ShiftRequestWithJson
 		| undefined;
 
