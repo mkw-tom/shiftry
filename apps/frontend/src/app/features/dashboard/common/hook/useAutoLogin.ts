@@ -1,4 +1,4 @@
-import { setShiftRequests } from "@/app/redux/slices/shiftRequests";
+import { setActiveShiftRequests } from "@/app/redux/slices/activeShiftRequests";
 import { setStore } from "@/app/redux/slices/store";
 import { setStores } from "@/app/redux/slices/stores";
 import {
@@ -47,7 +47,7 @@ export const useAutoLogin = () => {
 			dispatch(setGroupToken(res.group_token));
 			dispatch(setUser(res.user));
 			dispatch(setStore(res.store));
-			dispatch(setShiftRequests(res.shiftRequests));
+			dispatch(setActiveShiftRequests(res.shiftRequests));
 			return { ok: true };
 		} catch (err) {
 			console.warn("通信エラー:", err);

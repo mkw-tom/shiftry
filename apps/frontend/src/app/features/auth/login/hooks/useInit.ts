@@ -1,5 +1,5 @@
 import { useNavigation } from "@/app/lib/navigation";
-import { setShiftRequests } from "@/app/redux/slices/shiftRequests";
+import { setActiveShiftRequests } from "@/app/redux/slices/activeShiftRequests";
 import { setStore } from "@/app/redux/slices/store";
 import { setGroupToken, setStoreToken } from "@/app/redux/slices/token";
 import type { AppDispatch } from "@/app/redux/store";
@@ -39,7 +39,7 @@ export const useInit = () => {
 			}
 
 			dispatch(setStore(res.store));
-			dispatch(setShiftRequests(res.shiftRequests));
+			dispatch(setActiveShiftRequests(res.shiftRequests));
 			dispatch(setGroupToken(res.group_token));
 			dispatch(setStoreToken(res.store_token));
 			if (shiftRequestId) {
