@@ -1,10 +1,10 @@
 import type { ErrorResponse } from "@shared/api/common/types/errors";
 import type { GetShiftRequestResponse } from "@shared/api/shift/request/types/get";
 import type { Request, Response } from "express";
-import { getShiftRequestByStoreId } from "../../../../repositories/shiftRequest.repository";
+import { getActiveShiftRequests } from "../../../../repositories/shiftRequest.repository";
 import { verifyUserStore } from "../../../common/authorization.service";
 
-const getShiftRequestsController = async (
+const getAcvtiveShiftRequestsController = async (
 	req: Request,
 	res: Response<GetShiftRequestResponse | ErrorResponse>,
 ): Promise<void> => {
@@ -13,7 +13,7 @@ const getShiftRequestsController = async (
 		const storeId = req.storeId as string;
 		await verifyUserStore(userId, storeId);
 
-		const shiftRequests = await getShiftRequestByStoreId(storeId);
+		const shiftRequests = await getActiveShiftRequests(storeId);
 
 		res.status(200).json({ ok: true, shiftRequests });
 	} catch (error) {
@@ -22,4 +22,4 @@ const getShiftRequestsController = async (
 	}
 };
 
-export default getShiftRequestsController;
+export default getAcvtiveShiftRequestsController;
