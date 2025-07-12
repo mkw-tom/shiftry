@@ -1,9 +1,9 @@
 "use client";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import activeShiftReuqests from "./slices/activeShiftRequests";
 import members from "./slices/members";
 import payment from "./slices/payment";
 import registerPayment from "./slices/registerPayment";
-import shiftReuqests from "./slices/shiftRequests";
 import store from "./slices/store";
 import stores from "./slices/stores";
 import user from "./slices/user";
@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
 	payment: payment,
 	registerPayment: registerPayment,
 	members: members,
-	shiftReuqests: shiftReuqests,
+	activeShiftReuqests: activeShiftReuqests,
 });
 
 const persistConfig = {
