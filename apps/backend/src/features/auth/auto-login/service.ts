@@ -1,5 +1,5 @@
 import type { AutoLoginServiceResponse } from "@shared/api/auth/types/auto-login";
-import { getShiftRequestByStoreId } from "../../../repositories/shiftRequest.repository";
+import { getActiveShiftRequests } from "../../../repositories/shiftRequest.repository";
 import { getStoreById } from "../../../repositories/store.repository";
 import { getUserById } from "../../../repositories/user.repository";
 
@@ -9,7 +9,7 @@ const autoLogin = async (
 ): Promise<AutoLoginServiceResponse> => {
 	const user = await getUserById(userId);
 	const store = await getStoreById(storeId);
-	const shiftRequests = await getShiftRequestByStoreId(storeId);
+	const shiftRequests = await getActiveShiftRequests(storeId);
 	return { user, store, shiftRequests };
 };
 
