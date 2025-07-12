@@ -146,7 +146,7 @@ const ShiftRequestList = () => {
 
 	const { darawerOpen } = useBottomDrawer();
 
-	if (activeShiftRequests.length !== 0) {
+	if (activeShiftRequests.length === 0) {
 		return (
 			<section className="w-full h-auto mx-auto">
 				<ShiftRequestsListHead setShiftListFilter={setShiftListFilter} />
