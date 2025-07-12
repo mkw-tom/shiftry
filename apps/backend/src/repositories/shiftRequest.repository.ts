@@ -1,4 +1,5 @@
 import type { ShiftRequest } from "@shared/api/common/types/prisma";
+import { startOfToday, subDays } from "date-fns";
 import prisma from "../config/database";
 import type { UpsertShiftRequetType } from "../types/inputs";
 
@@ -68,5 +69,37 @@ export const getShiftRequestById = async (
 ): Promise<ShiftRequest | null> => {
 	return await prisma.shiftRequest.findUnique({
 		where: { id },
+	});
+};
+
+export const getActiveShiftRequests = async (
+	storeId: string,
+): Promise<ShiftRequest[]> => {
+	return await prisma.shiftRequest.findMany({
+		where: {
+			storeId,
+			weekEnd: {
+				gte: startOfToday(), // 今日以降のweekEndのみ取得
+			},
+		},
+		orderBy: {
+			weekStart: "asc", // オプション：時系列順で取得したい場合
+		},
+	});
+};
+
+export const getArchivedShiftRequests = async (
+	storeId: string,
+): Promise<ShiftRequest[]> => {
+	return await prisma.shiftRequest.findMany({
+		where: {
+			storeId,
+			weekEnd: {
+				lt: startOfToday(), // 今日より前
+			},
+		},
+		orderBy: {
+			weekStart: "desc",
+		},
 	});
 };
