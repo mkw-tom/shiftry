@@ -29,7 +29,7 @@ export const deleteManyShiftRequests = async ({
 			Authorization: `Bearer ${userToken}`,
 			"x-store-id": storeToken,
 		},
-		body: JSON.stringify(ids),
+		body: JSON.stringify({ ids }),
 	});
 
 	const data = await res.json();
