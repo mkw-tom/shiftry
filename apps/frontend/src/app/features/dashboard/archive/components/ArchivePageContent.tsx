@@ -7,21 +7,33 @@ import React, { useEffect, useState } from "react";
 import { LuHistory } from "react-icons/lu";
 import { MdDelete, MdErrorOutline } from "react-icons/md";
 import { useSelector } from "react-redux";
+import { ar } from "zod/v4/locales";
 import Head from "../../common/components/Head";
 import {
 	DrawerView,
 	useBottomDrawer,
 } from "../../common/context/useBottomDrawer";
-import { useGetArchiveShiftRequests } from "../api/hook";
+import { useGetArchiveShiftRequests } from "../api/get-archive-shift-request/hook";
+import ArchiveListCard from "./ArchiveListCard";
+import ArchiveListHead from "./ArchiveListHead";
 
 const ArchivePageContent = () => {
 	const [archiveData, setArchiveData] = useState<ShiftRequestWithJson[]>([]);
-	const [deleteIds, setDeleteIds] = useState<string[]>([]);
+	const [filterValue, setFilterValue] = useState<number | "all">("all");
+	const [ids, setIds] = useState<string[]>([]);
 
 	const handleCheck = (id: string, checked: boolean) => {
-		setDeleteIds((prev) =>
+		setIds((prev) =>
 			checked ? [...prev, id] : prev.filter((item) => item !== id),
 		);
+	};
+
+	const removeArchiveData = () => {
+		const newArchiveData = archiveData.filter(
+			(item: ShiftRequestWithJson) => !ids.includes(item.id),
+		);
+		setArchiveData([...newArchiveData]);
+		setIds([]);
 	};
 
 	const { handleGetArchiveShiftRequests, isLoading, error } =
@@ -30,6 +42,7 @@ const ArchivePageContent = () => {
 	const { userToken, storeToken } = useSelector(
 		(state: RootState) => state.token,
 	);
+
 	useEffect(() => {
 		const fetchData = async () => {
 			const archiveDatas = (await handleGetArchiveShiftRequests({
@@ -41,6 +54,12 @@ const ArchivePageContent = () => {
 		};
 		fetchData();
 	}, [userToken, storeToken, handleGetArchiveShiftRequests]);
+
+	const filteredArchiveData = archiveData.filter((data) => {
+		if (filterValue === "all") return true;
+		const startMonth = new Date(data.weekStart).getMonth() + 1;
+		return startMonth === filterValue;
+	});
 
 	return (
 		<div className="w-full h-full">
@@ -56,34 +75,11 @@ const ArchivePageContent = () => {
 					</div>
 				</div>
 
-				{/* archive list head */}
-				<div className="w-full mx-auto h-auto flex flex-col pt-5 shadow-sm bg-green02">
-					<div className="w-full flex items-center justify-between mx-auto border-b-1 border-white pb-3 px-5">
-						<div className="flex items-center flex-1 gap-2">
-							<span className="text-sm text-white">表示：</span>
-							<select
-								defaultValue="ALL"
-								className="select select-sm bg-base shadow-none w-32 font-bold border-gray-300 text-green02"
-							>
-								<option disabled={true}>絞り込みを選択</option>
-								<option value="all">すべて</option>
-								<option value="1">1月</option>
-								<option value="2">2月</option>
-								<option value="3">3月</option>
-							</select>
-						</div>
-
-						<button
-							type="button"
-							className={`flex items-center btn btn-sm bg-green03 text-green02 border-none ${deleteIds.length === 0 && "opacity-0"}`}
-							disabled={deleteIds.length === 0}
-						>
-							<MdDelete className="" />
-							<span>削除</span>
-							<span>（{deleteIds.length}）</span>
-						</button>
-					</div>
-				</div>
+				<ArchiveListHead
+					ids={ids}
+					removeArchiveData={removeArchiveData}
+					setFilterValue={setFilterValue}
+				/>
 			</div>
 
 			<main className="bg-white w-full h-lvh">
@@ -107,75 +103,15 @@ const ArchivePageContent = () => {
 								<p className="text-gray02 font-bold">過去の履歴がありません</p>
 							</div>
 						)}
-						{archiveData.map((data: ShiftRequestWithJson) => {
+						{filteredArchiveData.map((data: ShiftRequestWithJson) => {
 							return (
-								<li
+								<ArchiveListCard
 									key={data.id}
-									className="flex items-center justify-start w-full h-auto p-4 border-b border-gray01"
-								>
-									<input
-										type="checkbox"
-										className="checkbox checkbox-sm checkbox-success mr-4"
-										onChange={(e) => handleCheck(data.id, e.target.checked)}
-									/>
-									<div className="flex flex-col gap-1 items-start flex-1">
-										<p className="text-black opacity-70 tracking-wide">
-											{YMDW(new Date(data.weekStart))} ~{" "}
-											{MDW(new Date(data.weekEnd as Date))}
-										</p>
-										<p className="text-xs text-gray02 tracking-wide">
-											更新：{YMDHM(new Date(data.updatedAt))}
-										</p>
-									</div>
-									<button
-										type="button"
-										className="btn btn-sm border-green02 text-green02 bg-white shadow-none"
-										onClick={() => darawerOpen(DrawerView.SUBMIT, null)}
-									>
-										開く
-									</button>
-								</li>
+									data={data}
+									handleCheck={handleCheck}
+								/>
 							);
 						})}
-						<li className="flex items-center justify-start w-full h-auto p-4 border-b border-gray01">
-							<input
-								type="checkbox"
-								className="checkbox checkbox-sm checkbox-success mr-4"
-								onChange={(e) => handleCheck("124", e.target.checked)}
-							/>
-							<div className="flex flex-col gap-1 items-start flex-1">
-								<p className="text-black opacity-70">
-									2025/10/19（月）~ 10/26（日）
-								</p>
-								<p className="text-xs text-gray02">更新日：2025 10/18 10:00</p>
-							</div>
-							<button
-								type="button"
-								className="btn btn-sm border-green02 text-green02 bg-white shadow-none"
-							>
-								開く
-							</button>
-						</li>
-						<li className="flex items-center justify-start w-full h-auto p-4 border-b border-gray01">
-							<input
-								type="checkbox"
-								className="checkbox checkbox-sm checkbox-success mr-4"
-								onChange={(e) => handleCheck("125", e.target.checked)}
-							/>
-							<div className="flex flex-col gap-1 items-start flex-1">
-								<p className="text-black opacity-70">
-									2025/10/19（月）~ 10/26（日）
-								</p>
-								<p className="text-xs text-gray02">更新日：2025 10/18 10:00</p>
-							</div>
-							<button
-								type="button"
-								className="btn btn-sm border-green02 text-green02 bg-white shadow-none"
-								onClick={() => darawerOpen(DrawerView.SUBMIT, null)}
-							>
-								開く
-							</button>
-						</li>
 					</ul>
 				</div>
 			</main>
