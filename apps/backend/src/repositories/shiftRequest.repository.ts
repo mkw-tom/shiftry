@@ -44,6 +44,20 @@ export const deleteShiftRequest = async (
 	});
 };
 
+export const deleteManyShiftRequest = async (
+	storeId: string,
+	ids: string[],
+): Promise<{ count: number }> => {
+	return await prisma.shiftRequest.deleteMany({
+		where: {
+			storeId,
+			id: {
+				in: ids,
+			},
+		},
+	});
+};
+
 export const getShiftRequestByStoreId = async (
 	storeId: string,
 ): Promise<ShiftRequest[]> => {
