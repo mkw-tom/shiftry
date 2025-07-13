@@ -16,7 +16,7 @@ router.use(attachUserId);
 router.use(attachStoreId);
 
 router.delete("/:weekStart", validateWeekStart, deleteShiftRequestController);
-router.delete("/bulk", deleteManyShiftRequestController);
+router.post("/bulk", deleteManyShiftRequestController);
 router.get("/", getShiftRequestsController);
 router.get("/active", getAcvtiveShiftRequestsController);
 router.get("/archive", getArchiveShiftRequestsController);

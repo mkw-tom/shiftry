@@ -23,7 +23,7 @@ export const deleteManyShiftRequests = async ({
 		throw new Error("code is not found");
 	}
 	const res = await fetch(`${API_URL}/api/shift/request/bulk`, {
-		method: "DELETE",
+		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
 			Authorization: `Bearer ${userToken}`,
