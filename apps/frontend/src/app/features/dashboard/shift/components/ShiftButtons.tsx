@@ -8,7 +8,7 @@ const ShiftButtons = ({ status }: { status: ShiftStatus }) => {
 	if (status === "ADJUSTMENT") {
 		return (
 			<div className="fixed bottom-10 right-0 left-0 w-full flex justify-between md:w-11/12 px-2 gap-2 z-30 mx-auto">
-				<AdjustButton />
+				{/* <AdjustButton /> */}
 				<ConfirmButton />
 			</div>
 		);
