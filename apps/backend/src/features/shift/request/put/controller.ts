@@ -2,11 +2,13 @@ import type {
 	ErrorResponse,
 	ValidationErrorResponse,
 } from "@shared/api/common/types/errors";
+import type { RequestCalenderType } from "@shared/api/common/types/json";
 import type { UpsertShiftRequetResponse } from "@shared/api/shift/request/types/put";
 import { upsertShfitRequestValidate } from "@shared/api/shift/request/validations/put";
 import type { Request, Response } from "express";
 import { upsertShiftRequest } from "../../../../repositories/shiftRequest.repository";
 import { verifyUserStoreForOwnerAndManager } from "../../../common/authorization.service";
+import { convertToCalendarFormat } from "./service";
 
 const upsertShiftRequestController = async (
 	req: Request,
@@ -28,14 +30,22 @@ const upsertShiftRequestController = async (
 			});
 			return;
 		}
+
 		const { weekStart, weekEnd, type, requests, status, deadline } =
 			bodyParesed.data;
+
+		const requestCalender = convertToCalendarFormat(
+			weekStart,
+			weekEnd,
+			requests.defaultTimePositions,
+			requests.overrideDates,
+		);
 
 		const upsertData = {
 			weekStart,
 			weekEnd,
 			type,
-			requests,
+			requests: requestCalender,
 			status,
 			deadline,
 		};
