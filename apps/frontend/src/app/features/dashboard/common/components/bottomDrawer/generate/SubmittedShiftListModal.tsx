@@ -65,7 +65,7 @@ const SubmittedShiftListModal = ({
 					<div className="flex items-center justify-between">
 						<div className=" flex items-center flex-1 gap-2">
 							<div className="w-7 h-7 bg-gray01 rounded-full" />
-							<span className="text-sm  text-black">{data.shifts.name}</span>
+							<span className="text-sm  text-black">{data.name}</span>
 						</div>
 						<span className="text-xs text-balck opacity-70">
 							出勤：週{data.shifts.weekCountMin}回〜{data.shifts.weekCountMax}回

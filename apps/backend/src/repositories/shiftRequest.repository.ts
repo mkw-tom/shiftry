@@ -1,4 +1,5 @@
 import type { ShiftRequest } from "@shared/api/common/types/prisma";
+import type { UpsertShiftRequestWithCalendar } from "@shared/api/shift/request/validations/put";
 import { addHours, startOfToday, subDays } from "date-fns";
 import prisma from "../config/database";
 import type { UpsertShiftRequetType } from "../types/inputs";
@@ -7,7 +8,7 @@ const jstStartOfToday = addHours(startOfToday(), 9);
 
 export const upsertShiftRequest = async (
 	storeId: string,
-	data: UpsertShiftRequetType,
+	data: UpsertShiftRequestWithCalendar,
 ): Promise<ShiftRequest> => {
 	return await prisma.shiftRequest.upsert({
 		where: {
