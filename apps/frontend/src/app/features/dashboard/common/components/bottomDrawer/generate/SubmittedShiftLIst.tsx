@@ -69,7 +69,7 @@ const SubmittedShiftList = () => {
 					<div className="flex flex-col items-start gap-2 w-full">
 						<div className=" flex items-center w-full gap-2">
 							<div className="w-7 h-7 bg-gray01 rounded-full" />
-							<span className="text-sm  text-black">{data.shifts.name}</span>
+							<span className="text-sm  text-black">{data.name}</span>
 						</div>
 						<div className="flex items-center gap-5 pl-1">
 							<span className="text-xs text-gray02">

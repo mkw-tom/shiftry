@@ -7,6 +7,7 @@ import { upsertSubmittedShiftValidate } from "@shared/api/shift/submit/validatio
 import type { Request, Response } from "express";
 import { upsertSubmittedShift } from "../../../../repositories/submittedShift.repository";
 import { verifyUserStore } from "../../../common/authorization.service";
+import { convertToSubmittedCalender } from "./service";
 
 const upsertSubmittedShiftController = async (
 	req: Request,
@@ -28,11 +29,23 @@ const upsertSubmittedShiftController = async (
 			});
 			return;
 		}
+		const { shifts, startDate, endDate } = parsed.data;
+		const SubmittedCalendar = convertToSubmittedCalender(
+			startDate,
+			endDate,
+			shifts.availableWeeks,
+			shifts.specificDates,
+		);
+
+		const upsertData = {
+			...parsed.data,
+			shifts: SubmittedCalendar,
+		};
 
 		const submittedShift = await upsertSubmittedShift(
 			userId,
 			storeId,
-			parsed.data,
+			upsertData,
 		);
 
 		res.json({ ok: true, submittedShift });
