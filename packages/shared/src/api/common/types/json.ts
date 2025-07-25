@@ -2,7 +2,7 @@ export type { ShiftsOfAssignType } from "../../shift/assign/validations/put";
 export type {
 	ShiftsOfRequestsType,
 	DefaultTimePositionsType,
-	RequestCalenderType
+	RequestCalenderType,
 } from "../../shift/request/validations/put";
 export type {
 	shiftsOfSubmittedType,
