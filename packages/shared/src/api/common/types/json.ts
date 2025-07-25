@@ -8,5 +8,5 @@ export type {
 	shiftsOfSubmittedType,
 	availableWeekType,
 	specificDatesType,
-	SubmittedCalendarType
+	SubmittedCalendarType,
 } from "../../shift/submit/validations/put";
