@@ -1,14 +1,14 @@
-import type { RequestCalenderType } from "@shared/api/common/types/json";
+import type { RequestCalendarType } from "@shared/api/common/types/json";
 import type { DayOfWeek } from "@shared/api/shift/ai/types/post-create";
 import { generateDateWeekList } from "../../ai/create/utils/generateDateWeekList";
 
-export function convertToCalendarFormat(
+export function convertToRequestCalendar(
 	startDate: string,
 	endDate: string,
 	defaultTimePositions: Record<DayOfWeek, string[]>,
 	overrideDates: Record<string, string[]>,
-): RequestCalenderType {
-	const calendar: RequestCalenderType = {};
+): RequestCalendarType {
+	const calendar: RequestCalendarType = {};
 	const dateWeekMap = generateDateWeekList(startDate, endDate);
 
 	for (const [date, weekday] of Object.entries(dateWeekMap)) {

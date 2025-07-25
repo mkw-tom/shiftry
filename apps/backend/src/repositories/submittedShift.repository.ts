@@ -1,12 +1,13 @@
 import type { Prisma } from "@prisma/client";
 import type { SubmittedShift } from "@shared/api/common/types/prisma";
+import type { UpsertSubmittedShiftWithCalendar } from "@shared/api/shift/submit/validations/put";
 import prisma from "../config/database";
 import type { UpsertSubmittedShiftInputType } from "../types/inputs";
 
 export const upsertSubmittedShift = async (
 	userId: string,
 	storeId: string,
-	data: UpsertSubmittedShiftInputType,
+	data: UpsertSubmittedShiftWithCalendar,
 ): Promise<SubmittedShift> => {
 	return await prisma.submittedShift.upsert({
 		where: {
@@ -16,10 +17,12 @@ export const upsertSubmittedShift = async (
 			},
 		},
 		update: {
+			name: data.name,
 			shifts: data.shifts as Prisma.JsonObject,
 			status: data.status,
 		},
 		create: {
+			name: data.name,
 			userId: userId,
 			storeId: storeId,
 			shiftRequestId: data.shiftRequestId,

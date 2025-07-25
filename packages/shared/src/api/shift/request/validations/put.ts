@@ -53,12 +53,12 @@ export const DateSchema = z.record(
 export type DateType = z.infer<typeof DateSchema>;
 
 // 全体のスケジュールスキーマ
-export const RequestCalenderValidate = z.record(
+export const RequestCalendarValidate = z.record(
 	z.string(), // 例: "2025-08-01"
 	z.union([DateSchema, z.null()]),
 );
 
-export type RequestCalenderType = z.infer<typeof RequestCalenderValidate>;
+export type RequestCalendarType = z.infer<typeof RequestCalendarValidate>;
 
 export const upsertShfitRequestValidate = z.object({
 	weekStart: z.string().refine((val) => !Number.isNaN(Date.parse(val)), {
@@ -85,5 +85,5 @@ export type UpsertShiftRequestWithCalendar = Omit<
 	UpsertShiftRequetType,
 	"requests"
 > & {
-	requests: RequestCalenderType;
+	requests: RequestCalendarType;
 };

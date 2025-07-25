@@ -41,10 +41,12 @@ const Submit = () => {
 		shiftRequestId: string,
 		userName = "",
 	): UpsertSubmittedShiftInputType => ({
+		name: userName,
+		startDate: "",
+		endDate: "",
 		shiftRequestId,
 		status: ShiftStatus.ADJUSTMENT,
 		shifts: {
-			name: userName,
 			weekCountMax: 0,
 			weekCountMin: 0,
 			availableWeeks: [],
@@ -68,6 +70,9 @@ const Submit = () => {
 
 			if (res?.ok && res.submittedShift !== null) {
 				setFormData({
+					name: user?.name as string,
+					startDate: String(currentData.weekStart),
+					endDate: String(currentData.weekEnd),
 					shiftRequestId: res.submittedShift.shiftRequestId,
 					status: res.submittedShift.status,
 					shifts: res.submittedShift.shifts as shiftsOfSubmittedType,
@@ -77,7 +82,13 @@ const Submit = () => {
 		};
 
 		fetchData();
-	}, [userToken, storeToken, currentData?.id, handleGetSubmitShiftUserOne]);
+	}, [
+		userToken,
+		storeToken,
+		currentData,
+		user?.name,
+		handleGetSubmitShiftUserOne,
+	]);
 
 	const saveSubmitShift = async () => {
 		if (!userToken || !storeToken) {

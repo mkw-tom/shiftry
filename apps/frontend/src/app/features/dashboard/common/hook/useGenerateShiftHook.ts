@@ -42,7 +42,7 @@ export const useGenerateShiftHook = () => {
 						overrideDates: {},
 					},
 					submittedShifts: submittedDatas.submittedShifts.map((shift) => ({
-						name: shift.shifts.name,
+						name: shift.name as string,
 						userId: shift.userId,
 						weekCountMin: shift.shifts.weekCountMin,
 						weekCountMax: shift.shifts.weekCountMax,

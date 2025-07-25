@@ -43,10 +43,10 @@ export const specificDatesValidate = z.string().refine(
 export type specificDatesType = z.infer<typeof specificDatesValidate>;
 
 export const shiftsOfSubmittedValidate = z.object({
-	name: z
-		.string()
-		.min(1, "ニックネームは必須です")
-		.max(20, "20文字以内で入力してください"),
+	// name: z
+	//   .string()
+	//   .min(1, "ニックネームは必須です")
+	//   .max(20, "20文字以内で入力してください"),
 	weekCountMin: z
 		.number()
 		.int()
@@ -63,8 +63,41 @@ export const shiftsOfSubmittedValidate = z.object({
 
 export type shiftsOfSubmittedType = z.infer<typeof shiftsOfSubmittedValidate>;
 
+// 時間指定の形式（"HH:MM-HH:MM"）
+export const timeRangeSchema = z.string().regex(/^\d{2}:\d{2}-\d{2}:\d{2}$/, {
+	message: "Time must be in format HH:MM-HH:MM",
+});
+
+// 各日付の値："anytime" or "HH:MM-HH:MM" or null
+export const dateValueSchema = z.union([
+	z.literal("anytime"),
+	timeRangeSchema,
+	z.null(),
+]);
+
+// 全体のカレンダースキーマ（"2025-08-01": 値）
+export const SubmittedCalenderValidate = z.record(
+	z.string().regex(/^\d{4}-\d{2}-\d{2}$/, {
+		message: "Date must be in format YYYY-MM-DD",
+	}),
+	dateValueSchema,
+);
+
+// 型定義
+export type SubmittedCalendarType = z.infer<typeof SubmittedCalenderValidate>;
+
 export const upsertSubmittedShiftValidate = z.object({
 	shiftRequestId: z.string(),
+	startDate: z.string().refine((val) => !Number.isNaN(Date.parse(val)), {
+		message: "Invalid date format",
+	}),
+	endDate: z.string().refine((val) => !Number.isNaN(Date.parse(val)), {
+		message: "Invalid date format",
+	}),
+	name: z
+		.string()
+		.min(1, "ニックネームは必須です")
+		.max(20, "20文字以内で入力してください"),
 	shifts: shiftsOfSubmittedValidate,
 	status: z.nativeEnum(ShiftStatus, {
 		errorMap: () => ({ message: "Invalid status" }),
@@ -74,3 +107,10 @@ export const upsertSubmittedShiftValidate = z.object({
 export type UpsertSubmittedShiftInputType = z.infer<
 	typeof upsertSubmittedShiftValidate
 >;
+
+export type UpsertSubmittedShiftWithCalendar = Omit<
+	UpsertSubmittedShiftInputType,
+	"shifts"
+> & {
+	shifts: SubmittedCalendarType;
+};
