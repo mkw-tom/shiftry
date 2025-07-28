@@ -20,8 +20,10 @@ export function convertToRequestCalendar(
 				for (const timeWithCount of overrideDates[date]) {
 					const [time, countStr] = timeWithCount.split("*");
 					calendar[date][time] = {
+						jobRoles: [],
 						count: Number.parseInt(countStr),
 						absolute: [],
+						priority: [],
 					};
 				}
 			}
@@ -36,6 +38,8 @@ export function convertToRequestCalendar(
 					calendar[date][time] = {
 						count: Number.parseInt(countStr),
 						absolute: [],
+						priority: [],
+						jobRoles: [],
 					};
 				}
 			}

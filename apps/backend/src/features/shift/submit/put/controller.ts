@@ -29,23 +29,10 @@ const upsertSubmittedShiftController = async (
 			});
 			return;
 		}
-		const { shifts, startDate, endDate } = parsed.data;
-		const SubmittedCalendar = convertToSubmittedCalender(
-			startDate,
-			endDate,
-			shifts.availableWeeks,
-			shifts.specificDates,
-		);
-
-		const upsertData = {
-			...parsed.data,
-			shifts: SubmittedCalendar,
-		};
-
 		const submittedShift = await upsertSubmittedShift(
 			userId,
 			storeId,
-			upsertData,
+			parsed.data,
 		);
 
 		res.json({ ok: true, submittedShift });

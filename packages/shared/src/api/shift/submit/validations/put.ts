@@ -98,7 +98,7 @@ export const upsertSubmittedShiftValidate = z.object({
 		.string()
 		.min(1, "ニックネームは必須です")
 		.max(20, "20文字以内で入力してください"),
-	shifts: shiftsOfSubmittedValidate,
+	shifts: SubmittedCalenderValidate,
 	status: z.nativeEnum(ShiftStatus, {
 		errorMap: () => ({ message: "Invalid status" }),
 	}),
@@ -114,3 +114,25 @@ export type UpsertSubmittedShiftWithCalendar = Omit<
 > & {
 	shifts: SubmittedCalendarType;
 };
+
+export const upsertSubmittedShiftFormValidate = z.object({
+	shiftRequestId: z.string(),
+	startDate: z.string().refine((val) => !Number.isNaN(Date.parse(val)), {
+		message: "Invalid date format",
+	}),
+	endDate: z.string().refine((val) => !Number.isNaN(Date.parse(val)), {
+		message: "Invalid date format",
+	}),
+	name: z
+		.string()
+		.min(1, "ニックネームは必須です")
+		.max(20, "20文字以内で入力してください"),
+	shifts: shiftsOfSubmittedValidate,
+	status: z.nativeEnum(ShiftStatus, {
+		errorMap: () => ({ message: "Invalid status" }),
+	}),
+});
+
+export type UpsertSubmittedShiftFormType = z.infer<
+	typeof upsertSubmittedShiftFormValidate
+>;

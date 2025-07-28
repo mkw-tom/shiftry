@@ -8,6 +8,7 @@ export const assignShiftMock: ShiftsOfAssignType[] = [
 	{
 		userId: "user-001",
 		userName: "たろう",
+		jobRoles: ["cashier", "cook"],
 		shifts: [
 			{ date: "2025-04-15", time: "09:00-13:00" },
 			{ date: "2025-04-16", time: "14:00-18:00" },
@@ -16,6 +17,8 @@ export const assignShiftMock: ShiftsOfAssignType[] = [
 	{
 		userId: "user-002",
 		userName: "じろう",
+		jobRoles: ["cashier", "cook"],
+
 		shifts: [
 			{ date: "2025-04-15", time: "10:00-14:00" },
 			{ date: "2025-04-17", time: "12:00-16:00" },

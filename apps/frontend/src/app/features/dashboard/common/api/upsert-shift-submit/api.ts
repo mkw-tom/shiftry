@@ -4,7 +4,10 @@ import type {
 	ValidationErrorResponse,
 } from "@shared/api/common/types/errors";
 import type { UpsertSubmittedShfitResponse } from "@shared/api/shift/submit/types/put";
-import type { UpsertSubmittedShiftInputType } from "@shared/api/shift/submit/validations/put";
+import type {
+	UpsertSubmittedShiftFormType,
+	UpsertSubmittedShiftInputType,
+} from "@shared/api/shift/submit/validations/put";
 
 export const upsertSubmitShift = async ({
 	userToken,
@@ -13,7 +16,7 @@ export const upsertSubmitShift = async ({
 }: {
 	userToken: string;
 	storeToken: string;
-	formData: UpsertSubmittedShiftInputType;
+	formData: UpsertSubmittedShiftFormType;
 }): Promise<
 	UpsertSubmittedShfitResponse | ErrorResponse | ValidationErrorResponse
 > => {

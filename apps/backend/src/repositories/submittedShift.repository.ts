@@ -59,5 +59,22 @@ export const getSubmittedShiftsSpecific = async (
 ): Promise<SubmittedShift[]> => {
 	return await prisma.submittedShift.findMany({
 		where: { shiftRequestId },
+		include: {
+			user: {
+				select: {
+					jobRoles: {
+						select: {
+							roleId: true,
+							role: {
+								select: {
+									id: true,
+									name: true,
+								},
+							},
+						},
+					},
+				},
+			},
+		},
 	});
 };
