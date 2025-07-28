@@ -7,6 +7,9 @@ export type {
 	SubmittedShift,
 	AssignShift,
 	Payment,
+	ShiftPosition,
+	JobRole,
+	UserJobRole,
 } from "@prisma/client";
 
 export {
