@@ -36,12 +36,34 @@ export const AbsoluteUserSchema = z.object({
 	userId: z.string(),
 	userName: z.string(),
 });
+export const priorityUserSchema = z.object({
+	userId: z.string(),
+	userName: z.string(),
+	level: z
+		.number()
+		.int()
+		.min(1, {
+			message: "Level must be an integer greater than or equal to 1",
+		})
+		.max(3, {
+			message: "Level must be an integer less than or equal to 3",
+		}),
+});
 export type AbsoluteUserType = z.infer<typeof AbsoluteUserSchema>;
 
 // 時間帯ごとの割り当て情報スキーマ
 export const TimeSlotSchema = z.object({
-	count: z.number(),
+	count: z
+		.number()
+		.min(1, {
+			message: "Count must be greater than or equal to 1",
+		})
+		.max(3, {
+			message: "Count must be less than or equal to 3",
+		}),
 	absolute: z.array(AbsoluteUserSchema).default([]), // デフォルト空配列
+	priority: z.array(priorityUserSchema).default([]), // デフォルト空配列
+	jobRoles: z.array(z.string()).default([]), // デフォルト空配列
 });
 export type TimeSlotType = z.infer<typeof TimeSlotSchema>;
 
@@ -70,7 +92,7 @@ export const upsertShfitRequestValidate = z.object({
 	type: z.nativeEnum(ShiftType, {
 		errorMap: () => ({ message: "Invalid shift type" }),
 	}),
-	requests: ShiftsOfRequestsValidate,
+	requests: RequestCalendarValidate,
 	status: z.nativeEnum(RequestStatus, {
 		errorMap: () => ({ message: "Invalid status" }),
 	}),

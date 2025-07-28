@@ -98,7 +98,7 @@ export const upsertSubmittedShiftValidate = z.object({
 		.string()
 		.min(1, "ニックネームは必須です")
 		.max(20, "20文字以内で入力してください"),
-	shifts: shiftsOfSubmittedValidate,
+	shifts: SubmittedCalenderValidate,
 	status: z.nativeEnum(ShiftStatus, {
 		errorMap: () => ({ message: "Invalid status" }),
 	}),
