@@ -207,7 +207,12 @@ export const generateInitialShift = (
 			}
 		}
 
-		assignments.push({ userId, userName, shifts: assignedShifts });
+		assignments.push({
+			userId,
+			userName,
+			shifts: assignedShifts,
+			jobRoles: [],
+		});
 	}
 
 	return assignments;
