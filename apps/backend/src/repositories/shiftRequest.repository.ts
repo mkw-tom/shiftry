@@ -96,7 +96,6 @@ export const getActiveShiftRequests = async (
 		where: {
 			storeId,
 			weekEnd: {
-				not: null,
 				gte: jstStartOfToday, // 今日以降のweekEndのみ取得
 			},
 		},
@@ -113,7 +112,6 @@ export const getArchivedShiftRequests = async (
 		where: {
 			storeId,
 			weekEnd: {
-				not: null,
 				lt: jstStartOfToday, // 今日より前
 			},
 		},

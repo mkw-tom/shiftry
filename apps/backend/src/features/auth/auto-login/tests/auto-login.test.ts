@@ -44,7 +44,6 @@ describe("Login (mocked)", () => {
 		expect(result.user.name).toEqual(user.name);
 		expect(result.user.role).toEqual(user.role);
 		expect(result.store.id).toEqual(mockStore.id);
-		expect(result.store.storeId).toEqual(store.storeId);
 		expect(result.store.name).toEqual(store.name);
 	});
 });

@@ -8,7 +8,6 @@ export const createMockStoreInput = () => ({
 
 export const mockStore: Store = {
 	id: faker.string.uuid(),
-	storeId: faker.string.uuid(),
 	name: faker.company.name(),
 	groupId: faker.string.nanoid(),
 	createdAt: new Date(),
