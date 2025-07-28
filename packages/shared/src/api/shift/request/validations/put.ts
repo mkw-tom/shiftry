@@ -103,9 +103,9 @@ export const upsertShfitRequestValidate = z.object({
 
 export type UpsertShiftRequetType = z.infer<typeof upsertShfitRequestValidate>;
 
-export type UpsertShiftRequestWithCalendar = Omit<
+export type UpsertShiftRequetFormType = Omit<
 	UpsertShiftRequetType,
 	"requests"
 > & {
-	requests: RequestCalendarType;
+	requests: ShiftsOfRequestsType;
 };

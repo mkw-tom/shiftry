@@ -1,3 +1,4 @@
+import type { ShiftRequestWithJson } from "@shared/api/common/types/merged";
 import type { ShiftStatus } from "@shared/api/common/types/prisma";
 import { MDW, YMDHM, YMDW } from "@shared/utils/formatDate";
 import React, { type JSX } from "react";
@@ -6,7 +7,6 @@ import { FaRegEdit } from "react-icons/fa";
 import { LuSend } from "react-icons/lu";
 import {
 	DrawerView,
-	type ShiftRequestWithJson,
 	useBottomDrawer,
 } from "../../../common/context/useBottomDrawer";
 

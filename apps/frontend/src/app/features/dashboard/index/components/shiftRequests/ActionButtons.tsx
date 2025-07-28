@@ -1,5 +1,6 @@
 "use client";
 import type { RootState } from "@/app/redux/store";
+import type { ShiftRequestWithJson } from "@shared/api/common/types/merged";
 import type { RequestStatus } from "@shared/api/common/types/prisma";
 import { useRouter } from "next/navigation";
 import { LuSend } from "react-icons/lu";
@@ -7,7 +8,6 @@ import { SiOpenai } from "react-icons/si";
 import { useSelector } from "react-redux";
 import {
 	DrawerView,
-	type ShiftRequestWithJson,
 	useBottomDrawer,
 } from "../../../common/context/useBottomDrawer";
 
