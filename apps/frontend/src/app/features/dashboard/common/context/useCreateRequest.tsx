@@ -1,5 +1,5 @@
 "use client";
-import type { UpsertShiftRequetType } from "@shared/api/shift/request/validations/put";
+import type { UpsertShiftRequetFormType } from "@shared/api/shift/request/validations/put";
 import { type ReactNode, createContext, useContext, useState } from "react";
 
 type CreateRequestContextType = {
@@ -7,8 +7,8 @@ type CreateRequestContextType = {
 	setStep: React.Dispatch<React.SetStateAction<CreateRequestStep>>;
 	nextStep: () => void;
 	prevStep: () => void;
-	formData: UpsertShiftRequetType;
-	setFormData: React.Dispatch<React.SetStateAction<UpsertShiftRequetType>>;
+	formData: UpsertShiftRequetFormType;
+	setFormData: React.Dispatch<React.SetStateAction<UpsertShiftRequetFormType>>;
 };
 
 export enum CreateRequestStep {
@@ -35,7 +35,7 @@ export const formDataInit = {
 		},
 		overrideDates: {},
 	},
-} as UpsertShiftRequetType;
+} as UpsertShiftRequetFormType;
 
 const createRequestContext = createContext<
 	CreateRequestContextType | undefined
@@ -57,7 +57,8 @@ export const CreateRequestProvider = ({
 	children: ReactNode;
 }) => {
 	const [step, setStep] = useState<CreateRequestStep>(CreateRequestStep.Period);
-	const [formData, setFormData] = useState<UpsertShiftRequetType>(formDataInit);
+	const [formData, setFormData] =
+		useState<UpsertShiftRequetFormType>(formDataInit);
 
 	function nextStep() {
 		setStep((prev) =>

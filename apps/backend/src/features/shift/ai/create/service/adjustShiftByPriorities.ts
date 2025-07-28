@@ -134,6 +134,7 @@ export const adjustShiftByPriorities = ({
 	return submittedShifts.map((member) => ({
 		userId: member.userId,
 		userName: member.name,
+		jobRoles: [],
 		shifts: resultMap.get(member.userId) ?? [],
 	}));
 };

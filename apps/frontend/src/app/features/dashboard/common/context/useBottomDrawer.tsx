@@ -1,5 +1,6 @@
 "use client";
 import type { ShiftsOfRequestsType } from "@shared/api/common/types/json";
+import type { ShiftRequestWithJson } from "@shared/api/common/types/merged";
 import type { ShiftRequest } from "@shared/api/common/types/prisma";
 import {
 	Dispatch,
@@ -18,10 +19,6 @@ export enum DrawerView {
 	CONFIRM = "CONFIRM", // 出来上がり確認
 	GENERATE = "GENERATE",
 }
-
-export type ShiftRequestWithJson = Omit<ShiftRequest, "requests"> & {
-	requests: ShiftsOfRequestsType;
-};
 
 type bottomDrawerContextType = {
 	isOpen: boolean;

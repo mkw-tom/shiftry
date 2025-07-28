@@ -5,11 +5,11 @@ import { MdAdd } from "react-icons/md";
 import { useSelector } from "react-redux";
 import {
 	DrawerView,
-	type ShiftRequestWithJson,
 	useBottomDrawer,
 } from "../../../common/context/useBottomDrawer";
 import ShiftRequestCard from "./ShiftRequestCard";
 
+import type { ShiftRequestWithJson } from "@shared/api/common/types/merged";
 import type { RequestStatus } from "@shared/api/common/types/prisma";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import { LuSend } from "react-icons/lu";

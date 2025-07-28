@@ -1,9 +1,9 @@
+import type { ShiftRequestWithJson } from "@shared/api/common/types/merged";
 import type { RequestStatus } from "@shared/api/common/types/prisma";
 import { MDW, YMDHM, YMDW } from "@shared/utils/formatDate";
 import React, { type JSX, JSXElementConstructor } from "react";
 import { BiCheck, BiEdit, BiEditAlt } from "react-icons/bi";
 import { LuSend } from "react-icons/lu";
-import type { ShiftRequestWithJson } from "../../../common/context/useBottomDrawer";
 import ActionButtons from "./ActionButtons";
 
 const statusBadgeMap: Record<

@@ -1,4 +1,4 @@
-import type { UpsertSubmittedShiftInputType } from "@shared/api/shift/submit/validations/put";
+import type { UpsertSubmittedShiftFormType } from "@shared/api/shift/submit/validations/put";
 import { useState } from "react";
 import { upsertSubmitShift } from "./api";
 
@@ -13,7 +13,7 @@ export const useUpsertSubmitShift = () => {
 	}: {
 		userToken: string;
 		storeToken: string;
-		formData: UpsertSubmittedShiftInputType;
+		formData: UpsertSubmittedShiftFormType;
 	}) => {
 		setIsLoading(true);
 		setError(null);

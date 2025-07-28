@@ -20,36 +20,17 @@ const upsertShiftRequestController = async (
 		const storeId = req.storeId as string;
 		await verifyUserStoreForOwnerAndManager(userId, storeId);
 
-		const bodyParesed = upsertShfitRequestValidate.safeParse(req.body);
-		if (!bodyParesed.success) {
+		const prased = upsertShfitRequestValidate.safeParse(req.body);
+		if (!prased.success) {
 			res.status(400).json({
 				ok: false,
 				message: "invalid request value",
-				errors: bodyParesed.error.errors,
+				errors: prased.error.errors,
 			});
 			return;
 		}
 
-		const { weekStart, weekEnd, type, requests, status, deadline } =
-			bodyParesed.data;
-
-		const requestCalender = convertToRequestCalendar(
-			weekStart,
-			weekEnd,
-			requests.defaultTimePositions,
-			requests.overrideDates,
-		);
-
-		const upsertData = {
-			weekStart,
-			weekEnd,
-			type,
-			requests: requestCalender,
-			status,
-			deadline,
-		};
-
-		const shiftRequest = await upsertShiftRequest(storeId, upsertData);
+		const shiftRequest = await upsertShiftRequest(storeId, prased.data);
 
 		res.status(200).json({ ok: true, shiftRequest });
 	} catch (error) {
