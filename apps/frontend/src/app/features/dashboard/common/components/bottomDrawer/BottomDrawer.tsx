@@ -39,7 +39,6 @@ const BottomDrawer = () => {
 						{view === DrawerView.CREATE_REQUEST && (
 							<CreateRequestProvider>
 								<CreateReqeustForm />
-								{/* <ActionButton /> */}
 							</CreateRequestProvider>
 						)}
 						{view === DrawerView.SUBMIT && <SubmitForm />}

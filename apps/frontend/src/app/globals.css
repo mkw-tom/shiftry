@@ -1,4 +1,8 @@
 @import "tailwindcss";
+@import "react-day-picker/dist/style.css";
+@import "react-datepicker/dist/react-datepicker.css";
+@import "react-time-picker/dist/TimePicker.css";
+@import "react-clock/dist/Clock.css";
 @plugin "daisyui";
 
 :root {
