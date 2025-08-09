@@ -1,6 +1,19 @@
+import { count } from "node:console";
 import z from "zod";
 
-export const ShiftPositionValidate = z.object({
+export const WeekDays = z.enum([
+	"monday",
+	"tuesday",
+	"wednesday",
+	"thursday",
+	"friday",
+	"saturday",
+	"sunday",
+]);
+export type WeekDayType = z.infer<typeof WeekDays>;
+export type WeekDayArray = WeekDayType[];
+
+export const UpsertShiftPositionValidate = z.object({
 	name: z
 		.string()
 		.min(1, {
@@ -20,13 +33,37 @@ export const ShiftPositionValidate = z.object({
 			message: "Job role must be a non-empty string",
 		}),
 	),
-});
-export const bulkUpsertShiftPositionValidate = z.object({
-	datas: z.array(ShiftPositionValidate).min(1, {
-		message: "At least one shift position must be provided",
+	count: z.number().int().min(1, {
+		message: "Count must be a positive integer",
 	}),
+	weeks: z.array(WeekDays).min(1, {
+		message: "At least one week must be selected",
+	}),
+	absoluteStaff: z
+		.array(
+			z.object({
+				id: z.string().min(1, {
+					message: "Staff ID must be a non-empty string",
+				}),
+				name: z.string().min(1, {
+					message: "Staff name must be a non-empty string",
+				}),
+			}),
+		)
+		.min(1, {
+			message: "At least one absolute staff member must be provided",
+		}),
 });
+export type UpsertShiftPositionType = z.infer<
+	typeof UpsertShiftPositionValidate
+>;
 
-export type bulkUpsertShiftPositionValidate = z.infer<
+export const bulkUpsertShiftPositionValidate = z
+	.array(UpsertShiftPositionValidate)
+	.min(1, {
+		message: "At least one shift position must be provided",
+	});
+
+export type bulkUpsertShiftPositionType = z.infer<
 	typeof bulkUpsertShiftPositionValidate
 >;

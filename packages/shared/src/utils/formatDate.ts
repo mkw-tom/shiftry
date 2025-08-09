@@ -28,3 +28,17 @@ export const MDW = (date: Date): string => {
 
 	return `${month}/${day}（${weekday}）`;
 };
+
+export const MD = (date: Date): string => {
+	const month = String(date.getMonth() + 1).padStart(2, "0");
+	const day = String(date.getDate()).padStart(2, "0");
+
+	return `${month}/${day}`;
+};
+
+export const formatDateToYYYYMMDD = (date: Date): string => {
+	const yyyy = date.getFullYear();
+	const mm = String(date.getMonth() + 1).padStart(2, "0");
+	const dd = String(date.getDate()).padStart(2, "0");
+	return `${yyyy}-${mm}-${dd}`;
+};

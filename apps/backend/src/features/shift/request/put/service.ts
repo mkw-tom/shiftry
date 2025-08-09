@@ -20,6 +20,7 @@ export function convertToRequestCalendar(
 				for (const timeWithCount of overrideDates[date]) {
 					const [time, countStr] = timeWithCount.split("*");
 					calendar[date][time] = {
+						name: time,
 						jobRoles: [],
 						count: Number.parseInt(countStr),
 						absolute: [],
@@ -36,6 +37,7 @@ export function convertToRequestCalendar(
 				for (const timeWithCount of defaultSlots) {
 					const [time, countStr] = timeWithCount.split("*");
 					calendar[date][time] = {
+						name: time,
 						count: Number.parseInt(countStr),
 						absolute: [],
 						priority: [],
