@@ -53,6 +53,7 @@ export type AbsoluteUserType = z.infer<typeof AbsoluteUserSchema>;
 
 // 時間帯ごとの割り当て情報スキーマ
 export const TimeSlotSchema = z.object({
+	name: z.string(),
 	count: z
 		.number()
 		.min(1, {
@@ -102,10 +103,3 @@ export const upsertShfitRequestValidate = z.object({
 });
 
 export type UpsertShiftRequetType = z.infer<typeof upsertShfitRequestValidate>;
-
-export type UpsertShiftRequetFormType = Omit<
-	UpsertShiftRequetType,
-	"requests"
-> & {
-	requests: ShiftsOfRequestsType;
-};

@@ -39,9 +39,7 @@ const bulkUpsertShiftPosisionsController = async (
 			return;
 		}
 
-		const { datas } = parsed.data;
-
-		const shiftPositions = await bulkUpsertShiftPositions(storeId, datas);
+		const shiftPositions = await bulkUpsertShiftPositions(storeId, parsed.data);
 		res.json({ ok: true, shiftPositions });
 	} catch (error) {
 		console.error("Failed to get job roles:", error);
