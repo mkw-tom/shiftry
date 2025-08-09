@@ -1,41 +1,62 @@
 "use client";
-import type { UpsertShiftRequetFormType } from "@shared/api/shift/request/validations/put";
+import type { UpsertShiftRequetType } from "@shared/api/shift/request/validations/put";
+import type { bulkUpsertShiftPositionType } from "@shared/api/shiftPosition/validations/put-bulk";
+import { formatDateToYYYYMMDD } from "@shared/utils/formatDate";
+import { convertDateToWeekByEnglish } from "@shared/utils/formatWeek";
+import { createServerSearchParamsForServerPage } from "next/dist/server/request/search-params";
 import { type ReactNode, createContext, useContext, useState } from "react";
+import { useToast } from "./ToastProvider";
+import { useBottomDrawer } from "./useBottomDrawer";
+
+export const dummyShiftPositions: bulkUpsertShiftPositionType = [
+	{
+		name: "厨房・ホール",
+		startTime: "2025-08-04T10:00:00.000Z",
+		endTime: "2025-08-04T10:00:00.000Z",
+		jobRoles: ["洗い物", "レジ"],
+		count: 2,
+		weeks: ["monday", "tuesday", "wednesday", "thursday", "friday"],
+		absoluteStaff: [{ id: "1", name: "山田太郎" }],
+	},
+	{
+		name: "ホール",
+		startTime: "2025-08-04T10:00:00.000Z",
+		endTime: "2025-08-04T10:00:00.000Z",
+		jobRoles: ["レジ", "接客"],
+		count: 2,
+		weeks: ["saturday", "sunday"],
+		absoluteStaff: [{ id: "1", name: "山田太郎" }],
+	},
+];
 
 type CreateRequestContextType = {
 	step: CreateRequestStep;
 	setStep: React.Dispatch<React.SetStateAction<CreateRequestStep>>;
 	nextStep: () => void;
 	prevStep: () => void;
-	formData: UpsertShiftRequetFormType;
-	setFormData: React.Dispatch<React.SetStateAction<UpsertShiftRequetFormType>>;
+	formData: UpsertShiftRequetType;
+	setFormData: React.Dispatch<React.SetStateAction<UpsertShiftRequetType>>;
+	shiftPositioins: bulkUpsertShiftPositionType;
+	setShiftPositions: React.Dispatch<
+		React.SetStateAction<bulkUpsertShiftPositionType>
+	>;
 };
 
-export enum CreateRequestStep {
-	Period = 0,
-	Weekly = 1,
-	Special = 2,
-}
+export type CreateRequestStep =
+	| "select_date"
+	| "regist_position"
+	| "adjust_position"
+	| "preview"
+	| "confirm";
 
-export const formDataInit = {
+export const formDataInit: UpsertShiftRequetType = {
 	type: "WEEKLY",
 	weekStart: "",
 	weekEnd: "",
 	deadline: "",
 	status: "HOLD",
-	requests: {
-		defaultTimePositions: {
-			Monday: [],
-			Tuesday: [],
-			Wednesday: [],
-			Thursday: [],
-			Friday: [],
-			Saturday: [],
-			Sunday: [],
-		},
-		overrideDates: {},
-	},
-} as UpsertShiftRequetFormType;
+	requests: {},
+};
 
 const createRequestContext = createContext<
 	CreateRequestContextType | undefined
@@ -56,24 +77,123 @@ export const CreateRequestProvider = ({
 }: {
 	children: ReactNode;
 }) => {
-	const [step, setStep] = useState<CreateRequestStep>(CreateRequestStep.Period);
-	const [formData, setFormData] =
-		useState<UpsertShiftRequetFormType>(formDataInit);
+	const [step, setStep] = useState<CreateRequestStep>("select_date");
+	const [formData, setFormData] = useState<UpsertShiftRequetType>(formDataInit);
+	const [shiftPositioins, setShiftPositions] =
+		useState<bulkUpsertShiftPositionType>(dummyShiftPositions);
+
+	const { drawerClose } = useBottomDrawer();
+	const { showToast } = useToast();
 
 	function nextStep() {
-		setStep((prev) =>
-			prev === CreateRequestStep.Period
-				? CreateRequestStep.Weekly
-				: CreateRequestStep.Special,
-		);
+		switch (step) {
+			case "select_date":
+				setStep("regist_position");
+				console.log(formData);
+				break;
+			case "regist_position":
+				setFormData((prev) => {
+					const newRequests: UpsertShiftRequetType["requests"] = {};
+
+					// ✅ Date型として保持（UTC注意）
+					const start = new Date(prev.weekStart);
+					const end = new Date(prev.weekEnd);
+
+					const allDates: Date[] = [];
+
+					const current = new Date(start);
+					while (current <= end) {
+						allDates.push(new Date(current));
+						current.setDate(current.getDate() + 1);
+					}
+
+					allDates.map((date) => {
+						const dateStr = formatDateToYYYYMMDD(date); // "2025-08-04"
+						const weekdayKey = convertDateToWeekByEnglish(date); // "monday"
+
+						shiftPositioins.map((position) => {
+							if (position.weeks.includes(weekdayKey)) {
+								const startTime = new Date(position.startTime);
+								const endTime = new Date(position.endTime);
+
+								// ✅ JSTで "HH:mm" に変換
+								const start = startTime.toLocaleTimeString("ja-JP", {
+									hour: "2-digit",
+									minute: "2-digit",
+									hour12: false,
+								});
+								const end = endTime.toLocaleTimeString("ja-JP", {
+									hour: "2-digit",
+									minute: "2-digit",
+									hour12: false,
+								});
+
+								const timeSlotStr = `${start}-${end}`;
+
+								if (!newRequests[dateStr]) {
+									newRequests[dateStr] = {};
+								}
+
+								newRequests[dateStr][timeSlotStr] = {
+									name: position.name,
+									count: position.count,
+									jobRoles: position.jobRoles,
+									absolute: position.absoluteStaff.map((staff) => ({
+										userId: staff.id,
+										userName: staff.name,
+									})),
+									priority: [],
+								};
+							}
+						});
+					});
+
+					return {
+						...prev,
+						requests: newRequests,
+					};
+				});
+
+				console.log(formData.requests);
+				console.log(formData);
+				console.log(shiftPositioins);
+				setStep("adjust_position");
+				break;
+
+			case "adjust_position":
+				setStep("preview");
+				break;
+			case "preview":
+				// setStep("confirm");
+				setStep("select_date");
+				showToast("リクエストが作成されました", "success");
+				drawerClose();
+				break;
+			case "confirm":
+				// Handle confirmation logic here, e.g., submit the form
+				break;
+			default:
+				throw new Error("Unknown step");
+		}
 	}
 
 	function prevStep() {
-		setStep((prev) =>
-			prev === CreateRequestStep.Special
-				? CreateRequestStep.Weekly
-				: CreateRequestStep.Period,
-		);
+		switch (step) {
+			case "regist_position":
+				setStep("select_date");
+				break;
+			case "adjust_position":
+				setStep("regist_position");
+				break;
+			case "preview":
+				setStep("adjust_position");
+				break;
+			case "confirm":
+				setStep("preview");
+				break;
+			default:
+				throw new Error("Cannot go back from this step");
+		}
 	}
 
 	return (
@@ -85,6 +205,8 @@ export const CreateRequestProvider = ({
 				prevStep,
 				formData,
 				setFormData,
+				shiftPositioins,
+				setShiftPositions,
 			}}
 		>
 			{children}
