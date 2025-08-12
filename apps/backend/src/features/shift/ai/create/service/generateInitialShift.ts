@@ -1,9 +1,9 @@
 import type {
 	ShiftsOfAssignType,
 	ShiftsOfRequestsType,
-} from "@shared/api/common/types/json";
-import type { DayOfWeek } from "@shared/api/shift/ai/types/post-create";
-import type { shiftOfSubmittdWithUserId } from "@shared/api/shift/ai/validations/post-create";
+} from "@shared/api/common/types/json.js";
+import type { DayOfWeek } from "@shared/api/shift/ai/types/post-create.js";
+import type { shiftOfSubmittdWithUserId } from "@shared/api/shift/ai/validations/post-create.js";
 
 // 📆 曜日リストを事前生成（date → DayOfWeek）
 function generateDateWeekList(

@@ -1,12 +1,12 @@
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/api/common/types/errors";
-import type { UpdateStoreNameResponse } from "@shared/api/store/types/update-store-name";
-import { updateStoreNameValidate } from "@shared/api/store/validations/update-store-name";
+} from "@shared/api/common/types/errors.js";
+import type { UpdateStoreNameResponse } from "@shared/api/store/types/update-store-name.js";
+import { updateStoreNameValidate } from "@shared/api/store/validations/update-store-name.js";
 import type { Request, Response } from "express";
-import { updateStoreName } from "../../../repositories/store.repository";
-import { verifyUserStoreForOwnerAndManager } from "../../common/authorization.service";
+import { updateStoreName } from "../../../repositories/store.repository.js";
+import { verifyUserStoreForOwnerAndManager } from "../../common/authorization.service.js";
 
 const updateStoreNameControler = async (
 	req: Request,

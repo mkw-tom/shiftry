@@ -1,9 +1,8 @@
-import { start } from "node:repl";
-import type { ShiftsOfRequestsType } from "@shared/api/common/types/json";
+import type { ShiftsOfRequestsType } from "@shared/api/common/types/json.js";
 import type {
 	DayOfWeek,
 	SlotInfo,
-} from "@shared/api/shift/ai/types/post-create";
+} from "@shared/api/shift/ai/types/post-create.js";
 
 const getDatesOfDay = (
 	day: string,

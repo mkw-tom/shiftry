@@ -1,12 +1,12 @@
 import express from "express";
 
-import { attachStoreId } from "../../middlewares/request/attachStoreId";
-import { attachUserId } from "../../middlewares/request/attachUserId";
-import cancelRevertController from "./cancel-revert/controller";
-import cancelSubscriptionController from "./cancel/controller";
-import changePlanController from "./change-plan/controller";
-import getPaymentController from "./get/controller";
-import createPaymentController from "./post/controller";
+import { attachStoreId } from "../../middlewares/request/attachStoreId.js";
+import { attachUserId } from "../../middlewares/request/attachUserId.js";
+import cancelRevertController from "./cancel-revert/controller.js";
+import cancelSubscriptionController from "./cancel/controller.js";
+import changePlanController from "./change-plan/controller.js";
+import getPaymentController from "./get/controller.js";
+import createPaymentController from "./post/controller.js";
 
 const router = express.Router();
 

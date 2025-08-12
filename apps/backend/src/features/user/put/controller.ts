@@ -1,12 +1,12 @@
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/api/common/types/errors";
-import type { UpdateUserProfileResponse } from "@shared/api/user/types/put";
-import { updateUserProlfileValidate } from "@shared/api/user/validations/put";
+} from "@shared/api/common/types/errors.js";
+import type { UpdateUserProfileResponse } from "@shared/api/user/types/put.js";
+import { updateUserProlfileValidate } from "@shared/api/user/validations/put.js";
 import type { Request, Response } from "express";
-import { updateUser } from "../../../repositories/user.repository";
-import { verifyUser } from "../../common/authorization.service";
+import { updateUser } from "../../../repositories/user.repository.js";
+import { verifyUser } from "../../common/authorization.service.js";
 
 const updateUserProfileController = async (
 	req: Request,

@@ -1,15 +1,14 @@
-import type { RegisterOwnerResponse } from "@shared/api/auth/types/register-owner";
+import type { RegisterOwnerResponse } from "@shared/api/auth/types/register-owner.js";
 import {
 	storeNameValidate,
 	userInputValidate,
-} from "@shared/api/auth/validations/register-owner";
+} from "@shared/api/auth/validations/register-owner.js";
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/api/common/types/errors";
+} from "@shared/api/common/types/errors.js";
 import type { Request, Response } from "express";
-import { generateJWT } from "../../../utils/JWT/jwt";
-import registerOwner from "./service";
+import registerOwnerService from "./service.js";
 
 const registerOwnerController = async (
 	req: Request,
@@ -18,8 +17,13 @@ const registerOwnerController = async (
 	>,
 ): Promise<void> => {
 	try {
-		const lineId = req.lineId as string;
+		const idToken = req.idToken;
 
+		if (!idToken) {
+			return void res
+				.status(401)
+				.json({ ok: false, message: "Missing X-Id-Token" });
+		}
 		const userInputParsed = userInputValidate.safeParse(req.body.userInput);
 		const storeNameParsed = storeNameValidate.safeParse(req.body.storeInput);
 
@@ -40,26 +44,16 @@ const registerOwnerController = async (
 			return;
 		}
 
-		const { userInput, storeInput } = {
-			userInput: { ...userInputParsed.data, lineId },
-			storeInput: storeNameParsed.data,
-		};
-
-		const { user, store, userStore } = await registerOwner(
-			userInput,
-			storeInput,
+		const { user, store, userStore } = await registerOwnerService(
+			idToken,
+			userInputParsed.data,
+			storeNameParsed.data,
 		);
-
-		const user_token = generateJWT({ userId: user.id });
-		const store_token = generateJWT({ storeId: store.id });
-
 		res.status(200).json({
 			ok: true,
 			user,
 			store,
 			userStore,
-			user_token,
-			store_token,
 		});
 	} catch (error) {
 		console.error("Error in registerOwnerController:", error);

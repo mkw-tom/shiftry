@@ -1,11 +1,11 @@
 import express from "express";
-import { attachStoreId } from "../../../middlewares/request/attachStoreId";
-import { attachUserId } from "../../../middlewares/request/attachUserId";
-// import { attachStoreIdFromHeader } from "../middlewares/request/attachStoreId";
-// import { attachUserIdFromCookie } from "../middlewares/request/cookie/attachUserIdFromCookie";
-import { validateshiftRequestId } from "../../../middlewares/validations/shiftRequestId.validate";
-import getAssignShiftController from "./get-by-shift-request-id/controller";
-import upsertAssignShfitController from "./put/controller";
+import { attachStoreId } from "../../../middlewares/request/attachStoreId.js";
+import { attachUserId } from "../../../middlewares/request/attachUserId.js";
+// import { attachStoreIdFromHeader } from "../middlewares/request/attachStoreId.js";
+// import { attachUserIdFromCookie } from "../middlewares/request/cookie/attachUserIdFromCookie.js";
+import { validateshiftRequestId } from "../../../middlewares/validations/shiftRequestId.validate.js";
+import getAssignShiftController from "./get-by-shift-request-id/controller.js";
+import upsertAssignShfitController from "./put/controller.js";
 
 const router = express.Router();
 router.use(attachUserId);

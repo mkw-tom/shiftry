@@ -2,8 +2,8 @@ import type {
 	ShiftsOfAssignType,
 	ShiftsOfRequestsType,
 	shiftsOfSubmittedType,
-} from "./json";
-import type { AssignShift, ShiftRequest, SubmittedShift } from "./prisma";
+} from "./json.js";
+import type { AssignShift, ShiftRequest, SubmittedShift } from "./prisma.js";
 
 export type ShiftRequestWithJson = Omit<ShiftRequest, "requests"> & {
 	requests: ShiftsOfRequestsType;

@@ -1,10 +1,10 @@
 import type { Payment } from "@prisma/client";
 
-import type { createPaymentType } from "@shared/api/payment/validations/post";
-import { stripe } from "../../../config/stripe";
-import { STRIPE_TRIAL_DAYS } from "../../../lib/env";
-import { createPayment } from "../../../repositories/payment.repositroy";
-import { getStoreById } from "../../../repositories/store.repository";
+import type { createPaymentType } from "@shared/api/payment/validations/post.js";
+import { stripe } from "../../../config/stripe.js";
+import { STRIPE_TRIAL_DAYS } from "../../../lib/env.js";
+import { createPayment } from "../../../repositories/payment.repositroy.js";
+import { getStoreById } from "../../../repositories/store.repository.js";
 
 const createPaymentService = async ({
 	userId,

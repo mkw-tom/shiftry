@@ -1,4 +1,4 @@
-import { shiftRequestIdParamValidate } from "@shared/api/common/validations/shiftRequestIdParam";
+import { shiftRequestIdParamValidate } from "@shared/api/common/validations/shiftRequestIdParam.js";
 import type { NextFunction, Request, Response } from "express";
 
 interface ShiftRequestIdRequest extends Request {

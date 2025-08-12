@@ -1,6 +1,6 @@
-import type { Payment } from "@shared/api/common/types/prisma";
-import prisma from "../config/database";
-import type { CreatePaymentInput } from "../types/inputs";
+import type { Payment } from "@shared/api/common/types/prisma.js";
+import prisma from "../config/database.js";
+import type { CreatePaymentInput } from "../types/inputs.js";
 
 export const createPayment = async (
 	data: CreatePaymentInput,

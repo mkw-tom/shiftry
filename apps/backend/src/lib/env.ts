@@ -15,16 +15,47 @@ export const LINE_CHANNEL_ID = process.env.LINE_CHANNEL_ID as string;
 export const LINE_CHANNEL_SECRET = process.env.LINE_CHANNEL_SECRET as string;
 export const LINE_ACCESS_TOKEN = process.env.LINE_ACCESS_TOKEN as string;
 
+export const lineMessageChannel = {
+	id: process.env.LINE_MESSAGING_CHANNEL_ID as string,
+	secret: process.env.LINE_MESSAGING_CHANNEL_SECRET as string,
+	accessToken: process.env.LINE_MESSAGING_CHANNEL_ACCESS_TOKEN as string,
+};
+
 /// LINE-AUTH
 export const LINE_AUTH_CHANNEL_ID = process.env.LINE_AUTH_CHANNEL_ID as string;
 export const LINE_AUTH_CHANNEL_SECRET = process.env
 	.LINE_AUTH_CHANNEL_SECRET as string;
+
+export const lineLoginChannel = {
+	id: process.env.LINE_LOGIN_CHANNEL_ID,
+	secret: process.env.LINE_LOGIN_CHANNEL_SECRET,
+};
 export const LINE_AUTH_REDIRECT_URI = process.env
 	.LINE_AUTH_REDIRECT_URI as string;
 
 /// JWT
 export const JWT_SECRET = process.env.JWT_SECRET as string;
 export const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN as string;
+export const jwtSettings = {
+	secret: process.env.JWT_SECRET as string,
+	expiresIn: process.env.JWT_EXPIRES_IN as string,
+};
+
+/// AES
+export const aes = {
+	keyLineId: process.env.ENCRYPTION_KEY_LINE_ID as string,
+	keyGroupId: process.env.ENCRYPTION_KEY_GROUP_ID as string,
+	keyVersionLineId: process.env.KEY_VERSION_AES_LINE_ID as string,
+	keyVersionGroupId: process.env.KEY_VERSION_AES_GROUP_ID as string,
+};
+
+/// HMAC
+export const hmac = {
+	saltLineId: process.env.HASH_SALT_LINE_ID as string,
+	saltGroupId: process.env.HASH_SALT_GROUP_ID as string,
+	keyVersionLineId: process.env.KEY_VERSION_HMAC_LINE_ID as string,
+	keyVersionGroupId: process.env.KEY_VERSION_HMAC_GROUP_ID as string,
+};
 
 /// STRIPE
 export const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY as string;

@@ -1,4 +1,4 @@
-import type { Store, User } from "../../common/types/prisma";
+import type { Store, User } from "../../common/types/prisma.js";
 
 export interface LoginResponse {
 	ok: true;

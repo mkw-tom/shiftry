@@ -1,4 +1,4 @@
-import type { ShiftRequest, Store, User } from "../../common/types/prisma";
+import type { ShiftRequest, Store, User } from "../../common/types/prisma.js";
 
 export interface AutoLoginServiceResponse {
 	user: User | null;

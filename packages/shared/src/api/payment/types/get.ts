@@ -1,4 +1,4 @@
-import type { Payment } from "../../common/types/prisma";
+import type { Payment } from "../../common/types/prisma.js";
 
 export interface GetPaymentResponse {
 	ok: true;

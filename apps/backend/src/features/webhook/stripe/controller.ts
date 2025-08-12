@@ -1,9 +1,9 @@
-import type { ErrorResponse } from "@shared/api/common/types/errors";
-import type { StripeWebhookResponse } from "@shared/api/webhook/stripe/types";
+import type { ErrorResponse } from "@shared/api/common/types/errors.js";
+import type { StripeWebhookResponse } from "@shared/api/webhook/stripe/types.js";
 import type { Request, Response } from "express";
-import { stripe } from "../../../config/stripe";
-import { STRIPE_WEBHOOK_SECRET } from "../../../lib/env";
-import stripeWebhookService from "./service";
+import { stripe } from "../../../config/stripe.js";
+import { STRIPE_WEBHOOK_SECRET } from "../../../lib/env.js";
+import stripeWebhookService from "./service.js";
 
 const stripeWebhookController = async (
 	req: Request,

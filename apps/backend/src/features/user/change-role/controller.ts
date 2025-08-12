@@ -1,12 +1,12 @@
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/api/common/types/errors";
-import type { ChangeUserRoleResponse } from "@shared/api/user/types/change-role";
-import { changeUserRoleValidate } from "@shared/api/user/validations/change-role";
+} from "@shared/api/common/types/errors.js";
+import type { ChangeUserRoleResponse } from "@shared/api/user/types/change-role.js";
+import { changeUserRoleValidate } from "@shared/api/user/validations/change-role.js";
 import type { Request, Response } from "express";
-import { verifyUserStoreForOwnerAndManager } from "../../common/authorization.service";
-import { changeUserRoleService } from "./service";
+import { verifyUserStoreForOwnerAndManager } from "../../common/authorization.service.js";
+import { changeUserRoleService } from "./service.js";
 
 const changeUserRoleController = async (
 	req: Request,

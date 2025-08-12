@@ -1,9 +1,9 @@
-import type { CancelSubscriptionServiceResponse } from "@shared/api/payment/types/cancel";
-import { stripe } from "../../../config/stripe";
+import type { CancelSubscriptionServiceResponse } from "@shared/api/payment/types/cancel.js";
+import { stripe } from "../../../config/stripe.js";
 import {
 	cancelSubscription,
 	getPaymentByStoreId,
-} from "../../../repositories/payment.repositroy";
+} from "../../../repositories/payment.repositroy.js";
 
 const cancelSubscriptionService = async ({
 	storeId,

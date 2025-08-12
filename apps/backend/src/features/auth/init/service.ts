@@ -1,7 +1,7 @@
-import type { InitServiceResponse } from "@shared/api/auth/types/init";
-import { getActiveShiftRequests } from "../../../repositories/shiftRequest.repository";
-import { getStoreById } from "../../../repositories/store.repository";
-import { getUserById } from "../../../repositories/user.repository";
+import type { InitServiceResponse } from "@shared/api/auth/types/init.js";
+import { getActiveShiftRequests } from "../../../repositories/shiftRequest.repository.js";
+import { getStoreById } from "../../../repositories/store.repository.js";
+import { getUserById } from "../../../repositories/user.repository.js";
 
 const Init = async (
 	userId: string,

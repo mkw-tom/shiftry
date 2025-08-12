@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ShiftStatus } from "../../../common/types/prisma";
+import { ShiftStatus } from "../../../common/types/prisma.js";
 
 // ✅ 曜日 + optional 時間帯の形式（例: "Monday&11:00-17:00"）
 export const availableWeekValidate = z.string().refine(

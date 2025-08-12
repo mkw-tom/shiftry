@@ -1,4 +1,4 @@
-import type { ShiftRequest, Store, User } from "../../common/types/prisma";
+import type { ShiftRequest, Store, User } from "../../common/types/prisma.js";
 
 export interface InitServiceResponse {
 	user: User;

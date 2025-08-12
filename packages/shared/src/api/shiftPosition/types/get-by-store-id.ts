@@ -1,4 +1,4 @@
-import type { ShiftPosition } from "../../common/types/prisma";
+import type { ShiftPosition } from "../../common/types/prisma.js";
 
 export type GetShfitPositionsByStoreIdResponse = {
 	ok: boolean;

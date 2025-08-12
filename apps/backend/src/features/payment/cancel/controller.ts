@@ -1,8 +1,8 @@
-import type { ErrorResponse } from "@shared/api/common/types/errors";
-import type { CancelSubscriptionResponse } from "@shared/api/payment/types/cancel";
+import type { ErrorResponse } from "@shared/api/common/types/errors.js";
+import type { CancelSubscriptionResponse } from "@shared/api/payment/types/cancel.js";
 import type { Request, Response } from "express";
-import { verifyUserStoreForOwner } from "../../common/authorization.service";
-import cancelSubscriptionService from "./service";
+import { verifyUserStoreForOwner } from "../../common/authorization.service.js";
+import cancelSubscriptionService from "./service.js";
 
 const cancelSubscriptionController = async (
 	req: Request,

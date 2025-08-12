@@ -1,9 +1,9 @@
-import type { productIdType } from "@shared/api/payment/validations/change-plan";
-import { stripe } from "../../../config/stripe";
+import type { productIdType } from "@shared/api/payment/validations/change-plan.js";
+import { stripe } from "../../../config/stripe.js";
 import {
 	getPaymentByStoreId,
 	updatePaymentPlan,
-} from "../../../repositories/payment.repositroy";
+} from "../../../repositories/payment.repositroy.js";
 
 const changePlanService = async ({
 	storeId,

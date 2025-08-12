@@ -1,8 +1,8 @@
-import type { ErrorResponse } from "@shared/api/common/types/errors";
-import type { DeleteShiftRequestResponse } from "@shared/api/shift/request/types/delete-by-week-start";
+import type { ErrorResponse } from "@shared/api/common/types/errors.js";
+import type { DeleteShiftRequestResponse } from "@shared/api/shift/request/types/delete-by-week-start.js";
 import type { Request, Response } from "express";
-import { deleteShiftRequest } from "../../../../repositories/shiftRequest.repository";
-import { verifyUserStoreForOwnerAndManager } from "../../../common/authorization.service";
+import { deleteShiftRequest } from "../../../../repositories/shiftRequest.repository.js";
+import { verifyUserStoreForOwnerAndManager } from "../../../common/authorization.service.js";
 
 const deleteShiftRequestController = async (
 	req: Request,
