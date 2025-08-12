@@ -1,12 +1,12 @@
 import type { Request, Response } from "express";
 
-import type { RegisterStaffResponse } from "@shared/api/auth/types/register-staff";
-import { userInputValidate } from "@shared/api/auth/validations/register-staff";
+import type { RegisterStaffResponse } from "@shared/api/auth/types/register-staff.js";
+import { userInputValidate } from "@shared/api/auth/validations/register-staff.js";
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/api/common/types/errors";
-import registerStaffService from "./service";
+} from "@shared/api/common/types/errors.js";
+import registerStaffService from "./service.js";
 
 const registerStaffController = async (
 	req: Request,

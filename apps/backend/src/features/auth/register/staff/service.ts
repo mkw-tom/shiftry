@@ -1,24 +1,24 @@
 import type {
 	RegisterOwnerServiceResponse,
 	UpsertUserInput,
-} from "@shared/api/auth/types/register-owner";
-import type { RegisterStaffServiceResponse } from "@shared/api/auth/types/register-staff";
-import type { StoreNameType } from "@shared/api/auth/validations/register-owner";
-import prisma from "../../../../config/database";
-import { aes, hmac } from "../../../../lib/env";
+} from "@shared/api/auth/types/register-owner.js";
+import type { RegisterStaffServiceResponse } from "@shared/api/auth/types/register-staff.js";
+import type { StoreNameType } from "@shared/api/auth/validations/register-owner.js";
+import prisma from "../../../../config/database.js";
+import { aes, hmac } from "../../../../lib/env.js";
 import {
 	createStore,
 	getStoreByGroupId,
 	getStoreByGroupIdHash,
-} from "../../../../repositories/store.repository";
-import { upsertUser } from "../../../../repositories/user.repository";
-import { createUserStore } from "../../../../repositories/userStore.repository";
-import { encryptText } from "../../../../utils/aes";
-import { hmacSha256 } from "../../../../utils/hmac";
+} from "../../../../repositories/store.repository.js";
+import { upsertUser } from "../../../../repositories/user.repository.js";
+import { createUserStore } from "../../../../repositories/userStore.repository.js";
+import { encryptText } from "../../../../utils/aes.js";
+import { hmacSha256 } from "../../../../utils/hmac.js";
 import {
 	assertChannelValid,
 	verifyIdToken,
-} from "../../../common/liff.service";
+} from "../../../common/liff.service.js";
 
 const registerStaffService = async (
 	idToken: string,

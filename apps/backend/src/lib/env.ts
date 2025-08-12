@@ -43,7 +43,7 @@ export const jwtSettings = {
 
 /// AES
 export const aes = {
-	keyLineId: process.env.ENCRYPTION_KEY as string,
+	keyLineId: process.env.ENCRYPTION_KEY_LINE_ID as string,
 	keyGroupId: process.env.ENCRYPTION_KEY_GROUP_ID as string,
 	keyVersionLineId: process.env.KEY_VERSION_AES_LINE_ID as string,
 	keyVersionGroupId: process.env.KEY_VERSION_AES_GROUP_ID as string,

@@ -1,14 +1,14 @@
-import type { RegisterOwnerResponse } from "@shared/api/auth/types/register-owner";
+import type { RegisterOwnerResponse } from "@shared/api/auth/types/register-owner.js";
 import {
 	storeNameValidate,
 	userInputValidate,
-} from "@shared/api/auth/validations/register-owner";
+} from "@shared/api/auth/validations/register-owner.js";
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/api/common/types/errors";
+} from "@shared/api/common/types/errors.js";
 import type { Request, Response } from "express";
-import registerOwnerService from "./service";
+import registerOwnerService from "./service.js";
 
 const registerOwnerController = async (
 	req: Request,
