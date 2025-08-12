@@ -1,29 +1,26 @@
 import type {
-	Store,
-	User,
-	UserRole,
-	UserStore,
+  Store,
+  User,
+  UserRole,
+  UserStore,
 } from "../../common/types/prisma";
 
 export interface RegisterStaffResponse {
-	ok: true;
-	user: User;
-	store: Store;
-	userStore: UserStore;
-	user_token: string;
-	store_token: string;
-	group_token: string;
+  ok: true;
+  user: { id: string; name: string };
+  store: { id: string; name: string; isActive: boolean };
+  userStore: { userId: string; storeId: string; role: UserRole };
 }
 
 export interface RegisterStaffServiceResponse {
-	user: User;
-	store: Store;
-	userStore: UserStore;
+  user: { id: string; name: string };
+  store: { id: string; name: string; isActive: boolean };
+  userStore: { userId: string; storeId: string; role: UserRole };
 }
 
 export interface UpsertUserInput {
-	lineId: string;
-	name: string;
-	pictureUrl?: string;
-	role: UserRole;
+  lineId: string;
+  name: string;
+  pictureUrl?: string;
+  role: UserRole;
 }
