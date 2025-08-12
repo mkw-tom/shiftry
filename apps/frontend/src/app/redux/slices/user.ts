@@ -2,17 +2,17 @@ import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 import type { User } from "@shared/api/common/types/prisma";
 
 type UserState = {
-  user: Pick<User, "id" | "lineId" | "name" | "pictureUrl" | "role"> | null;
+	user: Pick<User, "id" | "lineId" | "name" | "pictureUrl" | "role"> | null;
 };
 
 const initialState: UserState = {
-  user: {
-    id: "",
-    lineId: "",
-    name: "",
-    pictureUrl: "",
-    role: "OWNER",
-  },
+	user: {
+		id: "",
+		lineId: "",
+		name: "",
+		pictureUrl: "",
+		role: "OWNER",
+	},
 };
 
 export const UserSlice = createSlice({

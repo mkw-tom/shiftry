@@ -17,13 +17,12 @@ export function allowAnon(req: Request, res: Response, next: NextFunction) {
 	}
 
 	if (process.env.TEST_MODE === "true") {
-    req.auth = token
-      ? { uid: "U_test_user" } // ダミーuid入り
-      : {};
-    next();
+		req.auth = token
+			? { uid: "U_test_user" } // ダミーuid入り
+			: {};
+		next();
 		return;
-  }
-
+	}
 
 	const v = tryVerifyAppJwt(token);
 	if (v.ok) req.auth = v.payload;
@@ -39,17 +38,16 @@ export function requireUser(req: Request, res: Response, next: NextFunction) {
 	}
 
 	if (process.env.TEST_MODE === "true") {
-    req.auth = {
-      uid: "U_test_user",
-      sid: "S_test_store",
-      role: "OWNER",
-      iat: Math.floor(Date.now() / 1000),
-      exp: Math.floor(Date.now() / 1000) + 60 * 60,
-    };
-    next();
+		req.auth = {
+			uid: "U_test_user",
+			sid: "S_test_store",
+			role: "OWNER",
+			iat: Math.floor(Date.now() / 1000),
+			exp: Math.floor(Date.now() / 1000) + 60 * 60,
+		};
+		next();
 		return;
-  }
-
+	}
 
 	const v = tryVerifyAppJwt(token);
 	if (!v.ok) {
