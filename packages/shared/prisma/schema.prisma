@@ -9,11 +9,18 @@ datasource db {
 }
 
 model User {
-  id             String           @id @default(uuid())
-  lineId         String           @unique
+  id             String   @id @default(uuid())
+  lineId         String?  @unique
+  lineId_hash    String?  @unique
+  lineId_enc     String?
+
+  lineKeyVersion_hash String  @default("K1")
+  lineKeyVersion_enc String  @default("K1")
+  consentAt      DateTime? @default(now())
+
   name           String
   pictureUrl     String?
-  role           UserRole
+  role           UserRole?
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @default(now())
 
@@ -29,12 +36,18 @@ enum UserRole {
 }
 
 model Store {
-  id               String           @id @default(uuid())
-  groupId          String?           @unique
+  id               String   @id @default(uuid())
+  groupId          String?  @unique
+  groupId_hash     String?  @unique
+  groupId_enc      String?
+  groupKeyVersion_hash  String  @default("K1")
+  groupKeyVersion_enc  String  @default("K1")
+  consentAt        DateTime? @default(now())
+  isActive         Boolean  @default(true)
+
   name             String           @unique
   createdAt        DateTime         @default(now())
   updatedAt        DateTime         @default(now())
-
   userStores       UserStore[]      
   shiftRequests    ShiftRequest[]   
   assignShifts     AssignShift[]   
