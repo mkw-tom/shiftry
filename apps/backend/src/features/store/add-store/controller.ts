@@ -30,7 +30,7 @@ const addManageStoreController = async (
 		}
 		const storeName = parsed.data.name;
 		const store = await createStore(storeName);
-		const userStore = await createUserStore(userId, store.id, user.role);
+		const userStore = await createUserStore(userId, store.id, "OWNER");
 
 		const user_token = generateJWT({ userId: user.id });
 		const store_token = generateJWT({ storeId: store.id });

@@ -6,10 +6,10 @@ export const createMockStoreInput = () => ({
 	groupId: faker.string.uuid(),
 });
 
-export const mockStore: Store = {
-	id: faker.string.uuid(),
-	name: faker.company.name(),
-	groupId: faker.string.nanoid(),
-	createdAt: new Date(),
-	updatedAt: new Date(),
-};
+// export const mockStore: Store = {
+// 	id: faker.string.uuid(),
+// 	name: faker.company.name(),
+// 	groupId: faker.string.nanoid(),
+// 	createdAt: new Date(),
+// 	updatedAt: new Date(),
+// };

@@ -1,33 +1,47 @@
 import type { ErrorResponse } from "@shared/api/common/types/errors";
 import type { StoreConnectLineGroupResponse } from "@shared/api/store/types/connect-line-group";
 import type { Request, Response } from "express";
-import { updateStoreGroupId } from "../../../repositories/store.repository";
-import { getUserById } from "../../../repositories/user.repository";
-import { generateJWT } from "../../../utils/JWT/jwt";
 import { verifyUserStoreForOwner } from "../../common/authorization.service";
+import { connectStoreToGroupService } from "./service";
 
 const storeConnectLineGroupController = async (
 	req: Request,
 	res: Response<StoreConnectLineGroupResponse | ErrorResponse>,
 ): Promise<void> => {
 	try {
-		const userId = req.userId as string;
-		const storeId = req.storeId as string;
-		const groupId = req.groupId as string;
-		await verifyUserStoreForOwner(userId, storeId);
+		const auth = req.auth;
+		const channel = req.channel;
+		const storeId = req.storeId;
 
-		const user = await getUserById(userId);
-		if (!user) {
-			res.status(404).json({ ok: false, message: "user is not found" });
-			return;
+		if (!auth?.uid)
+			return void res.status(401).json({ ok: false, message: "Missing token" });
+		if (!storeId)
+			return void res
+				.status(400)
+				.json({ ok: false, message: "X-Store-Id required" });
+		if (!channel || channel.type !== "group" || !channel.id) {
+			return void res.status(400).json({
+				ok: false,
+				message: "X-Channel-Type must be 'group' and X-Channel-Id required",
+			});
 		}
 
-		const store = await updateStoreGroupId(storeId, groupId);
-		const group_token = generateJWT({ groupId: groupId });
+		await verifyUserStoreForOwner(auth.uid, storeId);
 
-		res.json({ ok: true, store, group_token });
-	} catch (error) {
-		console.error(error);
+		const store = await connectStoreToGroupService(
+			storeId,
+			channel.type,
+			channel.id,
+		);
+		res.json({ ok: true, store });
+	} catch (e) {
+		if (typeof e === "object" && e !== null && "status" in e) {
+			const err = e as { status: number; message: string };
+			return void res
+				.status(err.status)
+				.json({ ok: false, message: err.message });
+		}
+		console.error("[storeConnectLineGroup] error", e);
 		res.status(500).json({ ok: false, message: "Internal Server Error" });
 	}
 };
