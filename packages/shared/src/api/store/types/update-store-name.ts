@@ -1,4 +1,4 @@
-import type { Store } from "../../common/types/prisma";
+import type { Store } from "../../common/types/prisma.js";
 
 export interface UpdateStoreNameResponse {
 	ok: true;

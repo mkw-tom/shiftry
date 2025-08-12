@@ -1,20 +1,20 @@
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/api/common/types/errors";
-import { ShiftStatus } from "@shared/api/common/types/prisma";
-import type { CreateShiftAiResponse } from "@shared/api/shift/ai/types/post-create";
-import { CreateShiftAiValidate } from "@shared/api/shift/ai/validations/post-create";
+} from "@shared/api/common/types/errors.js";
+import { ShiftStatus } from "@shared/api/common/types/prisma.js";
+import type { CreateShiftAiResponse } from "@shared/api/shift/ai/types/post-create.js";
+import { CreateShiftAiValidate } from "@shared/api/shift/ai/validations/post-create.js";
 import type { Request, Response } from "express";
-import { verifyUserStoreForOwner } from "../../../common/authorization.service";
-import { parsePrioritiesFromAi } from "./parsePriorities.ai";
-import { adjustShiftByPriorities } from "./service/adjustShiftByPriorities";
-import { generateInitialShift } from "./service/generateInitialShift";
-import upsertAssignShfitService from "./service/upsertAssignShift";
-import { findUsersBelowMin } from "./utils/findUsersBelowMin";
-import { generateDateWeekList } from "./utils/generateDateWeekList";
-import { getUnassignedShift } from "./utils/getUnassignedShift";
-import { parseAIJsonBlock } from "./utils/pareseAiJsonBlock";
+import { verifyUserStoreForOwner } from "../../../common/authorization.service.js";
+import { parsePrioritiesFromAi } from "./parsePriorities.ai.js";
+import { adjustShiftByPriorities } from "./service/adjustShiftByPriorities.js";
+import { generateInitialShift } from "./service/generateInitialShift.js";
+import upsertAssignShfitService from "./service/upsertAssignShift.js";
+import { findUsersBelowMin } from "./utils/findUsersBelowMin.js";
+import { generateDateWeekList } from "./utils/generateDateWeekList.js";
+import { getUnassignedShift } from "./utils/getUnassignedShift.js";
+import { parseAIJsonBlock } from "./utils/pareseAiJsonBlock.js";
 
 const createShiftController = async (
 	req: Request,

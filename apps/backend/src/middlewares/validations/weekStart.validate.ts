@@ -1,4 +1,4 @@
-import { WeekStartParamValidate } from "@shared/api/common/validations/weekStartParam";
+import { WeekStartParamValidate } from "@shared/api/common/validations/weekStartParam.js";
 import type { NextFunction, Request, Response } from "express";
 
 interface WeekStartRequest extends Request {

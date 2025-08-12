@@ -55,9 +55,9 @@ export const usePostRegisterStaff = () => {
 				return { ok: false };
 			}
 
-			dispatch(setUserToken(res.user_token));
-			dispatch(setStoreToken(res.store_token));
-			dispatch(setGroupToken(res.group_token));
+			// dispatch(setUserToken(res.user_token));
+			// dispatch(setStoreToken(res.store_token));
+			// dispatch(setGroupToken(res.group_token));
 
 			return { ok: true };
 		} catch (err) {

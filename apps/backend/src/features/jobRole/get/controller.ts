@@ -1,9 +1,8 @@
-import type { JobRole } from "@prisma/client";
-import type { ErrorResponse } from "@shared/api/common/types/errors";
-import type { GetJobRolesResponse } from "@shared/api/jobRole/types/get";
+import type { ErrorResponse } from "@shared/api/common/types/errors.js";
+import type { GetJobRolesResponse } from "@shared/api/jobRole/types/get.js";
 import type { Request, Response } from "express";
-import { GetJobRoleByStoreId } from "../../../repositories/JobRole";
-import { verifyUserStoreForOwnerAndManager } from "../../common/authorization.service";
+import { GetJobRoleByStoreId } from "../../../repositories/JobRole.js";
+import { verifyUserStoreForOwnerAndManager } from "../../common/authorization.service.js";
 
 const getJobRolesByStoreIdController = async (
 	req: Request,

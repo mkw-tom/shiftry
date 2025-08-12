@@ -1,6 +1,6 @@
-import type { RequestCalendarType } from "@shared/api/common/types/json";
-import type { DayOfWeek } from "@shared/api/shift/ai/types/post-create";
-import { generateDateWeekList } from "../../ai/create/utils/generateDateWeekList";
+import type { RequestCalendarType } from "@shared/api/common/types/json.js";
+import type { DayOfWeek } from "@shared/api/shift/ai/types/post-create.js";
+import { generateDateWeekList } from "../../ai/create/utils/generateDateWeekList.js";
 
 export function convertToRequestCalendar(
 	startDate: string,

@@ -36,8 +36,8 @@ export const useRegisterOwnerHandler = ({
 				return;
 			}
 
-			dispatch(setUserToken(res.user_token));
-			dispatch(setStoreToken(res.store_token));
+			// dispatch(setUserToken(res.user_token));
+			// dispatch(setStoreToken(res.store_token));
 
 			changeInviteBotStep();
 		} catch (e) {

@@ -4,8 +4,8 @@ import type {
 	User,
 	UserRole,
 	UserStore,
-} from "@shared/api/common/types/prisma";
-import prisma from "../config/database";
+} from "@shared/api/common/types/prisma.js";
+import prisma from "../config/database.js";
 
 export const createUserStore = async (
 	userId: string,

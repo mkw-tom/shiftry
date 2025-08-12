@@ -1,14 +1,13 @@
-import type { ErrorResponse } from "@shared/api/common/types/errors";
-import type { VerifyLiffUserResponse } from "@shared/api/liff/types/verify";
+import type { ErrorResponse } from "@shared/api/common/types/errors.js";
+import type { VerifyLiffUserResponse } from "@shared/api/liff/types/verify.js";
 import type { Request, Response } from "express";
-import z from "zod";
-import { signAppJwt } from "../../../../utils/jwt";
+import { signAppJwt } from "../../../../utils/jwt.js";
 import {
 	assertChannelValid,
 	verifyIdToken,
-} from "../../../common/liff.service";
-import { findLinkedStoreIdByChannelId } from "./services/store.service";
-import { findUserByLineSub } from "./services/user.service";
+} from "../../../common/liff.service.js";
+import { findLinkedStoreIdByChannelId } from "./services/store.service.js";
+import { findUserByLineSub } from "./services/user.service.js";
 
 const VerifyLiffUserController = async (
 	req: Request,

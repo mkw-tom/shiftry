@@ -1,13 +1,13 @@
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/api/common/types/errors";
-import type { UpsertSubmittedShfitResponse } from "@shared/api/shift/submit/types/put";
-import { upsertSubmittedShiftValidate } from "@shared/api/shift/submit/validations/put";
+} from "@shared/api/common/types/errors.js";
+import type { UpsertSubmittedShfitResponse } from "@shared/api/shift/submit/types/put.js";
+import { upsertSubmittedShiftValidate } from "@shared/api/shift/submit/validations/put.js";
 import type { Request, Response } from "express";
-import { upsertSubmittedShift } from "../../../../repositories/submittedShift.repository";
-import { verifyUserStore } from "../../../common/authorization.service";
-import { convertToSubmittedCalender } from "./service";
+import { upsertSubmittedShift } from "../../../../repositories/submittedShift.repository.js";
+import { verifyUserStore } from "../../../common/authorization.service.js";
+import { convertToSubmittedCalender } from "./service.js";
 
 const upsertSubmittedShiftController = async (
 	req: Request,

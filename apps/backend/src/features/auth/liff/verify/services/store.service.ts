@@ -1,6 +1,6 @@
-import prisma from "../../../../../config/database";
-import { hmac } from "../../../../../lib/env";
-import { hmacSha256 } from "../../../../../utils/hmac";
+import prisma from "../../../../../config/database.js";
+import { hmac } from "../../../../../lib/env.js";
+import { hmacSha256 } from "../../../../../utils/hmac.js";
 
 export async function findLinkedStoreIdByChannelId(channelId: string) {
 	const chHash = hmacSha256(channelId, hmac.saltGroupId);

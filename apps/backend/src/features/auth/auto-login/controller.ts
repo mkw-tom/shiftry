@@ -1,8 +1,8 @@
-import type { AutoLoginResponse } from "@shared/api/auth/types/auto-login";
-import type { ErrorResponse } from "@shared/api/common/types/errors";
+import type { AutoLoginResponse } from "@shared/api/auth/types/auto-login.js";
+import type { ErrorResponse } from "@shared/api/common/types/errors.js";
 import type { Request, Response } from "express";
-import { generateJWT } from "../../../utils/JWT/jwt";
-import autoLogin from "./service";
+import { generateJWT } from "../../../utils/JWT/jwt.js";
+import autoLogin from "./service.js";
 
 export const autoLoginController = async (
 	req: Request,

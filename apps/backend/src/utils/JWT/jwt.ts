@@ -1,6 +1,6 @@
 // @ts-nocheck
 import jwt from "jsonwebtoken";
-import { jwtSettings } from "../../lib/env";
+import { jwtSettings } from "../../lib/env.js";
 
 export const generateJWT = (
 	payload: Record<string, string | number | boolean>,

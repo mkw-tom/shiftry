@@ -1,12 +1,12 @@
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/api/common/types/errors";
-import type { CreatePaymentResponse } from "@shared/api/payment/types/post";
-import { createPaymentValidate } from "@shared/api/payment/validations/post";
+} from "@shared/api/common/types/errors.js";
+import type { CreatePaymentResponse } from "@shared/api/payment/types/post.js";
+import { createPaymentValidate } from "@shared/api/payment/validations/post.js";
 import type { Request, Response } from "express";
-import { verifyUserStoreForOwner } from "../../common/authorization.service";
-import createPaymentService from "./service";
+import { verifyUserStoreForOwner } from "../../common/authorization.service.js";
+import createPaymentService from "./service.js";
 
 const createPaymentController = async (
 	req: Request,

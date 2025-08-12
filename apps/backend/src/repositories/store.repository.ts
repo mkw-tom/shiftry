@@ -1,6 +1,6 @@
 import type { Prisma, PrismaClient } from "@prisma/client";
-import type { Store } from "@shared/api/common/types/prisma";
-import prisma from "../config/database";
+import type { Store } from "@shared/api/common/types/prisma.js";
+import prisma from "../config/database.js";
 
 export const createStore = async (
 	name: string,
@@ -55,8 +55,9 @@ export const connectStoreToGroup = async (
 	groupId_enc: string,
 	groupKeyVersion_hash: string,
 	groupKeyVersion_enc: string,
+	db: Prisma.TransactionClient | PrismaClient = prisma,
 ): Promise<Store> => {
-	return await prisma.store.update({
+	return await db.store.update({
 		where: { id: storeId },
 		data: {
 			groupId_hash,

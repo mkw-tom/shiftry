@@ -1,9 +1,9 @@
-import type { LineAuthServiceResponse } from "@shared/api/auth/types/line-auth";
+import type { LineAuthServiceResponse } from "@shared/api/auth/types/line-auth.js";
 import {
 	LINE_AUTH_CHANNEL_ID,
 	LINE_AUTH_CHANNEL_SECRET,
 	LINE_AUTH_REDIRECT_URI,
-} from "../../../lib/env";
+} from "../../../lib/env.js";
 
 const lineAuth = async (code: string): Promise<LineAuthServiceResponse> => {
 	const params = new URLSearchParams();

@@ -1,8 +1,8 @@
-import type { LineAuthResponse } from "@shared/api/auth/types/line-auth";
-import type { ErrorResponse } from "@shared/api/common/types/errors";
+import type { LineAuthResponse } from "@shared/api/auth/types/line-auth.js";
+import type { ErrorResponse } from "@shared/api/common/types/errors.js";
 import type { Request, Response } from "express";
-import { generateJWT } from "../../../utils/JWT/jwt";
-import lineAuth from "./service";
+import { generateJWT } from "../../../utils/JWT/jwt.js";
+import lineAuth from "./service.js";
 
 const lineAuthController = async (
 	req: Request,

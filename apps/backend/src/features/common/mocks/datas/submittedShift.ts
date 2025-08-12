@@ -1,4 +1,4 @@
-import type { shiftsOfSubmittedType } from "@shared/api/common/types/json";
+import type { shiftsOfSubmittedType } from "@shared/api/common/types/json.js";
 
 export const mockShiftsOfSubmitted: shiftsOfSubmittedType = {
 	weekCountMin: 2,

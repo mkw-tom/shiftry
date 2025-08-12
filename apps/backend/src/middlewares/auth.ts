@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express"; // ← ここをユーティリティ呼びに
-import { tryVerifyAppJwt } from "../utils/jwt";
+import { tryVerifyAppJwt } from "../utils/jwt.js";
 // SECRETはappJwt.ts側で集中管理するのでこのファイルでは触らない
 
 function parseBearer(header?: string): string | null {
@@ -16,6 +16,15 @@ export function allowAnon(req: Request, res: Response, next: NextFunction) {
 		return;
 	}
 
+	if (process.env.TEST_MODE === "true") {
+    req.auth = token
+      ? { uid: "U_test_user" } // ダミーuid入り
+      : {};
+    next();
+		return;
+  }
+
+
 	const v = tryVerifyAppJwt(token);
 	if (v.ok) req.auth = v.payload;
 	else req.auth = {}; // 壊れてたら匿名扱い
@@ -28,6 +37,19 @@ export function requireUser(req: Request, res: Response, next: NextFunction) {
 		res.status(401).json({ message: "Missing token" });
 		return;
 	}
+
+	if (process.env.TEST_MODE === "true") {
+    req.auth = {
+      uid: "U_test_user",
+      sid: "S_test_store",
+      role: "OWNER",
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + 60 * 60,
+    };
+    next();
+		return;
+  }
+
 
 	const v = tryVerifyAppJwt(token);
 	if (!v.ok) {

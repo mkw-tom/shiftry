@@ -1,5 +1,5 @@
 import type { Stripe } from "stripe";
-import { deleteStore } from "../../../repositories/store.repository";
+import { deleteStore } from "../../../repositories/store.repository.js";
 
 const stripeWebhookService = async (event: Stripe.Event) => {
 	switch (event.type) {

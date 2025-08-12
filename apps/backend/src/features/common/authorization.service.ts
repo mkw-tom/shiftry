@@ -1,11 +1,15 @@
-import type { Store, User, UserStore } from "@shared/api/common/types/prisma";
-import { getShiftRequestById } from "../../repositories/shiftRequest.repository";
-import { getStoreById } from "../../repositories/store.repository";
+import type {
+	Store,
+	User,
+	UserStore,
+} from "@shared/api/common/types/prisma.js";
+import { getShiftRequestById } from "../../repositories/shiftRequest.repository.js";
+import { getStoreById } from "../../repositories/store.repository.js";
 import {
 	getUserById,
 	getUserByLineId,
-} from "../../repositories/user.repository";
-import { getUserStoreByUserIdAndStoreId } from "../../repositories/userStore.repository";
+} from "../../repositories/user.repository.js";
+import { getUserStoreByUserIdAndStoreId } from "../../repositories/userStore.repository.js";
 
 export const verifyUserStore = async (userId: string, storeId: string) => {
 	const userStore = await getUserStoreByUserIdAndStoreId(userId, storeId);

@@ -3,30 +3,30 @@ import dotenv from "dotenv";
 import express from "express";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
-import authRoutes from "./features/auth/route";
-import jobRoleRotes from "./features/jobRole/route";
-import paymentRoutes from "./features/payment/route";
-import shiftPositionRoutes from "./features/shfitPosition/route";
-import aiRoutes from "./features/shift/ai/route";
-import assignShiftRoutes from "./features/shift/assign/route";
-import shiftRequestRoutes from "./features/shift/request/route";
-import submittedShiftRoutes from "./features/shift/submit/route";
-import storeRoutes from "./features/store/route";
-import userRoutes from "./features/user/route";
-import userJobRoleRotes from "./features/userJobRole/route";
-import lineRoutes from "./features/webhook/line/route";
-import stripeRoutes from "./features/webhook/stripe/route";
+import authRoutes from "./features/auth/route.js";
+import jobRoleRotes from "./features/jobRole/route.js";
+import paymentRoutes from "./features/payment/route.js";
+import shiftPositionRoutes from "./features/shfitPosition/route.js";
+import aiRoutes from "./features/shift/ai/route.js";
+import assignShiftRoutes from "./features/shift/assign/route.js";
+import shiftRequestRoutes from "./features/shift/request/route.js";
+import submittedShiftRoutes from "./features/shift/submit/route.js";
+import storeRoutes from "./features/store/route.js";
+import userRoutes from "./features/user/route.js";
+import userJobRoleRotes from "./features/userJobRole/route.js";
+import lineRoutes from "./features/webhook/line/route.js";
+import stripeRoutes from "./features/webhook/stripe/route.js";
 
 import {
 	CROSS_ORIGIN_DEV,
 	CROSS_ORIGIN_LIFF,
 	CROSS_ORIGIN_PROD,
-} from "./lib/env";
+} from "./lib/env.js";
 
 dotenv.config();
 
 const app = express();
-app.set("trust proxy", true);
+// app.set("trust proxy", true);
 
 // 🔹 ミドルウェアの設定
 app.use(helmet());

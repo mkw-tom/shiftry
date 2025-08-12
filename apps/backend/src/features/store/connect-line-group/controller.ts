@@ -1,8 +1,8 @@
-import type { ErrorResponse } from "@shared/api/common/types/errors";
-import type { StoreConnectLineGroupResponse } from "@shared/api/store/types/connect-line-group";
+import type { ErrorResponse } from "@shared/api/common/types/errors.js";
+import type { StoreConnectLineGroupResponse } from "@shared/api/store/types/connect-line-group.js";
 import type { Request, Response } from "express";
-import { verifyUserStoreForOwner } from "../../common/authorization.service";
-import { connectStoreToGroupService } from "./service";
+import { verifyUserStoreForOwner } from "../../common/authorization.service.js";
+import { connectStoreToGroupService } from "./service.js";
 
 const storeConnectLineGroupController = async (
 	req: Request,

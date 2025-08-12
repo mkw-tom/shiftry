@@ -1,12 +1,12 @@
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/api/common/types/errors";
-import type { ChangePalnResponse } from "@shared/api/payment/types/change-plan";
-import { productIdValidate } from "@shared/api/payment/validations/change-plan";
+} from "@shared/api/common/types/errors.js";
+import type { ChangePalnResponse } from "@shared/api/payment/types/change-plan.js";
+import { productIdValidate } from "@shared/api/payment/validations/change-plan.js";
 import type { Request, Response } from "express";
-import { verifyUserStoreForOwner } from "../../common/authorization.service";
-import changePlanService from "./service";
+import { verifyUserStoreForOwner } from "../../common/authorization.service.js";
+import changePlanService from "./service.js";
 
 const changePlanController = async (
 	req: Request,

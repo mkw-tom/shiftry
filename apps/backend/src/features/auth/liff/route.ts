@@ -1,7 +1,7 @@
 import express from "express";
-import { attachChannel } from "../../../middlewares/request/attachChannel";
-import { attachIdToken } from "../../../middlewares/request/attachIdToken";
-import VerifyLiffUserController from "./verify/controller";
+import { attachChannel } from "../../../middlewares/request/attachChannel.js";
+import { attachIdToken } from "../../../middlewares/request/attachIdToken.js";
+import VerifyLiffUserController from "./verify/controller.js";
 
 const router = express.Router();
 

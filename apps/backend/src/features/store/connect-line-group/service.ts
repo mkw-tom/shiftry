@@ -1,11 +1,11 @@
-import { aes, hmac } from "../../../lib/env";
+import { aes, hmac } from "../../../lib/env.js";
 import {
 	connectStoreToGroup,
 	findStoreByGroupHashExcept,
-} from "../../../repositories/store.repository";
-import { encryptText } from "../../../utils/aes";
-import { hmacSha256 } from "../../../utils/hmac";
-import { assertChannelValid } from "../../common/liff.service";
+} from "../../../repositories/store.repository.js";
+import { encryptText } from "../../../utils/aes.js";
+import { hmacSha256 } from "../../../utils/hmac.js";
+import { assertChannelValid } from "../../common/liff.service.js";
 
 export async function connectStoreToGroupService(
 	storeId: string,

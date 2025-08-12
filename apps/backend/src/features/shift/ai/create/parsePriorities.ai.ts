@@ -1,5 +1,5 @@
-import type { parsePrioritiesFromAiInput } from "@shared/api/shift/ai/types/post-create";
-import openai from "../../../../config/openai";
+import type { parsePrioritiesFromAiInput } from "@shared/api/shift/ai/types/post-create.js";
+import openai from "../../../../config/openai.js";
 
 export const parsePrioritiesFromAi = async ({
 	ownerRequests,

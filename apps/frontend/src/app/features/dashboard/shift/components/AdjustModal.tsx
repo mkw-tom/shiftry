@@ -1,6 +1,4 @@
 import { useState } from "react";
-
-import { $Enums } from "@prisma/client"; // 必要に応じて調整してください
 import type { User } from "@shared/api/common/types/prisma";
 import { SiOpenai } from "react-icons/si";
 
@@ -8,36 +6,56 @@ const dummyMembers: User[] = [
 	{
 		name: "たろう",
 		id: "user-001",
+		consentAt: null,
 		createdAt: new Date("2025-06-01T10:00:00Z"),
 		updatedAt: new Date("2025-06-01T10:00:00Z"),
 		lineId: "line_abc123",
+		lineId_hash: null,
+		lineId_enc: null,
+		lineKeyVersion_hash: "",
+		lineKeyVersion_enc: "",
 		pictureUrl: "https://example.com/pic1.jpg",
 		role: "STAFF",
 	},
 	{
 		name: "じろう",
 		id: "user-002",
+		consentAt: null,
 		createdAt: new Date("2025-06-02T11:30:00Z"),
 		updatedAt: new Date("2025-06-02T11:30:00Z"),
 		lineId: "line_def456",
+		lineId_hash: null,
+		lineId_enc: null,
+		lineKeyVersion_hash: "",
+		lineKeyVersion_enc: "",
 		pictureUrl: null,
 		role: "OWNER",
 	},
 	{
 		name: "さぶろう",
 		id: "user-003",
+		consentAt: null,
 		createdAt: new Date("2025-06-03T12:00:00Z"),
 		updatedAt: new Date("2025-06-03T12:00:00Z"),
 		lineId: "line_ghi78",
+		lineId_hash: null,
+		lineId_enc: null,
+		lineKeyVersion_hash: "",
+		lineKeyVersion_enc: "",
 		pictureUrl: null,
 		role: "STAFF",
 	},
 	{
 		name: "すけどう",
 		id: "user-004",
+		consentAt: null,
 		createdAt: new Date("2025-06-04T13:00:00Z"),
 		updatedAt: new Date("2025-06-04T13:00:00Z"),
 		lineId: "line_jkl012",
+		lineId_hash: null,
+		lineId_enc: null,
+		lineKeyVersion_hash: "",
+		lineKeyVersion_enc: "",
 		pictureUrl: null,
 		role: "STAFF",
 	},

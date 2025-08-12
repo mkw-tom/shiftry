@@ -1,6 +1,6 @@
-import type { DayOfWeek } from "@shared/api/shift/ai/types/post-create";
-import type { SubmittedCalendarType } from "@shared/api/shift/submit/validations/put";
-import { generateDateWeekList } from "../../ai/create/utils/generateDateWeekList";
+import type { DayOfWeek } from "@shared/api/shift/ai/types/post-create.js";
+import type { SubmittedCalendarType } from "@shared/api/shift/submit/validations/put.js";
+import { generateDateWeekList } from "../../ai/create/utils/generateDateWeekList.js";
 
 export function convertToSubmittedCalender(
 	startDate: string,
@@ -43,7 +43,7 @@ export function convertToSubmittedCalender(
 		} else if (timeDefinedWeekdays.has(weekday)) {
 			calendar[date] = timeDefinedWeekdays.get(weekday) as string;
 		} else if (anytimeWeekdays.has(weekday)) {
-			calendar[date] = "anytime";
+			calendar[date] = "anytime.js";
 		} else {
 			calendar[date] = null;
 		}

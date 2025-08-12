@@ -1,4 +1,4 @@
-import type { Store, User, UserStore } from "../../common/types/prisma";
+import type { Store, User, UserStore } from "../../common/types/prisma.js";
 
 export interface AddManageStoreResponse {
 	ok: true;

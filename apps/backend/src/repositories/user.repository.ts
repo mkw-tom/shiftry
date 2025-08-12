@@ -1,8 +1,11 @@
 import type { Prisma, PrismaClient } from "@prisma/client";
-import type { UpsertUserRepositoryInputType } from "@shared/api/auth/types/register-owner";
-import type { User, UserRole } from "@shared/api/common/types/prisma";
-import prisma from "../config/database";
-import type { UpsertUserInput, updateUserProlfileType } from "../types/inputs";
+import type { UpsertUserRepositoryInputType } from "@shared/api/auth/types/register-owner.js";
+import type { User, UserRole } from "@shared/api/common/types/prisma.js";
+import prisma from "../config/database.js";
+import type {
+	UpsertUserInput,
+	updateUserProlfileType,
+} from "../types/inputs.js";
 
 export const getUsers = async (): Promise<User[]> => {
 	return await prisma.user.findMany();

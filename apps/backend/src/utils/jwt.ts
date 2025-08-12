@@ -1,11 +1,11 @@
-import type { UserRole } from "@shared/api/common/types/prisma";
+import type { UserRole } from "@shared/api/common/types/prisma.js";
 // src/utils/appJwt.ts
 import jwt, {
 	type JwtPayload,
 	type SignOptions,
 	type VerifyOptions,
 } from "jsonwebtoken";
-import { jwtSettings } from "../lib/env";
+import { jwtSettings } from "../lib/env.js";
 
 const SECRET = jwtSettings.secret;
 const TTL_MIN = Number(jwtSettings.expiresIn || 15);

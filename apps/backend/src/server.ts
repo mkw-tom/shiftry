@@ -1,8 +1,7 @@
-import "./module-alias"; // ailiasをdist内で有効化
-import dotenv from "dotenv";
-import app from "./app";
-import { PORT } from "./lib/env";
 dotenv.config();
+import dotenv from "dotenv";
+import app from "./app.js";
+import { PORT } from "./lib/env.js";
 
 const port = PORT || 3000;
 

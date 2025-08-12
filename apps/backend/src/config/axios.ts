@@ -1,7 +1,7 @@
 import axios from "axios";
-import "../config/env";
-import "dotenv/config";
-import { LINE_ACCESS_TOKEN } from "../lib/env";
+import "../config/env.js";
+import "dotenv/config.js";
+import { LINE_ACCESS_TOKEN } from "../lib/env.js";
 
 const apiClient = axios.create({
 	baseURL: process.env.LINE_API_URL,

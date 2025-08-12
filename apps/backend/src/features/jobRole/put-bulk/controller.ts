@@ -1,16 +1,15 @@
-import type { JobRole } from "@prisma/client";
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/api/common/types/errors";
-import { putBulkJobRoleValidate } from "@shared/api/jobRole/Validations/put-bulk";
-import type { BulkUpsertJobRoleResponse } from "@shared/api/jobRole/types/put-bulk";
+} from "@shared/api/common/types/errors.js";
+import { putBulkJobRoleValidate } from "@shared/api/jobRole/Validations/put-bulk.js";
+import type { BulkUpsertJobRoleResponse } from "@shared/api/jobRole/types/put-bulk.js";
 import type { Request, Response } from "express";
 import {
 	GetJobRoleByStoreId,
 	bulkUpsertJobRoles,
-} from "../../../repositories/JobRole";
-import { verifyUserStoreForOwnerAndManager } from "../../common/authorization.service";
+} from "../../../repositories/JobRole.js";
+import { verifyUserStoreForOwnerAndManager } from "../../common/authorization.service.js";
 
 const bulkUpsertJobRoleController = async (
 	req: Request,

@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { UserRole } from "../../common/types/prisma";
 
 export const userInputValidate = z.object({
 	name: z.string().min(1, { message: "name is required" }).max(20),
