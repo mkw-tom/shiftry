@@ -1,8 +1,8 @@
-import type { ShiftsOfAssignType } from "../../../common/types/json";
+import type { ShiftsOfAssignType } from "../../../common/types/json.js";
 import type {
 	PriorityType,
 	shiftOfSubmittdWithUserId,
-} from "../validations/post-create";
+} from "../validations/post-create.js";
 
 export type CreateShiftAiResponse = {
 	ok: true;

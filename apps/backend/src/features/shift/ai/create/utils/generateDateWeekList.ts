@@ -1,7 +1,7 @@
 import {
 	type DateWeekListResponse,
 	DayOfWeek,
-} from "@shared/api/shift/ai/types/post-create";
+} from "@shared/api/shift/ai/types/post-create.js";
 
 export function generateDateWeekList(
 	startDate: string,

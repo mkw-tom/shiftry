@@ -1,34 +1,35 @@
-import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
+import rateLimit from "express-rate-limit";
 import helmet from "helmet";
-import authRoutes from "./features/auth/route";
-import jobRoleRotes from "./features/jobRole/route";
-import paymentRoutes from "./features/payment/route";
-import shiftPositionRoutes from "./features/shfitPosition/route";
-import aiRoutes from "./features/shift/ai/route";
-import assignShiftRoutes from "./features/shift/assign/route";
-import shiftRequestRoutes from "./features/shift/request/route";
-import submittedShiftRoutes from "./features/shift/submit/route";
-import storeRoutes from "./features/store/route";
-import userRoutes from "./features/user/route";
-import userJobRoleRotes from "./features/userJobRole/route";
-import lineRoutes from "./features/webhook/line/route";
-import stripeRoutes from "./features/webhook/stripe/route";
+import authRoutes from "./features/auth/route.js";
+import jobRoleRotes from "./features/jobRole/route.js";
+import paymentRoutes from "./features/payment/route.js";
+import shiftPositionRoutes from "./features/shfitPosition/route.js";
+import aiRoutes from "./features/shift/ai/route.js";
+import assignShiftRoutes from "./features/shift/assign/route.js";
+import shiftRequestRoutes from "./features/shift/request/route.js";
+import submittedShiftRoutes from "./features/shift/submit/route.js";
+import storeRoutes from "./features/store/route.js";
+import userRoutes from "./features/user/route.js";
+import userJobRoleRotes from "./features/userJobRole/route.js";
+import lineRoutes from "./features/webhook/line/route.js";
+import stripeRoutes from "./features/webhook/stripe/route.js";
 
 import {
 	CROSS_ORIGIN_DEV,
 	CROSS_ORIGIN_LIFF,
 	CROSS_ORIGIN_PROD,
-} from "./lib/env";
+} from "./lib/env.js";
 
 dotenv.config();
 
 const app = express();
-const https = require("node:https");
+// app.set("trust proxy", true);
 
 // 🔹 ミドルウェアの設定
+app.use(helmet());
 app.use(
 	cors({
 		origin: [CROSS_ORIGIN_PROD, CROSS_ORIGIN_DEV, CROSS_ORIGIN_LIFF],
@@ -36,16 +37,33 @@ app.use(
 		allowedHeaders: [
 			"Content-Type",
 			"Authorization",
+			"x-id-token",
+			"x-channel-id",
+			"x-channel-type",
 			"x-group-id",
 			"x-store-id",
 			"x-line-id",
 		],
+		methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+		optionsSuccessStatus: 204,
 	}),
 ); // CORS の許可
-app.use(helmet()); // セキュリティヘッダーの追加
-app.use(cookieParser());
-app.use(express.json()); // JSON リクエストのパース
-app.use(express.urlencoded({ extended: true })); // URL エンコードのサポート
+app.use(express.json({ limit: "200kb" }));
+app.use(express.urlencoded({ extended: true }));
+app.use(
+	rateLimit({
+		windowMs: 60_000,
+		max: 120,
+		standardHeaders: true,
+		legacyHeaders: false,
+		message: { ok: false, message: "Too many requests" },
+		skip: (req) =>
+			req.path.startsWith("/health") ||
+			req.path.startsWith("/metrics") ||
+			req.path.startsWith("/webhook/line") ||
+			req.path.startsWith("/webhook/stripe"),
+	}),
+);
 
 // 🔹 ルーティング設定
 app.use("/api/user", userRoutes);

@@ -1,8 +1,8 @@
-import type { ErrorResponse } from "@shared/api/common/types/errors";
-import type { DeleteUserByOwnerResponse } from "@shared/api/user/types/delete-by-user-id";
+import type { ErrorResponse } from "@shared/api/common/types/errors.js";
+import type { DeleteUserByOwnerResponse } from "@shared/api/user/types/delete-by-user-id.js";
 import type { Request, Response } from "express";
-import { deleteUser } from "../../../repositories/user.repository";
-import { verifyUserForOwner } from "../../common/authorization.service";
+import { deleteUser } from "../../../repositories/user.repository.js";
+import { verifyUserForOwner } from "../../common/authorization.service.js";
 
 const deleteUserByOwnerController = async (
 	req: Request,

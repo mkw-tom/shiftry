@@ -1,6 +1,6 @@
-import type { UserJobRole } from "@shared/api/common/types/prisma";
-import type { UserJobRoleWithUser } from "@shared/api/userJobRole/types/get-users";
-import prisma from "../config/database";
+import type { UserJobRole } from "@shared/api/common/types/prisma.js";
+import type { UserJobRoleWithUser } from "@shared/api/userJobRole/types/get-users.js";
+import prisma from "../config/database.js";
 
 const deleteManyUserJobRoles = async (userId: string, roleIds: string[]) => {
 	return await prisma.userJobRole.deleteMany({

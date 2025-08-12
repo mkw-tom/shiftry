@@ -1,15 +1,15 @@
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/api/common/types/errors";
-import type { DeleteManyShiftRequestResponse } from "@shared/api/shift/request/types/delete-many";
-import { deleteManyShiftRequestValidate } from "@shared/api/shift/request/validations/delete-many";
+} from "@shared/api/common/types/errors.js";
+import type { DeleteManyShiftRequestResponse } from "@shared/api/shift/request/types/delete-many.js";
+import { deleteManyShiftRequestValidate } from "@shared/api/shift/request/validations/delete-many.js";
 import type { Request, Response } from "express";
 import {
 	deleteManyShiftRequest,
 	deleteShiftRequest,
-} from "../../../../repositories/shiftRequest.repository";
-import { verifyUserStoreForOwnerAndManager } from "../../../common/authorization.service";
+} from "../../../../repositories/shiftRequest.repository.js";
+import { verifyUserStoreForOwnerAndManager } from "../../../common/authorization.service.js";
 
 const deleteManyShiftRequestController = async (
 	req: Request,

@@ -1,8 +1,8 @@
-import type { ErrorResponse } from "@shared/api/common/types/errors";
-import type { GetShiftRequestResponse } from "@shared/api/shift/request/types/get";
+import type { ErrorResponse } from "@shared/api/common/types/errors.js";
+import type { GetShiftRequestResponse } from "@shared/api/shift/request/types/get.js";
 import type { Request, Response } from "express";
-import { getActiveShiftRequests } from "../../../../repositories/shiftRequest.repository";
-import { verifyUserStore } from "../../../common/authorization.service";
+import { getActiveShiftRequests } from "../../../../repositories/shiftRequest.repository.js";
+import { verifyUserStore } from "../../../common/authorization.service.js";
 
 const getAcvtiveShiftRequestsController = async (
 	req: Request,

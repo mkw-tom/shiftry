@@ -1,5 +1,5 @@
-import type { ShiftPosition } from "@shared/api/common/types/prisma";
-import prisma from "../config/database";
+import type { ShiftPosition } from "@shared/api/common/types/prisma.js";
+import prisma from "../config/database.js";
 
 export const getShiftPositionsByStoreId = async (
 	storeId: string,

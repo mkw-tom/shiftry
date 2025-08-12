@@ -1,9 +1,9 @@
-import type { LoginResponse } from "@shared/api/auth/types/login";
-import type { ErrorResponse } from "@shared/api/common/types/errors";
+import type { LoginResponse } from "@shared/api/auth/types/login.js";
+import type { ErrorResponse } from "@shared/api/common/types/errors.js";
 import type { Request, Response } from "express";
-import { getStoreFromUser } from "../../../repositories/userStore.repository";
-import { generateJWT } from "../../../utils/JWT/jwt";
-import { verifyUserByLineId } from "../../common/authorization.service";
+import { getStoreFromUser } from "../../../repositories/userStore.repository.js";
+import { generateJWT } from "../../../utils/JWT/jwt.js";
+import { verifyUserByLineId } from "../../common/authorization.service.js";
 
 export const loginController = async (
 	req: Request,

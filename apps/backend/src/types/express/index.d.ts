@@ -7,6 +7,18 @@ declare global {
 			storeId?: string;
 			groupId?: string;
 			lineId?: string;
+			auth?: {
+				uid?: string;
+				sid?: string;
+				role?: import("@shared/api/common/types/prisma").UserRole;
+				iat?: number;
+				exp?: number;
+			};
+			channel?: {
+				type: "group" | "room" | "utou";
+				id: string | null;
+			};
+			idToken?: string;
 		}
 	}
 }

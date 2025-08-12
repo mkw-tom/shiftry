@@ -34,7 +34,7 @@ const useGroupConnectHandler = (
 				return;
 			}
 
-			dispatch(setGroupToken(res.group_token));
+			// dispatch(setGroupToken(res.group_token));
 			dispatch(setConnectedGroup(true));
 			changeConnectedStep();
 		} catch (error) {

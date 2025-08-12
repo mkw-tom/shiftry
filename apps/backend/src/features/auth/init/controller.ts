@@ -1,9 +1,9 @@
-import type { InitResponse } from "@shared/api/auth/types/init";
-import { storeIdValidate } from "@shared/api/auth/validations/init";
-import type { ErrorResponse } from "@shared/api/common/types/errors";
+import type { InitResponse } from "@shared/api/auth/types/init.js";
+import { storeIdValidate } from "@shared/api/auth/validations/init.js";
+import type { ErrorResponse } from "@shared/api/common/types/errors.js";
 import type { Request, Response } from "express";
-import { generateJWT } from "../../../utils/JWT/jwt";
-import Init from "./service";
+import { generateJWT } from "../../../utils/JWT/jwt.js";
+import Init from "./service.js";
 
 const InitController = async (
 	req: Request,

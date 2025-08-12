@@ -1,11 +1,11 @@
 import express from "express";
 
-import { attachGroupId } from "../../../middlewares/request/attachGroupId";
-import { attachStoreId } from "../../../middlewares/request/attachStoreId";
-import { attachUserId } from "../../../middlewares/request/attachUserId";
-import sendConfirmShiftFuncController from "./confirm-shift/controller";
-import eventController from "./event/controller";
-import sendShiftRequestFuncController from "./request-shift/controller";
+import { attachGroupId } from "../../../middlewares/request/attachGroupId.js";
+import { attachStoreId } from "../../../middlewares/request/attachStoreId.js";
+import { attachUserId } from "../../../middlewares/request/attachUserId.js";
+import sendConfirmShiftFuncController from "./confirm-shift/controller.js";
+import eventController from "./event/controller.js";
+import sendShiftRequestFuncController from "./request-shift/controller.js";
 const router = express.Router();
 
 router.post(

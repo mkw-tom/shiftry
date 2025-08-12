@@ -3,26 +3,31 @@ import type {
 	User,
 	UserRole,
 	UserStore,
-} from "../../common/types/prisma";
+} from "../../common/types/prisma.js";
 
 export interface RegisterOwnerResponse {
 	ok: true;
-	user: User;
-	store: Store;
-	userStore: UserStore;
-	user_token: string;
-	store_token: string;
+	user: { id: string; name: string };
+	store: { id: string; name: string };
+	userStore: { userId: string; storeId: string; role: UserRole };
 }
 
 export interface RegisterOwnerServiceResponse {
-	user: User;
-	store: Store;
-	userStore: UserStore;
+	user: { id: string; name: string };
+	store: { id: string; name: string };
+	userStore: { userId: string; storeId: string; role: UserRole };
 }
 
 export interface UpsertUserInput {
-	lineId: string;
 	name: string;
 	pictureUrl?: string;
-	role: UserRole;
+}
+
+export interface UpsertUserRepositoryInputType {
+	lineId_hash: string;
+	lineId_enc: string;
+	lineKeyVersion_hash: string;
+	lineKeyVersion_enc: string;
+	name: string;
+	pictureUrl?: string;
 }

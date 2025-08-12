@@ -1,7 +1,6 @@
-import type { Store } from "../../common/types/prisma";
+import type { Store } from "../../common/types/prisma.js";
 
 export interface StoreConnectLineGroupResponse {
 	ok: true;
 	store: Store;
-	group_token: string;
 }

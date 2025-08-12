@@ -1,8 +1,8 @@
-import type { ErrorResponse } from "@shared/api/common/types/errors";
-import type { CancelRevertResponse } from "@shared/api/payment/types/cancel-revert";
+import type { ErrorResponse } from "@shared/api/common/types/errors.js";
+import type { CancelRevertResponse } from "@shared/api/payment/types/cancel-revert.js";
 import type { Request, Response } from "express";
-import { verifyUserStoreForOwner } from "../../common/authorization.service";
-import cancelRevertService from "./service";
+import { verifyUserStoreForOwner } from "../../common/authorization.service.js";
+import cancelRevertService from "./service.js";
 
 const cancelRevertController = async (
 	req: Request,

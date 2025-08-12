@@ -1,4 +1,4 @@
-import type { User, UserStore } from "../../common/types/prisma";
+import type { User, UserStore } from "../../common/types/prisma.js";
 
 export interface ChangeUserRoleResponse {
 	ok: true;

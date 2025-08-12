@@ -1,9 +1,9 @@
-import type { Payment } from "@shared/api/common/types/prisma";
-import { stripe } from "../../../config/stripe";
+import type { Payment } from "@shared/api/common/types/prisma.js";
+import { stripe } from "../../../config/stripe.js";
 import {
 	cancelRevert,
 	getPaymentByStoreId,
-} from "../../../repositories/payment.repositroy";
+} from "../../../repositories/payment.repositroy.js";
 
 const cancelRevertService = async ({
 	storeId,

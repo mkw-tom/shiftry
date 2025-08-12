@@ -1,5 +1,5 @@
-import type { JobRole } from "@shared/api/common/types/prisma";
-import prisma from "../config/database";
+import type { JobRole } from "@shared/api/common/types/prisma.js";
+import prisma from "../config/database.js";
 
 export const GetJobRoleByStoreId = async (
 	storeId: string,

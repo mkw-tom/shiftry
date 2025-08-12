@@ -1,12 +1,12 @@
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/api/common/types/errors";
-import type { UpsertAssigShiftResponse } from "@shared/api/shift/assign/types/put";
-import { upsertAssignShfitValidate } from "@shared/api/shift/assign/validations/put";
+} from "@shared/api/common/types/errors.js";
+import type { UpsertAssigShiftResponse } from "@shared/api/shift/assign/types/put.js";
+import { upsertAssignShfitValidate } from "@shared/api/shift/assign/validations/put.js";
 import type { Request, Response } from "express";
-import { upsertAssignShfit } from "../../../../repositories/assingShift.repostory";
-import { verifyUserStoreForOwnerAndManager } from "../../../common/authorization.service";
+import { upsertAssignShfit } from "../../../../repositories/assingShift.repostory.js";
+import { verifyUserStoreForOwnerAndManager } from "../../../common/authorization.service.js";
 
 const upsertAssignShfitController = async (
 	req: Request,

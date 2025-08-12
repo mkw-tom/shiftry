@@ -1,9 +1,9 @@
 import type { Request, Response } from "express";
 
-import type { ErrorResponse } from "@shared/api/common/types/errors";
-import type { GetPaymentResponse } from "@shared/api/payment/types/get";
-import { getPaymentByStoreId } from "../../../repositories/payment.repositroy";
-import { verifyUserStoreForOwner } from "../../common/authorization.service";
+import type { ErrorResponse } from "@shared/api/common/types/errors.js";
+import type { GetPaymentResponse } from "@shared/api/payment/types/get.js";
+import { getPaymentByStoreId } from "../../../repositories/payment.repositroy.js";
+import { verifyUserStoreForOwner } from "../../common/authorization.service.js";
 
 const getPaymentController = async (
 	req: Request,

@@ -19,4 +19,4 @@ export {
 	RequestStatus,
 } from "@prisma/client";
 
-export type { UserWithJobRole } from "../../user/types/get";
+export type { UserWithJobRole } from "../../user/types/get.js";

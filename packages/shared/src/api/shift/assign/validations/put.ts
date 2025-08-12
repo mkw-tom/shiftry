@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ShiftStatus } from "../../../common/types/prisma";
+import { ShiftStatus } from "../../../common/types/prisma.js";
 
 export const shiftsOfAssignValidate = z.object({
 	userId: z.string().uuid(),

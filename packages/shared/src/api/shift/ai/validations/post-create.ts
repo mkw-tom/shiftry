@@ -2,7 +2,7 @@ import z from "zod";
 import {
 	availableWeekValidate,
 	specificDatesValidate,
-} from "../../submit/validations/put";
+} from "../../submit/validations/put.js";
 
 //// shiftOfRequestsValidateに必要なバリデーション
 const TimeSlot = z.string().regex(/^\d{2}:\d{2}-\d{2}:\d{2}\*\d+$/, {

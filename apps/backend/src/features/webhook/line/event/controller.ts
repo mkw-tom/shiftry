@@ -1,12 +1,12 @@
-import type { ErrorResponse } from "@shared/api/common/types/errors";
-import type { LineMessageAPIResponse } from "@shared/api/webhook/line/types";
+import type { ErrorResponse } from "@shared/api/common/types/errors.js";
+import type { LineMessageAPIResponse } from "@shared/api/webhook/line/types.js";
 import type { Request, Response } from "express";
 import {
 	URI_CONNECT_LINE_GROUP,
 	URI_REGISTER_OWNER,
-} from "../../../../lib/env";
-import { generateJWT } from "../../../../utils/JWT/jwt";
-import { sendGroupMessageByTrigger } from "../service";
+} from "../../../../lib/env.js";
+import { generateJWT } from "../../../../utils/JWT/jwt.js";
+import { sendGroupMessageByTrigger } from "../service.js";
 
 const eventController = async (
 	req: Request,

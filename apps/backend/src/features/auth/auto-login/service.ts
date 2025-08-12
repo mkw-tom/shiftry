@@ -1,7 +1,7 @@
-import type { AutoLoginServiceResponse } from "@shared/api/auth/types/auto-login";
-import { getActiveShiftRequests } from "../../../repositories/shiftRequest.repository";
-import { getStoreById } from "../../../repositories/store.repository";
-import { getUserById } from "../../../repositories/user.repository";
+import type { AutoLoginServiceResponse } from "@shared/api/auth/types/auto-login.js";
+import { getActiveShiftRequests } from "../../../repositories/shiftRequest.repository.js";
+import { getStoreById } from "../../../repositories/store.repository.js";
+import { getUserById } from "../../../repositories/user.repository.js";
 
 const autoLogin = async (
 	userId: string,

@@ -1,8 +1,8 @@
 import express from "express";
-import { attachStoreId } from "../../middlewares/request/attachStoreId";
-import { attachUserId } from "../../middlewares/request/attachUserId";
-import getShiftPosisiosnByStoreIdController from "./get-by-store-id/controller";
-import bulkUpsertShiftPosisionsController from "./put-bulk/controller";
+import { attachStoreId } from "../../middlewares/request/attachStoreId.js";
+import { attachUserId } from "../../middlewares/request/attachUserId.js";
+import getShiftPosisiosnByStoreIdController from "./get-by-store-id/controller.js";
+import bulkUpsertShiftPosisionsController from "./put-bulk/controller.js";
 
 const router = express.Router();
 

@@ -1,7 +1,7 @@
-import type { ShiftRequest } from "@shared/api/common/types/prisma";
+import type { ShiftRequest } from "@shared/api/common/types/prisma.js";
 import { addHours, startOfToday, subDays } from "date-fns";
-import prisma from "../config/database";
-import type { UpsertShiftRequetType } from "../types/inputs";
+import prisma from "../config/database.js";
+import type { UpsertShiftRequetType } from "../types/inputs.js";
 
 const jstStartOfToday = addHours(startOfToday(), 9);
 

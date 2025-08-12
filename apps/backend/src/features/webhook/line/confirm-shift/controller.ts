@@ -1,14 +1,14 @@
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
-} from "@shared/api/common/types/errors";
-import type { LineMessageAPIResponse } from "@shared/api/webhook/line/types";
-import { ConfirmShiftMessageValidate } from "@shared/api/webhook/line/validatioins";
-import { MDW } from "@shared/utils/formatDate";
+} from "@shared/api/common/types/errors.js";
+import type { LineMessageAPIResponse } from "@shared/api/webhook/line/types.js";
+import { ConfirmShiftMessageValidate } from "@shared/api/webhook/line/validatioins.js";
+import { MDW } from "@shared/utils/formatDate.js";
 import type { Request, Response } from "express";
-import { URI_SHIFT_CONFIRMATION } from "../../../../lib/env";
-import { verifyUserStoreForOwnerAndManager } from "../../../common/authorization.service";
-import { sendGroupFlexMessage } from "../service";
+import { URI_SHIFT_CONFIRMATION } from "../../../../lib/env.js";
+import { verifyUserStoreForOwnerAndManager } from "../../../common/authorization.service.js";
+import { sendGroupFlexMessage } from "../service.js";
 
 const sendConfirmShiftFuncController = async (
 	req: Request,

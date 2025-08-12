@@ -1,11 +1,11 @@
 import express from "express";
-import { attachStoreId } from "../../../middlewares/request/attachStoreId";
-import { attachUserId } from "../../../middlewares/request/attachUserId";
-import { validateshiftRequestId } from "../../../middlewares/validations/shiftRequestId.validate";
-import getSubmittedShiftsSpesificController from "./get-by-shift-request-id/controller";
-import getSubmittedShiftUserOneController from "./get-one/controller";
-import getSubmittedShiftUserController from "./get/controller";
-import upsertSubmittedShiftController from "./put/controller";
+import { attachStoreId } from "../../../middlewares/request/attachStoreId.js";
+import { attachUserId } from "../../../middlewares/request/attachUserId.js";
+import { validateshiftRequestId } from "../../../middlewares/validations/shiftRequestId.validate.js";
+import getSubmittedShiftsSpesificController from "./get-by-shift-request-id/controller.js";
+import getSubmittedShiftUserOneController from "./get-one/controller.js";
+import getSubmittedShiftUserController from "./get/controller.js";
+import upsertSubmittedShiftController from "./put/controller.js";
 
 const router = express.Router();
 router.use(attachUserId);

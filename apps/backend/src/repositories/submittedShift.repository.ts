@@ -1,8 +1,8 @@
 import type { Prisma } from "@prisma/client";
-import type { SubmittedShift } from "@shared/api/common/types/prisma";
-import type { UpsertSubmittedShiftWithCalendar } from "@shared/api/shift/submit/validations/put";
-import prisma from "../config/database";
-import type { UpsertSubmittedShiftInputType } from "../types/inputs";
+import type { SubmittedShift } from "@shared/api/common/types/prisma.js";
+import type { UpsertSubmittedShiftWithCalendar } from "@shared/api/shift/submit/validations/put.js";
+import prisma from "../config/database.js";
+import type { UpsertSubmittedShiftInputType } from "../types/inputs.js";
 
 export const upsertSubmittedShift = async (
 	userId: string,

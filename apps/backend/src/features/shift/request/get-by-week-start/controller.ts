@@ -1,9 +1,9 @@
 import type { Request, Response } from "express";
 
-import type { ErrorResponse } from "@shared/api/common/types/errors";
-import type { GetShiftRequestSpecificResponse } from "@shared/api/shift/request/types/get-by-week-start";
-import { getShiftRequestSpecific } from "../../../../repositories/shiftRequest.repository";
-import { verifyUserStore } from "../../../common/authorization.service";
+import type { ErrorResponse } from "@shared/api/common/types/errors.js";
+import type { GetShiftRequestSpecificResponse } from "@shared/api/shift/request/types/get-by-week-start.js";
+import { getShiftRequestSpecific } from "../../../../repositories/shiftRequest.repository.js";
+import { verifyUserStore } from "../../../common/authorization.service.js";
 
 const getShiftRequestSpecificController = async (
 	req: Request,
