@@ -1,3 +1,4 @@
+import type { Prisma, PrismaClient } from "@prisma/client";
 import type {
 	Store,
 	User,
@@ -10,13 +11,15 @@ export const createUserStore = async (
 	userId: string,
 	storeId: string,
 	role: UserRole,
+	db: Prisma.TransactionClient | PrismaClient = prisma,
 ): Promise<UserStore> => {
-	return await prisma.userStore.create({
+	return await db.userStore.create({
 		data: {
 			userId,
 			storeId,
 			role,
 		},
+		select: { userId: true, storeId: true, role: true },
 	});
 };
 
