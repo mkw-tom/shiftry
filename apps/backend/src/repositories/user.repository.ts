@@ -17,9 +17,11 @@ export const getUserById = async (userId: string): Promise<User | null> => {
 	});
 };
 
-export const getUserByLineId = async (lineId: string): Promise<User | null> => {
+export const getUserByLineIdHash = async (
+	lineId_hash: string,
+): Promise<User | null> => {
 	return await prisma.user.findUnique({
-		where: { lineId: lineId },
+		where: { lineId_hash: lineId_hash },
 	});
 };
 
@@ -53,17 +55,17 @@ export const updateUser = async (
 	});
 };
 
-export const changeUserRole = async (
-	userId: string,
-	role: UserRole,
-): Promise<User> => {
-	return await prisma.user.update({
-		where: { id: userId },
-		data: {
-			role: role as UserRole,
-		},
-	});
-};
+// export const changeUserRole = async (
+// 	userId: string,
+// 	role: UserRole,
+// ): Promise<User> => {
+// 	return await prisma.user.update({
+// 		where: { id: userId },
+// 		data: {
+// 			role: role as UserRole,
+// 		},
+// 	});
+// };
 
 export const deleteUser = async (userId: string): Promise<User> => {
 	return prisma.user.delete({

@@ -139,10 +139,10 @@ const ShiftRequestList = () => {
 		);
 	}, [shfitListFilter, activeShiftRequests]);
 
-	const showShiftRequests =
-		user?.role === "STAFF"
-			? filteredShiftRequests.filter((data) => data.status !== "HOLD")
-			: filteredShiftRequests;
+	// const showShiftRequests =
+	// 	user?.role === "STAFF"
+	// 		? filteredShiftRequests.filter((data) => data.status !== "HOLD")
+	// 		: filteredShiftRequests;
 
 	const { darawerOpen } = useBottomDrawer();
 
@@ -150,34 +150,33 @@ const ShiftRequestList = () => {
 		return (
 			<section className="w-full h-auto mx-auto">
 				<ShiftRequestsListHead setShiftListFilter={setShiftListFilter} />
-				{user?.role !== "STAFF" ? (
-					<div className="w-11/12 mx-auto mt-7 border-2 border-dashed border-gray01 h-50 rounded-md hover:bg-gray02">
-						<button
-							type="button"
-							className="w-full flex flex-col gap-5 items-center justify-center h-full"
-							onClick={() => darawerOpen(DrawerView.CREATE_REQUEST, null)}
-						>
-							<div className="w-full flex flex-col items-center gap-2 mt-5">
-								<LuSend className="text-center text-gray02 font-bold text-2xl" />
-								<p className="text-center text-gray02 font-bold tracking-wide">
-									データが存在しません
-								</p>
-							</div>
 
-							<div className="btn w-auto border-none h-7 rounded-md bg-green02 text-xs text-white font-bold shadow-md">
-								<MdAdd className="text-white. font-bold" />
-								シフト提出依頼を作成する
-							</div>
-						</button>
-					</div>
-				) : (
-					<div className="w-full flex flex-col items-center gap-2 mt-20">
-						<LuSend className="text-center text-gray02 font-bold text-2xl" />
-						<p className="text-center text-gray02 font-bold tracking-wide">
-							データが存在しません
-						</p>
-					</div>
-				)}
+				<div className="w-11/12 mx-auto mt-7 border-2 border-dashed border-gray01 h-50 rounded-md hover:bg-gray02">
+					<button
+						type="button"
+						className="w-full flex flex-col gap-5 items-center justify-center h-full"
+						onClick={() => darawerOpen(DrawerView.CREATE_REQUEST, null)}
+					>
+						<div className="w-full flex flex-col items-center gap-2 mt-5">
+							<LuSend className="text-center text-gray02 font-bold text-2xl" />
+							<p className="text-center text-gray02 font-bold tracking-wide">
+								データが存在しません
+							</p>
+						</div>
+
+						<div className="btn w-auto border-none h-7 rounded-md bg-green02 text-xs text-white font-bold shadow-md">
+							<MdAdd className="text-white. font-bold" />
+							シフト提出依頼を作成する
+						</div>
+					</button>
+				</div>
+				{/* 
+				<div className="w-full flex flex-col items-center gap-2 mt-20">
+					<LuSend className="text-center text-gray02 font-bold text-2xl" />
+					<p className="text-center text-gray02 font-bold tracking-wide">
+						データが存在しません
+					</p>
+				</div> */}
 			</section>
 		);
 	}
@@ -188,12 +187,12 @@ const ShiftRequestList = () => {
 			<ShiftRequestsListHead setShiftListFilter={setShiftListFilter} />
 			<div className="w-full h-full overflow-hidden bg-white mt-1">
 				<ul className="w-full h-[420px] mx-auto flex flex-col overflow-y-scroll pt-1 pb-80 ">
-					{showShiftRequests.map((data) => (
+					{/* {showShiftRequests.map((data) => (
 						<ShiftRequestCard
 							key={data.id}
 							data={data as ShiftRequestWithJson}
 						/>
-					))}
+					))} */}
 				</ul>
 			</div>
 		</section>

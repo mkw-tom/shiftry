@@ -6,6 +6,6 @@ export async function findUserByLineSub(lineSub: string) {
 	const userHash = hmacSha256(lineSub, hmac.saltLineId);
 	return prisma.user.findUnique({
 		where: { lineId_hash: userHash },
-		select: { id: true, role: true },
+		select: { id: true, name: true },
 	});
 }

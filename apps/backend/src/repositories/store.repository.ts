@@ -15,13 +15,13 @@ export const createStore = async (
 	});
 };
 
-export const getStoreByGroupId = async (
-	groupId: string,
-): Promise<Store | null> => {
-	return await prisma.store.findUnique({
-		where: { groupId: groupId },
-	});
-};
+// export const getStoreByGroupId = async (
+// 	groupId: string,
+// ): Promise<Store | null> => {
+// 	return await prisma.store.findUnique({
+// 		where: { groupId: groupId },
+// 	});
+// };
 
 export const getStoreByGroupIdHash = async (
 	groupId_hash: string,
@@ -39,15 +39,15 @@ export const getStoreById = async (id: string): Promise<Store | null> => {
 	});
 };
 
-export const updateStoreGroupId = async (
-	storeId: string,
-	groupId: string,
-): Promise<Store> => {
-	return await prisma.store.update({
-		where: { id: storeId },
-		data: { groupId: groupId },
-	});
-};
+// export const updateStoreGroupId = async (
+// 	storeId: string,
+// 	groupId: string,
+// ): Promise<Store> => {
+// 	return await prisma.store.update({
+// 		where: { id: storeId },
+// 		data: { groupId: groupId },
+// 	});
+// };
 
 export const connectStoreToGroup = async (
 	storeId: string,

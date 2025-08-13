@@ -30,7 +30,7 @@ const PaymentSectioin = () => {
 	const { isLoading, error } = useMyPaymentHook(isOpen);
 	const { user } = useSelector((state: RootState) => state.user);
 	return (
-		<section className={`w-full ${user?.role === "STAFF" && "hidden"}`}>
+		<section className={"w-full "}>
 			<div className="collapse collapse-arrow">
 				<input type="checkbox" onChange={(e) => setIsOpen(e.target.checked)} />
 				<div className="collapse-title text-black font-bold text-xs text-left flex items-center">
