@@ -1,21 +1,21 @@
+import type { UserRole } from "../../common/types/prisma.js";
 import type {
-	Store,
-	User,
-	UserRole,
-	UserStore,
-} from "../../common/types/prisma.js";
+	StoreLite,
+	UserLite,
+	UserStoreLite,
+} from "../../common/types/prismaLite.js";
 
 export interface RegisterStaffResponse {
 	ok: true;
-	user: { id: string; name: string };
-	store: { id: string; name: string; isActive: boolean };
-	userStore: { userId: string; storeId: string; role: UserRole };
+	user: UserLite;
+	store: StoreLite;
+	userStore: UserStoreLite;
 }
 
 export interface RegisterStaffServiceResponse {
-	user: { id: string; name: string };
-	store: { id: string; name: string; isActive: boolean };
-	userStore: { userId: string; storeId: string; role: UserRole };
+	user: UserLite;
+	store: StoreLite;
+	userStore: UserStoreLite;
 }
 
 export interface UpsertUserInput {

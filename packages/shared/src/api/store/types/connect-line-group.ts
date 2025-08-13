@@ -1,6 +1,6 @@
-import type { Store } from "../../common/types/prisma.js";
+import type { StoreLite } from "../../common/types/prismaLite.js";
 
 export interface StoreConnectLineGroupResponse {
 	ok: true;
-	store: Store;
+	store: StoreLite;
 }
