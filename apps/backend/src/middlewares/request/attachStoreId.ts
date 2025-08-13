@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import { jwtSettings } from "../../lib/env.js";
 
 export const attachStoreId = (
 	req: Request,
@@ -18,10 +19,7 @@ export const attachStoreId = (
 			return next();
 		}
 
-		const decoded = jwt.verify(
-			storeId_token,
-			process.env.JWT_SECRET as string,
-		) as {
+		const decoded = jwt.verify(storeId_token, jwtSettings.secret) as {
 			storeId: string;
 		};
 

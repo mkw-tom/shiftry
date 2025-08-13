@@ -1,4 +1,5 @@
 import express from "express";
+import { requireUser } from "../../middlewares/auth.js";
 import { attachChannel } from "../../middlewares/request/attachChannel.js";
 import { attachIdToken } from "../../middlewares/request/attachIdToken.js";
 // import { autoLoginController } from "./auto-login/controller.js";
@@ -8,6 +9,7 @@ import VerifyLiffUserController from "./liff/verify/controller.js";
 // import { loginController } from "./login-with-line/controller.js";
 import registerOwnerController from "./register/owner/controller.js";
 import registerStaffController from "./register/staff/controller.js";
+import selectStoreLoginController from "./select-store/controller.js";
 
 const router = express.Router();
 
@@ -35,5 +37,6 @@ router.post(
 	attachChannel,
 	VerifyLiffUserController,
 );
+router.post("/select-store", requireUser, selectStoreLoginController);
 
 export default router;
