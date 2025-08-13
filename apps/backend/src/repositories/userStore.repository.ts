@@ -40,7 +40,7 @@ export const getUserStoreByUserId = async (
 export const getUserStoreByUserIdAndStoreId = async (
 	userId: string,
 	storeId: string,
-): Promise<UserStore | null> => {
+): Promise<UserStoreLiteWithStore | null> => {
 	return await prisma.userStore.findFirst({
 		where: { userId, storeId },
 		select: {
