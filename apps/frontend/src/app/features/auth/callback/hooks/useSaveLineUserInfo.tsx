@@ -19,8 +19,8 @@ export const useSaveLineUserInfo = () => {
 
 	useEffect(() => {
 		if (userLineInfo && mode === "register") {
-			const { userId, pictureUrl, line_token } = userLineInfo;
-			dispatch(setRegisterUserInfo({ pictureUrl, lineId: userId, role }));
+			const { userId, name, pictureUrl, line_token } = userLineInfo;
+			dispatch(setRegisterUserInfo({ pictureUrl: pictureUrl, name: name }));
 			dispatch(setLineToken(line_token));
 			navigateAfterLineAuth(role);
 		} else if (userLineInfo && mode === "login") {

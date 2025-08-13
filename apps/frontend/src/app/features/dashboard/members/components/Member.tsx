@@ -21,13 +21,13 @@ const Member = ({ user }: { user: User }) => {
 					</p>
 				</div>
 				<div className="w-1/2 flex items-center  justify-end gap-5 ">
-					<p
+					{/* <p
 						className={`text-xs ${
 							user.role === "OWNER" ? "text-green01" : "text-blue01"
 						}`}
 					>
 						{user.role === "OWNER" ? "オーナー" : "スタッフ"}
-					</p>
+					</p> */}
 					<button type="button" className="text-xs text-gray02 ">
 						編集
 					</button>

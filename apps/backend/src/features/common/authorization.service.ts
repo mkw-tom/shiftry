@@ -7,7 +7,7 @@ import { getShiftRequestById } from "../../repositories/shiftRequest.repository.
 import { getStoreById } from "../../repositories/store.repository.js";
 import {
 	getUserById,
-	getUserByLineId,
+	getUserByLineIdHash,
 } from "../../repositories/user.repository.js";
 import { getUserStoreByUserIdAndStoreId } from "../../repositories/userStore.repository.js";
 
@@ -53,20 +53,22 @@ export const verifyUser = async (userId: string): Promise<User> => {
 	return user;
 };
 
-export const verifyUserByLineId = async (lineId: string): Promise<User> => {
-	const user = await getUserByLineId(lineId);
+export const verifyUserByLineId = async (
+	lineId_hash: string,
+): Promise<User> => {
+	const user = await getUserByLineIdHash(lineId_hash);
 	if (!user) throw new Error("User not found");
 	return user;
 };
 
-export const verifyUserForOwner = async (userId: string): Promise<User> => {
-	const user = await getUserById(userId);
-	if (!user) {
-		throw new Error("User is not authorized");
-	}
-	if (user.role !== "OWNER") throw new Error("User is not authorized as Owner");
-	return user;
-};
+// export const verifyUserForOwner = async (userId: string): Promise<User> => {
+// 	const user = await getUserById(userId);
+// 	if (!user) {
+// 		throw new Error("User is not authorized");
+// 	}
+// 	if (user.role !== "OWNER") throw new Error("User is not authorized as Owner");
+// 	return user;
+// };
 
 export const verifyStoreIdAndShiftRequestId = async (
 	storeId: string,

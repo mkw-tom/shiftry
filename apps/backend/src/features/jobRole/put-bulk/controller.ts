@@ -5,10 +5,7 @@ import type {
 import { putBulkJobRoleValidate } from "@shared/api/jobRole/Validations/put-bulk.js";
 import type { BulkUpsertJobRoleResponse } from "@shared/api/jobRole/types/put-bulk.js";
 import type { Request, Response } from "express";
-import {
-	GetJobRoleByStoreId,
-	bulkUpsertJobRoles,
-} from "../../../repositories/JobRole.js";
+import { bulkUpsertJobRoles } from "../../../repositories/JobRole.js";
 import { verifyUserStoreForOwnerAndManager } from "../../common/authorization.service.js";
 
 const bulkUpsertJobRoleController = async (

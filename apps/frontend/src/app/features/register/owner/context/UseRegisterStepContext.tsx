@@ -48,12 +48,12 @@ export const RegisterStepsProvider = ({
 			setPageLoading(false);
 			return;
 		}
-		if (user?.lineId) {
+		if (user?.id) {
 			setStep(RegisterStep.Register);
 			setPageLoading(false);
 			return;
 		}
-	}, [user?.lineId, token.userToken, token.storeToken, setPageLoading]);
+	}, [user?.id, token.userToken, token.storeToken, setPageLoading]);
 
 	function changeInviteBotStep() {
 		setStep(RegisterStep.InviteBot);

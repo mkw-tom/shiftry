@@ -24,9 +24,9 @@ const ActionButtons = ({
 	const { user } = useSelector((state: RootState) => state.user);
 
 	const switchAdjustmentBtnAction = (data: ShiftRequestWithJson) => {
-		if (user?.role === "STAFF") {
-			return darawerOpen(DrawerView.SUBMIT, data);
-		}
+		// if (user?.role === "STAFF") {
+		// 	return darawerOpen(DrawerView.SUBMIT, data);
+		// }
 		return goToShiftPage(data.id);
 	};
 
@@ -48,7 +48,9 @@ const ActionButtons = ({
 				<>
 					<button
 						type="button"
-						className={`btn flex-1 text-green01 bg-white  font-bold shadow-sm border-green01 rounded-md ${user?.role === "STAFF" && "hidden"}`}
+						className={
+							"btn flex-1 text-green01 bg-white  font-bold shadow-sm border-green01 rounded-md"
+						}
 						onClick={() => darawerOpen(DrawerView.GENERATE, data)}
 					>
 						<SiOpenai />
@@ -74,7 +76,7 @@ const ActionButtons = ({
 					}
 					onClick={() => switchAdjustmentBtnAction(data)}
 				>
-					{user?.role === "STAFF" ? "提出データを確認" : "シフト調整"}
+					{/* {user?.role === "STAFF" ? "提出データを確認" : "シフト調整"} */}
 				</button>
 			);
 

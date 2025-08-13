@@ -38,7 +38,7 @@ export const usePostRegisterStaff = () => {
 
 			const userInput = {
 				name: name,
-				role: user?.role,
+				// role: user?.role,
 				pictureUrl: user?.pictureUrl,
 			} as userInputType;
 

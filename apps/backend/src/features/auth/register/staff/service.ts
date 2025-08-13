@@ -6,11 +6,7 @@ import type { RegisterStaffServiceResponse } from "@shared/api/auth/types/regist
 import type { StoreNameType } from "@shared/api/auth/validations/register-owner.js";
 import prisma from "../../../../config/database.js";
 import { aes, hmac } from "../../../../lib/env.js";
-import {
-	createStore,
-	getStoreByGroupId,
-	getStoreByGroupIdHash,
-} from "../../../../repositories/store.repository.js";
+import { getStoreByGroupIdHash } from "../../../../repositories/store.repository.js";
 import { upsertUser } from "../../../../repositories/user.repository.js";
 import { createUserStore } from "../../../../repositories/userStore.repository.js";
 import { encryptText } from "../../../../utils/aes.js";
