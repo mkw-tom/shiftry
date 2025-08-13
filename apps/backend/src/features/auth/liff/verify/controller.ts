@@ -1,6 +1,9 @@
+// controllers/auth/liff/verify.ts
 import type { ErrorResponse } from "@shared/api/common/types/errors.js";
+import type { UserRole } from "@shared/api/common/types/prisma.js";
 import type { VerifyLiffUserResponse } from "@shared/api/liff/types/verify.js";
 import type { Request, Response } from "express";
+import { getUserStoreByUserIdAndStoreId } from "../../../../repositories/userStore.repository.js";
 import { signAppJwt } from "../../../../utils/jwt.js";
 import {
 	assertChannelValid,
@@ -27,24 +30,49 @@ const VerifyLiffUserController = async (
 			return;
 		}
 
+		// 1) 検証
 		const lineSub = await verifyIdToken(idToken);
-		await assertChannelValid(channel.type, channel?.id ?? null);
+		await assertChannelValid(channel.type, channel.id ?? null);
 
-		const existing = await findUserByLineSub(lineSub);
-		const linkedStoreId =
-			channel?.type !== "utou" && channel?.id
-				? await findLinkedStoreIdByChannelId(channel?.id)
-				: undefined;
+		// 2) ユーザー＆連携ストア取得（並列）
+		const [existing, linkedStoreId] = await Promise.all([
+			findUserByLineSub(lineSub),
+			channel.type !== "utou" && channel.id
+				? findLinkedStoreIdByChannelId(channel.id)
+				: Promise.resolve(undefined),
+		]);
 
-		const token = signAppJwt({ uid: existing?.id, sid: linkedStoreId });
+		// 3) ユーザーが連携ストアのメンバーなら role を付与
+		let sid: string | undefined;
+		let role: UserRole | undefined;
 
+		if (existing?.id && linkedStoreId) {
+			const userStore = await getUserStoreByUserIdAndStoreId(
+				existing.id,
+				linkedStoreId,
+			);
+			if (userStore) {
+				sid = userStore.storeId;
+				role = userStore.role;
+			}
+		}
+
+		// 4) 短命トークン（必要なら typ 付与）
+		const token = signAppJwt({
+			uid: existing?.id,
+			sid,
+			role /*, typ: "access"*/,
+		});
+
+		res.setHeader("Cache-Control", "no-store");
 		res.json({
-			token,
+			ok: true,
+			token, // 将来的に session.access に寄せてもOK
 			user: existing ? { id: existing.id } : null,
 			flags: {
-				existingUser: !!existing,
-				channelLinked: !!linkedStoreId,
-				storeId: linkedStoreId,
+				existingUser: Boolean(existing),
+				channelLinked: Boolean(linkedStoreId),
+				storeId: linkedStoreId ?? null,
 			},
 		});
 	} catch (e) {

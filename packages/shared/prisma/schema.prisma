@@ -10,7 +10,6 @@ datasource db {
 
 model User {
   id             String   @id @default(uuid())
-  lineId         String?  @unique
   lineId_hash    String?  @unique
   lineId_enc     String?
 
@@ -20,7 +19,6 @@ model User {
 
   name           String
   pictureUrl     String?
-  role           UserRole?
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @default(now())
 
@@ -37,7 +35,6 @@ enum UserRole {
 
 model Store {
   id               String   @id @default(uuid())
-  groupId          String?  @unique
   groupId_hash     String?  @unique
   groupId_enc      String?
   groupKeyVersion_hash  String  @default("K1")

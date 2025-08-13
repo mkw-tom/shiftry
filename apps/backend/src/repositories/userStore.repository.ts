@@ -5,6 +5,10 @@ import type {
 	UserRole,
 	UserStore,
 } from "@shared/api/common/types/prisma.js";
+import type {
+	UserStoreLite,
+	UserStoreLiteWithStore,
+} from "@shared/api/common/types/prismaLite.js";
 import prisma from "../config/database.js";
 
 export const createUserStore = async (
@@ -12,7 +16,7 @@ export const createUserStore = async (
 	storeId: string,
 	role: UserRole,
 	db: Prisma.TransactionClient | PrismaClient = prisma,
-): Promise<UserStore> => {
+): Promise<UserStoreLite> => {
 	return await db.userStore.create({
 		data: {
 			userId,
@@ -36,20 +40,37 @@ export const getUserStoreByUserId = async (
 export const getUserStoreByUserIdAndStoreId = async (
 	userId: string,
 	storeId: string,
-): Promise<UserStore | null> => {
+): Promise<UserStoreLiteWithStore | null> => {
 	return await prisma.userStore.findFirst({
 		where: { userId, storeId },
-		select: { userId: true, storeId: true, role: true },
+		select: {
+			userId: true,
+			storeId: true,
+			role: true,
+			store: { select: { id: true, name: true, isActive: true } },
+		},
 	});
 };
 
 ///ユーザーが所属する全ての店舗データを取得
+
 export const getStoreFromUser = async (
 	userId: string,
-): Promise<{ store: Store }[]> => {
+): Promise<UserStoreLiteWithStore[]> => {
 	return await prisma.userStore.findMany({
 		where: { userId },
-		select: { store: true },
+		select: {
+			userId: true,
+			storeId: true,
+			role: true,
+			store: {
+				select: {
+					id: true,
+					name: true,
+					isActive: true,
+				},
+			},
+		},
 	});
 };
 

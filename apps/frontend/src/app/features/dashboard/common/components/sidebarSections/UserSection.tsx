@@ -31,11 +31,11 @@ const UserSection = () => {
 					className="w-14 h-14 rounded-full"
 				/>
 				<div className="h-auto text-left">
-					<h3
+					{/* <h3
 						className={` font-bold text-xs ${showUserRole(user?.role as UserRole).color}`}
 					>
 						{showUserRole(user?.role as UserRole).text}
-					</h3>
+					</h3> */}
 					<p className="text-black font-bold mt-1">
 						{user?.name ? user?.name : "user is not found"}
 					</p>

@@ -8,7 +8,7 @@ export const dummyStores: Store[] = [
 	{
 		id: "store-001",
 		name: "渋谷コーヒー店",
-		groupId: "group-001",
+		// groupId: "group-001",
 		groupId_hash: null,
 		groupId_enc: null,
 		groupKeyVersion_hash: "",
@@ -21,7 +21,7 @@ export const dummyStores: Store[] = [
 	{
 		id: "store-002",
 		name: "新宿ブックカフェ",
-		groupId: null,
+		// groupId: null,
 		groupId_hash: null,
 		groupId_enc: null,
 		groupKeyVersion_hash: "",
@@ -34,7 +34,7 @@ export const dummyStores: Store[] = [
 	{
 		id: "store-003",
 		name: "池袋ベーカリー",
-		groupId: "group-003",
+		// groupId: "group-003",
 		groupId_hash: null,
 		groupId_enc: null,
 		groupKeyVersion_hash: "",
