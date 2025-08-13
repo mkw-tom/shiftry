@@ -47,7 +47,9 @@ export const verifyUserStoreForOwnerAndManager = async (
 	return userStore;
 };
 
-export const verifyUser = async (userId: string): Promise<User> => {
+export const verifyUser = async (
+	userId: string,
+): Promise<Pick<User, "id" | "name" | "pictureUrl">> => {
 	const user = await getUserById(userId);
 	if (!user) throw new Error("User not found");
 	return user;
@@ -73,7 +75,7 @@ export const verifyUserByLineId = async (
 export const verifyStoreIdAndShiftRequestId = async (
 	storeId: string,
 	shiftRequestId: string,
-): Promise<Store> => {
+): Promise<Pick<Store, "id" | "name" | "isActive">> => {
 	const store = await getStoreById(storeId);
 	const shiftRequest = await getShiftRequestById(shiftRequestId);
 	if (store?.id !== shiftRequest?.storeId) {
