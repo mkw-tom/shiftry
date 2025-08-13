@@ -37,25 +37,21 @@ const selectStoreLoginController = async (req: Request, res: Response) => {
 
 		const userStore = await getUserStoreByUserIdAndStoreId(auth.uid, storeId);
 		if (!userStore) {
-			res
-				.status(403)
-				.json({
-					ok: false,
-					code: "STORE_FORBIDDEN",
-					message: "Store not linked to user",
-				});
+			res.status(403).json({
+				ok: false,
+				code: "STORE_FORBIDDEN",
+				message: "Store not linked to user",
+			});
 			return;
 		}
 
 		const store = userStore.store ?? (await getStoreById(storeId));
 		if (!store) {
-			res
-				.status(404)
-				.json({
-					ok: false,
-					code: "STORE_NOT_FOUND",
-					message: "Store not found",
-				});
+			res.status(404).json({
+				ok: false,
+				code: "STORE_NOT_FOUND",
+				message: "Store not found",
+			});
 			return;
 		}
 
@@ -73,13 +69,11 @@ const selectStoreLoginController = async (req: Request, res: Response) => {
 		});
 	} catch (error) {
 		console.error("Error in selectStoreLoginController:", error);
-		res
-			.status(500)
-			.json({
-				ok: false,
-				code: "SERVER_ERROR",
-				message: "Internal server error",
-			});
+		res.status(500).json({
+			ok: false,
+			code: "SERVER_ERROR",
+			message: "Internal server error",
+		});
 	}
 };
 
