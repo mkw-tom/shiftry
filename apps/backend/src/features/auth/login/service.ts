@@ -1,3 +1,4 @@
+import type { LoginResType } from "@shared/api/auth/types/login.js";
 import type { Store, User, UserRole } from "@shared/api/common/types/prisma.js";
 import type {
 	StoreLite,
@@ -11,26 +12,10 @@ import {
 	getUserStoreByUserIdAndStoreId,
 } from "../../../repositories/userStore.repository.js";
 
-type LoginRes =
-	| {
-			kind: "AUTO";
-			user: UserLite;
-			store: StoreLite;
-			role: UserRole;
-	  }
-	| {
-			kind: "SELECT_STORE";
-			user: UserLite;
-			stores: UserStoreLiteWithStore[];
-	  }
-	| { kind: "NO_STORES" }
-	| { kind: "UNREGISTERED" }
-	| { kind: "STORE_FORBIDDEN" };
-
 export const loginService = async (
 	uid: string,
 	sid?: string | null,
-): Promise<LoginRes> => {
+): Promise<LoginResType> => {
 	const user = await getUserById(uid);
 	if (!user) return { kind: "UNREGISTERED" };
 
