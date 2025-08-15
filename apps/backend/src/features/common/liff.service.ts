@@ -27,10 +27,11 @@ export async function verifyIdToken(idToken: string) {
 		});
 		return payload.sub as string;
 	}
-	if (alg === "RS256") {
+	if (alg === "RS256" || alg === "ES256") {
 		const { payload } = await jwtVerify(idToken, JWKS, {
 			issuer: "https://access.line.me",
 			audience: lineLoginChannel.id,
+			algorithms: ["RS256", "ES256"], // ← ここがポイント
 		});
 		return payload.sub as string;
 	}
