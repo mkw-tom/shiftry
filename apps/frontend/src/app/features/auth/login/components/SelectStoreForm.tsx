@@ -1,5 +1,6 @@
 import type { RootState } from "@/app/redux/store";
 import type { Store } from "@shared/api/common/types/prisma";
+import { UserStoreLiteWithStore } from "@shared/api/common/types/prismaLite";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useInit } from "../hooks/useInit";
@@ -47,7 +48,7 @@ export const dummyStores: Store[] = [
 ];
 
 const SelectStoreForm = () => {
-	const [selectStore, setSelectStore] = useState<Store | null>(null);
+	const [selectStoreId, setSelectStore] = useState<string | null>(null);
 	const { stores } = useSelector((state: RootState) => state.stores);
 	const { userToken } = useSelector((state: RootState) => state.token);
 	const { handleInit } = useInit();
@@ -66,24 +67,26 @@ const SelectStoreForm = () => {
 					<tbody>
 						{stores.map((data) => (
 							<tr
-								key={data.id}
-								className={`${selectStore?.id === data.id ? "bg-green03" : ""}`}
-								onTouchEnd={() => setSelectStore(data)}
+								key={data.storeId}
+								className={`${selectStoreId === data.storeId ? "bg-green03" : ""}`}
+								onTouchEnd={() => setSelectStore(data.storeId)}
 							>
 								<th>
 									<label>
 										<input
 											type="radio"
 											className="radio radio-sm radio-success text-success"
-											checked={selectStore?.id === data.id}
-											onChange={(e) => setSelectStore(data)}
+											checked={selectStoreId === data.storeId}
+											onChange={(e) => setSelectStore(data.storeId)}
 										/>
 									</label>
 								</th>
 								<td>
 									<div className="flex items-center gap-3">
 										<div>
-											<div className="font-bold text-black">{data.name}</div>
+											<div className="font-bold text-black">
+												{data.store.name}
+											</div>
 											{/* <div className="text-sm opacity-50  text-black">
 												{YMDW(new Date(data.createdAt))}
 											</div> */}
@@ -99,15 +102,15 @@ const SelectStoreForm = () => {
 			<button
 				type="button"
 				className="btn btn-sm sm:btn-md bg-green02 rounded-full border-none w-2/3 mx-auto text-white"
-				disabled={!selectStore}
-				onClick={() =>
-					handleInit({
-						userToken: userToken as string,
-						storeId: selectStore?.id as string,
-					})
-				}
+				disabled={!selectStoreId}
+				// onClick={() =>
+				// 	handleInit({
+				// 		userToken: userToken as string,
+				// 		storeId: selectStoreId?.id as string,
+				// 	})
+				// }
 			>
-				{!selectStore ? "ログイン" : `${selectStore?.name}`}
+				ログイン
 			</button>
 		</>
 	);

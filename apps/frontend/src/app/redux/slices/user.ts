@@ -1,8 +1,11 @@
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
-import type { User } from "@shared/api/common/types/prisma";
+import type { User, UserRole } from "@shared/api/common/types/prisma";
 
+type UserInfo = Pick<User, "id" | "name" | "pictureUrl"> & {
+	role?: UserRole | null;
+};
 type UserState = {
-	user: Pick<User, "id" | "name" | "pictureUrl"> | null;
+	user: UserInfo | null;
 };
 
 const initialState: UserState = {
@@ -11,6 +14,7 @@ const initialState: UserState = {
 		// lineId: "",
 		name: "",
 		pictureUrl: "",
+		role: "STAFF", // Default role, can be changed later
 		// role: "OWNER",
 	},
 };
@@ -19,23 +23,17 @@ export const UserSlice = createSlice({
 	name: "user",
 	initialState,
 	reducers: {
-		setUser: (state, action: PayloadAction<User>) => {
+		setUser: (state, action: PayloadAction<UserInfo>) => {
 			state.user = action.payload;
 		},
-		setRegisterUserInfo: (
-			state,
-			action: PayloadAction<Pick<User, "name" | "pictureUrl">>,
-		) => {
+		setRegisterUserInfo: (state, action: PayloadAction<UserInfo>) => {
 			if (state.user) {
 				state.user.name = action.payload.name;
 				state.user.pictureUrl = action.payload.pictureUrl;
 			}
 		},
 
-		updateUserProfile: (
-			state,
-			action: PayloadAction<Pick<User, "name" | "pictureUrl">>,
-		) => {
+		updateUserProfile: (state, action: PayloadAction<UserInfo>) => {
 			if (state.user) {
 				state.user.name = action.payload.name;
 				state.user.pictureUrl = action.payload.pictureUrl;
