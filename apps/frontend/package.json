@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
+    "@line/liff": "^2.27.1",
     "@reduxjs/toolkit": "^2.6.1",
     "@stripe/react-stripe-js": "^3.6.0",
     "@stripe/stripe-js": "^7.2.0",
