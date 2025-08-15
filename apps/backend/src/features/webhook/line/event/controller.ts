@@ -4,6 +4,7 @@ import type { Request, Response } from "express";
 import {
 	URI_CONNECT_LINE_GROUP,
 	URI_REGISTER_OWNER,
+	liffUrl,
 } from "../../../../lib/env.js";
 import { generateJWT } from "../../../../utils/JWT/jwt.js";
 import { sendGroupMessageByTrigger } from "../service.js";
@@ -25,7 +26,7 @@ const eventController = async (
 			if (event.type === "join" && event.source.groupId) {
 				try {
 					const group_token = generateJWT({ groupId: event.source.groupId });
-					const signedUrl = `${URI_CONNECT_LINE_GROUP}?group_token=${group_token}`;
+					const signedUrl = `${liffUrl.connectLineGroupPage}?group_token=${group_token}`;
 
 					const joinMessage = {
 						text1: "グループに招待ありがとうございます！🎉",
@@ -48,7 +49,7 @@ const eventController = async (
 						text2: "1. オーナー＆店舗登録",
 						text3: "2. 「SHIFTRY」をlineグループに招待",
 						label: "登録へ進む",
-						uri: URI_REGISTER_OWNER,
+						uri: liffUrl.registerOwnerPage,
 					};
 
 					await sendGroupMessageByTrigger(event.replyToken, followMessage);
