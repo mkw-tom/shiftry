@@ -30,17 +30,17 @@ export const useLogin = () => {
 				return;
 			}
 
-			dispatch(setUserToken(res.user_token));
-			dispatch(setUser(res.user));
-			dispatch(setStores(res.stores));
+			// dispatch(setUserToken(res.user_token));
+			// dispatch(setUser(res.user));
+			// dispatch(setStores(res.stores));
 
-			if (res.stores.length === 1) {
-				dispatch(setStore(res.stores[0]));
-				await handleInit({
-					userToken: res.user_token,
-					storeId: res.stores[0].id,
-				});
-			}
+			// if (res.stores.length === 1) {
+			// 	dispatch(setStore(res.stores[0]));
+			// 	await handleInit({
+			// 		userToken: res.user_token,
+			// 		storeId: res.stores[0].id,
+			// 	});
+			// }
 		} catch (err) {
 			setError("通信エラーが発生しました。");
 			console.warn("通信エラー:", err);

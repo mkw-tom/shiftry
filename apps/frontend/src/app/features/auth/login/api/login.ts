@@ -1,5 +1,5 @@
 import { API_URL } from "@/app/lib/env";
-import type { LoginResponse } from "@shared/api/auth/types/login";
+// import type { LoginResponse } from "@shared/api/auth/types/login";
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,
@@ -7,7 +7,7 @@ import type {
 
 export const login = async (
 	lineToken: string,
-): Promise<LoginResponse | ErrorResponse | ValidationErrorResponse> => {
+): Promise<ErrorResponse | ValidationErrorResponse> => {
 	if (!lineToken) {
 		throw new Error("code is not found");
 	}

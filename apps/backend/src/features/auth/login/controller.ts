@@ -1,7 +1,13 @@
+import type { LoginControllerResponse } from "@shared/api/auth/types/login.js";
+import type { ErrorResponse } from "@shared/api/common/types/errors.js";
 import type { Request, Response } from "express";
+import { signAppJwt } from "../../../utils/jwt.js";
 import { loginService } from "./service.js";
 
-export const loginController = async (req: Request, res: Response) => {
+export const loginController = async (
+	req: Request,
+	res: Response<LoginControllerResponse | ErrorResponse>,
+): Promise<void> => {
 	try {
 		const auth = req.auth;
 
@@ -56,7 +62,27 @@ export const loginController = async (req: Request, res: Response) => {
 				});
 				return;
 
-			case "AUTO":
+			case "AUTO": {
+				const needsSidFix = !auth.sid || auth.sid !== loginRes.store.id;
+				if (needsSidFix) {
+					const access = signAppJwt({
+						uid: loginRes.user.id,
+						sid: loginRes.store.id,
+						role: loginRes.role, // ※roleはUIヒント。認可はDBで
+					});
+
+					res.status(200).json({
+						ok: true,
+						kind: "AUTO",
+						user: loginRes.user,
+						store: loginRes.store,
+						role: loginRes.role,
+						session: { access }, // ← ここだけ同梱
+					});
+					return;
+				}
+
+				// 再発行不要
 				res.status(200).json({
 					ok: true,
 					kind: "AUTO",
@@ -65,6 +91,7 @@ export const loginController = async (req: Request, res: Response) => {
 					role: loginRes.role,
 				});
 				return;
+			}
 		}
 	} catch (error) {
 		console.error("Error in loginController:", error);
