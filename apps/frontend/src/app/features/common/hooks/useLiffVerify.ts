@@ -40,10 +40,7 @@ export function useLiffVerify({ liffId }: Options) {
 				? ctx.groupId
 				: channelType === "room"
 					? ctx.roomId
-					: undefined; // utou はIDなし
-		if (!channelId) {
-			throw new Error("Channel ID not found in LIFF context");
-		}
+					: undefined;
 
 		const idToken = liff.getIDToken();
 		if (!idToken) throw new Error("ID Token not found");

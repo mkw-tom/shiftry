@@ -63,6 +63,16 @@ export const STRIPE_WEBHOOK_SECRET = process.env
 	.STRIPE_WEBHOOK_SECRET as string;
 
 /// ルーティング
+export const liffUrl = {
+	registerOwnerPage: process.env.LIFF_URL_REGISTER_OWNER as string,
+	connectLineGroupPage: process.env.LIFF_URL_REGISTER_CONNECT as string,
+	dashboardPage: process.env.LIFF_URL_DASHBOARD as string,
+	createRequestPage: process.env.LIFF_URL_CREATE_REQUEST as string,
+	submitRequestPage: process.env.LIFF_URL_SUBMIT_REQUEST as string,
+	generateShiftPage: process.env.LIFF_URL_GENERATE_SHIFT as string,
+	adjustShiftPage: process.env.LIFF_URL_ADJUST_SHIFT as string,
+	showConfirmShiftPage: process.env.LIFF_URL_SHOW_CONFIRMED_SHIFT as string,
+};
 export const URI_REGISTER_OWNER = process.env.URI_REGISTER_OWNER as string;
 export const URI_CONNECT_LINE_GROUP = process.env
 	.URI_CONNECT_LINE_GROUP as string;
