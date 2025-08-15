@@ -1,6 +1,7 @@
 "use client";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import activeShiftReuqests from "./slices/activeShiftRequests";
+import authToken from "./slices/authToken";
 import members from "./slices/members";
 import payment from "./slices/payment";
 import registerPayment from "./slices/registerPayment";
@@ -14,6 +15,7 @@ import tokenReducer from "./slices/token";
 
 const rootReducer = combineReducers({
 	token: tokenReducer,
+	authToken: authToken,
 	user: user,
 	store: store,
 	stores: stores,

@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"], // ← ここ重要
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -23,9 +19,7 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
+      "@/*": ["./src/*"],
       "@shared/*": ["../../packages/shared/src/*"] // ← この行を追加！
     }
   },
@@ -36,7 +30,5 @@
     "next-env.d.ts",
     "dist/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

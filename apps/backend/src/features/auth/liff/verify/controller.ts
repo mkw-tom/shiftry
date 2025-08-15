@@ -1,7 +1,7 @@
+import type { VerifyLiffUserResponse } from "@shared/api/auth/types/liff-verify.js";
 // controllers/auth/liff/verify.ts
 import type { ErrorResponse } from "@shared/api/common/types/errors.js";
 import type { UserRole } from "@shared/api/common/types/prisma.js";
-import type { VerifyLiffUserResponse } from "@shared/api/liff/types/verify.js";
 import type { Request, Response } from "express";
 import { getUserStoreByUserIdAndStoreId } from "../../../../repositories/userStore.repository.js";
 import { signAppJwt } from "../../../../utils/jwt.js";
@@ -68,12 +68,12 @@ const VerifyLiffUserController = async (
 		res.json({
 			ok: true,
 			token, // 将来的に session.access に寄せてもOK
-			user: existing ? { id: existing.id } : null,
 			flags: {
 				existingUser: Boolean(existing),
 				channelLinked: Boolean(linkedStoreId),
 				storeId: linkedStoreId ?? null,
 			},
+			next: existing ? "LOGIN" : "REGISTER",
 		});
 	} catch (e) {
 		if (typeof e === "object" && e !== null && "status" in e) {

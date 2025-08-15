@@ -1,8 +1,12 @@
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 import type { Store } from "@shared/api/common/types/prisma";
+import {
+	StoreLite,
+	type UserStoreLiteWithStore,
+} from "@shared/api/common/types/prismaLite";
 
 type StoresState = {
-	stores: Store[];
+	stores: UserStoreLiteWithStore[];
 };
 
 const initialState: StoresState = {
@@ -13,7 +17,7 @@ export const userSlice = createSlice({
 	name: "store",
 	initialState,
 	reducers: {
-		setStores: (state, action: PayloadAction<Store[]>) => {
+		setStores: (state, action: PayloadAction<UserStoreLiteWithStore[]>) => {
 			state.stores = action.payload;
 		},
 		clearStores: (state) => {

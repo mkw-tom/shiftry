@@ -1,11 +1,11 @@
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 import type { Store } from "@shared/api/common/types/prisma";
 
-type UserState = {
-	store: Store | null;
+type StoreState = {
+	store: Pick<Store, "id" | "name" | "isActive"> | null;
 };
 
-const initialState: UserState = {
+const initialState: StoreState = {
 	store: null,
 };
 
@@ -14,7 +14,10 @@ export const userSlice = createSlice({
 	initialState,
 	reducers: {
 		// 全体セット
-		setStore: (state, action: PayloadAction<Store>) => {
+		setStore: (
+			state,
+			action: PayloadAction<Pick<Store, "id" | "name" | "isActive">>,
+		) => {
 			state.store = action.payload;
 		},
 

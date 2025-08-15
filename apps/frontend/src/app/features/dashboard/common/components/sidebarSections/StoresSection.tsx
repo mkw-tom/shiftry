@@ -35,10 +35,13 @@ const StoresSection = () => {
 				{!isLoading && (
 					<div className="collapse-content">
 						<ul className="h-52 scroll-auto">
-							{stores.map((store: Store) => (
-								<li key={store.id} className="border-b border-gray01 h-8 mt-2">
+							{stores.map((store) => (
+								<li
+									key={store.storeId}
+									className="border-b border-gray01 h-8 mt-2"
+								>
 									<div className="flex justify-between items-center">
-										<p className="text-black text-xs">{store.name}</p>
+										<p className="text-black text-xs">{store.store.name}</p>
 										<p className="badge badge-xs bg-green01 rounded-full font-bold border-none w-12 text-white">
 											選択中
 										</p>

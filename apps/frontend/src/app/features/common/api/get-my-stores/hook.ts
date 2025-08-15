@@ -31,7 +31,7 @@ export const useMystoresHooks = (trigger: boolean) => {
 					return;
 				}
 
-				dispatch(setStores(res.stores));
+				// dispatch(setStores(res.stores));
 				setHasFetched(true); // ✅ 1回きりの実行制御
 			} catch (err) {
 				setError(true);
@@ -42,7 +42,7 @@ export const useMystoresHooks = (trigger: boolean) => {
 		};
 
 		fetchPayment();
-	}, [trigger, hasFetched, userToken, storeToken, dispatch]);
+	}, [trigger, hasFetched, userToken, storeToken]);
 
 	return { isLoading, error };
 };

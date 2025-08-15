@@ -1,77 +1,47 @@
+import type { SelectStoreResponse } from "@shared/api/auth/types/select-store.js";
 import { storeIdValidate } from "@shared/api/auth/validations/init.js";
+import type {
+	ErrorResponse,
+	ValidationErrorResponse,
+} from "@shared/api/common/types/errors.js";
+// modules/auth/controllers/select-store.controller.ts
 import type { Request, Response } from "express";
-import { getStoreById } from "../../../repositories/store.repository.js"; // store列を確定させる用（include済なら不要）
-import { getUserStoreByUserIdAndStoreId } from "../../../repositories/userStore.repository.js";
-import { signAppJwt } from "../../../utils/jwt.js";
+import { selectStoreLoginService } from "./service.js";
 
-const selectStoreLoginController = async (req: Request, res: Response) => {
+const selectStoreLoginController = async (
+	req: Request,
+	res: Response<SelectStoreResponse | ErrorResponse | ValidationErrorResponse>,
+): Promise<void> => {
 	try {
-		const auth = req.auth;
-		if (!auth?.uid) {
-			res
-				.status(401)
-				.json({ ok: false, code: "UNAUTHORIZED", message: "Unauthorized" });
+		if (!req.auth?.uid) {
+			res.status(401).json({ ok: false, message: "Unauthorized" });
 			return;
 		}
-
 		const parsed = storeIdValidate.safeParse(req.body);
 		if (!parsed.success) {
 			res.status(400).json({
 				ok: false,
-				code: "BAD_REQUEST",
-				message: "Invalid request body",
+				message: "Invalid store ID",
 				errors: parsed.error.errors,
 			});
 			return;
 		}
 
 		const { storeId } = parsed.data;
-		if (!storeId) {
-			res.status(400).json({
-				ok: false,
-				code: "BAD_REQUEST",
-				message: "storeId is required",
-			});
+		res.setHeader("Cache-Control", "no-store");
+
+		const result = await selectStoreLoginService(req.auth.uid, storeId);
+		if (!result.ok) {
+			const status = result.code === "STORE_FORBIDDEN" ? 403 : 404;
+			res.status(status).json(result);
 			return;
 		}
 
-		const userStore = await getUserStoreByUserIdAndStoreId(auth.uid, storeId);
-		if (!userStore) {
-			res.status(403).json({
-				ok: false,
-				code: "STORE_FORBIDDEN",
-				message: "Store not linked to user",
-			});
-			return;
-		}
-
-		const store = userStore.store ?? (await getStoreById(storeId));
-		if (!store) {
-			res.status(404).json({
-				ok: false,
-				code: "STORE_NOT_FOUND",
-				message: "Store not found",
-			});
-			return;
-		}
-
-		const access = signAppJwt({
-			uid: auth.uid,
-			sid: userStore.storeId,
-			role: userStore.role,
-		});
-
-		res.status(200).json({
-			ok: true,
-			session: { access },
-			activeStore: { id: store.id, name: store.name, isActive: store.isActive },
-			role: userStore.role,
-		});
-	} catch (error) {
-		console.error("Error in selectStoreLoginController:", error);
+		res.status(200).json(result);
+	} catch (e) {
+		console.error("[select-store] error", e);
 		res.status(500).json({
 			ok: false,
-			code: "SERVER_ERROR",
 			message: "Internal server error",
 		});
 	}
