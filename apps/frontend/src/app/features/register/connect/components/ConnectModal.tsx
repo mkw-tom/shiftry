@@ -1,5 +1,5 @@
 import React from "react";
-import { useAgreeCheckbox } from "../../../common/hooks/useAgreeCheckBox";
+import { useAgreeCheckbox } from "../../../../../shared/hooks/useAgreeCheckBox";
 import { useRegisterLoadingUI } from "../../common/context/useRegisterLoadingUI";
 import ConnectButton from "./ConnectButton";
 

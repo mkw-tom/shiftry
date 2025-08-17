@@ -1,7 +1,7 @@
 "use client";
-import FirstView from "@/app/features/common/components/FirstView";
 import RegisterPaymentArea from "@/app/features/register/payment/components/RegisterPaymentArea";
 import { NEXT_PUBLIC_STRIPE_PK } from "@/app/lib/env";
+import FirstView from "@/shared/components/FirstView";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 

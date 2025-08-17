@@ -1,7 +1,7 @@
 "use client";
-import { useMyPaymentHook } from "@/app/features/common/api/get-my-payment/hook";
-import Skeleton from "@/app/features/common/components/Skeleton";
 import type { RootState } from "@/app/redux/store";
+import { useMyPaymentHook } from "@/shared/api/get-my-payment/hook";
+import Skeleton from "@/shared/components/Skeleton";
 import React, { useState } from "react";
 import { AiOutlinePayCircle } from "react-icons/ai";
 import { useSelector } from "react-redux";
