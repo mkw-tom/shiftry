@@ -2,7 +2,7 @@
 
 import { useSaveLineUserInfo } from "@/app/features/auth/callback/hooks/useSaveLineUserInfo";
 import FaildAuthModal from "@/app/features/auth/fail/components/FaildAuthModal";
-import FirstView from "@/app/features/common/components/FirstView";
+import FirstView from "@/shared/components/FirstView";
 import React, { Suspense } from "react";
 
 export const dynamic = "force-dynamic";

@@ -1,5 +1,5 @@
-import FirstView from "@/app/features/common/components/FirstView";
 import ConnectModalArea from "@/app/features/register/connect/components/ConnectModalArea";
+import FirstView from "@/shared/components/FirstView";
 import React from "react";
 
 const Page = () => {

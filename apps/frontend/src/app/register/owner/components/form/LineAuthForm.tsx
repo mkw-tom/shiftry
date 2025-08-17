@@ -1,4 +1,4 @@
-import { useAgreeCheckbox } from "@/app/features/common/hooks/useAgreeCheckBox";
+import { useAgreeCheckbox } from "@/shared/hooks/useAgreeCheckBox";
 import LineAuthButton from "../button/LineAuthButton";
 
 const LineAuthForm = () => {
@@ -16,7 +16,7 @@ const LineAuthForm = () => {
 						disabled={false}
 					/>
 					<span className=" text-xs text-black">
-						ユーザーの名前とアイコンの取得に同意します。
+						プロフィール情報の取得に同意します。
 					</span>
 				</label>
 				{errors.agree && (

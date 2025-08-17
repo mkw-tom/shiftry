@@ -1,7 +1,7 @@
 "use client";
-import { useMystoresHooks } from "@/app/features/common/api/get-my-stores/hook";
-import Skeleton from "@/app/features/common/components/Skeleton";
 import type { RootState } from "@/app/redux/store";
+import { useMystoresHooks } from "@/shared/api/get-my-stores/hook";
+import Skeleton from "@/shared/components/Skeleton";
 import type { Store } from "@shared/api/common/types/prisma";
 import Link from "next/link";
 import React, { useState } from "react";

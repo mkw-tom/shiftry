@@ -1,6 +1,6 @@
 "use client";
-import { getMyPayment } from "@/app/features/common/api/get-my-payment/api";
 import type { RootState } from "@/app/redux/store";
+import { getMyPayment } from "@/shared/api/get-my-payment/api";
 import {
 	type ReactNode,
 	createContext,

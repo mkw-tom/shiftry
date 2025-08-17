@@ -1,5 +1,5 @@
 "use client";
-import useAuthFlow from "../features/common/hooks/useAuthFlow";
+import useAuthFlow from "../../shared/hooks/useAuthFlow";
 import Head from "../features/dashboard/common/components/Head";
 import HomeContent from "../features/dashboard/index/components/HomeContent";
 import { liffId } from "../lib/env";

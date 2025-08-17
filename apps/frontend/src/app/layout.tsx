@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import LocalhostClearButton from "./features/common/components/LocalhostClearButton";
+import LocalhostClearButton from "../shared/components/LocalhostClearButton";
 import ReduxProvider from "./redux/ReduxProvider";
 
 const geistSans = Geist({

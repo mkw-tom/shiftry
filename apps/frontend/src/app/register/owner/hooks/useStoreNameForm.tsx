@@ -17,14 +17,16 @@ const useRegiserOwnerAndStore = () => {
 	});
 	const name = watch("name") ?? "";
 	const storeName = watch("storeName") ?? "";
+	const checkboxAgree = watch("agree") ?? false;
 	const isDisabled =
 		!isValid ||
 		storeName === "" ||
 		name === "" ||
+		!checkboxAgree ||
 		errors.name ||
 		errors.storeName;
 
-	return { register, errors, isDisabled, name, storeName };
+	return { register, errors, isDisabled, name, storeName, checkboxAgree };
 };
 
 export default useRegiserOwnerAndStore;
