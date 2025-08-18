@@ -4,8 +4,8 @@ import type { UserRole, UserStore } from "../../common/types/prisma.js";
 
 export interface RegisterOwnerResponse {
 	ok: true;
-	user: { id: string; name: string };
-	store: { id: string; name: string };
+	user: UserLite;
+	store: StoreLite;
 	userStore: { userId: string; storeId: string; role: UserRole };
 }
 

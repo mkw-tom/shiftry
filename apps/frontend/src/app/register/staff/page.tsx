@@ -1,6 +1,5 @@
 import StaffRegisterContent from "@/app/features/register/staff/components/StaffRegisterContent";
 import FirstView from "../../../shared/components/FirstView";
-import FormArea from "../owner/components/form/FormArea";
 
 const Page = () => {
 	return (
