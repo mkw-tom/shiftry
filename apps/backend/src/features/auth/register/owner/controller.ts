@@ -30,7 +30,7 @@ const registerOwnerController = async (
 		if (!userInputParsed.success) {
 			res.status(400).json({
 				ok: false,
-				message: "Invalid request body",
+				message: "Invalid request body userInput",
 				errors: userInputParsed.error.errors,
 			});
 			return;
@@ -38,7 +38,7 @@ const registerOwnerController = async (
 		if (!storeNameParsed.success) {
 			res.status(400).json({
 				ok: false,
-				message: "Invalid request body",
+				message: "Invalid request body storeInput",
 				errors: storeNameParsed.error.errors,
 			});
 			return;
