@@ -81,11 +81,7 @@ const RegisterForm = () => {
 					)}
 				</fieldset>
 
-				<RegisterButton
-					ownerName={name}
-					storeName={storeName}
-					isDisabled={isDisabled}
-				/>
+				<RegisterButton isDisabled={isDisabled} loading={loading} />
 			</form>
 		</div>
 	);
