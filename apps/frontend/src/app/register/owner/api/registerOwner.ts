@@ -10,7 +10,7 @@ import type {
 } from "@shared/api/common/types/errors";
 
 export const postRegisterOwner = async (
-	lineToken: string,
+	idToken: string,
 	userInput: userInputType,
 	storeName: StoreNameType,
 ): Promise<RegisterOwnerResponse | ErrorResponse | ValidationErrorResponse> => {
@@ -19,20 +19,11 @@ export const postRegisterOwner = async (
 		storeInput: storeName,
 	};
 
-	// const payload = {
-	// 	userInput: {
-	// 		name: "トム",
-	// 		role: "OWNER",
-	// 		pictureUrl: "http://picture.com",
-	// 	},
-	// 	storeInput: storeName,
-	// };
-
-	const res = await fetch(`${API_URL}/api/auth/register-owner`, {
+	const res = await fetch(`${API_URL}/api/auth/register/owner`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			"x-line-id": lineToken,
+			"x-id-token": idToken,
 		},
 		body: JSON.stringify(payload),
 	});

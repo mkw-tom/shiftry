@@ -11,6 +11,7 @@ const useRegiserOwnerAndStore = () => {
 		register,
 		formState: { errors },
 		watch,
+		handleSubmit,
 	} = useForm<regiserOwnerAndStoreType>({
 		resolver: zodResolver(regiserOwnerAndStoreValidate),
 		mode: "onChange",
@@ -26,7 +27,15 @@ const useRegiserOwnerAndStore = () => {
 		errors.name ||
 		errors.storeName;
 
-	return { register, errors, isDisabled, name, storeName, checkboxAgree };
+	return {
+		register,
+		errors,
+		isDisabled,
+		name,
+		storeName,
+		checkboxAgree,
+		handleSubmit,
+	};
 };
 
 export default useRegiserOwnerAndStore;

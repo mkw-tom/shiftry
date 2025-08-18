@@ -1,26 +1,35 @@
 import { BiHome } from "react-icons/bi";
 import { LuUser } from "react-icons/lu";
 import { useRegisterLoadingUI } from "../../../../features/register/common/context/useRegisterLoadingUI";
+import useRegisterOwner from "../../hooks/useRegisterOwner";
 import useRegiserOwnerAndStore from "../../hooks/useStoreNameForm";
 import RegisterButton from "../button/RegisterButton";
 
 const RegisterForm = () => {
-	const { register, errors, isDisabled, name, storeName, checkboxAgree } =
+	const { register, errors, isDisabled, name, storeName, handleSubmit } =
 		useRegiserOwnerAndStore();
-	// const { apiLoading } = useRegisterLoadingUI();
+	const { loading, error, registerOwner } = useRegisterOwner();
+
+	const onSubmit = async () => {
+		// ここで API 呼び出し
+		await registerOwner(name, storeName);
+	};
 
 	return (
 		<div className="flex justify-center mt-5 w-full">
-			<div className="flex flex-col gap-5 w-full">
+			<form
+				onSubmit={handleSubmit(onSubmit)}
+				className="flex flex-col gap-5 w-full"
+			>
 				<fieldset className="fieldset w-full mx-auto flex flex-col items-center">
-					<legend className="fieldset-legend text-black text-center">
+					<legend className="fieldset-legend text-gray02 text-center">
 						<LuUser />
 						オーナー名
 					</legend>
 					<input
 						{...register("name")}
 						type="text"
-						className="input input-sm input-bordered w-4/5 text-black bg-white border-gray-300 focus:outline-none focus:ring-2 focus:ring-success"
+						className="input input-bordered w-4/5 text-black bg-white border-gray-300 focus:outline-none focus:ring-2 focus:ring-success"
 						placeholder="例：タロウ"
 						maxLength={20}
 						// disabled={apiLoading}
@@ -33,14 +42,14 @@ const RegisterForm = () => {
 					</p>
 				</fieldset>
 				<fieldset className="fieldset w-full mx-auto flex flex-col items-center">
-					<legend className="fieldset-legend text-black text-center">
+					<legend className="fieldset-legend text-gray02 text-center">
 						<BiHome />
 						店舗名
 					</legend>
 					<input
 						{...register("storeName")}
 						type="text"
-						className="input input-sm input-bordered w-4/5 text-black bg-white border-gray-300 focus:outline-none focus:ring-2 focus:ring-success"
+						className="input input-bordered w-4/5 text-black bg-white border-gray-300 focus:outline-none focus:ring-2 focus:ring-success"
 						placeholder="例：株式会社〇〇"
 						maxLength={20}
 						// disabled={apiLoading}
@@ -73,11 +82,11 @@ const RegisterForm = () => {
 				</fieldset>
 
 				<RegisterButton
-					name={name}
+					ownerName={name}
 					storeName={storeName}
 					isDisabled={isDisabled}
 				/>
-			</div>
+			</form>
 		</div>
 	);
 };
