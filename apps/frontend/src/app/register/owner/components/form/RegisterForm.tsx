@@ -21,7 +21,7 @@ const RegisterForm = () => {
 		}
 
 		if (!res.ok) {
-			alert("登録に失敗しました。もう一度お試しください。");
+			alert(`登録に失敗しました。もう一度お試しください。${res.message}`);
 			liff.closeWindow();
 			console.error("Registration failed:", res.message);
 		}
