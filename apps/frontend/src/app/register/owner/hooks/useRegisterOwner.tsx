@@ -35,13 +35,6 @@ const useRegisterOwner = () => {
 			setError(null);
 
 			try {
-				await liff.init({ liffId: liffId.registerOwner });
-
-				if (!liff.isLoggedIn()) {
-					liff.login({ redirectUri: window.location.href });
-					return { ok: false, message: "ログインへリダイレクトしました" };
-				}
-
 				const idToken = liff.getIDToken();
 				if (!idToken) throw new Error("ID Token not found");
 				const profile = await liff.getProfile().catch(() => null);
