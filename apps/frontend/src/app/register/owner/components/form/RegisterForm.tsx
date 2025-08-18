@@ -20,10 +20,10 @@ const RegisterForm = () => {
 			liff.closeWindow();
 		}
 
-		if (error) {
+		if (!res.ok) {
 			alert("登録に失敗しました。もう一度お試しください。");
 			liff.closeWindow();
-			console.error("Registration failed:", error);
+			console.error("Registration failed:", res.message);
 		}
 	};
 
