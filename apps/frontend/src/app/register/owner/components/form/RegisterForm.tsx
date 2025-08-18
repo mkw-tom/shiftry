@@ -13,18 +13,17 @@ const RegisterForm = () => {
 
 	const onSubmit = async () => {
 		// ここで API 呼び出し
-		await registerOwner(name, storeName);
+		const res = await registerOwner(name, storeName);
+		if (res.ok) {
+			// 登録成功時の処理
+			alert("登録が完了しました");
+			liff.closeWindow();
+		}
+
 		if (error) {
-			if (!window.confirm(`登録に失敗しました: ${error}`)) {
-				liff.closeWindow();
-			}
+			alert("登録に失敗しました。もう一度お試しください。");
+			liff.closeWindow();
 			console.error("Registration failed:", error);
-		} else {
-			// 成功時の処理
-			if (!window.confirm("登録が成功しました")) {
-				liff.closeWindow();
-			}
-			console.log("Registration successful");
 		}
 	};
 
