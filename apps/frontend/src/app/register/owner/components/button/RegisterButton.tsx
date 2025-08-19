@@ -18,7 +18,6 @@ const RegisterButton = ({
 					? "bg-gray01 opacity-80 pointer-events-none"
 					: " bg-green02"
 			} rounded-md border-none w-11/12 mx-auto text-white mt-5 `}
-			// onClick={handleRegisterOwner}
 			disabled={loading}
 		>
 			{loading ? <span className="loading loading-dots loading-sm" /> : "登録"}

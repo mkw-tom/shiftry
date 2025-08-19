@@ -4,6 +4,7 @@ import { LuUser } from "react-icons/lu";
 import { useRegisterLoadingUI } from "../../../../features/register/common/context/useRegisterLoadingUI";
 import useRegisterOwner from "../../hooks/useRegisterOwner";
 import useRegiserOwnerAndStore from "../../hooks/useStoreNameForm";
+import type { regiserOwnerAndStoreType } from "../../validation/form";
 import RegisterButton from "../button/RegisterButton";
 
 const RegisterForm = () => {
@@ -11,17 +12,18 @@ const RegisterForm = () => {
 		useRegiserOwnerAndStore();
 	const { loading, error, registerOwner } = useRegisterOwner();
 
-	const onSubmit = async () => {
+	const onSubmit = async (data: regiserOwnerAndStoreType) => {
 		// ここで API 呼び出し
-		const res = await registerOwner(name, storeName);
+		const res = await registerOwner(data.name, data.storeName);
 		if (res.ok) {
-			// 登録成功時の処理
 			alert("登録が完了しました");
 			liff.closeWindow();
 		}
 
 		if (!res.ok) {
-			alert(`登録に失敗しました。もう一度お試しください。${res.message}`);
+			alert(
+				`登録に失敗しました。もう一度お試しください。${res.message}n/n入力値${name}/${storeName}`,
+			);
 			liff.closeWindow();
 			console.error("Registration failed:", res.message);
 		}
@@ -33,6 +35,9 @@ const RegisterForm = () => {
 				onSubmit={handleSubmit(onSubmit)}
 				className="flex flex-col gap-5 w-full"
 			>
+				<p>
+					{name} / {storeName}
+				</p>
 				<fieldset className="fieldset w-full mx-auto flex flex-col items-center">
 					<legend className="fieldset-legend text-gray02 text-center">
 						<LuUser />
@@ -46,12 +51,12 @@ const RegisterForm = () => {
 						maxLength={20}
 						// disabled={apiLoading}
 					/>
+					<p className="fieldset-label text-gray02">
+						※プライバシー保護のため、フルネームは避けてください。
+					</p>
 					{errors.name && (
 						<p className="fieldset-label text-error">{errors.name.message}</p>
 					)}
-					<p className="fieldset-label text-error font-bold">
-						※プライバシー保護のため、フルネームは避けてください。
-					</p>
 				</fieldset>
 				<fieldset className="fieldset w-full mx-auto flex flex-col items-center">
 					<legend className="fieldset-legend text-gray02 text-center">
