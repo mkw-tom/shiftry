@@ -1,12 +1,12 @@
 "use client";
-import { useAgreeCheckbox } from "@/shared/hooks/useAgreeCheckBox";
+// Update the import path if the hook is located elsewhere, for example:
 import React from "react";
 import { StaffRegisterStepProvider } from "../context/useStaffRegisterStep";
 import FormContent from "./FormContent";
 import LineAuthButton from "./LineAuthButton";
 
 const StaffRegisterContent = () => {
-	const { register, isDisabled, errors } = useAgreeCheckbox();
+	// const { register, isDisabled, errors } = useAgreeCheckbox();
 
 	return (
 		<div className="flex justify-center mt-10 w-full">

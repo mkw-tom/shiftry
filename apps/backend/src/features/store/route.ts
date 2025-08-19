@@ -4,6 +4,7 @@ import { attachChannel } from "../../middlewares/request/attachChannel.js";
 import { attachStoreId } from "../../middlewares/request/attachStoreId.js";
 // import addManageStoreController from "./add-store/controller.js";
 import storeConnectLineGroupController from "./connect-line-group/controller.js";
+import getUnconnectedStoreController from "./me-unconnected/controller.js";
 // import getStoresFromUserController from "./me/controller.js";
 import updateStoreNameControler from "./update-store-name/controller.js";
 
@@ -19,6 +20,7 @@ router.put(
 	storeConnectLineGroupController,
 );
 // router.get("/me", getStoresFromUserController);
+router.get("/me/unconnected", requireUser, getUnconnectedStoreController);
 router.put("/update-store-name", attachStoreId, updateStoreNameControler);
 
 export default router;

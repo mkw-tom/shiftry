@@ -37,6 +37,22 @@ export const getUserStoreByUserId = async (
 	});
 };
 
+/// lineグループに紐づいていないユーザーの店舗データを取得
+export const getUserStoresUnconnectedGroupByUserId = async (
+	userId: string,
+): Promise<UserStoreLiteWithStore[]> => {
+	return await prisma.userStore.findMany({
+		where: { userId, store: { groupId_hash: null, groupId_enc: null } },
+		select: {
+			userId: true,
+			storeId: true,
+			role: true,
+			store: { select: { id: true, name: true, isActive: true } },
+		},
+		orderBy: { store: { createdAt: "desc" } },
+	});
+};
+
 export const getUserStoreByUserIdAndStoreId = async (
 	userId: string,
 	storeId: string,

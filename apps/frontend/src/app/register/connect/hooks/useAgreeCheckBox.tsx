@@ -1,12 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { type CheckBoxType, checkBoxValidate } from "../validation/form";
+import { type CheckBoxType, checkBoxValidate } from "../validation/agreeCheck";
 
 export const useAgreeCheckbox = () => {
 	const {
 		register,
 		formState: { errors },
 		watch,
+		handleSubmit,
 	} = useForm<CheckBoxType>({
 		resolver: zodResolver(checkBoxValidate),
 		mode: "onChange",
@@ -17,6 +18,7 @@ export const useAgreeCheckbox = () => {
 
 	return {
 		register,
+		handleSubmit,
 		errors,
 		isDisabled,
 		agree,

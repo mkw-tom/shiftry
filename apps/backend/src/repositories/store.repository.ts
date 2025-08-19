@@ -40,7 +40,6 @@ export const getStoreById = async (id: string): Promise<StoreLite | null> => {
 		select: { id: true, name: true, isActive: true },
 	});
 };
-
 // export const updateStoreGroupId = async (
 // 	storeId: string,
 // 	groupId: string,
