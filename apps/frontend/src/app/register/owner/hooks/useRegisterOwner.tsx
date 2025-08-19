@@ -38,12 +38,14 @@ const useRegisterOwner = () => {
 				const idToken = liff.getIDToken();
 				if (!idToken) throw new Error("ID Token not found");
 				const profile = await liff.getProfile().catch(() => null);
+				if (!profile || !profile.pictureUrl)
+					throw new Error("Profile not found");
 
 				const userInput: userInputType = {
-					name: ownerName?.trim() || profile?.displayName || "",
-					pictureUrl: profile?.pictureUrl || "",
+					name: ownerName,
+					pictureUrl: profile?.pictureUrl,
 				};
-				const storeInput: StoreNameType = { name: storeName?.trim() };
+				const storeInput: StoreNameType = { name: storeName };
 
 				const response = await postRegisterOwner(
 					idToken,

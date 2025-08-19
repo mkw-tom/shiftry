@@ -1,6 +1,6 @@
 import type { RegisterOwnerResponse } from "@shared/api/auth/types/register-owner.js";
 import {
-	storeNameValidate,
+	storeInputValidate,
 	userInputValidate,
 } from "@shared/api/auth/validations/register-owner.js";
 import type {
@@ -25,7 +25,7 @@ const registerOwnerController = async (
 				.json({ ok: false, message: "Missing X-Id-Token" });
 		}
 		const userInputParsed = userInputValidate.safeParse(req.body.userInput);
-		const storeNameParsed = storeNameValidate.safeParse(req.body.storeInput);
+		const storeNameParsed = storeInputValidate.safeParse(req.body.storeInput);
 
 		if (!userInputParsed.success) {
 			res.status(400).json({
