@@ -9,7 +9,7 @@ import FirstView from "../../../shared/components/FirstView";
 import RegisterForm from "./components/form/RegisterForm";
 
 const Page = () => {
-	const { error, loading } = useLiffInit(liffId.registerOwner);
+	const { error, loading, loggedIn } = useLiffInit(liffId.registerOwner);
 
 	if (error !== null) {
 		return (
@@ -31,23 +31,25 @@ const Page = () => {
 		);
 	}
 
-	return (
-		<main className="bg-white w-full  h-lvh">
-			<div className="bg-white w-full md:w-[410px] mx-auto">
-				<FirstView />
-				{/* <AuthProvider
-					liffId={liffId.registerOwner}
-					autoRun={true}
-					autoSelectLastStore={false}
-				>
-					<AuthGate> */}
-				<RegisterForm />
+	if (loggedIn) {
+		return (
+			<main className="bg-white w-full  h-lvh">
+				<div className="bg-white w-full md:w-[410px] mx-auto">
+					<FirstView />
+					{/* <AuthProvider
+						liffId={liffId.registerOwner}
+						autoRun={true}
+						autoSelectLastStore={false}
+					>
+						<AuthGate> */}
+					<RegisterForm />
 
-				{/* </AuthGate>
-				</AuthProvider> */}
-			</div>
-		</main>
-	);
+					{/* </AuthGate>
+					</AuthProvider> */}
+				</div>
+			</main>
+		);
+	}
 };
 
 export default Page;
