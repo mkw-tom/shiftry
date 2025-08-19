@@ -17,12 +17,12 @@ const getUnconnectedStoreController = async (
 		const unconnectedStores = await getUserStoresUnconnectedGroupByUserId(
 			auth.uid,
 		);
-    if( unconnectedStores.length === 0 ) {
-      return void res.status(404).json({
-        ok: false,
-        message: "No unconnected stores found for the user",
-      });
-    }
+		if (unconnectedStores.length === 0) {
+			return void res.status(404).json({
+				ok: false,
+				message: "No unconnected stores found for the user",
+			});
+		}
 
 		res.json({
 			ok: true,
