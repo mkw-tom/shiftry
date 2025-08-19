@@ -35,9 +35,6 @@ const RegisterForm = () => {
 				onSubmit={handleSubmit(onSubmit)}
 				className="flex flex-col gap-5 w-full"
 			>
-				<p>
-					{name} / {storeName}
-				</p>
 				<fieldset className="fieldset w-full mx-auto flex flex-col items-center">
 					<legend className="fieldset-legend text-gray02 text-center">
 						<LuUser />

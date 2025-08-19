@@ -1,4 +1,4 @@
-import { useAgreeCheckbox } from "@/shared/hooks/useAgreeCheckBox";
+import { useAgreeCheckbox } from "@/app/register/connect/hooks/useAgreeCheckBox";
 import React from "react";
 import LineAuthButton from "./LineAuthButton";
 
