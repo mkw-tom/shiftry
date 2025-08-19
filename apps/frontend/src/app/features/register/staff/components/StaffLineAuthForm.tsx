@@ -1,6 +1,6 @@
+import { useAgreeCheckbox } from "@/app/register/connect/hooks/useAgreeCheckBox";
 import React from "react";
 import LineAuthButton from "./LineAuthButton";
-import { useAgreeCheckbox } from "@/app/register/connect/hooks/useAgreeCheckBox";
 
 const StaffLineAuthForm = () => {
 	const { register, errors, isDisabled } = useAgreeCheckbox();

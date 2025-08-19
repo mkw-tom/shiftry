@@ -11,7 +11,7 @@ const FirstView = () => {
 				height={50}
 				className="object-cover"
 			/>
-			<p className="ml-3 text-center font-bold text-3xl text-green02">
+			<p className="ml-3 text-center font-bold tracking-wider text-3xl text-green02">
 				Shiftry
 			</p>
 		</div>
