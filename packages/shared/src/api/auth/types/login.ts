@@ -1,40 +1,26 @@
 import type { Store, User, UserRole } from "../../common/types/prisma.js";
 import type {
-	StoreLite,
-	UserLite,
-	UserStoreLiteWithStore,
+  StoreLite,
+  UserLite,
+  UserStoreLiteWithStore,
 } from "../../common/types/prismaLite.js";
 
-export type LoginResponseAuto = {
-	kind: "AUTO";
-	user: UserLite;
-	store: StoreLite;
-	role: UserRole;
+export type LoginResponseKindAuto = {
+  ok: true;
+  kind: "AUTO";
+	token: string;
 };
 
-export type LoginResponseSelectStore = {
-	kind: "SELECT_STORE";
-	user: UserLite;
-	stores: UserStoreLiteWithStore[];
+export type LoginResponseKindSelect = {
+  ok: true;
+  kind: "SELECT_STORE";
+  stores: UserStoreLiteWithStore[];
 };
 
-export type LoginResponseError = {
-	ok: false;
-	code: string;
-	message: string;
-};
-export type LoginControllerResponse =
-	| (LoginResponseAuto & { ok: boolean; session?: { access: string } })
-	| (LoginResponseSelectStore & { ok: boolean })
-	| LoginResponseError;
-
-export type LoginResType =
-	| LoginResponseAuto
-	| LoginResponseSelectStore
-	| { kind: "NO_STORES" }
-	| { kind: "UNREGISTERED" }
-	| { kind: "STORE_FORBIDDEN" };
+export type LoginResponse =
+  | LoginResponseKindAuto
+  | LoginResponseKindSelect;
 
 export type NextKind =
-	| { next: "AUTO"; storeId: string }
-	| { next: "SELECT_STORE" };
+  | { next: "AUTO"; storeId: string }
+  | { next: "SELECT_STORE" };

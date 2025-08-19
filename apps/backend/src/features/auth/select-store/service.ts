@@ -1,4 +1,6 @@
+import { th } from "@faker-js/faker";
 import type { SelectStoreResponse } from "@shared/api/auth/types/select-store.js";
+import type { ErrorResponse } from "@shared/api/common/types/errors.js";
 import { getStoreById } from "../../../repositories/store.repository.js";
 import { getUserStoreByUserIdAndStoreId } from "../../../repositories/userStore.repository.js";
 import { signAppJwt } from "../../../utils/jwt.js";
@@ -6,22 +8,18 @@ import { signAppJwt } from "../../../utils/jwt.js";
 export const selectStoreLoginService = async (
 	uid: string,
 	storeId: string,
-): Promise<SelectStoreResponse> => {
+): Promise<SelectStoreResponse | ErrorResponse> => {
 	const userStore = await getUserStoreByUserIdAndStoreId(uid, storeId);
 	if (!userStore) {
-		return {
-			ok: false,
-			code: "STORE_FORBIDDEN",
-			message: "Store not linked to user",
-		};
+		return { ok: false, message: "Store not found for user" };
 	}
 
 	const store = userStore.store ?? (await getStoreById(storeId));
 	if (!store) {
-		return { ok: false, code: "STORE_NOT_FOUND", message: "Store not found" };
+		return { ok: false, message: "Store not found" };
 	}
 
-	const access = signAppJwt({
+	const token = signAppJwt({
 		uid,
 		sid: userStore.storeId,
 		role: userStore.role,
@@ -29,8 +27,6 @@ export const selectStoreLoginService = async (
 
 	return {
 		ok: true,
-		session: { access },
-		store: { id: store.id, name: store.name, isActive: store.isActive },
-		role: userStore.role,
+		token: token,
 	};
 };
