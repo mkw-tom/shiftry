@@ -37,6 +37,20 @@ export const getUserStoreByUserId = async (
 	});
 };
 
+export const getUserStoresByLineIdHash = async (
+	userId: string,
+): Promise<UserStoreLiteWithStore[]> => {
+	return await prisma.userStore.findMany({
+		where: { userId },
+		select: {
+			userId: true,
+			storeId: true,
+			role: true,
+			store: { select: { id: true, name: true, isActive: true } },
+		},
+	});
+};
+
 /// lineグループに紐づいていないユーザーの店舗データを取得
 export const getUserStoresUnconnectedGroupByUserId = async (
 	userId: string,
@@ -70,7 +84,7 @@ export const getUserStoreByUserIdAndStoreId = async (
 
 ///ユーザーが所属する全ての店舗データを取得
 
-export const getStoreFromUser = async (
+export const getStoresFromUser = async (
 	userId: string,
 ): Promise<UserStoreLiteWithStore[]> => {
 	return await prisma.userStore.findMany({
