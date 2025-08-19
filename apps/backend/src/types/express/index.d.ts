@@ -14,10 +14,7 @@ declare global {
 				iat?: number;
 				exp?: number;
 			};
-			channel?: {
-				type: "group" | "room" | "utou";
-				id: string | null;
-			};
+			channelType: "group" | "room" | "utou";
 			idToken?: string;
 		}
 	}
