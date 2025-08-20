@@ -1,6 +1,5 @@
-import { UserLite } from "../../common/types/prismaLite.js";
 
-export type VerifyLiffUserResponse = NotExistResponse | ExistingUserResponse;
+export type VerifyLiffUserResponse = NotExistResponse | ExistingUserResponse | RedirectingResponse;
 
 export type NotExistResponse = {
 	ok: true;
@@ -12,4 +11,9 @@ export type ExistingUserResponse = {
 	ok: true;
 	token: string;
 	next: "LOGIN";
+}
+
+export type RedirectingResponse = {
+	ok: true;
+	next: "REDIRECTING";
 }

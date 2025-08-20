@@ -19,8 +19,8 @@ export const loginService = async (uid: string): Promise<LoginResponse> => {
 			sid: only.store.id,
 			role: only.role,
 		});
-		return { ok: true, kind: "AUTO", token: token };
+		return { ok: true, next: "AUTO", token: token };
 	}
 
-	return { ok: true, kind: "SELECT_STORE", stores: links };
+	return { ok: true, next: "SELECT_STORE", stores: links };
 };
