@@ -1,12 +1,12 @@
-// useLiffInit.ts
+// src/shared/hooks/useLiffInit.ts
 "use client";
 import liff from "@line/liff";
 import { useEffect, useState } from "react";
 
 type Options = {
-	autoLogin?: boolean; // 既定 true: 未ログインなら login() まで行う
-	redirectUri?: string; // 既定: 現在のURL
-	requireLiffContext?: boolean; // 既定 false: LINE外ブラウザでも許容
+	autoLogin?: boolean; // default true
+	redirectUri?: string; // default: current url
+	requireLiffContext?: boolean; // default false
 };
 
 export function useLiffInit(liffId: string, opts: Options = {}) {
@@ -28,9 +28,10 @@ export function useLiffInit(liffId: string, opts: Options = {}) {
 		(async () => {
 			try {
 				await liff.init({ liffId });
+				// liff.ready は Promise。init完了後の安定待ち
 				await liff.ready;
 
-				const ctx = liff.getContext();
+				const ctx = liff.getContext?.();
 
 				if (requireLiffContext && ctx?.type === "none") {
 					throw new Error(
@@ -40,18 +41,18 @@ export function useLiffInit(liffId: string, opts: Options = {}) {
 
 				if (!liff.isLoggedIn()) {
 					if (autoLogin) {
-						liff.login({ redirectUri });
+						liff.login({ redirectUri }); // ← ここで遷移（戻らない）
 						return;
 					}
-					setLoggedIn(false);
+					if (!cancelled) setLoggedIn(false);
 				} else {
-					setLoggedIn(true);
+					if (!cancelled) setLoggedIn(true);
 				}
 			} catch (e) {
 				if (!cancelled) {
-					const errorMessage =
+					const msg =
 						e instanceof Error ? e.message : "LIFFの初期化に失敗しました";
-					setError(errorMessage);
+					setError(msg);
 				}
 			} finally {
 				if (!cancelled) setLoading(false);

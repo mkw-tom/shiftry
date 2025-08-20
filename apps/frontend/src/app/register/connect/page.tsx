@@ -11,12 +11,10 @@ const Page = () => {
 	return (
 		<main className="bg-white w-full h-lvh">
 			<div className="w-full md:w-[410px] mx-auto">
-				<AuthProvider liffId={liffId.registerConnect} autoRun={true}>
-					<AuthGate>
-						<FirstView />
-						<FormContent />
-					</AuthGate>
-				</AuthProvider>
+				<FirstView />
+				{/* <AuthGate liffId={liffId.registerConnect}> */}
+				<FormContent />
+				{/* </AuthGate> */}
 			</div>
 		</main>
 	);
