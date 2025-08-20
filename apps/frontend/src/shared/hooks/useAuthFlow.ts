@@ -1,68 +1,39 @@
-// src/hooks/useAuthFlow.ts
 "use client";
-import type { RootState } from "@/app/redux/store";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useLiffVerify } from "./useLiffVerify";
 import { useLogin } from "./useLogin";
+import { useMe } from "./useMe";
 import { useSelectStore } from "./useSelectStore";
 
 export type Step =
 	| "idle"
-	| "verifying" // /auth/liff/verify 実行中（必要ならLIFF loginリダイレクト）
-	| "logging-internal" // /auth/login 実行中
-	| "need-store" // 店舗選択待ち
-	| "selecting" // /auth/select-store 実行中
-	| "ready" // セッション確立
-	// | "skipped" // 既にJWTがあり verify をスキップ
-	| "unregistered" // LIFF未登録（verifyでREGISTERが返った）
+	| "verifying"
+	| "redirecting"
+	| "logging-internal"
+	| "need-store"
+	| "selecting"
+	| "getting-info"
+	| "ready"
+	| "unregistered"
 	| "error";
 
 type Options = {
 	liffId: string;
-	autoRun?: boolean; // 既定: true（初回リロードで必ず実行）
-	autoSelectLastStore?: boolean; // 既定: true（lastStoreId が候補にあれば自動選択）
+	autoRun?: boolean;
 };
 
-export function useAuthFlow({
-	liffId,
-	autoRun = true,
-	autoSelectLastStore = true,
-}: Options) {
-	// Reduxから必要情報だけ
-	const { user } = useSelector((s: RootState) => s.user);
+export function useAuthFlow({ liffId, autoRun = true }: Options) {
 	const { liffVerify } = useLiffVerify({ liffId });
 	const { login } = useLogin();
 	const { selectStore } = useSelectStore();
+	const { me } = useMe();
 
 	const [step, setStep] = useState<Step>("idle");
 	const [error, setError] = useState<string | null>(null);
 
-	const started = useRef(false); // StrictMode 二重発火対策
+	const started = useRef(false);
 	const inflight = useRef(false);
 
-	// localStorage helpers（安全try/catch）
-	const getLastStoreId = useCallback((): string | null => {
-		if (typeof window === "undefined" || !user?.id) return null;
-		try {
-			return localStorage.getItem(`lastStoreId:${user.id}`);
-		} catch {
-			return null;
-		}
-	}, [user?.id]);
-
-	const setLastStoreId = useCallback(
-		(storeId: string) => {
-			if (typeof window === "undefined" || !user?.id) return;
-			try {
-				localStorage.setItem(`lastStoreId:${user.id}`, storeId);
-			} catch {}
-		},
-		[user?.id],
-	);
-
-	// 認証・ログイン・店舗選択まで一気通貫
 	const run = useCallback(async () => {
 		if (started.current || inflight.current) return;
 		started.current = true;
@@ -72,33 +43,49 @@ export function useAuthFlow({
 		try {
 			setStep("verifying");
 			const vres = await liffVerify();
-			if (vres?.next === "REGISTER") {
+
+			if (!vres.ok) {
+				setError(vres.message || "LIFF verification failed");
+				setStep("error");
+				return;
+			}
+			if (vres.next === "REGISTER") {
 				setStep("unregistered");
 				return;
 			}
-
-			// 2) /auth/login（サーバが AUTO or SELECT_STORE を返す想定）
-			setStep("logging-internal");
-			const r = await login(); // { next: 'auto' | 'select-store', store? / stores? }
-			if (r?.next === "AUTO") {
-				setStep("ready");
-				setLastStoreId(r.storeId);
+			if (vres.next === "REDIRECTING") {
+				setStep("redirecting");
 				return;
 			}
 
-			if (r?.next === "SELECT_STORE" && autoSelectLastStore) {
-				const lastStoreId = getLastStoreId();
-				if (lastStoreId) {
-					setStep("selecting");
-					await selectStore(lastStoreId);
-					setLastStoreId(lastStoreId);
-					setStep("ready");
-					return;
-				}
+			setStep("logging-internal");
+			const lres = await login();
+
+			if (!lres.ok) {
+				setError(lres.message || "login failed");
+				setStep("error");
+				return;
 			}
 
-			// 3) 店舗選択が必要
-			setStep("need-store");
+			if (lres.next === "AUTO") {
+				setStep("getting-info");
+				const meres = await me();
+				if (!meres.ok) {
+					setError(meres.message || "Failed to fetch user profile");
+					setStep("error");
+					return;
+				}
+				setStep("ready");
+				return;
+			}
+
+			if (lres.next === "SELECT_STORE") {
+				setStep("need-store");
+				return;
+			}
+
+			setError("unknown login result");
+			setStep("error");
 		} catch (e) {
 			const errorMessage =
 				typeof e === "object" && e !== null && "message" in e
@@ -106,28 +93,31 @@ export function useAuthFlow({
 					: "auth flow failed";
 			setError(errorMessage);
 			setStep("error");
-			throw e;
+			// 任意: 再実行を許す
+			started.current = false;
 		} finally {
 			inflight.current = false;
 		}
-	}, [
-		liffVerify,
-		login,
-		autoSelectLastStore,
-		// user?.id,
-		selectStore,
-		getLastStoreId,
-		setLastStoreId,
-	]);
+	}, [liffVerify, login, me]);
 
-	// UIから選択された時に呼ぶ
 	const chooseStore = useCallback(
 		async (storeId: string) => {
 			setError(null);
 			setStep("selecting");
 			try {
-				await selectStore(storeId);
-				setLastStoreId(storeId);
+				const sres = await selectStore(storeId);
+				if (!sres.ok) {
+					setError(sres.message || "select store failed");
+					setStep("need-store");
+					return;
+				}
+				setStep("getting-info");
+				const meres = await me();
+				if (!meres.ok) {
+					setError(meres.message || "Failed to fetch user profile");
+					setStep("error");
+					return;
+				}
 				setStep("ready");
 			} catch (e) {
 				const errorMessage =
@@ -136,17 +126,16 @@ export function useAuthFlow({
 						: "select store failed";
 				setError(errorMessage);
 				setStep("need-store");
-				throw e;
 			}
 		},
-		[selectStore, setLastStoreId],
+		[selectStore, me],
 	);
 
-	// 初回リロードで必ず実行
 	useEffect(() => {
 		if (autoRun) run().catch(() => void 0);
 	}, [autoRun, run]);
 
 	return { step, error, run, chooseStore };
 }
+
 export default useAuthFlow;

@@ -16,7 +16,6 @@ export default function AuthProvider({
 	children,
 	liffId,
 	autoRun = true,
-	autoSelectLastStore = true,
 }: {
 	children: React.ReactNode;
 	liffId: string;
@@ -25,11 +24,9 @@ export default function AuthProvider({
 }) {
 	const { step, error, run, chooseStore } = useAuthFlow({
 		liffId,
-		autoRun: false, // ← Provider が実行タイミングを管理
-		autoSelectLastStore,
+		autoRun: false,
 	});
 
-	// 初回のみ実行（StrictMode対策は useAuthFlow 内の ref で済んでいる）
 	useEffect(() => {
 		if (autoRun) {
 			run().catch(() => void 0);

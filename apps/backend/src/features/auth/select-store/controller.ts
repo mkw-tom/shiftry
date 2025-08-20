@@ -13,7 +13,9 @@ const selectStoreLoginController = async (
 	res: Response<SelectStoreResponse | ErrorResponse | ValidationErrorResponse>,
 ): Promise<void> => {
 	try {
-		if (!req.auth?.uid) {
+		const auth = req.auth;
+
+		if (!auth?.uid) {
 			res.status(401).json({ ok: false, message: "Unauthorized" });
 			return;
 		}
@@ -28,14 +30,14 @@ const selectStoreLoginController = async (
 		}
 
 		const { storeId } = parsed.data;
-		res.setHeader("Cache-Control", "no-store");
 
-		const result = await selectStoreLoginService(req.auth.uid, storeId);
-		if (!result.ok) {
-			const status = result.code === "STORE_FORBIDDEN" ? 403 : 404;
-			res.status(status).json(result);
-			return;
-		}
+		const result = await selectStoreLoginService(auth.uid, storeId);
+
+		if (!result.ok && result.message === "forbidden")
+			return void res.status(403).json(result);
+
+		if (!result.ok && result.message === "not found")
+			return void res.status(404).json(result);
 
 		res.status(200).json(result);
 	} catch (e) {

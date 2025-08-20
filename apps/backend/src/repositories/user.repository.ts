@@ -25,9 +25,14 @@ export const getUserById = async (userId: string): Promise<UserLite | null> => {
 
 export const getUserByLineIdHash = async (
 	lineId_hash: string,
-): Promise<User | null> => {
+): Promise<UserLite | null> => {
 	return await prisma.user.findUnique({
 		where: { lineId_hash: lineId_hash },
+		select: {
+			id: true,
+			name: true,
+			pictureUrl: true,
+		},
 	});
 };
 

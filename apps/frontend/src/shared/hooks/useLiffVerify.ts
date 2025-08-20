@@ -2,71 +2,79 @@
 "use client";
 import { setAuthToken } from "@/app/redux/slices/authToken";
 import liff from "@line/liff";
-import { useCallback } from "react";
+import type { VerifyLiffUserResponse } from "@shared/api/auth/types/liff-verify";
+import type {
+	ErrorResponse,
+	ValidationErrorResponse,
+} from "@shared/api/common/types/errors";
+import { useCallback, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { postVerifyLiff } from "../api/verify-liff/api";
 
-type Options = {
-	liffId: string;
-};
+type Options = { liffId: string };
 
 export function useLiffVerify({ liffId }: Options) {
 	const dispatch = useDispatch();
+	const inflight = useRef(false);
 
-	const liffVerify = useCallback(async () => {
-		if (typeof window === "undefined") throw new Error("client only");
-
-		// init → login
-		await liff.init({ liffId });
-		if (!liff.isLoggedIn()) {
-			liff.login(); // リダイレクト
-			return; // 以降は戻らない
+	const liffVerify = useCallback(async (): Promise<
+		VerifyLiffUserResponse | ErrorResponse | ValidationErrorResponse
+	> => {
+		if (typeof window === "undefined") {
+			// これは想定外なので throw
+			throw new Error("useLiffVerify must be used in a browser context");
 		}
-
-		// LIFFコンテキストから channel を取得
-		const ctx = liff.getContext();
-		// ctx.type: "utou" | "group" | "room" | "none"
-		const channelType = ctx?.type;
-		if (
-			!channelType ||
-			(channelType !== "utou" &&
-				channelType !== "group" &&
-				channelType !== "room")
-		) {
-			throw new Error("Unsupported LIFF context");
+		if (inflight.current) {
+			throw new Error("Liff verification is already in progress");
 		}
-		const channelId =
-			channelType === "group"
-				? ctx.groupId
-				: channelType === "room"
-					? ctx.roomId
-					: undefined;
+		inflight.current = true;
 
-		const idToken = liff.getIDToken();
-		if (!idToken) throw new Error("ID Token not found");
+		try {
+			await liff.init({ liffId });
 
-		const profile = await liff.getProfile().catch(() => null);
+			if (!liff.isLoggedIn()) {
+				liff.login();
+				return { ok: true, next: "REDIRECTING" };
+			}
 
-		// backendは channel.id が null の utou も受けられる実装にしてある前提
-		const res = await postVerifyLiff(idToken, channelId, channelType);
-		if ("ok" in res && res.ok === false && "message" in res) {
-			throw new Error(`verify failed: ${res.message}`);
+			const ctx = liff.getContext?.();
+			if (ctx?.type === "none") {
+				// 想定可能なUX分岐 → return
+				return {
+					ok: false,
+					message:
+						"このページはLINEアプリ内で開いてください（LIFFコンテキストなし）",
+				};
+			}
+
+			const idToken = liff.getIDToken();
+			if (!idToken) {
+				// 想定外（LIFFの状態おかしい）→ throw
+				throw new Error("ID Token is required for verification");
+			}
+
+			const res = await postVerifyLiff(idToken);
+			if ("ok" in res && res.ok === false) {
+				return res;
+			}
+
+			if (res.next === "REGISTER") return res;
+
+			if (res.next === "LOGIN" && res.token) {
+				dispatch(setAuthToken({ jwt: res.token }));
+				return res;
+			}
+
+			return {
+				ok: false,
+				message: "Unexpected response from LIFF verification",
+			};
+		} catch (e) {
+			const msg = e instanceof Error ? e.message : "Unexpected error";
+			return { ok: false, message: msg };
+		} finally {
+			inflight.current = false;
 		}
-
-		const jwt: string | undefined = res.token;
-		if (!jwt) throw new Error("jwt not returned");
-
-		// Redux保存（メモリのみでOK）
-		dispatch(setAuthToken({ jwt }));
-
-		return {
-			jwt,
-			profile: profile
-				? { displayName: profile.displayName, pictureUrl: profile.pictureUrl }
-				: undefined,
-			flags: res.flags ?? undefined,
-			next: res.next as "LOGIN" | "REGISTER",
-		};
 	}, [liffId, dispatch]);
 
 	return { liffVerify };

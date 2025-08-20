@@ -42,45 +42,45 @@ export async function verifyIdToken(idToken: string) {
 		`Unsupported alg: ${alg}. Use real LIFF idToken (RS256) or enable HS256 test.`,
 	);
 }
-export async function assertChannelValid(
-	type: ChannelType,
-	id?: string | null,
-) {
-	if (type === "utou") return;
+// export async function assertChannelValid(
+// 	type: ChannelType,
+// 	id?: string | null,
+// ) {
+// 	if (type === "utou") return;
 
-	if (!id) throw { status: 400, message: "channelId required" };
+// 	if (!id) throw { status: 400, message: "channelId required" };
 
-	// ★ テストモード時はバリデーションスキップ
-	if (process.env.TEST_MODE === "true") {
-		console.warn(`[TEST_MODE] Skipping channel validation for ${type}:${id}`);
-		return;
-	}
+// 	// ★ テストモード時はバリデーションスキップ
+// 	if (process.env.TEST_MODE === "true") {
+// 		console.warn(`[TEST_MODE] Skipping channel validation for ${type}:${id}`);
+// 		return;
+// 	}
 
-	const ctrl = new AbortController();
-	const timeout = setTimeout(() => ctrl.abort(), 5000);
+// 	const ctrl = new AbortController();
+// 	const timeout = setTimeout(() => ctrl.abort(), 5000);
 
-	try {
-		const r = await fetch(`https://api.line.me/v2/bot/${type}/${id}/summary`, {
-			headers: { Authorization: `Bearer ${lineMessageChannel.accessToken}` },
-			signal: ctrl.signal,
-		});
+// 	try {
+// 		const r = await fetch(`https://api.line.me/v2/bot/${type}/${id}/summary`, {
+// 			headers: { Authorization: `Bearer ${lineMessageChannel.accessToken}` },
+// 			signal: ctrl.signal,
+// 		});
 
-		if (!r.ok) {
-			const text = await r.text().catch(() => "");
-			const status = [401, 403, 404, 429].includes(r.status) ? r.status : 502;
-			throw { status, message: `LINE API ${r.status}: ${text || "failed"}` };
-		}
-	} catch (e) {
-		if (
-			typeof e === "object" &&
-			e !== null &&
-			"name" in e &&
-			e.name === "AbortError"
-		) {
-			throw { status: 504, message: "LINE API timeout" };
-		}
-		throw e;
-	} finally {
-		clearTimeout(timeout);
-	}
-}
+// 		if (!r.ok) {
+// 			const text = await r.text().catch(() => "");
+// 			const status = [401, 403, 404, 429].includes(r.status) ? r.status : 502;
+// 			throw { status, message: `LINE API ${r.status}: ${text || "failed"}` };
+// 		}
+// 	} catch (e) {
+// 		if (
+// 			typeof e === "object" &&
+// 			e !== null &&
+// 			"name" in e &&
+// 			e.name === "AbortError"
+// 		) {
+// 			throw { status: 504, message: "LINE API timeout" };
+// 		}
+// 		throw e;
+// 	} finally {
+// 		clearTimeout(timeout);
+// 	}
+// }

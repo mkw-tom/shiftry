@@ -2,7 +2,7 @@ import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 import type { User, UserRole } from "@shared/api/common/types/prisma";
 
 type UserInfo = Pick<User, "id" | "name" | "pictureUrl"> & {
-	role?: UserRole | null;
+	role: UserRole | null;
 };
 type UserState = {
 	user: UserInfo | null;
