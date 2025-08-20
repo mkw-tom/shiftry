@@ -10,7 +10,8 @@ const storeConnectLineGroupController = async (
 ): Promise<void> => {
 	try {
 		const auth = req.auth;
-		const channel = req.channel;
+		const channelType = req.channelType;
+		const groupId = req.groupId;
 		const storeId = req.storeId;
 
 		if (!auth?.uid)
@@ -19,19 +20,23 @@ const storeConnectLineGroupController = async (
 			return void res
 				.status(400)
 				.json({ ok: false, message: "X-Store-Id required" });
-		if (!channel || channel.type !== "group" || !channel.id) {
+		if (!channelType || channelType !== "group") {
 			return void res.status(400).json({
 				ok: false,
 				message: "X-Channel-Type must be 'group' and X-Channel-Id required",
 			});
 		}
+		if (!groupId)
+			return void res
+				.status(400)
+				.json({ ok: false, message: "X-Group-Id required" });
 
 		await verifyUserStoreForOwner(auth.uid, storeId);
 
 		const store = await connectStoreToGroupService(
 			storeId,
-			channel.type,
-			channel.id,
+			channelType,
+			groupId,
 		);
 		res.json({ ok: true, store });
 	} catch (e) {

@@ -1,27 +1,37 @@
 // src/shared/auth/AuthGate.tsx
 "use client";
-import type { PropsWithChildren } from "react";
+import { useRouter } from "next/navigation";
+import { type PropsWithChildren, useEffect } from "react";
 import { MdErrorOutline } from "react-icons/md";
-import { useAuth } from "../context/AuthProvider";
+import useAuthFlow from "../hooks/useAuthFlow";
 
-export default function AuthGate({ children }: PropsWithChildren) {
-	const { step, error } = useAuth();
+export default function AuthGate({
+	liffId,
+	children,
+}: { liffId: string } & PropsWithChildren) {
+	const router = useRouter();
+	const { step, error, chooseStore } = useAuthFlow({
+		liffId,
+		autoRun: true,
+	});
 
-	if (error)
+	useEffect(() => {
+		if (step === "unregistered") {
+			router.replace("/register/staff");
+		}
+	}, [step, router]);
+
+	if (error) {
 		return (
-			<main className="w-full h-lvh flex flex-col gap-2 items-center ">
+			<main className="w-full h-lvh flex flex-col gap-2 items-center">
 				<MdErrorOutline className="text-gray02 text-2xl mt-20" />
 				<p className="text-gray02">認証エラー</p>
 				<p className="text-gray02">エラー: {error}</p>
 			</main>
 		);
+	}
 
-	if (
-		step === "idle" ||
-		step === "verifying" ||
-		step === "logging-internal" ||
-		step === "selecting"
-	) {
+	if (step === "idle" || step === "verifying" || step === "logging-internal") {
 		return (
 			<main className="w-full h-lvh flex flex-col items-center bg-gray01">
 				<p className="loading loading-spinner text-green02 mt-20" />
@@ -30,18 +40,52 @@ export default function AuthGate({ children }: PropsWithChildren) {
 		);
 	}
 
-	// if (step === "unregistered") {
-	//   return (
-	//     <main className="p-4">
-	//       <p>はじめてのご利用です。アカウント登録をお願いします。</p>
-	//     </main>
-	//   );
-	// }
+	if (step === "redirecting") {
+		return (
+			<main className="w-full h-lvh flex flex-col items-center bg-gray01">
+				<p className="loading loading-spinner text-green02 mt-20" />
+				<p className="text-green02 mt-2">LINEログインに遷移しています…</p>
+			</main>
+		);
+	}
 
-	// if (step === "need-store") {
-	//   // ここで店舗選択UIを出す or モーダルを出す（useAuth().chooseStore を使う）
-	//   return <main className="p-4">店舗を選択してください…</main>;
-	// }
+	if (step === "getting-info") {
+		return (
+			<main className="w-full h-lvh flex flex-col items-center bg-gray01">
+				<p className="loading loading-spinner text-green02 mt-20" />
+				<p className="text-green02 mt-2">プロフィール情報を取得中…</p>
+			</main>
+		);
+	}
+
+	if (step === "need-store") {
+		// TODO: 実装に合わせて選択 UI を出す
+		// 例）選択肢を出して chooseStore(storeId) を呼ぶ
+		return (
+			<main className="w-full h-lvh flex flex-col items-center bg-gray01">
+				<p className="text-green02 mt-20">店舗を選択してください…</p>
+			</main>
+		);
+	}
+
+	if (step === "selecting") {
+		return (
+			<main className="w-full h-lvh flex flex-col items-center bg-gray01">
+				<p className="loading loading-spinner text-green02 mt-20" />
+				<p className="text-green02 mt-2">店舗を切り替え中…</p>
+			</main>
+		);
+	}
+
+	// step === "unregistered" のときは useEffect がリダイレクトするのでローディングを表示
+	if (step === "unregistered") {
+		return (
+			<main className="w-full h-lvh flex flex-col items-center bg-gray01">
+				<p className="loading loading-spinner text-green02 mt-20" />
+				<p className="text-green02 mt-2">登録ページへ移動しています…</p>
+			</main>
+		);
+	}
 
 	// ready
 	return <>{children}</>;

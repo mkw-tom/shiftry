@@ -1,12 +1,12 @@
 import { API_URL } from "@/app/lib/env";
-import type { LoginResponse } from "@shared/api/auth/types/login";
+import type { AuthMeResponse } from "@shared/api/auth/types/me";
 import type { ErrorResponse } from "@shared/api/common/types/errors";
 
-export const postLogin = async (
+export const getMe = async (
 	jwt: string,
-): Promise<LoginResponse | ErrorResponse> => {
+): Promise<AuthMeResponse | ErrorResponse> => {
 	const res = await fetch(`${API_URL}/api/auth/login`, {
-		method: "POST",
+		method: "GET",
 		headers: {
 			"Content-Type": "application/json",
 			Authorization: `Bearer ${jwt}`,

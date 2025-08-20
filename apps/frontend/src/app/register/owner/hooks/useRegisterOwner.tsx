@@ -1,7 +1,4 @@
-import { liffId } from "@/app/lib/env";
-import { setAuthToken } from "@/app/redux/slices/authToken";
-import { setStore } from "@/app/redux/slices/store";
-import { setUser } from "@/app/redux/slices/user";
+"use client";
 import liff from "@line/liff";
 import { useCallback, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -60,20 +57,20 @@ const useRegisterOwner = () => {
 					throw new Error(msg);
 				}
 
-				dispatch(
-					setUser({
-						id: response.user.id,
-						name: response.user.name,
-						pictureUrl: response.user.pictureUrl,
-					}),
-				);
-				dispatch(
-					setStore({
-						id: response.store.id,
-						name: response.store.name,
-						isActive: response.store.isActive,
-					}),
-				);
+				// dispatch(
+				// 	setUser({
+				// 		id: response.user.id,
+				// 		name: response.user.name,
+				// 		pictureUrl: response.user.pictureUrl,
+				// 	}),
+				// );
+				// dispatch(
+				// 	setStore({
+				// 		id: response.store.id,
+				// 		name: response.store.name,
+				// 		isActive: response.store.isActive,
+				// 	}),
+				// );
 
 				return { ok: true, data: response };
 			} catch (e) {
@@ -86,7 +83,7 @@ const useRegisterOwner = () => {
 				inflight.current = false;
 			}
 		},
-		[dispatch],
+		[],
 	);
 
 	return { registerOwner, error, loading };

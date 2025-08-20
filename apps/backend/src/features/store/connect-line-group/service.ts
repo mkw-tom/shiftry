@@ -5,22 +5,19 @@ import {
 } from "../../../repositories/store.repository.js";
 import { encryptText } from "../../../utils/aes.js";
 import { hmacSha256 } from "../../../utils/hmac.js";
-import { assertChannelValid } from "../../common/liff.service.js";
 
 export async function connectStoreToGroupService(
 	storeId: string,
 	channelType: "utou" | "group" | "room",
-	channelId: string,
+	groupId: string,
 ) {
 	if (channelType !== "group") {
 		throw { status: 400, message: "Only group linking is supported" };
 	}
 
-	await assertChannelValid(channelType, channelId);
-
-	const groupId_hash = hmacSha256(channelId, hmac.saltGroupId);
+	const groupId_hash = hmacSha256(groupId, hmac.saltGroupId);
 	const groupId_enc = encryptText(
-		channelId,
+		groupId,
 		aes.keyGroupId,
 		aes.keyVersionGroupId,
 	);

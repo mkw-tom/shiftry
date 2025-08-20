@@ -3,6 +3,7 @@ import type {
 	User,
 	UserStore,
 } from "@shared/api/common/types/prisma.js";
+import type { UserLite } from "@shared/api/common/types/prismaLite.js";
 import { getShiftRequestById } from "../../repositories/shiftRequest.repository.js";
 import { getStoreById } from "../../repositories/store.repository.js";
 import {
@@ -57,7 +58,7 @@ export const verifyUser = async (
 
 export const verifyUserByLineId = async (
 	lineId_hash: string,
-): Promise<User> => {
+): Promise<UserLite> => {
 	const user = await getUserByLineIdHash(lineId_hash);
 	if (!user) throw new Error("User not found");
 	return user;
