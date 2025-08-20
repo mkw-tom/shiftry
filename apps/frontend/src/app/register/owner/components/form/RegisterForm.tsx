@@ -1,7 +1,7 @@
+"use client";
 import liff from "@line/liff";
 import { BiHome } from "react-icons/bi";
 import { LuUser } from "react-icons/lu";
-import { useRegisterLoadingUI } from "../../../../features/register/common/context/useRegisterLoadingUI";
 import useRegisterOwner from "../../hooks/useRegisterOwner";
 import useRegiserOwnerAndStore from "../../hooks/useStoreNameForm";
 import type { regiserOwnerAndStoreType } from "../../validation/form";

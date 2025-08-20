@@ -45,7 +45,7 @@ export const useAutoLogin = () => {
 			dispatch(setUserToken(res.user_token));
 			dispatch(setStoreToken(res.store_token));
 			dispatch(setGroupToken(res.group_token));
-			dispatch(setUser(res.user));
+			// dispatch(setUser(res.user));
 			dispatch(setStore(res.store));
 			dispatch(setActiveShiftRequests(res.shiftRequests));
 			return { ok: true };
