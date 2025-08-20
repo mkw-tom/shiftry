@@ -42,6 +42,6 @@ router.post(
 	requireUser,
 	selectStoreLoginController,
 );
-router.post("/me", requireUser, AuthMeController);
+router.get("/me", requireUser, AuthMeController);
 
 export default router;

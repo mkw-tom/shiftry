@@ -24,7 +24,7 @@ export const AuthMeService = async (
 
 	if (!user) return { ok: false, message: "User not found" };
 	if (!store) return { ok: false, message: "Store not found" };
-	if (!userStore) return { ok: false, message: "Forbidden" }; // 所属していない
+	if (!userStore) return { ok: false, message: "Forbidden" }; 
 
 	const shiftRequest = await getActiveShiftRequests(sid);
 
