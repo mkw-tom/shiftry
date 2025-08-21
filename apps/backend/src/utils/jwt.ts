@@ -8,7 +8,6 @@ import jwt, {
 import { jwtSettings } from "../lib/env.js";
 
 const SECRET = jwtSettings.secret;
-const TTL_MIN = Number(jwtSettings.expiresIn || 15);
 
 if (!SECRET || SECRET.length < 32) {
 	// 本番は throw でもOK
@@ -29,7 +28,7 @@ export type AppJwtPayload = {
 };
 
 const signOpts: SignOptions = {
-	expiresIn: `${TTL_MIN}m`,
+	expiresIn: jwtSettings.expiresIn,
 	algorithm: "HS256", // ★ アルゴリズム固定
 	issuer: "shiftry-app",
 	audience: "shiftry-client",

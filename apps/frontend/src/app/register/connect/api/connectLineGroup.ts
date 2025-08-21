@@ -8,7 +8,7 @@ import type { StoreConnectLineGroupResponse } from "@shared/api/store/types/conn
 
 export const postConnectLineGroup = async (
 	idToken: string,
-	groupId: string,
+	groupId_jwt: string,
 	storeCode: string,
 ): Promise<
 	StoreConnectLineGroupResponse | ErrorResponse | ValidationErrorResponse
@@ -16,7 +16,7 @@ export const postConnectLineGroup = async (
 	if (!idToken) {
 		throw new Error("ID Token not found");
 	}
-	if (!groupId) {
+	if (!groupId_jwt) {
 		throw new Error("Group ID not found");
 	}
 	if (!storeCode) {
@@ -28,7 +28,7 @@ export const postConnectLineGroup = async (
 		headers: {
 			"Content-Type": "application/json",
 			"x-id-token": idToken,
-			"x-group-id": groupId,
+			"x-group-id": groupId_jwt,
 			"x-store-code": storeCode,
 		},
 	});

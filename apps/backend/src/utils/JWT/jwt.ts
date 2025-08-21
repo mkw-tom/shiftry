@@ -5,7 +5,7 @@ import { jwtSettings } from "../../lib/env.js";
 export const generateJWT = (
 	payload: Record<string, string | number | boolean>,
 ): string => {
-	const secret = jwtSettings.secret as jwt.Secret;
+	const secret = jwtSettings.secret;
 
 	const expiresIn = jwtSettings.expiresIn; // デフォルト指定あり
 
