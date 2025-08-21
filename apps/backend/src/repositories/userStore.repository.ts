@@ -30,7 +30,7 @@ export const createUserStore = async (
 ///　userIdから中間テーブルの店舗データを取得
 export const getUserStoreByUserId = async (
 	userId: string,
-): Promise<UserStore | null> => {
+): Promise<UserStoreLite | null> => {
 	return await prisma.userStore.findFirst({
 		where: { userId },
 		select: { userId: true, storeId: true, role: true },

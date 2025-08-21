@@ -20,7 +20,7 @@ model User {
   name           String
   pictureUrl     String?
   createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @default(now())
+  updatedAt      DateTime?         @updatedAt
 
   userStores     UserStore[]
   submittedShifts SubmittedShift[]
@@ -44,7 +44,7 @@ model Store {
 
   name             String           @unique
   createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
   userStores       UserStore[]      
   shiftRequests    ShiftRequest[]   
   assignShifts     AssignShift[]   
@@ -52,7 +52,7 @@ model Store {
   payment          Payment?
   ShiftPosition    ShiftPosition[]
   jobRoles         JobRole[]
-
+  storeCode        StoreCode?
 }
 
 // 中間テーブル（ユーザーと店舗の M:N 関係）
@@ -64,7 +64,25 @@ model UserStore {
   user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   store    Store  @relation(fields: [storeId], references: [id], onDelete: Cascade)
 
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime?        @updatedAt
+
   @@id([userId, storeId])
+}
+
+model StoreCode {
+  id         String   @id @default(uuid())
+  storeId    String   @unique
+  code_hash  String   @unique 
+  code_enc   String
+  codeKeyVersion_hash String   @default("K1")
+  codeKeyVersion_enc  String   @default("K1")
+
+  rotatedAt  DateTime?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  store      Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
 }
 
 // シフト募集データ

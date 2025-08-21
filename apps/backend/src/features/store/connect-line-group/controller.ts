@@ -1,7 +1,6 @@
 import type { ErrorResponse } from "@shared/api/common/types/errors.js";
 import type { StoreConnectLineGroupResponse } from "@shared/api/store/types/connect-line-group.js";
 import type { Request, Response } from "express";
-import { verifyUserStoreForOwner } from "../../common/authorization.service.js";
 import { connectStoreToGroupService } from "./service.js";
 
 const storeConnectLineGroupController = async (
@@ -9,36 +8,51 @@ const storeConnectLineGroupController = async (
 	res: Response<StoreConnectLineGroupResponse | ErrorResponse>,
 ): Promise<void> => {
 	try {
-		const auth = req.auth;
-		const channelType = req.channelType;
+		const idToken = req.idToken;
 		const groupId = req.groupId;
-		const storeId = req.storeId;
+		const storeCode = req.storeCode;
 
-		if (!auth?.uid)
+		if (!idToken)
 			return void res.status(401).json({ ok: false, message: "Missing token" });
-		if (!storeId)
+		if (!storeCode)
 			return void res
 				.status(400)
-				.json({ ok: false, message: "X-Store-Id required" });
-		if (!channelType || channelType !== "group") {
-			return void res.status(400).json({
-				ok: false,
-				message: "X-Channel-Type must be 'group' and X-Channel-Id required",
-			});
-		}
+				.json({ ok: false, message: "StoreCode is required" });
 		if (!groupId)
 			return void res
 				.status(400)
-				.json({ ok: false, message: "X-Group-Id required" });
+				.json({ ok: false, message: "groupId is required" });
 
-		await verifyUserStoreForOwner(auth.uid, storeId);
-
-		const store = await connectStoreToGroupService(
-			storeId,
-			channelType,
+		const response = await connectStoreToGroupService(
+			idToken,
 			groupId,
+			storeCode,
 		);
-		res.json({ ok: true, store });
+
+		if (!response.ok) {
+			const msg = response.message || "Bad Request";
+			let status: number;
+
+			switch (true) {
+				case msg.includes("Invalid or missing ID token"):
+					status = 401;
+					break;
+				case msg.includes("not found"):
+					status = 404;
+					break;
+				case msg.includes("permission"):
+					status = 403;
+					break;
+				case msg.includes("already linked"):
+					status = 409;
+					break;
+				default:
+					status = 400;
+			}
+
+			return void res.status(status).json(response);
+		}
+		res.status(200).json(response);
 	} catch (e) {
 		if (typeof e === "object" && e !== null && "status" in e) {
 			const err = e as { status: number; message: string };
