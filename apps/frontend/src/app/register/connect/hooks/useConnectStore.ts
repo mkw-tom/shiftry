@@ -6,13 +6,13 @@ import type { StoreConnectLineGroupResponse } from "@shared/api/store/types/conn
 import { useCallback, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { postConnectLineGroup } from "../api/connectLineGroup";
-import { useParamGroupId } from "./useParamGroupId";
+import { useParamGroupIdJwt } from "./useParamGroupIdJwt";
 
 export const useConnectStore = () => {
 	const [connecting, setConnecting] = useState(false);
 	const [connectError, setConnectError] = useState<string | null>(null);
 	const dispatch = useDispatch();
-	const groupId = useParamGroupId();
+	const groupId_jwt = useParamGroupIdJwt();
 
 	const connectStore = useCallback(
 		async (
@@ -24,11 +24,11 @@ export const useConnectStore = () => {
 			try {
 				const idToken = liff.getIDToken();
 				if (!idToken) throw new Error("ID Token not found");
-				if (!groupId) throw new Error("Group ID not found");
+				if (!groupId_jwt) throw new Error("Group ID not found");
 
 				const response = await postConnectLineGroup(
 					idToken,
-					groupId,
+					groupId_jwt,
 					storeCode,
 				);
 
@@ -47,7 +47,7 @@ export const useConnectStore = () => {
 				setConnecting(false);
 			}
 		},
-		[dispatch, groupId],
+		[dispatch, groupId_jwt],
 	);
 
 	return { connecting, connectError, connectStore };

@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import { jwtSettings } from "../../lib/env.js";
 
 export const attachGroupId = (
 	req: Request,
@@ -18,10 +19,7 @@ export const attachGroupId = (
 			return next();
 		}
 
-		const decoded = jwt.verify(
-			groupId_token,
-			process.env.JWT_SECRET as string,
-		) as {
+		const decoded = jwt.verify(groupId_token, jwtSettings.secret) as {
 			groupId: string;
 		};
 

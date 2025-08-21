@@ -1,3 +1,5 @@
+import type { SignOptions } from "jsonwebtoken";
+
 /// ポート
 export const PORT = process.env.PORT as string;
 
@@ -38,7 +40,7 @@ export const JWT_SECRET = process.env.JWT_SECRET as string;
 export const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN as string;
 export const jwtSettings = {
 	secret: process.env.JWT_SECRET as string,
-	expiresIn: process.env.JWT_EXPIRES_IN as string,
+	expiresIn: process.env.JWT_EXPIRES_IN as SignOptions["expiresIn"], // デフォルトは15分
 };
 
 /// AES
