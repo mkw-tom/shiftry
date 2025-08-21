@@ -20,48 +20,53 @@ export function useMe() {
 	const [getting, setGetting] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
-	const { jwt } = useSelector((state: RootState) => state.authToken);
+	// const { jwt } = useSelector((state: RootState) => state.authToken);
 
-	const me = useCallback(async (): Promise<
-		AuthMeResponse | ErrorResponse | ValidationErrorResponse
-	> => {
-		setGetting(true);
-		setError(null);
-		if (typeof window === "undefined") {
-			throw new Error("useLiffVerify must be used in a browser context");
-		}
-
-		if (!jwt) {
-			throw new Error("JWT is required for login");
-		}
-
-		try {
-			const res = await getMe(jwt);
-			if ("ok" in res && res.ok === false) {
-				setError(res.message);
-				return res;
+	const me = useCallback(
+		async ({
+			jwt,
+		}: { jwt: string }): Promise<
+			AuthMeResponse | ErrorResponse | ValidationErrorResponse
+		> => {
+			setGetting(true);
+			setError(null);
+			if (typeof window === "undefined") {
+				throw new Error("useLiffVerify must be used in a browser context");
 			}
 
-			dispatch(
-				setUser({
-					id: res.user.id,
-					name: res.user.name,
-					pictureUrl: res.user.pictureUrl,
-					role: res.role,
-				}),
-			);
-			dispatch(setStore(res.store));
-			dispatch(setActiveShiftRequests(res.ActiveShiftRequests));
+			if (!jwt) {
+				throw new Error("JWT is required for login");
+			}
 
-			return res;
-		} catch (e) {
-			const msg = e instanceof Error ? e.message : "Unexpected error";
-			setError(msg);
-			return { ok: false, message: msg };
-		} finally {
-			setGetting(false);
-		}
-	}, [dispatch, jwt]);
+			try {
+				const res = await getMe(jwt);
+				if ("ok" in res && res.ok === false) {
+					setError(res.message);
+					return res;
+				}
+
+				dispatch(
+					setUser({
+						id: res.user.id,
+						name: res.user.name,
+						pictureUrl: res.user.pictureUrl,
+						role: res.role,
+					}),
+				);
+				dispatch(setStore(res.store));
+				dispatch(setActiveShiftRequests(res.ActiveShiftRequests));
+
+				return res;
+			} catch (e) {
+				const msg = e instanceof Error ? e.message : "Unexpected error";
+				setError(msg);
+				return { ok: false, message: msg };
+			} finally {
+				setGetting(false);
+			}
+		},
+		[dispatch],
+	);
 
 	return { me, getting, error };
 }
