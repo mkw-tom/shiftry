@@ -1,12 +1,12 @@
 "use client";
 import { setStore } from "@/app/redux/slices/store";
 import liff from "@line/liff";
+import type { ErrorResponse } from "@shared/api/common/types/errors";
+import type { StoreConnectLineGroupResponse } from "@shared/api/store/types/connect-line-group";
 import { useCallback, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { postConnectLineGroup } from "../api/connectLineGroup";
 import { useParamGroupId } from "./useParamGroupId";
-import { StoreConnectLineGroupResponse } from "@shared/api/store/types/connect-line-group";
-import { ErrorResponse } from "@shared/api/common/types/errors";
 
 export const useConnectStore = () => {
 	const [connecting, setConnecting] = useState(false);
@@ -15,7 +15,9 @@ export const useConnectStore = () => {
 	const groupId = useParamGroupId();
 
 	const connectStore = useCallback(
-		async (storeCode: string): Promise<StoreConnectLineGroupResponse | ErrorResponse> => {
+		async (
+			storeCode: string,
+		): Promise<StoreConnectLineGroupResponse | ErrorResponse> => {
 			setConnecting(true);
 			setConnectError(null);
 

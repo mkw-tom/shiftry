@@ -4,9 +4,9 @@ import React, { use, useState } from "react";
 import { BiLock } from "react-icons/bi";
 import { useConnectFormValidate } from "../hooks/useConnectFormValidate";
 import { useConnectStore } from "../hooks/useConnectStore";
+import { useParamGroupId } from "../hooks/useParamGroupId";
 import type { connectFormType } from "../validation/connectForm";
 import ConnectButton from "./ConnectButton";
-import { useParamGroupId } from "../hooks/useParamGroupId";
 
 const ConnectForm = () => {
 	const { register, errors, isDisabled, handleSubmit } =
@@ -21,9 +21,7 @@ const ConnectForm = () => {
 
 		const res = await connectStore(data.storeCode);
 		if (!res?.ok) {
-			alert(
-				`店舗の接続に失敗しました。もう一度お試しください。${res.message}`,
-			);
+			alert(`店舗の接続に失敗しました。もう一度お試しください。${res.message}`);
 			liff.closeWindow();
 			return;
 		}
