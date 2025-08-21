@@ -14,7 +14,7 @@ const initialState: StoresState = {
 };
 
 export const userSlice = createSlice({
-	name: "store",
+	name: "stores",
 	initialState,
 	reducers: {
 		setStores: (state, action: PayloadAction<UserStoreLiteWithStore[]>) => {

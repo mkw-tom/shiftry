@@ -5,7 +5,7 @@ type TokenState = { jwt: string | null }; // exp=UNIX(sec) 任意
 const initialState: TokenState = { jwt: null };
 
 const authTokenSlice = createSlice({
-	name: "token",
+	name: "authToken",
 	initialState,
 	reducers: {
 		setAuthToken: (state, a: PayloadAction<{ jwt: string; exp?: number }>) => {

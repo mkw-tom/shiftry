@@ -10,7 +10,7 @@ const initialState: ActiveShiftRequestsState = {
 };
 
 export const userSlice = createSlice({
-	name: "shiftRequests",
+	name: "activeShiftRequests",
 	initialState,
 	reducers: {
 		setActiveShiftRequests: (state, action: PayloadAction<ShiftRequest[]>) => {

@@ -1,6 +1,7 @@
+// src/app/redux/store.ts
 "use client";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import activeShiftReuqests from "./slices/activeShiftRequests";
+import activeShiftRequests from "./slices/activeShiftRequests"; // ← ファイル名は実態に合わせて
 import authToken from "./slices/authToken";
 import members from "./slices/members";
 import payment from "./slices/payment";
@@ -9,36 +10,24 @@ import store from "./slices/store";
 import stores from "./slices/stores";
 import user from "./slices/user";
 
-import { persistReducer, persistStore } from "redux-persist";
-import storage from "../lib/storage";
-import tokenReducer from "./slices/token";
-
 const rootReducer = combineReducers({
-	token: tokenReducer,
-	authToken: authToken,
-	user: user,
-	store: store,
-	stores: stores,
-	payment: payment,
-	registerPayment: registerPayment,
-	members: members,
-	activeShiftReuqests: activeShiftReuqests,
+	authToken,
+	user,
+	store,
+	stores,
+	payment,
+	registerPayment,
+	members,
+	activeShiftRequests,
 });
-
-const persistConfig = {
-	key: "root",
-	storage,
-	whitelist: ["token"],
-};
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const reduxStore = configureStore({
-	reducer: persistedReducer,
+	reducer: rootReducer,
 	middleware: (getDefaultMiddleware) =>
-		getDefaultMiddleware({ serializableCheck: false }),
+		getDefaultMiddleware({
+			serializableCheck: false,
+		}),
 });
-export const persistor = persistStore(reduxStore);
 
 export type RootState = ReturnType<typeof reduxStore.getState>;
 export type AppDispatch = typeof reduxStore.dispatch;
