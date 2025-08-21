@@ -1,9 +1,9 @@
 import { FiMenu } from "react-icons/fi";
 import CancelSection from "./sidebarSections/CancelSection";
-import MemberListSection from "./sidebarSections/MemberListSection";
-import PaymentSectioin from "./sidebarSections/PaymentSectioin";
-import StoresSection from "./sidebarSections/StoresSection";
-import UserSection from "./sidebarSections/UserSection";
+// import MemberListSection from "./sidebarSections/MemberListSection";
+// import PaymentSectioin from "./sidebarSections/PaymentSectioin";
+// import StoresSection from "./sidebarSections/StoresSection";
+// import UserSection from "./sidebarSections/UserSection";
 
 const Sideber = () => {
 	return (
@@ -21,11 +21,11 @@ const Sideber = () => {
 					aria-label="close sidebar"
 				/>
 				<ul className="menu bg-base lg:bg-white  text-base-content min-h-full w-72 p-4 scroll-auto border-t-[6px] border-green02 ">
-					<UserSection />
+					{/* <UserSection />
 					<MemberListSection />
 					<PaymentSectioin />
 					<StoresSection />
-					<CancelSection />
+					<CancelSection /> */}
 				</ul>
 			</div>
 		</div>

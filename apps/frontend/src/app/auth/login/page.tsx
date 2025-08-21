@@ -1,4 +1,4 @@
-import LoginFormArea from "@/app/features/auth/login/components/LoginFormArea";
+// import LoginFormArea from "@/app/features/auth/login/components/LoginFormArea";
 import FirstView from "@/shared/components/FirstView";
 
 const Page = () => {
@@ -7,7 +7,7 @@ const Page = () => {
 			<div className="bg-green01 w-full md:w-[400px] mx-auto">
 				<FirstView />
 
-				<LoginFormArea />
+				{/* <LoginFormArea /> */}
 			</div>
 		</main>
 	);

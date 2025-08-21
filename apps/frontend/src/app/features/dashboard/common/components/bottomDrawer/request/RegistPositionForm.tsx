@@ -1,4 +1,3 @@
-import { dummy } from "@/app/features/dashboard/shift/components/ShiftContent";
 import {
 	type UpsertShiftPositionType,
 	WeekDays,
