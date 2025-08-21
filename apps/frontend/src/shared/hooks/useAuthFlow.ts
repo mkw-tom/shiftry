@@ -57,9 +57,14 @@ export function useAuthFlow({ liffId, autoRun = true }: Options) {
 				setStep("redirecting");
 				return;
 			}
+			if (vres.next !== "LOGIN" || !vres.token) {
+				setError("Unexpected verify result");
+				setStep("error");
+				return;
+			}
 
 			setStep("logging-internal");
-			const lres = await login();
+			const lres = await login({ jwt: vres.token });
 
 			if (!lres.ok) {
 				setError(lres.message || "login failed");
@@ -69,7 +74,7 @@ export function useAuthFlow({ liffId, autoRun = true }: Options) {
 
 			if (lres.next === "AUTO") {
 				setStep("getting-info");
-				const meres = await me();
+				const meres = await me({ jwt: lres.token });
 				if (!meres.ok) {
 					setError(meres.message || "Failed to fetch user profile");
 					setStep("error");
@@ -112,7 +117,7 @@ export function useAuthFlow({ liffId, autoRun = true }: Options) {
 					return;
 				}
 				setStep("getting-info");
-				const meres = await me();
+				const meres = await me({ jwt: sres.token });
 				if (!meres.ok) {
 					setError(meres.message || "Failed to fetch user profile");
 					setStep("error");
