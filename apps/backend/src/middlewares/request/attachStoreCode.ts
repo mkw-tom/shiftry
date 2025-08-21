@@ -1,3 +1,4 @@
+import { StoreCodeHeaderValidate } from "@shared/api/store/validations/connect-line-group.js";
 import type { NextFunction, Request, Response } from "express";
 
 export const attachStoreCode = (
@@ -6,18 +7,25 @@ export const attachStoreCode = (
 	next: NextFunction,
 ) => {
 	try {
-		const storeCode = req.headers["x-store-code"];
-		if (!storeCode || typeof storeCode !== "string") {
-			res.status(400).json({ message: "Missing or invalid storeId" });
-			return;
+		// Zodでパース
+		const result = StoreCodeHeaderValidate.safeParse({
+			"x-store-code": req.headers["x-store-code"],
+		});
+
+		if (!result.success) {
+			return void res.status(400).json({
+				message: "Missing or invalid storeCode",
+				errors: result.error.format(),
+			});
 		}
 
-		req.storeCode = storeCode;
+		// 正常なら storeCode を型安全に取り出し
+		req.storeCode = result.data["x-store-code"];
 		next();
 	} catch (err) {
 		console.error("attachStoreCode error:", err);
 		res
-			.status(401)
-			.json({ message: "Unexpected error while attaching StoreCode" });
+			.status(500)
+			.json({ message: "Unexpected error while attaching storeCode" });
 	}
 };

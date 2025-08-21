@@ -1,38 +1,33 @@
 "use client";
 import liff from "@line/liff";
-import { UserStoreLiteWithStore } from "@shared/api/common/types/prismaLite";
-import { is } from "date-fns/locale";
-import React from "react";
-import { useAgreeCheckbox } from "../hooks/useAgreeCheckBox";
+import React, { useState } from "react";
+import { BiLock } from "react-icons/bi";
+import { useConnectFormValidate } from "../hooks/useConnectFormValidate";
 import { useConnectStore } from "../hooks/useConnectStore";
+import type { connectFormType } from "../validation/connectForm";
 import ConnectButton from "./ConnectButton";
 
-const ConnectForm = ({ storeId }: { storeId: string | null }) => {
-	const { register, errors, isDisabled, handleSubmit } = useAgreeCheckbox();
+const ConnectForm = () => {
+	const { register, errors, isDisabled, handleSubmit } =
+		useConnectFormValidate();
 	const { connectStore, connectError, connecting } = useConnectStore();
-	const submitDisabled = !storeId || connecting || isDisabled;
 
-	const onSubmit = async (data: { agree: boolean }) => {
+	const onSubmit = async (data: connectFormType) => {
 		if (!data.agree) {
 			return alert("同意にチェックを入れてください");
 		}
-		if (!storeId) {
-			return alert("店舗が選択されていません。");
-		}
 
-		const res = await connectStore(storeId);
+		const res = await connectStore(data.storeCode);
 		if (!res?.ok) {
 			alert(
-				`店舗の接続に失敗しました。もう一度お試しください。n/n${connectError}`,
+				`店舗の接続に失敗しました。もう一度お試しください。${connectError}`,
 			);
 			liff.closeWindow();
 			return;
 		}
 
 		if (res?.ok) {
-			alert(
-				`LINEグループ連携が完了しました✨。n/n店舗名：${res.data.store.name}`,
-			);
+			alert(`LINEグループ連携が完了しました✨。店舗名：${res.data.store.name}`);
 			liff.closeWindow();
 		}
 	};
@@ -42,6 +37,26 @@ const ConnectForm = ({ storeId }: { storeId: string | null }) => {
 			onSubmit={handleSubmit(onSubmit)}
 			className="flex flex-col gap-5 mt-5 w-11/12 mx-auto"
 		>
+			<fieldset className="fieldset w-full mx-auto flex flex-col items-center">
+				<legend className="fieldset-legend text-gray02 text-center">
+					<BiLock />
+					店舗コード
+				</legend>
+				<input
+					{...register("storeCode")}
+					type="text"
+					className="input input-bordered w-4/5 text-black bg-white border-gray-300 focus:outline-none focus:ring-2 focus:ring-success text-center"
+					placeholder="XXXX-XXXX-XXXX"
+					maxLength={20}
+					disabled={connecting}
+				/>
+				{errors.storeCode && (
+					<p className="fieldset-label text-error">
+						{errors.storeCode.message}
+					</p>
+				)}
+			</fieldset>
+
 			<fieldset className="fieldset w-full mx-auto flex flex-col items-center">
 				<label className="fieldset-label w-11/12 mx-auto">
 					<input
@@ -59,7 +74,7 @@ const ConnectForm = ({ storeId }: { storeId: string | null }) => {
 					<p className="fieldset-label text-error">{errors?.agree?.message}</p>
 				)}
 			</fieldset>
-			<ConnectButton isDisabled={submitDisabled} connecting={connecting} />
+			<ConnectButton isDisabled={isDisabled} connecting={connecting} />
 		</form>
 	);
 };

@@ -4,31 +4,28 @@ import liff from "@line/liff";
 import { useCallback, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { postConnectLineGroup } from "../api/connectLineGroup";
+import { useParamGroupId } from "./useParamGroupId";
 
 export const useConnectStore = () => {
 	const [connecting, setConnecting] = useState(false);
 	const [connectError, setConnectError] = useState<string | null>(null);
 	const dispatch = useDispatch();
+	const groupId = useParamGroupId();
 
 	const connectStore = useCallback(
-		async (storeId: string) => {
+		async (storeCode: string) => {
 			setConnecting(true);
 			setConnectError(null);
+
 			try {
 				const idToken = liff.getIDToken();
 				if (!idToken) throw new Error("ID Token not found");
-				const ctx = liff.getContext();
-				const channelType = ctx?.type;
-				if (!channelType || channelType !== "group") {
-					throw new Error("Unsupported LIFF context");
-				}
-				const channelId = ctx.groupId;
+				if (!groupId) throw new Error("Group ID not found");
 
 				const response = await postConnectLineGroup(
 					idToken,
-					channelId,
-					channelType,
-					storeId,
+					groupId,
+					storeCode,
 				);
 
 				if (!("ok" in response) || response.ok !== true) {
@@ -49,7 +46,7 @@ export const useConnectStore = () => {
 				setConnecting(false);
 			}
 		},
-		[dispatch],
+		[dispatch, groupId],
 	);
 
 	return { connecting, connectError, connectStore };
