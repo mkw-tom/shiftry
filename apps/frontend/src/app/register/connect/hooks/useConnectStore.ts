@@ -5,6 +5,8 @@ import { useCallback, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { postConnectLineGroup } from "../api/connectLineGroup";
 import { useParamGroupId } from "./useParamGroupId";
+import { StoreConnectLineGroupResponse } from "@shared/api/store/types/connect-line-group";
+import { ErrorResponse } from "@shared/api/common/types/errors";
 
 export const useConnectStore = () => {
 	const [connecting, setConnecting] = useState(false);
@@ -13,7 +15,7 @@ export const useConnectStore = () => {
 	const groupId = useParamGroupId();
 
 	const connectStore = useCallback(
-		async (storeCode: string) => {
+		async (storeCode: string): Promise<StoreConnectLineGroupResponse | ErrorResponse> => {
 			setConnecting(true);
 			setConnectError(null);
 
@@ -29,19 +31,16 @@ export const useConnectStore = () => {
 				);
 
 				if (!("ok" in response) || response.ok !== true) {
-					const msg = response.message || "Store connection failed";
-					throw new Error(msg);
+					return { ok: false, message: response.message };
 				}
 
 				dispatch(setStore(response.store));
-				return {
-					ok: true,
-					data: response,
-				};
+				return response;
 			} catch (e) {
 				const msg =
 					e instanceof Error ? e.message : "不明なエラーが発生しました";
 				setConnectError(msg);
+				return { ok: false, message: msg };
 			} finally {
 				setConnecting(false);
 			}

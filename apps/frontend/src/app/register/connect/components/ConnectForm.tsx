@@ -1,15 +1,17 @@
 "use client";
 import liff from "@line/liff";
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { BiLock } from "react-icons/bi";
 import { useConnectFormValidate } from "../hooks/useConnectFormValidate";
 import { useConnectStore } from "../hooks/useConnectStore";
 import type { connectFormType } from "../validation/connectForm";
 import ConnectButton from "./ConnectButton";
+import { useParamGroupId } from "../hooks/useParamGroupId";
 
 const ConnectForm = () => {
 	const { register, errors, isDisabled, handleSubmit } =
 		useConnectFormValidate();
+	const groupId = useParamGroupId();
 	const { connectStore, connectError, connecting } = useConnectStore();
 
 	const onSubmit = async (data: connectFormType) => {
@@ -20,14 +22,14 @@ const ConnectForm = () => {
 		const res = await connectStore(data.storeCode);
 		if (!res?.ok) {
 			alert(
-				`店舗の接続に失敗しました。もう一度お試しください。${connectError}`,
+				`店舗の接続に失敗しました。もう一度お試しください。${res.message}`,
 			);
 			liff.closeWindow();
 			return;
 		}
 
 		if (res?.ok) {
-			alert(`LINEグループ連携が完了しました✨。店舗名：${res.data.store.name}`);
+			alert(`LINEグループ連携が完了しました✨。店舗名：${res.store.name}`);
 			liff.closeWindow();
 		}
 	};
@@ -37,6 +39,7 @@ const ConnectForm = () => {
 			onSubmit={handleSubmit(onSubmit)}
 			className="flex flex-col gap-5 mt-5 w-11/12 mx-auto"
 		>
+			<span>{groupId}</span>
 			<fieldset className="fieldset w-full mx-auto flex flex-col items-center">
 				<legend className="fieldset-legend text-gray02 text-center">
 					<BiLock />
