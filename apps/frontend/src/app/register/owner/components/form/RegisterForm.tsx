@@ -3,13 +3,13 @@ import liff from "@line/liff";
 import { BiHome } from "react-icons/bi";
 import { LuUser } from "react-icons/lu";
 import useRegisterOwner from "../../hooks/useRegisterOwner";
-import useRegiserOwnerAndStore from "../../hooks/useStoreNameForm";
+import useRegisterOwnerFormValidate from "../../hooks/useRegisterOwnerValidate";
 import type { regiserOwnerAndStoreType } from "../../validation/form";
 import RegisterButton from "../button/RegisterButton";
 
 const RegisterForm = () => {
 	const { register, errors, isDisabled, name, storeName, handleSubmit } =
-		useRegiserOwnerAndStore();
+		useRegisterOwnerFormValidate();
 	const { loading, error, registerOwner } = useRegisterOwner();
 
 	const onSubmit = async (data: regiserOwnerAndStoreType) => {

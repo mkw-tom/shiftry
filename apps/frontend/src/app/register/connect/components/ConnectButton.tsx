@@ -1,10 +1,11 @@
 "use client";
 import React from "react";
+import type { FieldError } from "react-hook-form";
 
 const ConnectButton = ({
 	isDisabled,
 	connecting,
-}: { isDisabled: boolean; connecting: boolean }) => {
+}: { isDisabled: true | FieldError | undefined; connecting: boolean }) => {
 	return (
 		<button
 			type="submit"

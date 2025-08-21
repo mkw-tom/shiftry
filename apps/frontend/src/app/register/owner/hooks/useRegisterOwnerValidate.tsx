@@ -7,7 +7,7 @@ import {
 	regiserOwnerAndStoreValidate,
 } from "../validation/form";
 
-const useRegiserOwnerAndStore = () => {
+const useRegisterOwnerFormValidate = () => {
 	const {
 		register,
 		formState: { errors },
@@ -39,4 +39,4 @@ const useRegiserOwnerAndStore = () => {
 	};
 };
 
-export default useRegiserOwnerAndStore;
+export default useRegisterOwnerFormValidate;
