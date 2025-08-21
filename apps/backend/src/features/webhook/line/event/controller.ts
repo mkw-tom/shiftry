@@ -25,8 +25,8 @@ const eventController = async (
 			/// 🔹 グループに招待された時の自動メッセージ
 			if (event.type === "join" && event.source.groupId) {
 				try {
-					const group_token = generateJWT({ groupId: event.source.groupId });
-					const signedUrl = `${liffUrl.connectLineGroupPage}?group_token=${group_token}`;
+					const groupId_jwt = generateJWT({ groupId: event.source.groupId });
+					const signedUrl = `${liffUrl.connectLineGroupPage}?groupId=${groupId_jwt}`;
 
 					const joinMessage = {
 						text1: "グループに招待ありがとうございます！🎉",
