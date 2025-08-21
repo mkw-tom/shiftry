@@ -3,7 +3,10 @@ import type {
 	User,
 	UserStore,
 } from "@shared/api/common/types/prisma.js";
-import type { UserLite } from "@shared/api/common/types/prismaLite.js";
+import type {
+	UserLite,
+	UserStoreLite,
+} from "@shared/api/common/types/prismaLite.js";
 import { getShiftRequestById } from "../../repositories/shiftRequest.repository.js";
 import { getStoreById } from "../../repositories/store.repository.js";
 import {
@@ -23,7 +26,7 @@ export const verifyUserStore = async (userId: string, storeId: string) => {
 export const verifyUserStoreForOwner = async (
 	userId: string,
 	storeId: string,
-): Promise<UserStore> => {
+): Promise<UserStoreLite> => {
 	const userStore = await getUserStoreByUserIdAndStoreId(userId, storeId);
 	if (!userStore) {
 		throw new Error("User is not authorized");
@@ -37,7 +40,7 @@ export const verifyUserStoreForOwner = async (
 export const verifyUserStoreForOwnerAndManager = async (
 	userId: string,
 	storeId: string,
-): Promise<UserStore> => {
+): Promise<UserStoreLite> => {
 	const userStore = await getUserStoreByUserIdAndStoreId(userId, storeId);
 	if (!userStore) {
 		throw new Error("User is not authorized ");

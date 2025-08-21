@@ -32,9 +32,8 @@ export const postConnectLineGroup = async (
 		headers: {
 			"Content-Type": "application/json",
 			"x-id-token": idToken,
-			"x-channel-type": channelType,
-			"x-channel-id": channelId,
-			"x-store-id": storeId,
+			// "x-group-id": groupId,
+			// "x-store-code": storeCode
 		},
 	});
 

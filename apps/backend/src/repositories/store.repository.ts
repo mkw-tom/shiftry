@@ -40,6 +40,14 @@ export const getStoreById = async (id: string): Promise<StoreLite | null> => {
 		select: { id: true, name: true, isActive: true },
 	});
 };
+
+export const getStoreByIdAllData = async (
+	id: string,
+): Promise<Store | null> => {
+	return await prisma.store.findUnique({
+		where: { id: id },
+	});
+};
 // export const updateStoreGroupId = async (
 // 	storeId: string,
 // 	groupId: string,

@@ -2,6 +2,8 @@ import express from "express";
 import { requireUser } from "../../middlewares/auth.js";
 import { attachChannelType } from "../../middlewares/request/attachChannelType.js";
 import { attachGroupId } from "../../middlewares/request/attachGroupId.js";
+import { attachIdToken } from "../../middlewares/request/attachIdToken.js";
+import { attachStoreCode } from "../../middlewares/request/attachStoreCode.js";
 import { attachStoreId } from "../../middlewares/request/attachStoreId.js";
 // import addManageStoreController from "./add-store/controller.js";
 import storeConnectLineGroupController from "./connect-line-group/controller.js";
@@ -15,10 +17,9 @@ const router = express.Router();
 // router.post("/add-store", addManageStoreController);
 router.put(
 	"/connect-line-group",
-	requireUser,
-	attachChannelType,
+	attachIdToken,
 	attachGroupId,
-	attachStoreId,
+	attachStoreCode,
 	storeConnectLineGroupController,
 );
 // router.get("/me", getStoresFromUserController);
