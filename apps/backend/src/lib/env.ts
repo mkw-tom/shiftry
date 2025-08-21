@@ -45,16 +45,20 @@ export const jwtSettings = {
 export const aes = {
 	keyLineId: process.env.ENCRYPTION_KEY_LINE_ID as string,
 	keyGroupId: process.env.ENCRYPTION_KEY_GROUP_ID as string,
+	keyStoreCode: process.env.ENCRYPTION_KEY_STORE_CODE as string,
 	keyVersionLineId: process.env.KEY_VERSION_AES_LINE_ID as string,
 	keyVersionGroupId: process.env.KEY_VERSION_AES_GROUP_ID as string,
+	keyVersionStoreCode: process.env.KEY_VERSION_AES_STORE_CODE as string,
 };
 
 /// HMAC
 export const hmac = {
 	saltLineId: process.env.HASH_SALT_LINE_ID as string,
 	saltGroupId: process.env.HASH_SALT_GROUP_ID as string,
+	saltStoreCode: process.env.HASH_SALT_STORE_CODE as string,
 	keyVersionLineId: process.env.KEY_VERSION_HMAC_LINE_ID as string,
 	keyVersionGroupId: process.env.KEY_VERSION_HMAC_GROUP_ID as string,
+	keyVersionStoreCode: process.env.KEY_VERSION_HMAC_STORE_CODE as string,
 };
 
 /// STRIPE
