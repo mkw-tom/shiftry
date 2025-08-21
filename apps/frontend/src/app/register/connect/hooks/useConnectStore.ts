@@ -38,10 +38,10 @@ export const useConnectStore = () => {
 					ok: true,
 					data: response,
 				};
-			} catch (error) {
-				setConnectError(
-					error instanceof Error ? error.message : "Unknown error",
-				);
+			} catch (e) {
+				const msg =
+					e instanceof Error ? e.message : "不明なエラーが発生しました";
+				setConnectError(msg);
 			} finally {
 				setConnecting(false);
 			}
