@@ -1,8 +1,8 @@
-import ArchivePageContent from "@/app/features/dashboard/archive/components/ArchivePageContent";
+// import ArchivePageContent from "@/app/features/dashboard/archive/components/ArchivePageContent";
 import React from "react";
 
 const page = () => {
-	return <ArchivePageContent />;
+	// return <ArchivePageContent />;
 };
 
 export default page;

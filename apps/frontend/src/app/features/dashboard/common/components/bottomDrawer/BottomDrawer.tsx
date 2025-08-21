@@ -2,7 +2,7 @@
 import React from "react";
 import { DrawerView, useBottomDrawer } from "../../context/useBottomDrawer";
 import { CreateRequestProvider } from "../../context/useCreateRequest";
-import { GenereateShiftProvider } from "../../context/useGenerateShift";
+// import { GenereateShiftProvider } from "../../context/useGenerateShift";
 import Confirm from "./Confirm";
 import DrawerHead from "./elements/DrawerHead";
 import CreateReqeustForm from "./request/CreateReqeustForm";
@@ -42,11 +42,11 @@ const BottomDrawer = () => {
 							</CreateRequestProvider>
 						)}
 						{view === DrawerView.SUBMIT && <SubmitForm />}
-						{view === DrawerView.GENERATE && (
+						{/* {view === DrawerView.GENERATE && (
 							<GenereateShiftProvider>
 								<StatusForm />
 							</GenereateShiftProvider>
-						)}
+						)} */}
 					</div>
 				</div>
 			</div>

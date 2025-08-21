@@ -1,5 +1,5 @@
 "use client";
-import RegisterPaymentArea from "@/app/features/register/payment/components/RegisterPaymentArea";
+// import RegisterPaymentArea from "@/app/features/register/payment/components/RegisterPaymentArea";
 import { NEXT_PUBLIC_STRIPE_PK } from "@/app/lib/env";
 import FirstView from "@/shared/components/FirstView";
 import { Elements } from "@stripe/react-stripe-js";
@@ -14,7 +14,7 @@ const Page = () => {
 			<main className="bg-green01 w-full  h-lvh">
 				<div className="bg-green01 w-full md:w-[400px] mx-auto">
 					<FirstView />
-					<RegisterPaymentArea />
+					{/* <RegisterPaymentArea /> */}
 				</div>
 			</main>
 		</Elements>

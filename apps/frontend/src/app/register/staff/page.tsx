@@ -1,4 +1,4 @@
-import StaffRegisterContent from "@/app/features/register/staff/components/StaffRegisterContent";
+// import StaffRegisterContent from "@/app/features/register/staff/components/StaffRegisterContent";
 import FirstView from "../../../shared/components/FirstView";
 
 const Page = () => {
@@ -6,7 +6,7 @@ const Page = () => {
 		<main className="bg-green01 w-full  h-lvh">
 			<div className="bg-green01 w-full md:w-[400px] mx-auto">
 				<FirstView />
-				<StaffRegisterContent />
+				{/* <StaffRegisterContent /> */}
 			</div>
 		</main>
 	);

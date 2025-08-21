@@ -1,6 +1,6 @@
 "use client";
 
-import { useSaveLineUserInfo } from "@/app/features/auth/callback/hooks/useSaveLineUserInfo";
+// import { useSaveLineUserInfo } from "@/app/features/auth/callback/hooks/useSaveLineUserInfo";
 import FaildAuthModal from "@/app/features/auth/fail/components/FaildAuthModal";
 import FirstView from "@/shared/components/FirstView";
 import React, { Suspense } from "react";
@@ -8,7 +8,7 @@ import React, { Suspense } from "react";
 export const dynamic = "force-dynamic";
 
 const FailPageContent = () => {
-	useSaveLineUserInfo();
+	// useSaveLineUserInfo();
 	return (
 		<main className="bg-green01 w-full h-lvh">
 			<div className="bg-green01 w-full md:w-[400px] mx-auto">
