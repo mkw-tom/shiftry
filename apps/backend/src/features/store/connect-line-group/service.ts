@@ -1,18 +1,51 @@
+import type { ErrorResponse } from "@shared/api/common/types/errors.js";
+import type { StoreConnectLineGroupResponse } from "@shared/api/store/types/connect-line-group.js";
 import { aes, hmac } from "../../../lib/env.js";
 import {
 	connectStoreToGroup,
 	findStoreByGroupHashExcept,
+	getStoreByIdAllData,
 } from "../../../repositories/store.repository.js";
+import { getStoreCodeByHash } from "../../../repositories/storeCode.repository.js";
+import { getUserByLineIdHash } from "../../../repositories/user.repository.js";
+import { getUserStoreByUserIdAndStoreId } from "../../../repositories/userStore.repository.js";
 import { encryptText } from "../../../utils/aes.js";
 import { hmacSha256 } from "../../../utils/hmac.js";
+import { verifyIdToken } from "../../common/liff.service.js";
 
 export async function connectStoreToGroupService(
-	storeId: string,
-	channelType: "utou" | "group" | "room",
+	idToken: string,
 	groupId: string,
-) {
-	if (channelType !== "group") {
-		throw { status: 400, message: "Only group linking is supported" };
+	storeCode: string,
+): Promise<StoreConnectLineGroupResponse | ErrorResponse> {
+	const lineSub = await verifyIdToken(idToken);
+	if (!lineSub) {
+		throw {
+			status: 401,
+			message: "Invalid or missing ID token",
+		};
+	}
+	const lineId_hash = hmacSha256(lineSub, hmac.saltLineId);
+	const user = await getUserByLineIdHash(lineId_hash);
+	if (!user) {
+		return { ok: false, message: "User not found" };
+	}
+
+	const storeCode_hash = hmacSha256(storeCode, hmac.saltStoreCode);
+	const storeCodeRes = await getStoreCodeByHash(storeCode_hash);
+	if (!storeCodeRes) {
+		return { ok: false, message: "storeCode not found" };
+	}
+
+	const userStore = await getUserStoreByUserIdAndStoreId(
+		user.id,
+		storeCodeRes.storeId,
+	);
+	if (!userStore || userStore.role !== "OWNER") {
+		return {
+			ok: false,
+			message: "User does not have permission to link this store",
+		};
 	}
 
 	const groupId_hash = hmacSha256(groupId, hmac.saltGroupId);
@@ -21,36 +54,38 @@ export async function connectStoreToGroupService(
 		aes.keyGroupId,
 		aes.keyVersionGroupId,
 	);
-
-	const dup = await findStoreByGroupHashExcept(groupId_hash, storeId);
-	if (dup) {
-		throw {
-			status: 409,
+	const already = await findStoreByGroupHashExcept(
+		groupId_hash,
+		storeCodeRes.storeId,
+	);
+	if (already) {
+		return {
+			ok: false,
 			message: "This group is already linked to another store",
 		};
 	}
 
-	try {
-		const store = await connectStoreToGroup(
-			storeId,
-			groupId_hash,
-			groupId_enc,
-			hmac.keyVersionGroupId,
-			aes.keyVersionGroupId,
-		);
-		return store;
-	} catch (e) {
-		if (
-			typeof e === "object" &&
-			e !== null &&
-			"code" in e &&
-			e.code === "P2002"
-		) {
-			throw {
-				status: 409,
-				message: "This group is already linked to another store",
-			};
-		}
-		throw e;
+	const currentStore = await getStoreByIdAllData(storeCodeRes.storeId);
+	if (!currentStore) {
+		return { ok: false, message: "Store not found" };
 	}
+	if (currentStore.groupId_hash) {
+		if (currentStore.groupId_hash === groupId_hash) {
+			return { ok: true, store: currentStore, kind: "ALREADY_LINKED" };
+		}
+		return {
+			ok: false,
+			message: "This store is already linked to another group",
+		};
+	}
+
+	const store = await connectStoreToGroup(
+		storeCodeRes.storeId,
+		groupId_hash,
+		groupId_enc,
+		hmac.keyVersionGroupId,
+		aes.keyVersionGroupId,
+	);
+
+	return { ok: true, store: store, kind: "LINKED" };
 }

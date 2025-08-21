@@ -43,6 +43,7 @@ app.use(
 			"x-group-id",
 			"x-store-id",
 			"x-line-id",
+			"x-store-code",
 		],
 		methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
 		optionsSuccessStatus: 204,

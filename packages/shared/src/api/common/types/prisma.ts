@@ -10,6 +10,7 @@ export type {
 	ShiftPosition,
 	JobRole,
 	UserJobRole,
+	StoreCode,
 } from "@prisma/client";
 
 export {

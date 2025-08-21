@@ -1,4 +1,8 @@
-import type { StoreLite, UserLite } from "../../common/types/prismaLite.js";
+import type {
+	StoreLite,
+	UserLite,
+	UserStoreLite,
+} from "../../common/types/prismaLite.js";
 
 import type { UserRole, UserStore } from "../../common/types/prisma.js";
 
@@ -9,10 +13,12 @@ export interface RegisterOwnerResponse {
 	userStore: { userId: string; storeId: string; role: UserRole };
 }
 
-export interface RegisterOwnerServiceResponse {
+export interface RegisterOwnerResponse {
+	ok: true;
 	user: UserLite;
 	store: StoreLite;
-	userStore: UserStore;
+	userStore: UserStoreLite;
+	savedStoreCode: true;
 }
 
 export interface UpsertUserInput {

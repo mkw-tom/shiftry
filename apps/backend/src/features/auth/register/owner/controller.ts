@@ -44,17 +44,17 @@ const registerOwnerController = async (
 			return;
 		}
 
-		const { user, store, userStore } = await registerOwnerService(
+		const response = await registerOwnerService(
 			idToken,
 			userInputParsed.data,
 			storeNameParsed.data,
 		);
-		res.status(200).json({
-			ok: true,
-			user,
-			store,
-			userStore,
-		});
+		if (!response.ok) {
+			const code = response.message?.includes("LINE push") ? 502 : 400;
+			return void res.status(code).json(response);
+		}
+
+		res.status(200).json(response);
 	} catch (error) {
 		console.error("Error in registerOwnerController:", error);
 		res.status(500).json({

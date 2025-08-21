@@ -1,27 +1,31 @@
 import type {
-	RegisterOwnerServiceResponse,
+	RegisterOwnerResponse,
 	UpsertUserInput,
 } from "@shared/api/auth/types/register-owner.js";
 import type { StoreNameType } from "@shared/api/auth/validations/register-owner.js";
+import type { ErrorResponse } from "@shared/api/common/types/errors.js";
 import prisma from "../../../../config/database.js";
-import { aes, hmac } from "../../../../lib/env.js";
+import { aes, hmac, lineMessageChannel } from "../../../../lib/env.js";
 import { createStore } from "../../../../repositories/store.repository.js";
+import { UpsertStoreCode } from "../../../../repositories/storeCode.repository.js";
 import { upsertUser } from "../../../../repositories/user.repository.js";
 import { createUserStore } from "../../../../repositories/userStore.repository.js";
 import { encryptText } from "../../../../utils/aes.js";
 import { hmacSha256 } from "../../../../utils/hmac.js";
+import { generateStoreCode } from "../../../../utils/storeCode.js";
 import { verifyIdToken } from "../../../common/liff.service.js";
+import { pushToUser } from "./pushMessageToOwner.js";
 
 const registerOwnerService = async (
 	idToken: string,
 	userInput: UpsertUserInput,
 	storeInput: StoreNameType,
-): Promise<RegisterOwnerServiceResponse> => {
+): Promise<RegisterOwnerResponse | ErrorResponse> => {
 	const lineSub = await verifyIdToken(idToken);
 	const lineId_hash = hmacSha256(lineSub, hmac.saltLineId);
 	const lineId_enc = encryptText(lineSub, aes.keyLineId, aes.keyVersionLineId);
 
-	return prisma.$transaction(async (tx) => {
+	const { user, store, userStore } = await prisma.$transaction(async (tx) => {
 		const user = await upsertUser(
 			{
 				name: userInput.name,
@@ -37,9 +41,43 @@ const registerOwnerService = async (
 		const store = await createStore(storeInput.name, tx);
 
 		const userStore = await createUserStore(user.id, store.id, "OWNER", tx);
-
 		return { user, store, userStore };
 	});
+
+	const codePlain = generateStoreCode();
+	const code_hash = hmacSha256(codePlain, hmac.saltStoreCode);
+	const code_enc = encryptText(
+		codePlain,
+		aes.keyStoreCode,
+		aes.keyVersionStoreCode,
+	);
+
+	const storecode = await UpsertStoreCode(store.id, code_hash, code_enc);
+	if (!storecode) {
+		throw new Error("failed to save storeCode");
+	}
+
+	try {
+		const text = [
+			"登録が完了しました✨",
+			`店舗名：${store.name}`,
+			`店舗コード：${codePlain}`,
+			"",
+			"店舗コードはLINE連携・スタッフ登録に使用しますので、控えておくようお願いいたします。",
+		].join("\n");
+		await pushToUser(lineSub, text);
+	} catch (e) {
+		console.error("[registerOwner] storecode/push failed:", e);
+		return { ok: false, message: "Failed to send LINE push message" };
+	}
+
+	return {
+		ok: true,
+		user,
+		store,
+		userStore,
+		savedStoreCode: true,
+	};
 };
 
 export default registerOwnerService;

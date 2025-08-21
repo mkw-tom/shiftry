@@ -14,6 +14,7 @@ declare global {
 				iat?: number;
 				exp?: number;
 			};
+			storeCode?: string;
 			channelType: "group" | "room" | "utou";
 			idToken?: string;
 		}
