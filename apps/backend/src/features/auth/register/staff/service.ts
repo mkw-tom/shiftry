@@ -1,55 +1,78 @@
-// import type {
-// 	RegisterOwnerServiceResponse,
-// 	UpsertUserInput,
-// } from "@shared/api/auth/types/register-owner.js";
-// import type { RegisterStaffServiceResponse } from "@shared/api/auth/types/register-staff.js";
-// import type { StoreNameType } from "@shared/api/auth/validations/register-owner.js";
-// import prisma from "../../../../config/database.js";
-// import { aes, hmac } from "../../../../lib/env.js";
-// import { getStoreByGroupIdHash } from "../../../../repositories/store.repository.js";
-// import { upsertUser } from "../../../../repositories/user.repository.js";
-// import { createUserStore } from "../../../../repositories/userStore.repository.js";
-// import { encryptText } from "../../../../utils/aes.js";
-// import { hmacSha256 } from "../../../../utils/hmac.js";
-// import {
-// 	verifyIdToken,
-// } from "../../../common/liff.service.js";
+import type { UpsertUserInput } from "@shared/api/auth/types/register-owner.js";
+import type { RegisterStaffResponse } from "@shared/api/auth/types/register-staff.js";
+import type { ErrorResponse } from "@shared/api/common/types/errors.js";
+import prisma from "../../../../config/database.js";
+import { aes, hmac } from "../../../../lib/env.js";
+import { getStoreCodeByHash } from "../../../../repositories/storeCode.repository.js";
+import { upsertUser } from "../../../../repositories/user.repository.js";
+import { getUserStoreByUserIdAndStoreId } from "../../../../repositories/userStore.repository.js";
+import { encryptText } from "../../../../utils/aes.js";
+import { hmacSha256 } from "../../../../utils/hmac.js";
+import { verifyIdToken } from "../../../common/liff.service.js";
+const registerStaffService = async (
+	idToken: string,
+	userInput: UpsertUserInput,
+	storeCode: string,
+): Promise<RegisterStaffResponse | ErrorResponse> => {
+	const codeHash = hmacSha256(storeCode, hmac.saltStoreCode);
+	const code = await getStoreCodeByHash(codeHash);
+	if (!code) return { ok: false, message: "storeCode not found" };
 
-// const registerStaffService = async (
-// 	idToken: string,
-// 	userInput: UpsertUserInput,
-// ): Promise<RegisterStaffServiceResponse> => {
-// 	if (channelType !== "group") {
-// 		throw { status: 400, message: "Only group linking is supported" };
-// 	}
-// 	const lineSub = await verifyIdToken(idToken);
-// 	const lineId_hash = hmacSha256(lineSub, hmac.saltLineId);
-// 	const lineId_enc = encryptText(lineSub, aes.keyLineId, aes.keyVersionLineId);
+	const sub = await verifyIdToken(idToken);
+	if (!sub) return { ok: false, message: "Invalid or missing ID token" };
 
-// 	const groupId_hash = hmacSha256(channelId, hmac.saltGroupId);
+	const lineHash = hmacSha256(sub, hmac.saltLineId);
+	const lineEnc = encryptText(sub, aes.keyLineId, aes.keyVersionLineId);
 
-// 	return prisma.$transaction(async (tx) => {
-// 		const user = await upsertUser(
-// 			{
-// 				name: userInput.name,
-// 				pictureUrl: userInput.pictureUrl,
-// 				lineId_hash: lineId_hash,
-// 				lineId_enc: lineId_enc,
-// 				lineKeyVersion_hash: hmac.keyVersionLineId,
-// 				lineKeyVersion_enc: aes.keyVersionLineId,
-// 			},
-// 			tx,
-// 		);
+	try {
+		return await prisma.$transaction(async (tx) => {
+			const user = await upsertUser(
+				{
+					name: userInput.name,
+					pictureUrl: userInput.pictureUrl,
+					lineId_hash: lineHash,
+					lineId_enc: lineEnc,
+					lineKeyVersion_hash: hmac.keyVersionLineId,
+					lineKeyVersion_enc: aes.keyVersionLineId,
+				},
+				tx,
+			);
 
-// 		const store = await getStoreByGroupIdHash(groupId_hash, tx);
-// 		if (!store) {
-// 			throw { status: 404, message: "Store not found for the given group" };
-// 		}
+			// 既存チェック（主キー）
+			const existing = await getUserStoreByUserIdAndStoreId(
+				user.id,
+				code.storeId,
+				tx,
+			);
+			if (existing) {
+				return {
+					ok: true,
+					user,
+					store: existing.store,
+					userStore: existing,
+					kind: "ALREADY_MEMBER",
+				};
+			}
 
-// 		const userStore = await createUserStore(user.id, store.id, "STAFF", tx);
+			const created = await tx.userStore.create({
+				data: { userId: user.id, storeId: code.storeId, role: "STAFF" },
+				include: {
+					store: { select: { id: true, name: true, isActive: true } },
+				},
+			});
 
-// 		return { user, store, userStore };
-// 	});
-// };
+			return {
+				ok: true,
+				user,
+				store: created.store,
+				userStore: created,
+				kind: "NEW_MEMBER",
+			};
+		});
+	} catch (e) {
+		console.error("[registerStaff] tx failed:", e);
+		return { ok: false, message: "Failed to register staff" };
+	}
+};
 
-// export default registerStaffService;
+export default registerStaffService;

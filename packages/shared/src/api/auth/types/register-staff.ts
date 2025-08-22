@@ -10,12 +10,7 @@ export interface RegisterStaffResponse {
 	user: UserLite;
 	store: StoreLite;
 	userStore: UserStoreLite;
-}
-
-export interface RegisterStaffServiceResponse {
-	user: UserLite;
-	store: StoreLite;
-	userStore: UserStoreLite;
+	kind: "NEW_MEMBER" | "ALREADY_MEMBER";
 }
 
 export interface UpsertUserInput {

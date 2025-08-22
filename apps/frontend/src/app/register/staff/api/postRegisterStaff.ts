@@ -10,28 +10,34 @@ import type {
 } from "@shared/api/common/types/errors";
 
 export const postRegisterStaff = async ({
-	lineToken,
+	idToken,
+	storeCode,
 	userInput,
-	storeInput,
 }: {
-	lineToken: string;
+	idToken: string;
+	storeCode: string;
 	userInput: userInputType;
-	storeInput: storeIdandShfitReruestIdType;
 }): Promise<
 	RegisterStaffResponse | ErrorResponse | ValidationErrorResponse
 > => {
-	const payload = {
-		userInput,
-		storeInput,
-	};
+	if (!idToken) {
+		throw new Error("ID Token not found");
+	}
+	if (!storeCode) {
+		throw new Error("Store code not found");
+	}
+	if (!userInput || !userInput.name || !userInput.pictureUrl) {
+		throw new Error("User input is invalid");
+	}
 
-	const res = await fetch(`${API_URL}/api/auth/register-staff`, {
+	const res = await fetch(`${API_URL}/api/auth/register/staff`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			"x-line-id": lineToken,
+			"x-id-token": idToken,
+			"x-store-code": storeCode,
 		},
-		body: JSON.stringify(payload),
+		body: JSON.stringify(userInput),
 	});
 
 	const data = await res.json();

@@ -5,7 +5,7 @@ export const userInputValidate = z.object({
 		.string()
 		.trim()
 		.min(1, "必須入力です")
-		.max(10, "20文字以内で入力してください"),
+		.max(10, "10文字以内で入力してください"),
 	pictureUrl: z.string().url().optional(),
 });
 export type userInputType = z.infer<typeof userInputValidate>;

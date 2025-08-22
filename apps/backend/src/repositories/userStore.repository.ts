@@ -16,14 +16,21 @@ export const createUserStore = async (
 	storeId: string,
 	role: UserRole,
 	db: Prisma.TransactionClient | PrismaClient = prisma,
-): Promise<UserStoreLite> => {
+): Promise<UserStoreLiteWithStore> => {
 	return await db.userStore.create({
 		data: {
 			userId,
 			storeId,
 			role,
 		},
-		select: { userId: true, storeId: true, role: true },
+		select: {
+			userId: true,
+			storeId: true,
+			role: true,
+			store: {
+				select: { id: true, name: true, isActive: true },
+			},
+		},
 	});
 };
 
@@ -70,9 +77,10 @@ export const getUserStoresUnconnectedGroupByUserId = async (
 export const getUserStoreByUserIdAndStoreId = async (
 	userId: string,
 	storeId: string,
+	db: Prisma.TransactionClient | PrismaClient = prisma,
 ): Promise<UserStoreLiteWithStore | null> => {
-	return await prisma.userStore.findFirst({
-		where: { userId, storeId },
+	return db.userStore.findUnique({
+		where: { userId_storeId: { userId, storeId } },
 		select: {
 			userId: true,
 			storeId: true,
