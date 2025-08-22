@@ -1,23 +1,32 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { type connectFormType, connectFormValidate } from "../validation";
+import {
+	type RegisterStaffFormType,
+	RegisterStaffFormValidate,
+} from "../validation";
 
-export const useConnectFormValidate = () => {
+export const useRegisterStaffFormValidate = () => {
 	const {
 		register,
 		formState: { errors },
 		watch,
 		handleSubmit,
-	} = useForm<connectFormType>({
-		resolver: zodResolver(connectFormValidate),
+	} = useForm<RegisterStaffFormType>({
+		resolver: zodResolver(RegisterStaffFormValidate),
 		mode: "onChange",
 	});
 
+	const name = watch("name") ?? "";
 	const storeCode = watch("storeCode") ?? "";
 	const agree = watch("agree");
 	const isDisabled =
-		!agree || storeCode === "" || errors.agree || errors.storeCode;
+		!agree ||
+		storeCode === "" ||
+		errors.agree ||
+		errors.storeCode ||
+		errors.name ||
+		name === "";
 
 	return {
 		register,

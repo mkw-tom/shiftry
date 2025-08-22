@@ -2,29 +2,31 @@
 import liff from "@line/liff";
 import React, { use, useState } from "react";
 import { BiLock } from "react-icons/bi";
-import { useConnectFormValidate } from "../hooks/useConnectFormValidate";
-import { useConnectStore } from "../hooks/useConnectStore";
-import type { connectFormType } from "../validation";
+import { LuUser } from "react-icons/lu";
+import useRegisterOwnerFormValidate from "../../owner/hooks/useRegisterOwnerValidate";
+import { useRegisterStaff } from "../hook/useRegisterStaff";
+import { useRegisterStaffFormValidate } from "../hook/useRegisterStaffFormValidate";
+import type { RegisterStaffFormType } from "../validation";
 import ConnectButton from "./ConnectButton";
 
-const ConnectForm = () => {
+const RegisterStaffForm = () => {
 	const { register, errors, isDisabled, handleSubmit } =
-		useConnectFormValidate();
-	const { connectStore, connecting } = useConnectStore();
+		useRegisterStaffFormValidate();
+	const { error, registerStaff, loading } = useRegisterStaff();
 
-	const onSubmit = async (data: connectFormType) => {
+	const onSubmit = async (data: RegisterStaffFormType) => {
 		if (!data.agree) {
 			return alert("同意にチェックを入れてください");
 		}
 
-		const res = await connectStore(data.storeCode);
-		if (!res?.ok) {
+		const res = await registerStaff(data.name, data.storeCode);
+		if ("ok" in res && !res.ok) {
 			alert(`店舗の接続に失敗しました。もう一度お試しください。${res.message}`);
 			liff.closeWindow();
 			return;
 		}
 
-		if (res?.ok) {
+		if ("ok" in res && res.ok) {
 			alert(`LINEグループ連携が完了しました✨。店舗名：${res.store.name}`);
 			liff.closeWindow();
 		}
@@ -37,6 +39,27 @@ const ConnectForm = () => {
 		>
 			<fieldset className="fieldset w-full mx-auto flex flex-col items-center">
 				<legend className="fieldset-legend text-gray02 text-center">
+					<LuUser />
+					スタッフ名
+				</legend>
+				<input
+					{...register("name")}
+					type="text"
+					className="input input-bordered w-4/5 text-black bg-white border-gray-300 focus:outline-none focus:ring-2 focus:ring-success"
+					placeholder="例：シフト太郎"
+					maxLength={10}
+					disabled={loading}
+				/>
+				<p className="fieldset-label text-gray02">
+					※ プライバシー保護のため、フルネームは避けてください。
+				</p>
+				{errors.name && (
+					<p className="fieldset-label text-error">{errors.name.message}</p>
+				)}
+			</fieldset>
+
+			<fieldset className="fieldset w-full mx-auto flex flex-col items-center">
+				<legend className="fieldset-legend text-gray02 text-center">
 					<BiLock />
 					店舗コード
 				</legend>
@@ -45,8 +68,8 @@ const ConnectForm = () => {
 					type="text"
 					className="input input-bordered w-4/5 text-black bg-white border-gray-300 focus:outline-none focus:ring-2 focus:ring-success text-center"
 					placeholder="XXXX-XXXX-XXXX"
-					maxLength={20}
-					disabled={connecting}
+					maxLength={14}
+					disabled={loading}
 				/>
 				{errors.storeCode && (
 					<p className="fieldset-label text-error">
@@ -62,7 +85,7 @@ const ConnectForm = () => {
 						type="checkbox"
 						defaultChecked={false}
 						className="checkbox checkbox-sm checkbox-success mb-3 sm:mb-1"
-						disabled={connecting}
+						disabled={loading}
 					/>
 					<span className="text-xs text-black ">
 						サービス利用のため、LINEグループの情報取得に同意します。
@@ -72,9 +95,9 @@ const ConnectForm = () => {
 					<p className="fieldset-label text-error">{errors?.agree?.message}</p>
 				)}
 			</fieldset>
-			<ConnectButton isDisabled={isDisabled} connecting={connecting} />
+			<ConnectButton isDisabled={isDisabled} loading={loading} />
 		</form>
 	);
 };
 
-export default ConnectForm;
+export default RegisterStaffForm;

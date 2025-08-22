@@ -23,6 +23,7 @@ export const PLAN_MAX30 = process.env.NEXT_PUBLIC_PLAN_MAX30 as string;
 export const liffId = {
 	registerOwner: process.env.NEXT_PUBLIC_LIFF_ID_REGISTER_OWNER as string,
 	registerConnect: process.env.NEXT_PUBLIC_LIFF_ID_REGISTER_CONNECT as string,
+	registerStaff: process.env.NEXT_PUBLIC_LIFF_ID_REGISTER_STAFF as string,
 	dashboard: process.env.NEXT_PUBLIC_LIFF_ID_DASHBOARD as string,
 	createRequest: process.env.NEXT_PUBLIC_LIFF_ID_CREAETE_REQUEST as string,
 	submitRquest: process.env.NEXT_PUBLIC_LIFF_ID_SUBMIT_REQEUST as string,

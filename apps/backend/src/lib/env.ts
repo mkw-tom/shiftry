@@ -72,6 +72,7 @@ export const STRIPE_WEBHOOK_SECRET = process.env
 export const liffUrl = {
 	registerOwnerPage: process.env.LIFF_URL_REGISTER_OWNER as string,
 	connectLineGroupPage: process.env.LIFF_URL_REGISTER_CONNECT as string,
+	registerStaffPage: process.env.LIFF_URL_REGISTER_STAFF as string,
 	dashboardPage: process.env.LIFF_URL_DASHBOARD as string,
 	createRequestPage: process.env.LIFF_URL_CREATE_REQUEST as string,
 	submitRequestPage: process.env.LIFF_URL_SUBMIT_REQUEST as string,

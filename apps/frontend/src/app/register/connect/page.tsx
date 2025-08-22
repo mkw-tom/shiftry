@@ -9,7 +9,6 @@ const Page = () => {
 		<main className="bg-white w-full h-lvh">
 			<div className="w-full md:w-[410px] mx-auto">
 				<FirstView />
-				{/* <AuthGate liffId={liffId.registerConnect}> */}
 				<InitGate liffId={liffId.registerConnect}>
 					<Suspense
 						fallback={
@@ -21,7 +20,6 @@ const Page = () => {
 						<ConnectForm />
 					</Suspense>
 				</InitGate>
-				{/* </AuthGate> */}
 			</div>
 		</main>
 	);

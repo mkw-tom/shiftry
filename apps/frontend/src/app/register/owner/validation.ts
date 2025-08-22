@@ -4,7 +4,7 @@ import {
 } from "@shared/api/auth/validations/register-owner";
 import { z } from "zod";
 
-export const regiserOwnerAndStoreValidate = z.object({
+export const regiserOwnerValidate = z.object({
 	name: userInputValidate.shape.name,
 	storeName: storeInputValidate.shape.name,
 	agree: z.literal(true, {
@@ -12,9 +12,7 @@ export const regiserOwnerAndStoreValidate = z.object({
 	}),
 });
 
-export type regiserOwnerAndStoreType = z.infer<
-	typeof regiserOwnerAndStoreValidate
->;
+export type regiserOwnerAndStoreType = z.infer<typeof regiserOwnerValidate>;
 
 // export const checkBoxValidate = z.object({
 //   agree: z.literal(true, {

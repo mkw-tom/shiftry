@@ -1,7 +1,11 @@
 import { z } from "zod";
 
 export const userInputValidate = z.object({
-	name: z.string().min(1, { message: "name is required" }).max(20),
+	name: z
+		.string()
+		.trim()
+		.min(1, "必須入力です")
+		.max(10, "10文字以内で入力してください"),
 	pictureUrl: z.string().url().optional(),
 });
 export type userInputType = z.infer<typeof userInputValidate>;

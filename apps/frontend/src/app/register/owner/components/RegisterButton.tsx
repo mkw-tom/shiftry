@@ -1,7 +1,7 @@
 import liff from "@line/liff";
 import { use } from "react";
 import type { FieldError } from "react-hook-form";
-import useRegisterOwner from "../../hooks/useRegisterOwner";
+import useRegisterOwner from "../hooks/useRegisterOwner";
 
 const RegisterButton = ({
 	isDisabled,
