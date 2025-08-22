@@ -6,7 +6,7 @@ import type {
 } from "../../common/types/prismaLite.js";
 
 export interface RegisterStaffResponse {
-	ok: true
+	ok: true;
 	user: UserLite;
 	store: StoreLite;
 	userStore: UserStoreLite;
