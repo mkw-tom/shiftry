@@ -2,15 +2,15 @@
 import liff from "@line/liff";
 import { BiHome } from "react-icons/bi";
 import { LuUser } from "react-icons/lu";
-import useRegisterOwner from "../../hooks/useRegisterOwner";
-import useRegisterOwnerFormValidate from "../../hooks/useRegisterOwnerValidate";
-import type { regiserOwnerAndStoreType } from "../../validation/form";
-import RegisterButton from "../button/RegisterButton";
+import useRegisterOwner from "../hooks/useRegisterOwner";
+import useRegisterOwnerFormValidate from "../hooks/useRegisterOwnerValidate";
+import type { regiserOwnerAndStoreType } from "../validation";
+import RegisterButton from "./RegisterButton";
 
 const RegisterForm = () => {
 	const { register, errors, isDisabled, name, storeName, handleSubmit } =
 		useRegisterOwnerFormValidate();
-	const { loading, error, registerOwner } = useRegisterOwner();
+	const { loading, registerOwner } = useRegisterOwner();
 
 	const onSubmit = async (data: regiserOwnerAndStoreType) => {
 		// ここで API 呼び出し
@@ -45,11 +45,11 @@ const RegisterForm = () => {
 						type="text"
 						className="input input-bordered w-4/5 text-black bg-white border-gray-300 focus:outline-none focus:ring-2 focus:ring-success"
 						placeholder="例：タロウ"
-						maxLength={20}
-						// disabled={apiLoading}
+						maxLength={10}
+						disabled={loading}
 					/>
 					<p className="fieldset-label text-gray02">
-						※プライバシー保護のため、フルネームは避けてください。
+						※ プライバシー保護のため、フルネームは避けてください。
 					</p>
 					{errors.name && (
 						<p className="fieldset-label text-error">{errors.name.message}</p>
@@ -66,7 +66,7 @@ const RegisterForm = () => {
 						className="input input-bordered w-4/5 text-black bg-white border-gray-300 focus:outline-none focus:ring-2 focus:ring-success"
 						placeholder="例：株式会社〇〇"
 						maxLength={20}
-						// disabled={apiLoading}
+						disabled={loading}
 					/>
 					{errors.storeName && (
 						<p className="fieldset-label text-error">
@@ -82,7 +82,7 @@ const RegisterForm = () => {
 							type="checkbox"
 							defaultChecked={false}
 							className="checkbox checkbox-sm checkbox-success mb-0.5 "
-							disabled={false}
+							disabled={loading}
 						/>
 						<span className=" text-xs text-black">
 							プロフィール情報の取得に同意します。

@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form";
 import { isValid } from "zod";
 import {
 	type regiserOwnerAndStoreType,
-	regiserOwnerAndStoreValidate,
-} from "../validation/form";
+	regiserOwnerValidate,
+} from "../validation";
 
 const useRegisterOwnerFormValidate = () => {
 	const {
@@ -14,7 +14,7 @@ const useRegisterOwnerFormValidate = () => {
 		watch,
 		handleSubmit,
 	} = useForm<regiserOwnerAndStoreType>({
-		resolver: zodResolver(regiserOwnerAndStoreValidate),
+		resolver: zodResolver(regiserOwnerValidate),
 		mode: "onChange",
 	});
 	const name = watch("name") ?? "";

@@ -4,13 +4,13 @@ import React, { use, useState } from "react";
 import { BiLock } from "react-icons/bi";
 import { useConnectFormValidate } from "../hooks/useConnectFormValidate";
 import { useConnectStore } from "../hooks/useConnectStore";
-import type { connectFormType } from "../validation/connectForm";
+import type { connectFormType } from "../validation";
 import ConnectButton from "./ConnectButton";
 
 const ConnectForm = () => {
 	const { register, errors, isDisabled, handleSubmit } =
 		useConnectFormValidate();
-	const { connectStore, connectError, connecting } = useConnectStore();
+	const { connectStore, connecting } = useConnectStore();
 
 	const onSubmit = async (data: connectFormType) => {
 		if (!data.agree) {

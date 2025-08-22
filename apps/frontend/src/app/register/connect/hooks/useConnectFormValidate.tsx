@@ -1,10 +1,7 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-	type connectFormType,
-	connectFormValidate,
-} from "../validation/connectForm";
+import { type connectFormType, connectFormValidate } from "../validation";
 
 export const useConnectFormValidate = () => {
 	const {

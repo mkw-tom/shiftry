@@ -5,7 +5,7 @@ import type { FieldError } from "react-hook-form";
 const RegisterStaffButton = ({
 	isDisabled,
 	loading,
-}: { isDisabled:  boolean | FieldError| undefined; loading: boolean }) => {
+}: { isDisabled: boolean | FieldError | undefined; loading: boolean }) => {
 	return (
 		<button
 			type="submit"
