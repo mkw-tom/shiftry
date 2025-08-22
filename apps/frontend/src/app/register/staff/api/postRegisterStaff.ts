@@ -37,7 +37,7 @@ export const postRegisterStaff = async ({
 			"x-id-token": idToken,
 			"x-store-code": storeCode,
 		},
-		body: JSON.stringify(userInput),
+		body: JSON.stringify({ userInput: userInput }),
 	});
 
 	const data = await res.json();
