@@ -1,6 +1,6 @@
-import type { Store } from "../../common/types/prisma.js";
+import type { UserStoreLiteWithStore } from "../../../api/common/types/prismaLite.js";
 
 export interface GetStoresFromUserResponse {
 	ok: true;
-	stores: Store[];
+	stores: UserStoreLiteWithStore[];
 }

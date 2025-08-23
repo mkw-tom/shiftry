@@ -8,6 +8,7 @@ import type {
 import type {
 	UserStoreLite,
 	UserStoreLiteWithStore,
+	UserStoreLiteWithUserAndJobRoles,
 } from "@shared/api/common/types/prismaLite.js";
 import prisma from "../config/database.js";
 
@@ -113,21 +114,15 @@ export const getStoresFromUser = async (
 };
 
 ///店舗に所属するすべてのユーザーデータを取得
-export const getUsersFromStore = async (
+export const getMemberFromStore = async (
 	storeId: string,
-): Promise<
-	{
-		user: {
-			id: string;
-			name: string;
-			pictureUrl: string | null;
-			jobRoles: { roleId: string; role: { id: string; name: string } }[];
-		};
-	}[]
-> => {
+): Promise<UserStoreLiteWithUserAndJobRoles[]> => {
 	return await prisma.userStore.findMany({
 		where: { storeId },
-		include: {
+		select: {
+			userId: true,
+			storeId: true,
+			role: true,
 			user: {
 				select: {
 					id: true,
