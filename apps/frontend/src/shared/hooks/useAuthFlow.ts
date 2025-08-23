@@ -1,5 +1,7 @@
 "use client";
+import type { RootState } from "@/app/redux/store";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import { useLiffVerify } from "./useLiffVerify";
 import { useLogin } from "./useLogin";
 import { useMe } from "./useMe";
@@ -24,6 +26,7 @@ type Options = {
 
 export function useAuthFlow({ liffId, autoRun = true }: Options) {
 	const { liffVerify } = useLiffVerify({ liffId });
+	const { jwt } = useSelector((state: RootState) => state.authToken);
 	const { login } = useLogin();
 	const { selectStore } = useSelectStore();
 	const { me } = useMe();
@@ -41,42 +44,53 @@ export function useAuthFlow({ liffId, autoRun = true }: Options) {
 		setError(null);
 
 		try {
-			setStep("verifying");
-			const vres = await liffVerify();
+			if (jwt) {
+				setStep("getting-info");
+				const meRes = await me({ jwt: jwt });
+				if (!meRes.ok) {
+					setError(meRes.message || "Failed to fetch user profile");
+					setStep("error");
+					return;
+				}
+				setStep("ready");
+			}
 
-			if (!vres.ok) {
-				setError(vres.message || "LIFF verification failed");
+			setStep("verifying");
+			const vRes = await liffVerify();
+
+			if (!vRes.ok) {
+				setError(vRes.message || "LIFF verification failed");
 				setStep("error");
 				return;
 			}
-			if (vres.next === "REGISTER") {
+			if (vRes.next === "REGISTER") {
 				setStep("unregistered");
 				return;
 			}
-			if (vres.next === "REDIRECTING") {
+			if (vRes.next === "REDIRECTING") {
 				setStep("redirecting");
 				return;
 			}
-			if (vres.next !== "LOGIN" || !vres.token) {
+			if (vRes.next !== "LOGIN" || !vRes.token) {
 				setError("Unexpected verify result");
 				setStep("error");
 				return;
 			}
 
 			setStep("logging-internal");
-			const lres = await login({ jwt: vres.token });
+			const lRes = await login({ jwt: vRes.token });
 
-			if (!lres.ok) {
-				setError(lres.message || "login failed");
+			if (!lRes.ok) {
+				setError(lRes.message || "login failed");
 				setStep("error");
 				return;
 			}
 
-			if (lres.next === "AUTO") {
+			if (lRes.next === "AUTO") {
 				setStep("getting-info");
-				const meres = await me({ jwt: lres.token });
-				if (!meres.ok) {
-					setError(meres.message || "Failed to fetch user profile");
+				const meRes = await me({ jwt: lRes.token });
+				if (!meRes.ok) {
+					setError(meRes.message || "Failed to fetch user profile");
 					setStep("error");
 					return;
 				}
@@ -84,7 +98,7 @@ export function useAuthFlow({ liffId, autoRun = true }: Options) {
 				return;
 			}
 
-			if (lres.next === "SELECT_STORE") {
+			if (lRes.next === "SELECT_STORE") {
 				setStep("need-store");
 				return;
 			}
@@ -103,7 +117,7 @@ export function useAuthFlow({ liffId, autoRun = true }: Options) {
 		} finally {
 			inflight.current = false;
 		}
-	}, [liffVerify, login, me]);
+	}, [liffVerify, login, me, jwt]);
 
 	const chooseStore = useCallback(
 		async (storeId: string) => {
@@ -117,9 +131,9 @@ export function useAuthFlow({ liffId, autoRun = true }: Options) {
 					return;
 				}
 				setStep("getting-info");
-				const meres = await me({ jwt: sres.token });
-				if (!meres.ok) {
-					setError(meres.message || "Failed to fetch user profile");
+				const meRes = await me({ jwt: sres.token });
+				if (!meRes.ok) {
+					setError(meRes.message || "Failed to fetch user profile");
 					setStep("error");
 					return;
 				}
