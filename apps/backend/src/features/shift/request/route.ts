@@ -1,5 +1,6 @@
 import express from "express";
 
+import { requireUser } from "../../../middlewares/auth.js";
 import { attachStoreId } from "../../../middlewares/request/attachStoreId.js";
 import { attachUserId } from "../../../middlewares/request/attachUserId.js";
 import { validateWeekStart } from "../../../middlewares/validations/weekStart.validate.js";
@@ -12,8 +13,9 @@ import getShiftRequestsController from "./get/controller.js";
 import upsertShiftRequestController from "./put/controller.js";
 
 const router = express.Router();
-router.use(attachUserId);
-router.use(attachStoreId);
+// router.use(attachUserId);
+// router.use(attachStoreId);
+router.use(requireUser);
 
 router.delete("/:weekStart", validateWeekStart, deleteShiftRequestController);
 router.post("/bulk", deleteManyShiftRequestController);

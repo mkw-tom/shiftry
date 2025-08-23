@@ -1,4 +1,3 @@
-// src/shared/components/InitGate.tsx
 "use client";
 import liff from "@line/liff";
 import React, { type PropsWithChildren } from "react";

@@ -5,29 +5,20 @@ import type {
 } from "@shared/api/common/types/errors";
 import type { DeleteManyShiftRequestResponse } from "@shared/api/shift/request/types/delete-many";
 
-export const deleteManyShiftRequests = async ({
-	userToken,
-	storeToken,
-	ids,
-}: {
-	userToken: string;
-	storeToken: string;
-	ids: string[];
-}): Promise<
+export const deleteManyShiftRequests = async (
+	jwt: string,
+	ids: string[],
+): Promise<
 	DeleteManyShiftRequestResponse | ErrorResponse | ValidationErrorResponse
 > => {
-	if (!userToken) {
-		throw new Error("code is not found");
-	}
-	if (!storeToken) {
-		throw new Error("code is not found");
+	if (!jwt) {
+		throw new Error("JWT is not found");
 	}
 	const res = await fetch(`${API_URL}/api/shift/request/bulk`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Authorization: `Bearer ${userToken}`,
-			"x-store-id": storeToken,
+			Authorization: `Bearer ${jwt}`,
 		},
 		body: JSON.stringify({ ids }),
 	});
