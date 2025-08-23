@@ -3,26 +3,21 @@ import type {
 	ErrorResponse,
 	ValidationErrorResponse,
 } from "@shared/api/common/types/errors";
-import type { GetUsersFromStoreResponse } from "@shared/api/user/types/get";
+import type { GetMemberFromStoreResponse } from "@shared/api/user/types/get-member";
 
 export const getMembers = async (
-	userToken: string | null,
-	storeToken: string | null,
+	jwt: string,
 ): Promise<
-	GetUsersFromStoreResponse | ErrorResponse | ValidationErrorResponse
+	GetMemberFromStoreResponse | ErrorResponse | ValidationErrorResponse
 > => {
-	if (userToken === null) {
-		throw new Error("userToken is not found");
-	}
-	if (storeToken === null) {
-		throw new Error("groupToken is not found");
+	if (!jwt) {
+		throw new Error("JWT not found");
 	}
 	const res = await fetch(`${API_URL}/api/user`, {
 		method: "GET",
 		headers: {
 			"Content-Type": "application/json",
-			Authorization: `Bearer ${userToken}`,
-			"x-store-id": storeToken,
+			Authorization: `Bearer ${jwt}`,
 		},
 	});
 

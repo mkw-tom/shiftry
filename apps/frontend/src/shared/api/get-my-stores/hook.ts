@@ -1,48 +1,46 @@
-// import { setStores } from "@/app/redux/slices/stores";
-// import type { AppDispatch, RootState } from "@/app/redux/store";
-// import { useEffect, useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { getMyStores } from "./api";
+import { setStores } from "@/app/redux/slices/stores";
+import type { AppDispatch, RootState } from "@/app/redux/store";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getMyStores } from "./api";
 
-// export const useMystoresHooks = (trigger: boolean) => {
-// 	const [isLoading, setIsLoading] = useState(false);
-// 	const [error, setError] = useState(false);
-// 	const [hasFetched, setHasFetched] = useState(false);
+export const useMystoresHooks = (trigger: boolean) => {
+	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState(false);
+	const [hasFetched, setHasFetched] = useState(false);
+	const dispatch = useDispatch<AppDispatch>();
+	const { jwt } = useSelector((state: RootState) => state.authToken);
 
-// 	const { userToken, storeToken } = useSelector(
-// 		(state: RootState) => state.token,
-// 	);
-// 	const dispatch = useDispatch<AppDispatch>();
+	useEffect(() => {
+		if (!trigger) return;
 
-// 	useEffect(() => {
-// 		if (!trigger || hasFetched || !userToken || !storeToken) return;
+		const fetchPayment = async () => {
+			try {
+				setIsLoading(true);
+				setError(false);
 
-// 		const fetchPayment = async () => {
-// 			try {
-// 				setIsLoading(true);
-// 				const res = await getMyStores(userToken, storeToken);
+				if (!jwt) {
+					setError(true);
+					return;
+				}
+				const res = await getMyStores(jwt);
 
-// 				if (!res.ok) {
-// 					if ("errors" in res) {
-// 						console.warn(res.message, res.errors);
-// 						return;
-// 					}
-// 					console.error("エラー:", res.message);
-// 					return;
-// 				}
+				if (!res.ok) {
+					return { ok: false, message: res.message };
+				}
 
-// 				// dispatch(setStores(res.stores));
-// 				setHasFetched(true); // ✅ 1回きりの実行制御
-// 			} catch (err) {
-// 				setError(true);
-// 				console.error("エラー:", err);
-// 			} finally {
-// 				setIsLoading(false);
-// 			}
-// 		};
+				dispatch(setStores(res.stores));
+				setHasFetched(true); // ✅ 1回きりの実行制御
+			} catch (err) {
+				setError(true);
+				console.error("エラー:", err);
+			} finally {
+				setIsLoading(false);
+			}
+		};
 
-// 		fetchPayment();
-// 	}, [trigger, hasFetched, userToken, storeToken]);
+		fetchPayment();
+	}, [trigger, dispatch, jwt]);
 
-// 	return { isLoading, error };
-// };
+	return { isLoading, error };
+};
