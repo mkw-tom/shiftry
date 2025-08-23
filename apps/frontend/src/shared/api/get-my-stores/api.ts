@@ -6,22 +6,18 @@ import type {
 import type { GetStoresFromUserResponse } from "@shared/api/store/types/me";
 
 export const getMyStores = async (
-	userToken: string | null,
-	storeToken: string | null,
+	jwt: string,
 ): Promise<
 	GetStoresFromUserResponse | ErrorResponse | ValidationErrorResponse
 > => {
-	if (userToken === null) {
-		throw new Error("userToken is not found");
-	}
-	if (storeToken === null) {
-		throw new Error("groupToken is not found");
+	if (!jwt) {
+		throw new Error("JWTトークンが見つかりません");
 	}
 	const res = await fetch(`${API_URL}/api/store/me`, {
 		method: "GET",
 		headers: {
 			"Content-Type": "application/json",
-			Authorization: `Bearer ${userToken}`,
+			Authorization: `Bearer ${jwt}`,
 		},
 	});
 

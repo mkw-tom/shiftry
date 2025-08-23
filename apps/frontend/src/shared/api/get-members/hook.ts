@@ -1,46 +1,48 @@
-// import { setMembers } from "@/app/redux/slices/members";
-// import type { AppDispatch, RootState } from "@/app/redux/store";
-// import { useEffect, useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { getMembers } from "./api";
+import { setMembers } from "@/app/redux/slices/members";
+import type { AppDispatch, RootState } from "@/app/redux/store";
+import type { ErrorResponse } from "@shared/api/common/types/errors";
+import type { GetMemberFromStoreResponse } from "@shared/api/user/types/get-member";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getMembers } from "./api";
 
-// export const useMembersHook = (trigger: boolean) => {
-// 	const [isLoading, setIsLoading] = useState(false);
-// 	const [error, setError] = useState(false);
+export const useMembersHook = (trigger: boolean) => {
+	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState(false);
+	const dispatch = useDispatch<AppDispatch>();
+	const { jwt } = useSelector((state: RootState) => state.authToken);
 
-// 	const { userToken, storeToken } = useSelector(
-// 		(state: RootState) => state.token,
-// 	);
-// 	const dispatch = useDispatch<AppDispatch>();
+	useEffect(() => {
+		const fetchGetMembers = async (): Promise<
+			GetMemberFromStoreResponse | ErrorResponse
+		> => {
+			setIsLoading(true);
+			try {
+				if (!jwt) {
+					setError(true);
+					return { ok: false, message: "JWTが見つかりません" };
+				}
+				const res = await getMembers(jwt);
+				if (!res.ok) {
+					return { ok: false, message: res.message };
+				}
 
-// 	useEffect(() => {
-// 		if (!trigger || !userToken || !storeToken) return;
+				dispatch(setMembers(res.members));
+				return res;
+			} catch (err) {
+				setError(true);
+				return {
+					ok: false,
+					message:
+						err instanceof Error ? err.message : "通信エラーが発生しました",
+				};
+			} finally {
+				setIsLoading(false);
+			}
+		};
 
-// 		const fetchPayment = async () => {
-// 			try {
-// 				setIsLoading(true);
-// 				const res = await getMembers(userToken, storeToken);
+		fetchGetMembers();
+	}, [dispatch, jwt]);
 
-// 				if (!res.ok) {
-// 					if ("errors" in res) {
-// 						console.warn(res.message, res.errors);
-// 						return;
-// 					}
-// 					console.error("エラー:", res.message);
-// 					return;
-// 				}
-
-// 				dispatch(setMembers(res.storeUsers));
-// 			} catch (err) {
-// 				setError(true);
-// 				console.error("エラー:", err);
-// 			} finally {
-// 				setIsLoading(false);
-// 			}
-// 		};
-
-// 		fetchPayment();
-// 	}, [trigger, userToken, storeToken, dispatch]);
-
-// 	return { isLoading, error };
-// };
+	return { isLoading, error };
+};
