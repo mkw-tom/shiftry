@@ -5,7 +5,7 @@ import type { ErrorResponse } from "@shared/api/common/types/errors";
 export const getMe = async (
 	jwt: string,
 ): Promise<AuthMeResponse | ErrorResponse> => {
-	const res = await fetch(`${API_URL}/api/auth/login`, {
+	const res = await fetch(`${API_URL}/api/auth/me`, {
 		method: "GET",
 		headers: {
 			"Content-Type": "application/json",
