@@ -29,10 +29,7 @@ export default function RootLayout({
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
-				<ReduxProvider>
-					{/* <LocalhostClearButton /> */}
-					{children}
-				</ReduxProvider>
+				<ReduxProvider>{children}</ReduxProvider>
 			</body>
 		</html>
 	);

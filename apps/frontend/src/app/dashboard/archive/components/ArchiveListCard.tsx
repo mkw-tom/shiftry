@@ -4,7 +4,7 @@ import React from "react";
 import {
 	DrawerView,
 	useBottomDrawer,
-} from "../../../../dashboard/common/context/useBottomDrawer";
+} from "../../common/context/useBottomDrawer";
 
 const ArchiveListCard = ({
 	data,

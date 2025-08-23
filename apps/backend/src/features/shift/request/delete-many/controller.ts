@@ -18,9 +18,12 @@ const deleteManyShiftRequestController = async (
 	>,
 ): Promise<void> => {
 	try {
-		const userId = req.userId as string;
-		const storeId = req.storeId as string;
-		await verifyUserStoreForOwnerAndManager(userId, storeId);
+		const auth = req.auth;
+		if (!auth?.uid || !auth?.sid) {
+			res.status(401).json({ ok: false, message: "Unauthorized" });
+			return;
+		}
+		await verifyUserStoreForOwnerAndManager(auth.uid, auth.sid);
 		const parse = deleteManyShiftRequestValidate.safeParse(req.body);
 		if (!parse.success) {
 			res.status(400).json({
@@ -31,12 +34,10 @@ const deleteManyShiftRequestController = async (
 			return;
 		}
 		const { ids } = parse.data;
-
-		const { count } = await deleteManyShiftRequest(storeId, ids);
+		const { count } = await deleteManyShiftRequest(auth.sid, ids);
 
 		res.json({ ok: true, deletedCount: count });
 	} catch (error) {
-		console.error(error);
 		res.status(500).json({ ok: false, message: "Internal Server Error" });
 	}
 };
