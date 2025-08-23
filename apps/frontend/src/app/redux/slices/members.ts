@@ -1,8 +1,8 @@
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
-import type { User, UserWithJobRole } from "@shared/api/common/types/prisma";
+import type { UserStoreLiteWithUserAndJobRoles } from "@shared/api/common/types/prismaLite";
 
 type MembersState = {
-	members: UserWithJobRole[];
+	members: UserStoreLiteWithUserAndJobRoles[];
 };
 
 const initialState: MembersState = {
@@ -13,7 +13,10 @@ export const userSlice = createSlice({
 	name: "members",
 	initialState,
 	reducers: {
-		setMembers: (state, action: PayloadAction<UserWithJobRole[]>) => {
+		setMembers: (
+			state,
+			action: PayloadAction<UserStoreLiteWithUserAndJobRoles[]>,
+		) => {
 			state.members = action.payload;
 		},
 	},

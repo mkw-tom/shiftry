@@ -19,5 +19,3 @@ export {
 	ShiftType,
 	RequestStatus,
 } from "@prisma/client";
-
-export type { UserWithJobRole } from "../../user/types/get.js";
