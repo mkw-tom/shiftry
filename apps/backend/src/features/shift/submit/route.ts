@@ -1,17 +1,18 @@
 import express from "express";
+import { requireUser } from "../../../middlewares/auth.js";
 import { attachStoreId } from "../../../middlewares/request/attachStoreId.js";
 import { attachUserId } from "../../../middlewares/request/attachUserId.js";
 import { validateshiftRequestId } from "../../../middlewares/validations/shiftRequestId.validate.js";
 import getSubmittedShiftsSpesificController from "./get-by-shift-request-id/controller.js";
 import getSubmittedShiftUserOneController from "./get-one/controller.js";
-import getSubmittedShiftUserController from "./get/controller.js";
 import upsertSubmittedShiftController from "./put/controller.js";
+import getSubmittedShiftMeController from "./get-me/controller.js";
 
 const router = express.Router();
-router.use(attachUserId);
-router.use(attachStoreId);
+// router.use(attachUserId);
+// router.use(attachStoreId);
 
-router.get("/", getSubmittedShiftUserController);
+router.get("/me", requireUser, getSubmittedShiftMeController);
 router.get(
 	"/one/:shiftRequestId",
 	validateshiftRequestId,
