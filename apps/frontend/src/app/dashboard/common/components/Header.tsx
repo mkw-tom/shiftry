@@ -26,7 +26,7 @@ const Header = () => {
 
 				<div className="flex items-center w-auto h-full gap-6">
 					<div className="w-auto text-green02 flex items-center gap-4">
-						<Link href={"/dashboard"}>
+						<Link href={"/dashboard/home"}>
 							<BiHome className="text-lg" />
 						</Link>
 						<Link href={"/dashboard/members"}>

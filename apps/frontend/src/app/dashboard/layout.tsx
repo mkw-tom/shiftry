@@ -9,15 +9,15 @@ import { BottomDrawerProvider } from "./common/context/useBottomDrawer";
 export default function DashboardLayout({ children }: { children: ReactNode }) {
 	return (
 		<>
-			<AuthGate liffId={liffId.dashboard}>
-				<ToastProvider>
-					<BottomDrawerProvider>
-						<Header />
-						{children}
-						<BottomDrawer />
-					</BottomDrawerProvider>
-				</ToastProvider>
-			</AuthGate>
+			<ToastProvider>
+				<BottomDrawerProvider>
+					<Header />
+					<AuthGate liffId={liffId.dashboard}>
+					{children}
+					</AuthGate>
+					<BottomDrawer />
+				</BottomDrawerProvider>
+			</ToastProvider>
 		</>
 	);
 }

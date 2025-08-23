@@ -33,7 +33,7 @@ export default function AuthGate({
 
 	if (step === "idle" || step === "verifying" || step === "logging-internal") {
 		return (
-			<main className="w-full h-lvh flex flex-col items-center bg-gray01">
+			<main className="w-full h-lvh flex flex-col items-center bg-white">
 				<p className="loading loading-spinner text-green02 mt-20" />
 				<p className="text-green02 mt-2">読み込み中...</p>
 			</main>
@@ -42,7 +42,7 @@ export default function AuthGate({
 
 	if (step === "redirecting") {
 		return (
-			<main className="w-full h-lvh flex flex-col items-center bg-gray01">
+			<main className="w-full h-lvh flex flex-col items-center bg-white">
 				<p className="loading loading-spinner text-green02 mt-20" />
 				<p className="text-green02 mt-2">LINEログインに遷移しています…</p>
 			</main>
@@ -51,7 +51,7 @@ export default function AuthGate({
 
 	if (step === "getting-info") {
 		return (
-			<main className="w-full h-lvh flex flex-col items-center bg-gray01">
+			<main className="w-full h-lvh flex flex-col items-center bg-white">
 				<p className="loading loading-spinner text-green02 mt-20" />
 				<p className="text-green02 mt-2">プロフィール情報を取得中…</p>
 			</main>
@@ -62,7 +62,7 @@ export default function AuthGate({
 		// TODO: 実装に合わせて選択 UI を出す
 		// 例）選択肢を出して chooseStore(storeId) を呼ぶ
 		return (
-			<main className="w-full h-lvh flex flex-col items-center bg-gray01">
+			<main className="w-full h-lvh flex flex-col items-center bg-white">
 				<p className="text-green02 mt-20">店舗を選択してください…</p>
 			</main>
 		);
@@ -70,7 +70,7 @@ export default function AuthGate({
 
 	if (step === "selecting") {
 		return (
-			<main className="w-full h-lvh flex flex-col items-center bg-gray01">
+			<main className="w-full h-lvh flex flex-col items-center bg-white">
 				<p className="loading loading-spinner text-green02 mt-20" />
 				<p className="text-green02 mt-2">店舗を切り替え中…</p>
 			</main>
@@ -80,7 +80,7 @@ export default function AuthGate({
 	// step === "unregistered" のときは useEffect がリダイレクトするのでローディングを表示
 	if (step === "unregistered") {
 		return (
-			<main className="w-full h-lvh flex flex-col items-center bg-gray01">
+			<main className="w-full h-lvh flex flex-col items-center bg-white">
 				<p className="loading loading-spinner text-green02 mt-20" />
 				<p className="text-green02 mt-2">登録ページへ移動しています…</p>
 			</main>
