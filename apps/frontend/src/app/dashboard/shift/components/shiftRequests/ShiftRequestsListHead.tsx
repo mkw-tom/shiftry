@@ -4,7 +4,7 @@ import Link from "next/link";
 import type { Dispatch, SetStateAction } from "react";
 import { MdOutlineArrowOutward } from "react-icons/md";
 import { useSelector } from "react-redux";
-import AddShiftButton from "../head/AddShiftButton";
+import AddShiftButton from "../AddShiftButton";
 
 const ShiftRequestsListHead = ({
 	setShiftListFilter,
@@ -30,7 +30,7 @@ const ShiftRequestsListHead = ({
 						<option value="CONFIRMED">確定</option>
 						<option value="ADJUSTMENT">調整中</option>
 						<option value="REQUEST">提出期間中</option>
-						{/* {user?.role !== "STAFF" && <option value="HOLD">下書き</option>} */}
+						{user?.role !== "STAFF" && <option value="HOLD">下書き</option>}
 					</select>
 				</div>
 				<Link
@@ -41,11 +41,11 @@ const ShiftRequestsListHead = ({
 					<MdOutlineArrowOutward className="text-lg" />
 				</Link>
 			</div>
-			{/* {user?.role !== "STAFF" && (
+			{user?.role !== "STAFF" && (
 				<div className="w-full mx-auto px-3 py-2 flex">
 					<AddShiftButton />
 				</div>
-			)} */}
+			)}
 		</div>
 	);
 };

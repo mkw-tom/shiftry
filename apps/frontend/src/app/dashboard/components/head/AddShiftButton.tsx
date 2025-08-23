@@ -4,7 +4,7 @@ import { MdAdd } from "react-icons/md";
 import {
 	DrawerView,
 	useBottomDrawer,
-} from "../../../common/context/useBottomDrawer";
+} from "../../common/context/useBottomDrawer";
 
 const AddShiftButton = () => {
 	const { darawerOpen } = useBottomDrawer();
