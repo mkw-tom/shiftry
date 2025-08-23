@@ -12,9 +12,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 			<ToastProvider>
 				<BottomDrawerProvider>
 					<Header />
-					<AuthGate liffId={liffId.dashboard}>
-					{children}
-					</AuthGate>
+					<AuthGate liffId={liffId.dashboard}>{children}</AuthGate>
 					<BottomDrawer />
 				</BottomDrawerProvider>
 			</ToastProvider>
