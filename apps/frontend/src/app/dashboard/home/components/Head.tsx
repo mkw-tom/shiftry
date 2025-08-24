@@ -34,7 +34,7 @@ const Head = () => {
 						<span className="text-xs text-green02 w-20">店舗切り替え</span>
 						<LuArrowUpDown className="text-lg text-green02 opacity-90" />
 						{/* <CiSettings className="text-xl text-white" /> */}
-						<AddShiftButton />
+						{/* <AddShiftButton /> */}
 					</button>
 				</div>
 			</div>

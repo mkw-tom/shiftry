@@ -15,6 +15,7 @@ const useUpsertJobrole = ({
 }) => {
 	const [newJobRoles, setNewJobRole] = useState<string[]>([]);
 	const [showALlJobRoles, setShowAllJobRoles] = useState(false);
+	const [updated, setUpdated] = useState({ deleted: 0, added: 0 });
 
 	const [editJobRole, setEditJobRole] = useState<number | null>(null);
 	const [editInputValue, setEditInputValue] = useState("");
@@ -48,6 +49,7 @@ const useUpsertJobrole = ({
 
 		if (!jobRoles.includes(inputJobRoleValue)) {
 			setNewJobRole((prev) => [...prev, inputJobRoleValue]);
+			updated.added += 1;
 		}
 	};
 
@@ -63,9 +65,11 @@ const useUpsertJobrole = ({
 		setEditJobRole(null);
 		setEditInputValue("");
 	};
+
 	const deleteJobRoleFromAllJobRoleList = (role: string) => {
 		if (!confirm("この業務を削除しますか？")) return;
 		setJobRoles((prev) => prev.filter((r) => r !== role));
+		updated.deleted += 1;
 	};
 
 	const deleteJobRole = (role: string) => {
@@ -75,6 +79,7 @@ const useUpsertJobrole = ({
 		}));
 		if (!jobRoles.includes(role)) {
 			setNewJobRole((prev) => prev.filter((r) => r !== role));
+			updated.deleted += 1;
 		}
 	};
 
@@ -102,6 +107,7 @@ const useUpsertJobrole = ({
 			setEditJobRole,
 			editInputValue,
 			setEditInputValue,
+			updated,
 		},
 		actions: {
 			addJobRoleFromAllJobRolesList,
@@ -112,6 +118,7 @@ const useUpsertJobrole = ({
 			deleteJobRole,
 			saveJobRoleDatas,
 			closeAllJobRoleListModal,
+			setUpdated,
 		},
 	};
 

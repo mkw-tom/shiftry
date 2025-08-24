@@ -15,10 +15,11 @@ const bulkUpsertShiftPosisionsController = async (
 	>,
 ) => {
 	try {
-		const userId = req.userId as string;
-		const storeId = req.storeId as string;
-		await verifyUserStoreForOwnerAndManager(userId, storeId);
-
+		const auth = req.auth;
+		if (!auth?.uid || !auth?.sid) {
+			res.status(401).json({ ok: false, message: "Unauthorized" });
+			return;
+		}
 		const parsed = bulkUpsertShiftPositionValidate.safeParse(req.body);
 		if (!parsed.success) {
 			res.status(400).json({
@@ -29,7 +30,12 @@ const bulkUpsertShiftPosisionsController = async (
 			return;
 		}
 
-		const shiftPositions = await bulkUpsertShiftPositions(storeId, parsed.data);
+		await verifyUserStoreForOwnerAndManager(auth.uid, auth.sid);
+
+		const shiftPositions = await bulkUpsertShiftPositions(
+			auth.sid,
+			parsed.data,
+		);
 		res.json({ ok: true, shiftPositions });
 	} catch (error) {
 		console.error("Failed to get job roles:", error);

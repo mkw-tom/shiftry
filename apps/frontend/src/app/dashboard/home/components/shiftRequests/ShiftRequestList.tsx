@@ -175,7 +175,7 @@ const ShiftRequestList = () => {
 
 	return (
 		<section className="w-full h-auto mx-auto overflow-hidden">
-			<Head />
+			{/* <Head /> */}
 			<ShiftRequestsListHead setShiftListFilter={setShiftListFilter} />
 			<div className="w-full h-full overflow-hidden bg-white mt-1">
 				<ul className="w-full h-[420px] mx-auto flex flex-col overflow-y-scroll pt-1 pb-80 ">

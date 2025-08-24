@@ -31,12 +31,10 @@ export const useUpsertShiftReqeust = () => {
 			const res = await upsertShiftRequest(jwt, formData);
 			if (!res.ok) {
 				if ("errors" in res) {
-					setError("通信エラーが発生しました");
-					console.warn(res.message, res.errors);
+					setError("入力に誤りがあります");
 					return res;
 				}
 				setError("通信エラーが発生しました");
-				console.warn("エラー:", res.message);
 				return res;
 			}
 
