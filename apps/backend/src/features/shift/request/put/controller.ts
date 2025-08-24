@@ -16,9 +16,12 @@ const upsertShiftRequestController = async (
 	>,
 ): Promise<void> => {
 	try {
-		const userId = req.userId as string;
-		const storeId = req.storeId as string;
-		await verifyUserStoreForOwnerAndManager(userId, storeId);
+		const auth = req.auth;
+		if (!auth?.uid || !auth?.sid) {
+			res.status(401).json({ ok: false, message: "Unauthorized" });
+			return;
+		}
+		await verifyUserStoreForOwnerAndManager(auth.uid, auth.sid);
 
 		const prased = upsertShfitRequestValidate.safeParse(req.body);
 		if (!prased.success) {
@@ -30,7 +33,7 @@ const upsertShiftRequestController = async (
 			return;
 		}
 
-		const shiftRequest = await upsertShiftRequest(storeId, prased.data);
+		const shiftRequest = await upsertShiftRequest(auth.sid, prased.data);
 
 		res.status(200).json({ ok: true, shiftRequest });
 	} catch (error) {

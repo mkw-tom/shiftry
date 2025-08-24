@@ -7,7 +7,8 @@ import { translateWeekToJapanese } from "@shared/utils/formatWeek";
 import React, { use, useState } from "react";
 import { LuUserRound } from "react-icons/lu";
 import { MdAdd } from "react-icons/md";
-import { useCreateRequest } from "../../../context/useCreateRequest";
+import { useCreateRequest } from "../context/useCreateRequest";
+import PriorityAndAbsoluteModal from "./PriorityAndAbsoluteModal";
 import UpsertPositionModal from "./UpsertPositionModal";
 
 const RegistPositionForm = () => {
@@ -38,6 +39,21 @@ const RegistPositionForm = () => {
 			modal.showModal();
 		}
 		setPosition(position);
+	};
+
+	const [mode, setMode] = useState<"priority" | "absolute">("priority");
+
+	const openPriorytyAndAbsoluteModal = (
+		name: string,
+		mode: "priority" | "absolute",
+	) => {
+		setMode(mode);
+		const modal = document.getElementById(
+			`modal_${name}_${mode}`,
+		) as HTMLDialogElement | null;
+		if (modal) {
+			modal.showModal();
+		}
 	};
 
 	const handleSavePosition = (position: UpsertShiftPositionType) => {
@@ -102,7 +118,7 @@ const RegistPositionForm = () => {
 	};
 
 	return (
-		<div className="w-full flex flex-col  gap-2 h-auto">
+		<div className="w-full mx-auto flex flex-col h-auto">
 			<UpsertPositionModal
 				position={position}
 				setPosition={setPosition}
@@ -111,23 +127,25 @@ const RegistPositionForm = () => {
 				editIndex={editIndex}
 			/>
 
-			<button
-				type="button"
-				className="btn bg-green01 text-white border-none w-full mt-2"
-				onClick={() => openUpsertPositionModal(position, null)}
-			>
-				<MdAdd className="text-lg" />
-				ポジションを追加
-			</button>
-			<ul className="w-full h-96 overflow-y-auto flex flex-col gap-2 5">
+			<div className="w-full flex flex-col gap-1 items-center justify-center p-1 bg-white">
+				<button
+					type="button"
+					className="btn btn-sm bg-white text-green01 font-bold w-full border-dashed border-1 border-gray01 shadow-none"
+					onClick={() => openUpsertPositionModal(position, null)}
+				>
+					<MdAdd className="text-lg" />
+					ポジションを追加
+				</button>
+			</div>
+			<ul className="w-full h-[420px] overflow-y-auto flex flex-col pb-44">
 				{shiftPositioins.map((targetPosition, index) => {
 					return (
 						<li
 							key={targetPosition.name}
-							className="text-gray01 text-sm flex flex-col items-start gap-1 border-b border-gray01 py-3 px-1"
+							className="text-gray01 text-sm flex flex-col items-start gap-1 border-b border-gray01 py-3 px-2 bg-white shadow-xs "
 						>
-							<div className="flex items-center justify-between w-full">
-								<span className=" text-gray02 border-l-4  border-l-gray02 font-bold pl-2">
+							<div className="flex items-center justify-between w-full ">
+								<span className="text-gray02  font-bold pl-2 border-l-4 border-gray02 w-2/3">
 									{targetPosition.name}
 								</span>
 								<div className="flex items-center">
@@ -149,8 +167,9 @@ const RegistPositionForm = () => {
 									</button>
 								</div>
 							</div>
-							<div className="flex items-start justify-between w-full px-1">
-								<div className="flex items-center gap-3">
+
+							<div className="w-full h-auto flex items-center justify-between mt-1 px-1">
+								<div className="w-1/2 flex items-center gap-3">
 									<p className="flex items-center">
 										<LuUserRound className="text-black mr-1" />
 										<span className="text-black">{targetPosition.count}</span>
@@ -169,12 +188,13 @@ const RegistPositionForm = () => {
 										})}
 									</span>
 								</div>
-								<p className="text-black flex flex-wrap items-center gap-1 w-36 border-none">
+
+								<p className="w-1/2 text-black flex justify-end gap-1 border-none">
 									{targetPosition.weeks.map((week) => {
 										return (
 											<span
 												key={week}
-												className="badge badge-sm border-gray02 text-black bg-white pt-0.5"
+												className="badge badge-sm w-6 border-gray02 text-black bg-white pt-0.5"
 											>
 												{translateWeekToJapanese(week, "short")}
 											</span>
@@ -182,15 +202,88 @@ const RegistPositionForm = () => {
 									})}
 								</p>
 							</div>
-							<div className="flex items-center gap-1 px-1 mt-1">
+
+							<div className="flex flex-wrap w-full items-center gap-1 mt-2 px-1">
 								{targetPosition.jobRoles.map((role) => (
 									<span
 										key={role}
-										className="badge text-white bg-gray02 border-none"
+										className="badge badge-sm text-white bg-gray02 border-none"
 									>
 										{role}
 									</span>
 								))}
+							</div>
+
+							<PriorityAndAbsoluteModal
+								name={targetPosition.name}
+								mode={mode}
+								data={
+									mode === "absolute"
+										? targetPosition.absolute
+										: targetPosition.priority
+								}
+							/>
+							<div className="w-full h-auto flex  gap-4 items-center justify-end mt-2 pl-2">
+								{targetPosition.absolute.length > 0 && (
+									<div
+										className="h-auto flex gap-2 items-center justify-center"
+										onClick={() =>
+											openPriorytyAndAbsoluteModal(
+												targetPosition.name,
+												"absolute",
+											)
+										}
+										onKeyDown={(e) => {
+											if (e.key === "Enter" || e.key === " ") {
+												openPriorytyAndAbsoluteModal(
+													targetPosition.name,
+													"absolute",
+												);
+											}
+										}}
+									>
+										<p className="text-black">固定</p>
+										<div className="avatar-group -space-x-1">
+											{targetPosition.absolute.map((staff) => (
+												<div className="avatar" key={staff.id}>
+													<div className="w-4">
+														<img src={staff.pictureUrl} alt={staff.name} />
+													</div>
+												</div>
+											))}
+										</div>
+									</div>
+								)}
+								{targetPosition.priority.length > 0 && (
+									<div
+										className="h-auto flex gap-2  items-center justify-center px-1"
+										onClick={() =>
+											openPriorytyAndAbsoluteModal(
+												targetPosition.name,
+												"priority",
+											)
+										}
+										onKeyDown={(e) => {
+											if (e.key === "Enter" || e.key === " ") {
+												openPriorytyAndAbsoluteModal(
+													targetPosition.name,
+													"priority",
+												);
+											}
+										}}
+									>
+										<p className="text-black">優先</p>
+										<div className="avatar-group -space-x-2">
+											{targetPosition.priority.map((staff) => (
+												<div className="avatar" key={staff.id}>
+													<div className="w-4">
+														<img src={staff.pictureUrl} alt={staff.name} />
+													</div>
+												</div>
+											))}
+										</div>
+									</div>
+								)}
 							</div>
 						</li>
 					);

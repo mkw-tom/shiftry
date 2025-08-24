@@ -39,7 +39,7 @@ export const UpsertShiftPositionValidate = z.object({
 	weeks: z.array(WeekDays).min(1, {
 		message: "At least one week must be selected",
 	}),
-	absoluteStaff: z
+	absolute: z
 		.array(
 			z.object({
 				id: z.string().min(1, {
@@ -48,11 +48,23 @@ export const UpsertShiftPositionValidate = z.object({
 				name: z.string().min(1, {
 					message: "Staff name must be a non-empty string",
 				}),
+				pictureUrl: z.string().optional(),
 			}),
 		)
-		.min(1, {
-			message: "At least one absolute staff member must be provided",
-		}),
+		.min(0),
+	priority: z
+		.array(
+			z.object({
+				id: z.string().min(1, {
+					message: "Staff ID must be a non-empty string",
+				}),
+				name: z.string().min(1, {
+					message: "Staff name must be a non-empty string",
+				}),
+				pictureUrl: z.string().optional(),
+			}),
+		)
+		.min(0),
 });
 export type UpsertShiftPositionType = z.infer<
 	typeof UpsertShiftPositionValidate

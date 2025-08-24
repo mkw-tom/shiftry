@@ -1,7 +1,10 @@
-import type { UserStoreLiteWithUserAndJobRoles } from "@shared/api/common/types/prismaLite";
+import type {
+	Member,
+	UserStoreLiteWithUserAndJobRoles,
+} from "@shared/api/common/types/prismaLite";
 import React from "react";
 
-const Member = ({ member }: { member: UserStoreLiteWithUserAndJobRoles }) => {
+const MemberCard = ({ member }: { member: Member }) => {
 	return (
 		<li className="w-full h-auto bg-white  flex items-center border-b-1 border-b-gray01 ">
 			<div className="flex justify-between p-5 w-full">
@@ -37,4 +40,4 @@ const Member = ({ member }: { member: UserStoreLiteWithUserAndJobRoles }) => {
 	);
 };
 
-export default Member;
+export default MemberCard;

@@ -6,29 +6,20 @@ import type {
 import type { UpsertShiftRequetResponse } from "@shared/api/shift/request/types/put";
 import type { UpsertShiftRequetType } from "@shared/api/shift/request/validations/put";
 
-export const upsertShiftRequest = async ({
-	userToken,
-	storeToken,
-	formData,
-}: {
-	userToken: string;
-	storeToken: string;
-	formData: UpsertShiftRequetType;
-}): Promise<
+export const upsertShiftRequest = async (
+	jwt: string,
+	formData: UpsertShiftRequetType,
+): Promise<
 	UpsertShiftRequetResponse | ErrorResponse | ValidationErrorResponse
 > => {
-	if (!userToken) {
-		throw new Error("code is not found");
-	}
-	if (!storeToken) {
-		throw new Error("code is not found");
+	if (!jwt) {
+		throw new Error("JWT is not found");
 	}
 	const res = await fetch(`${API_URL}/api/shift/request`, {
 		method: "PUT",
 		headers: {
 			"Content-Type": "application/json",
-			Authorization: `Bearer ${userToken}`,
-			"x-store-id": storeToken,
+			Authorization: `Bearer ${jwt}`,
 		},
 		body: JSON.stringify(formData),
 	});

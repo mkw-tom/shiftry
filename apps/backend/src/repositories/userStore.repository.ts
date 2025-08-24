@@ -6,6 +6,7 @@ import type {
 	UserStore,
 } from "@shared/api/common/types/prisma.js";
 import type {
+	Member,
 	UserStoreLite,
 	UserStoreLiteWithStore,
 	UserStoreLiteWithUserAndJobRoles,
@@ -116,12 +117,12 @@ export const getStoresFromUser = async (
 ///店舗に所属するすべてのユーザーデータを取得
 export const getMemberFromStore = async (
 	storeId: string,
-): Promise<UserStoreLiteWithUserAndJobRoles[]> => {
+): Promise<Member[]> => {
 	return await prisma.userStore.findMany({
 		where: { storeId },
 		select: {
-			userId: true,
-			storeId: true,
+			// userId: true,
+			// storeId: true,
 			role: true,
 			user: {
 				select: {

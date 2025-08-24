@@ -33,12 +33,14 @@ export type ShiftsOfRequestsType = z.infer<typeof ShiftsOfRequestsValidate>;
 
 // ユーザー情報のスキーマ
 export const AbsoluteUserSchema = z.object({
-	userId: z.string(),
-	userName: z.string(),
+	id: z.string(),
+	name: z.string(),
+	pictureUrl: z.string().optional(),
 });
 export const priorityUserSchema = z.object({
-	userId: z.string(),
-	userName: z.string(),
+	id: z.string(),
+	name: z.string(),
+	pictureUrl: z.string().optional(),
 	level: z
 		.number()
 		.int()
