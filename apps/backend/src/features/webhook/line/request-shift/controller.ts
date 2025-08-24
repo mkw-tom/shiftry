@@ -6,9 +6,12 @@ import type { LineMessageAPIResponse } from "@shared/api/webhook/line/types.js";
 import { RequestShiftMessageValidate } from "@shared/api/webhook/line/validatioins.js";
 import { MDW, YMDHM } from "@shared/utils/formatDate.js";
 import type { Request, Response } from "express";
-import { URI_DASHBOARD } from "../../../../lib/env.js";
+import { URI_DASHBOARD, aes } from "../../../../lib/env.js";
+import { getStoreByIdAllData } from "../../../../repositories/store.repository.js";
+import { decryptText } from "../../../../utils/aes.js";
 import { verifyUserStoreForOwnerAndManager } from "../../../common/authorization.service.js";
 import { sendGroupFlexMessage } from "../service.js";
+import { sendShiftRequestFunService } from "./service.js";
 
 const sendShiftRequestFuncController = async (
 	req: Request,
@@ -17,10 +20,11 @@ const sendShiftRequestFuncController = async (
 	>,
 ) => {
 	try {
-		const userId = req.userId as string;
-		const storeId = req.storeId as string;
-		const groupId = req.groupId as string;
-		await verifyUserStoreForOwnerAndManager(userId, storeId);
+		const auth = req.auth;
+
+		if (!auth || !auth.uid || !auth.sid) {
+			return void res.status(401).json({ ok: false, message: "Unauthorized" });
+		}
 
 		const parsed = RequestShiftMessageValidate.safeParse(req.body);
 		if (!parsed.success) {
@@ -32,22 +36,30 @@ const sendShiftRequestFuncController = async (
 			});
 			return;
 		}
-		const { shiftRequestId, startDate, endDate, deadline } = parsed.data;
+		const response = await sendShiftRequestFunService(
+			auth.uid,
+			auth.sid,
+			parsed.data,
+		);
+		if (!response.ok) {
+			const msg = response.message ?? "Bad Request";
+			const status = msg.includes("not found")
+				? 404
+				: msg.includes("permission")
+					? 403
+					: 400;
+			return void res.status(status).json(response);
+		}
 
-		await sendGroupFlexMessage(groupId, {
-			text1: "シフト希望提出のお知らせ🔔",
-			text2: `期間：${MDW(new Date(startDate))} 〜 ${MDW(new Date(endDate))}`,
-			text3: `提出期限：${YMDHM(new Date(deadline))}`,
-			label: "シフト希望提出",
-			uri: `${URI_DASHBOARD}?storeId=${storeId}&shiftRequestId=${shiftRequestId}`,
-		});
-
-		res
-			.status(200)
-			.json({ ok: true, message: "successfully sent shift request" });
+		return void res.status(200).json(response);
 	} catch (error) {
 		console.error("❌ Webhook処理エラー:", error);
-		res.status(500).json({ ok: false, message: "Failed to send message " });
+		res
+			.status(500)
+			.json({
+				ok: false,
+				message: error instanceof Error ? error.message : String(error),
+			});
 	}
 };
 
