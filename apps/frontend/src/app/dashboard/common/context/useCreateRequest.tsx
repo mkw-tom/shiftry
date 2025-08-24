@@ -16,7 +16,8 @@ export const dummyShiftPositions: bulkUpsertShiftPositionType = [
 		jobRoles: ["洗い物", "レジ"],
 		count: 2,
 		weeks: ["monday", "tuesday", "wednesday", "thursday", "friday"],
-		absoluteStaff: [{ id: "1", name: "山田太郎" }],
+		absolute: [{ id: "1", name: "山田太郎" }],
+		priority: [{ id: "1", name: "スパイダー" }],
 	},
 	{
 		name: "ホール",
@@ -25,7 +26,11 @@ export const dummyShiftPositions: bulkUpsertShiftPositionType = [
 		jobRoles: ["レジ", "接客"],
 		count: 2,
 		weeks: ["saturday", "sunday"],
-		absoluteStaff: [{ id: "1", name: "山田太郎" }],
+		absolute: [{ id: "1", name: "山田太郎" }],
+		priority: [
+			{ id: "1", name: "スパイダー" },
+			{ id: "2", name: "スパイダー" },
+		],
 	},
 ];
 
@@ -89,18 +94,13 @@ export const CreateRequestProvider = ({
 		switch (step) {
 			case "select_date":
 				setStep("regist_position");
-				console.log(formData);
 				break;
 			case "regist_position":
 				setFormData((prev) => {
 					const newRequests: UpsertShiftRequetType["requests"] = {};
-
-					// ✅ Date型として保持（UTC注意）
 					const start = new Date(prev.weekStart);
 					const end = new Date(prev.weekEnd);
-
 					const allDates: Date[] = [];
-
 					const current = new Date(start);
 					while (current <= end) {
 						allDates.push(new Date(current));
@@ -138,9 +138,9 @@ export const CreateRequestProvider = ({
 									name: position.name,
 									count: position.count,
 									jobRoles: position.jobRoles,
-									absolute: position.absoluteStaff.map((staff) => ({
-										userId: staff.id,
-										userName: staff.name,
+									absolute: position.absolute.map((staff) => ({
+										id: staff.id,
+										name: staff.name,
 									})),
 									priority: [],
 								};
@@ -154,9 +154,6 @@ export const CreateRequestProvider = ({
 					};
 				});
 
-				console.log(formData.requests);
-				console.log(formData);
-				console.log(shiftPositioins);
 				setStep("adjust_position");
 				break;
 

@@ -21,7 +21,8 @@ const RegistPositionForm = () => {
 		jobRoles: [],
 		count: 1,
 		weeks: [],
-		absoluteStaff: [],
+		absolute: [],
+		priority: [],
 	});
 	const [editIndex, setEditIndex] = useState<number | null>(null);
 
@@ -66,7 +67,8 @@ const RegistPositionForm = () => {
 			jobRoles: [],
 			count: 1,
 			weeks: [],
-			absoluteStaff: [],
+			absolute: [],
+			priority: [],
 		});
 		setEditIndex(null);
 		console.log(shiftPositioins);
@@ -87,7 +89,8 @@ const RegistPositionForm = () => {
 			jobRoles: [],
 			count: 1,
 			weeks: [],
-			absoluteStaff: [],
+			absolute: [],
+			priority: [],
 		});
 		setEditIndex(null);
 		const modal = document.getElementById(

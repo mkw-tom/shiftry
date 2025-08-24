@@ -13,7 +13,7 @@ export const getMembers = async (
 	if (!jwt) {
 		throw new Error("JWT not found");
 	}
-	const res = await fetch(`${API_URL}/api/user`, {
+	const res = await fetch(`${API_URL}/api/user/member`, {
 		method: "GET",
 		headers: {
 			"Content-Type": "application/json",

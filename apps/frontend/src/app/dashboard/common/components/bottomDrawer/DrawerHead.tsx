@@ -1,6 +1,6 @@
 import { MDW } from "@shared/utils/formatDate";
 import React from "react";
-import { DrawerView, useBottomDrawer } from "../../../context/useBottomDrawer";
+import { DrawerView, useBottomDrawer } from "../../context/useBottomDrawer";
 
 const DrawerHead = () => {
 	const { view, currentData } = useBottomDrawer();
