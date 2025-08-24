@@ -54,12 +54,10 @@ const sendShiftRequestFuncController = async (
 		return void res.status(200).json(response);
 	} catch (error) {
 		console.error("❌ Webhook処理エラー:", error);
-		res
-			.status(500)
-			.json({
-				ok: false,
-				message: error instanceof Error ? error.message : String(error),
-			});
+		res.status(500).json({
+			ok: false,
+			message: error instanceof Error ? error.message : String(error),
+		});
 	}
 };
 
