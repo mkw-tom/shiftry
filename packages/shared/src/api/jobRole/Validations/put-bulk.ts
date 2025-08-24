@@ -7,3 +7,4 @@ export const putBulkJobRoleValidate = z.object({
 		}),
 	),
 });
+export type PutBulkJobRoleType = z.infer<typeof putBulkJobRoleValidate>;

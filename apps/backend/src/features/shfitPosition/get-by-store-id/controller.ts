@@ -2,7 +2,7 @@ import type {
 	ErrorResponse,
 	ValidationErrorResponse,
 } from "@shared/api/common/types/errors.js";
-import type { GetShfitPositionsByStoreIdResponse } from "@shared/api/shiftPosition/types/get-by-store-id.js";
+import type { GetShfitPositionsResponse } from "@shared/api/shiftPosition/types/get-by-store-id.js";
 import type { Request, Response } from "express";
 import { getShiftPositionsByStoreId } from "../../../repositories/ShiftPosition.js";
 import { verifyUserStoreForOwnerAndManager } from "../../common/authorization.service.js";
@@ -10,15 +10,18 @@ import { verifyUserStoreForOwnerAndManager } from "../../common/authorization.se
 const getShiftPosisiosnByStoreIdController = async (
 	req: Request,
 	res: Response<
-		GetShfitPositionsByStoreIdResponse | ErrorResponse | ValidationErrorResponse
+		GetShfitPositionsResponse | ErrorResponse | ValidationErrorResponse
 	>,
 ) => {
 	try {
-		const userId = req.userId as string;
-		const storeId = req.storeId as string;
-		await verifyUserStoreForOwnerAndManager(userId, storeId);
+		const auth = req.auth;
+		if (!auth?.uid || !auth?.sid) {
+			res.status(401).json({ ok: false, message: "Unauthorized" });
+			return;
+		}
+		await verifyUserStoreForOwnerAndManager(auth.uid, auth.sid);
 
-		const shiftPositions = await getShiftPositionsByStoreId(storeId);
+		const shiftPositions = await getShiftPositionsByStoreId(auth.sid);
 		res.json({ ok: true, shiftPositions });
 	} catch (error) {
 		console.error("Failed to get job roles:", error);

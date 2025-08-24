@@ -15,10 +15,11 @@ const bulkUpsertJobRoleController = async (
 	>,
 ) => {
 	try {
-		const userId = req.userId as string;
-		const storeId = req.storeId as string;
-		await verifyUserStoreForOwnerAndManager(userId, storeId);
-
+		const auth = req.auth;
+		if (!auth?.uid || !auth?.sid) {
+			res.status(401).json({ ok: false, message: "Unauthorized" });
+			return;
+		}
 		const parsed = putBulkJobRoleValidate.safeParse(req.body);
 		if (!parsed.success) {
 			res.status(400).json({
@@ -29,9 +30,11 @@ const bulkUpsertJobRoleController = async (
 			return;
 		}
 
-		const names = parsed.data.names;
+		await verifyUserStoreForOwnerAndManager(auth.uid, auth.sid);
 
-		const jobRoles = await bulkUpsertJobRoles(storeId, names);
+		const names = parsed.data.names;
+		const jobRoles = await bulkUpsertJobRoles(auth.sid, names);
+
 		res.json({ ok: true, jobRoles });
 	} catch (error) {
 		console.error("Failed to get job roles:", error);

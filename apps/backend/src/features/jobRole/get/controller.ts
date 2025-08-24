@@ -8,18 +8,15 @@ const getJobRolesByStoreIdController = async (
 	req: Request,
 	res: Response<GetJobRolesResponse | ErrorResponse>,
 ) => {
-	const userId = req.userId as string;
-	const storeId = req.storeId as string;
-	await verifyUserStoreForOwnerAndManager(userId, storeId);
-
 	try {
-		const storeId = req.storeId as string;
-		if (!storeId) {
-			res.status(400).json({ ok: false, message: "Store ID is required" });
+		const auth = req.auth;
+		if (!auth?.uid || !auth?.sid) {
+			res.status(401).json({ ok: false, message: "Unauthorized" });
 			return;
 		}
+		await verifyUserStoreForOwnerAndManager(auth.uid, auth.sid);
 
-		const jobRoles = await GetJobRoleByStoreId(storeId);
+		const jobRoles = await GetJobRoleByStoreId(auth.sid);
 		res.json({ ok: true, jobRoles });
 	} catch (error) {
 		console.error("Failed to get job roles:", error);
