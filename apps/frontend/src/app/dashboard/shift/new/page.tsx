@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import Head from "../../common/components/Head";
+import Head from "../../home/components/Head";
 import CreateReqeustForm from "./components/CreateReqeustForm";
 import { CreateRequestProvider } from "./context/useCreateRequest";
 

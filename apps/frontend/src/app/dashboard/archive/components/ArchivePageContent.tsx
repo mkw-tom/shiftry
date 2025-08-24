@@ -9,8 +9,8 @@ import { MdDelete, MdErrorOutline } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { ar } from "zod/v4/locales";
 
-import Head from "@/app/dashboard/common/components/Head";
 import { useBottomDrawer } from "@/app/dashboard/common/context/useBottomDrawer";
+import Head from "@/app/dashboard/home/components/Head";
 import { useGetArchiveShiftRequests } from "../api/get-archive-shift-request/hook";
 import ArchiveListCard from "./ArchiveListCard";
 import ArchiveListHead from "./ArchiveListHead";
