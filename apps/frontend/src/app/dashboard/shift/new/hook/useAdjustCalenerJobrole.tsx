@@ -16,6 +16,7 @@ const useAdjustCalenerJobrole = ({
 }) => {
 	const [newJobRoles, setNewJobRole] = useState<string[]>([]);
 	const [showALlJobRoles, setShowAllJobRoles] = useState(false);
+	const [updated, setUpdated] = useState({ deleted: 0, added: 0 });
 
 	const [editJobRole, setEditJobRole] = useState<number | null>(null);
 	const [editInputValue, setEditInputValue] = useState("");
@@ -49,6 +50,7 @@ const useAdjustCalenerJobrole = ({
 
 		if (!jobRoles.includes(inputJobRoleValue)) {
 			setNewJobRole((prev) => [...prev, inputJobRoleValue]);
+			updated.added += 1;
 		}
 	};
 
@@ -67,6 +69,7 @@ const useAdjustCalenerJobrole = ({
 	const deleteJobRoleFromAllJobRoleList = (role: string) => {
 		if (!confirm("この業務を削除しますか？")) return;
 		setJobRoles((prev) => prev.filter((r) => r !== role));
+		updated.deleted += 1;
 	};
 
 	const deleteJobRole = (role: string) => {
@@ -74,9 +77,6 @@ const useAdjustCalenerJobrole = ({
 			...prev,
 			jobRoles: prev.jobRoles.filter((r) => r !== role),
 		}));
-		if (!jobRoles.includes(role)) {
-			setNewJobRole((prev) => prev.filter((r) => r !== role));
-		}
 	};
 
 	const cancelEditJobRole = () => {
@@ -103,6 +103,7 @@ const useAdjustCalenerJobrole = ({
 			setEditJobRole,
 			editInputValue,
 			setEditInputValue,
+			updated,
 		},
 		actions: {
 			addJobRoleFromAllJobRolesList,
@@ -113,6 +114,7 @@ const useAdjustCalenerJobrole = ({
 			deleteJobRole,
 			saveJobRoleDatas,
 			closeAllJobRoleListModal,
+			setUpdated,
 		},
 	};
 

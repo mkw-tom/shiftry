@@ -14,7 +14,6 @@ const CreateReqeustForm = () => {
 			{step === "select_date" && <RangeCalendar />}
 			{step === "regist_position" && <RegistPositionForm />}
 			{step === "adjust_position" && <AdjustPositionForm />}
-			{step === "preview" && <div className="text-black">プレビュー確認</div>}
 			<ActionButton />
 		</div>
 	);

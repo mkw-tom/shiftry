@@ -1,3 +1,4 @@
+import type { RootState } from "@/app/redux/store";
 import type { TimeSlotType } from "@shared/api/shift/request/validations/put";
 import type {
 	UpsertShiftPositionType,
@@ -6,10 +7,13 @@ import type {
 import { ja } from "date-fns/locale";
 import { endpointWriteToDisk } from "next/dist/build/swc/generated-native";
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import { MdAdd, MdClose, MdDelete, MdEdit } from "react-icons/md";
-import { Dummymembers, useCreateRequest } from "../context/useCreateRequest";
+import { useSelector } from "react-redux";
+import { useBulkUpsertJobroles } from "../api/bulk-upsert-jobrole/hook";
+import { useGetJobroles } from "../api/get-jobroles-all/hook";
+import { useCreateRequest } from "../context/useCreateRequest";
 import useAdjustCalenerJobrole from "../hook/useAdjustCalenerJobrole";
 
 const AdjustPositionModal = ({
@@ -27,19 +31,53 @@ const AdjustPositionModal = ({
 	editTime: string;
 	setEditTime: React.Dispatch<React.SetStateAction<string>>;
 }) => {
+	const { members } = useSelector((state: RootState) => state.members);
 	const { formData, setFormData } = useCreateRequest();
+
+	const { handleGetJobroles } = useGetJobroles();
+	const { handleBulkUpsertJobroles } = useBulkUpsertJobroles();
+
+	const loadedRef = useRef(false);
+	useEffect(() => {
+		if (loadedRef.current) return; // 2回目以降は実行しない
+		loadedRef.current = true;
+		(async () => {
+			const res = await handleGetJobroles();
+			if (res.ok && "jobRoles" in res) {
+				const jobrolesOnlyName = res.jobRoles.map((j) => j.name);
+				setJobRoles(jobrolesOnlyName);
+			}
+		})();
+	}, [handleGetJobroles]);
+
 	const [jobRoles, setJobRoles] = useState<string[]>([
 		"レジ",
 		"清掃",
-		"調理",
-		"洗い物",
-		"接客",
 		"接客（英語）",
-		"接客（中国語）",
-		"接客（韓国語）",
 		"接客（スペイン語）",
-		"接客（フランス語）",
 	]);
+
+	const [inputJobRoleValue, setInputJobRoleValue] = useState("");
+
+	const { state, actions } = useAdjustCalenerJobrole({
+		editCalendarPosition: editCalenderrPositon,
+		setEditCalendarPosition: setEditCalendarPosition,
+		jobRoles: jobRoles,
+		setJobRoles: setJobRoles,
+	});
+
+	const saveJobRoles = async () => {
+		actions.saveJobRoleDatas();
+		actions.closeAllJobRoleListModal();
+		const { added, deleted } = state.updated;
+		if (added === 0 && deleted === 0) return;
+		const res = await handleBulkUpsertJobroles({ names: jobRoles });
+		if (!res.ok && "message" in res) {
+			alert(res.message);
+			return;
+		}
+		actions.setUpdated({ added: 0, deleted: 0 });
+	};
 
 	const parseHHmm = (s: string | undefined | null): Date | null => {
 		if (!s) return null;
@@ -81,15 +119,6 @@ const AdjustPositionModal = ({
 			}));
 		}
 	};
-
-	const [inputJobRoleValue, setInputJobRoleValue] = useState("");
-
-	const { state, actions } = useAdjustCalenerJobrole({
-		editCalendarPosition: editCalenderrPositon,
-		setEditCalendarPosition: setEditCalendarPosition,
-		jobRoles: jobRoles,
-		setJobRoles: setJobRoles,
-	});
 
 	const [showMemberList, setShowMemberList] = useState<{
 		show: boolean;
@@ -428,7 +457,7 @@ const AdjustPositionModal = ({
 						</div>
 						<div className="max-h-60 overflow-y-auto">
 							<ul className="flex flex-col gap-2">
-								{Dummymembers.map((staff) => (
+								{members.map((staff) => (
 									<li
 										key={staff.user.id}
 										className="cursor-pointer text-sm flex items-center justify-between py-2 px-3 hover:bg-gray-100"
@@ -608,8 +637,7 @@ const AdjustPositionModal = ({
 							className="btn bg-green01 text-white w-2/3 border-none"
 							onClick={() => {
 								saveEditCalenerPosition();
-								actions.saveJobRoleDatas();
-								actions.closeAllJobRoleListModal();
+								saveJobRoles();
 								setInputJobRoleValue("");
 							}}
 						>
