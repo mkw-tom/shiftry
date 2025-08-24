@@ -4,9 +4,9 @@ import type { UserRole } from "@shared/api/common/types/prisma";
 import React from "react";
 import { LuArrowUpDown } from "react-icons/lu";
 import { useSelector } from "react-redux";
+import AddShiftButton from "./AddShiftButton";
 
 const Head = () => {
-	const { user } = useSelector((state: RootState) => state.user);
 	const { store } = useSelector((state: RootState) => state.store);
 	function showUserRole(role: UserRole) {
 		switch (role) {
@@ -34,7 +34,7 @@ const Head = () => {
 						<span className="text-xs text-green02 w-20">店舗切り替え</span>
 						<LuArrowUpDown className="text-lg text-green02 opacity-90" />
 						{/* <CiSettings className="text-xl text-white" /> */}
-						{/* <AddShiftButton /> */}
+						<AddShiftButton />
 					</button>
 				</div>
 			</div>

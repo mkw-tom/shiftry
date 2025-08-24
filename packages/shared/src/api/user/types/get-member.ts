@@ -2,7 +2,7 @@ import type { UserStoreLiteWithUserAndJobRoles } from "../../../api/common/types
 
 export interface GetMemberFromStoreResponse {
 	ok: true;
-	members: UserStoreLiteWithUserAndJobRoles[];
+	members: Pick<UserStoreLiteWithUserAndJobRoles, "user" | "role">[];
 }
 
 // export type UserWithJobRole = {

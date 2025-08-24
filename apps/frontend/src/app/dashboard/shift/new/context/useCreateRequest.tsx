@@ -1,12 +1,13 @@
 "use client";
+import { useToast } from "@/app/dashboard/common/context/ToastProvider";
+import { useBottomDrawer } from "@/app/dashboard/common/context/useBottomDrawer";
+import type { Member } from "@shared/api/common/types/prismaLite";
 import type { UpsertShiftRequetType } from "@shared/api/shift/request/validations/put";
 import type { bulkUpsertShiftPositionType } from "@shared/api/shiftPosition/validations/put-bulk";
 import { formatDateToYYYYMMDD } from "@shared/utils/formatDate";
 import { convertDateToWeekByEnglish } from "@shared/utils/formatWeek";
 import { createServerSearchParamsForServerPage } from "next/dist/server/request/search-params";
 import { type ReactNode, createContext, useContext, useState } from "react";
-import { useToast } from "./ToastProvider";
-import { useBottomDrawer } from "./useBottomDrawer";
 
 export const dummyShiftPositions: bulkUpsertShiftPositionType = [
 	{
@@ -16,8 +17,22 @@ export const dummyShiftPositions: bulkUpsertShiftPositionType = [
 		jobRoles: ["洗い物", "レジ"],
 		count: 2,
 		weeks: ["monday", "tuesday", "wednesday", "thursday", "friday"],
-		absolute: [{ id: "1", name: "山田太郎" }],
-		priority: [{ id: "1", name: "スパイダー" }],
+		absolute: [
+			{
+				id: "1",
+				name: "スパイダー",
+				pictureUrl:
+					"https://img.daisyui.com/images/profile/demo/spiderperson@192.webp",
+			},
+		],
+		priority: [
+			{
+				id: "1",
+				name: "山田太郎",
+				pictureUrl:
+					"https://img.daisyui.com/images/profile/demo/averagebulk@192.webp",
+			},
+		],
 	},
 	{
 		name: "ホール",
@@ -26,11 +41,225 @@ export const dummyShiftPositions: bulkUpsertShiftPositionType = [
 		jobRoles: ["レジ", "接客"],
 		count: 2,
 		weeks: ["saturday", "sunday"],
-		absolute: [{ id: "1", name: "山田太郎" }],
-		priority: [
-			{ id: "1", name: "スパイダー" },
-			{ id: "2", name: "スパイダー" },
+		absolute: [
+			{
+				id: "1",
+				name: "山田太郎",
+				pictureUrl:
+					"https://img.daisyui.com/images/profile/demo/averagebulk@192.webp",
+			},
 		],
+		priority: [
+			{
+				id: "1",
+				name: "スパイダー",
+				pictureUrl:
+					"https://img.daisyui.com/images/profile/demo/spiderperson@192.webp",
+			},
+			{
+				id: "2",
+				name: "スパイダー",
+				pictureUrl:
+					"https://img.daisyui.com/images/profile/demo/spiderperson@192.webp",
+			},
+		],
+	},
+];
+
+export const Dummymembers: Member[] = [
+	{
+		role: "OWNER", // or "STAFF" など
+		user: {
+			id: "u1",
+			name: "山田太郎",
+			pictureUrl:
+				"https://img.daisyui.com/images/profile/demo/spiderperson@192.webp",
+			jobRoles: [
+				{
+					roleId: "r1",
+					role: {
+						id: "r1",
+						name: "レジ",
+					},
+				},
+				{
+					roleId: "r2",
+					role: {
+						id: "r2",
+						name: "接客",
+					},
+				},
+			],
+		},
+	},
+	{
+		role: "STAFF",
+		user: {
+			id: "u2",
+			name: "佐藤花子",
+			pictureUrl:
+				"https://img.daisyui.com/images/profile/demo/averagebulk@192.webp",
+			jobRoles: [
+				{
+					roleId: "r3",
+					role: {
+						id: "r3",
+						name: "清掃",
+					},
+				},
+			],
+		},
+	},
+	{
+		role: "OWNER", // or "STAFF" など
+		user: {
+			id: "u3",
+			name: "山田太郎",
+			pictureUrl:
+				"https://img.daisyui.com/images/profile/demo/spiderperson@192.webp",
+			jobRoles: [
+				{
+					roleId: "r1",
+					role: {
+						id: "r1",
+						name: "レジ",
+					},
+				},
+				{
+					roleId: "r2",
+					role: {
+						id: "r2",
+						name: "接客",
+					},
+				},
+			],
+		},
+	},
+	{
+		role: "STAFF",
+		user: {
+			id: "u4",
+			name: "佐藤花子",
+			pictureUrl:
+				"https://img.daisyui.com/images/profile/demo/averagebulk@192.webp",
+			jobRoles: [
+				{
+					roleId: "r3",
+					role: {
+						id: "r3",
+						name: "清掃",
+					},
+				},
+			],
+		},
+	},
+	{
+		role: "STAFF",
+		user: {
+			id: "u4",
+			name: "佐藤花子",
+			pictureUrl:
+				"https://img.daisyui.com/images/profile/demo/averagebulk@192.webp",
+			jobRoles: [
+				{
+					roleId: "r3",
+					role: {
+						id: "r3",
+						name: "清掃",
+					},
+				},
+			],
+		},
+	},
+	{
+		role: "STAFF",
+		user: {
+			id: "u4",
+			name: "佐藤花子",
+			pictureUrl:
+				"https://img.daisyui.com/images/profile/demo/averagebulk@192.webp",
+			jobRoles: [
+				{
+					roleId: "r3",
+					role: {
+						id: "r3",
+						name: "清掃",
+					},
+				},
+			],
+		},
+	},
+	{
+		role: "STAFF",
+		user: {
+			id: "u4",
+			name: "佐藤花子",
+			pictureUrl:
+				"https://img.daisyui.com/images/profile/demo/averagebulk@192.webp",
+			jobRoles: [
+				{
+					roleId: "r3",
+					role: {
+						id: "r3",
+						name: "清掃",
+					},
+				},
+			],
+		},
+	},
+	{
+		role: "STAFF",
+		user: {
+			id: "u4",
+			name: "佐藤花子",
+			pictureUrl:
+				"https://img.daisyui.com/images/profile/demo/averagebulk@192.webp",
+			jobRoles: [
+				{
+					roleId: "r3",
+					role: {
+						id: "r3",
+						name: "清掃",
+					},
+				},
+			],
+		},
+	},
+	{
+		role: "STAFF",
+		user: {
+			id: "u4",
+			name: "佐藤花子",
+			pictureUrl:
+				"https://img.daisyui.com/images/profile/demo/averagebulk@192.webp",
+			jobRoles: [
+				{
+					roleId: "r3",
+					role: {
+						id: "r3",
+						name: "清掃",
+					},
+				},
+			],
+		},
+	},
+	{
+		role: "STAFF",
+		user: {
+			id: "u4",
+			name: "佐藤花子",
+			pictureUrl:
+				"https://img.daisyui.com/images/profile/demo/averagebulk@192.webp",
+			jobRoles: [
+				{
+					roleId: "r3",
+					role: {
+						id: "r3",
+						name: "清掃",
+					},
+				},
+			],
+		},
 	},
 ];
 
@@ -141,12 +370,20 @@ export const CreateRequestProvider = ({
 									absolute: position.absolute.map((staff) => ({
 										id: staff.id,
 										name: staff.name,
+										pictureUrl: staff.pictureUrl,
 									})),
-									priority: [],
+									priority: position.priority.map((staff) => ({
+										id: staff.id,
+										name: staff.name,
+										pictureUrl: staff.pictureUrl,
+										level: 1,
+									})),
 								};
 							}
 						});
 					});
+
+					console.log("newRequests", newRequests);
 
 					return {
 						...prev,

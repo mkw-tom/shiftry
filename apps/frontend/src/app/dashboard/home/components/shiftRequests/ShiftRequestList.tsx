@@ -1,7 +1,10 @@
 "use client";
+import Head from "@/app/dashboard/home/components/Head";
 import type { RootState } from "@/app/redux/store";
 import type { ShiftRequestWithJson } from "@shared/api/common/types/merged";
 import type { RequestStatus } from "@shared/api/common/types/prisma";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useMemo, useState } from "react";
 import { LuSend } from "react-icons/lu";
 import { MdAdd } from "react-icons/md";
@@ -156,14 +159,14 @@ const ShiftRequestList = () => {
 							</p>
 						</div>
 
-						<button
-							type="button"
+						<Link
+							href={"/dashboard/shift/new"}
 							className="btn btn-sm w-auto border-none rounded-md bg-green02 text-white font-bold shadow-md"
-							onClick={() => darawerOpen(DrawerView.CREATE_REQUEST, null)}
+							// onClick={() => darawerOpen(DrawerView.CREATE_REQUEST, null)}
 						>
 							<MdAdd className="text-white. font-bold" />
 							シフト提出依頼を作成する
-						</button>
+						</Link>
 					</div>
 				</div>
 			</section>
@@ -172,7 +175,7 @@ const ShiftRequestList = () => {
 
 	return (
 		<section className="w-full h-auto mx-auto overflow-hidden">
-			{/* <Head /> */}
+			<Head />
 			<ShiftRequestsListHead setShiftListFilter={setShiftListFilter} />
 			<div className="w-full h-full overflow-hidden bg-white mt-1">
 				<ul className="w-full h-[420px] mx-auto flex flex-col overflow-y-scroll pt-1 pb-80 ">

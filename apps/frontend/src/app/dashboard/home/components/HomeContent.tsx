@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import Head from "../../common/components/Head";
+import Head from "./Head";
 import HeadSwitch from "./HeadSwitch";
 import ShiftRequestList from "./shiftRequests/ShiftRequestList";
 import SubmitStatusList from "./submitStatusList/SubmitStatusList";

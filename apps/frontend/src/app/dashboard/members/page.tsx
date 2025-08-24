@@ -1,4 +1,4 @@
-import Head from "@/app/dashboard/common/components/Head";
+import Head from "@/app/dashboard/home/components/Head";
 import MembersContent from "@/app/dashboard/members/components/MembersContent";
 
 const Page = () => {
