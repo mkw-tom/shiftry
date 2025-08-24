@@ -25,4 +25,4 @@ export type UserStoreLiteWithUserAndJobRoles = UserStoreLite & {
 	user: UserLite & { jobRoles: { roleId: string; role: JobRoleLite }[] };
 };
 
-export type Member = Pick<UserStoreLiteWithUserAndJobRoles, "user" | "role">
+export type Member = Pick<UserStoreLiteWithUserAndJobRoles, "user" | "role">;
