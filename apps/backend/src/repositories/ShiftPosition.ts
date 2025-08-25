@@ -1,4 +1,5 @@
 import type { ShiftPosition } from "@shared/api/common/types/prisma.js";
+import type { UpsertShiftPositionType } from "@shared/api/shiftPosition/validations/put-bulk.js";
 import prisma from "../config/database.js";
 
 export const getShiftPositionsByStoreId = async (
@@ -11,25 +12,30 @@ export const getShiftPositionsByStoreId = async (
 
 const upsertShiftPosition = async (
 	storeId: string,
-	name: string,
-	startTime: string,
-	endTime: string,
-	jobRoles: string[],
+	data: UpsertShiftPositionType,
 ): Promise<ShiftPosition> => {
 	return await prisma.shiftPosition.upsert({
-		where: { storeId_name: { storeId, name } },
+		where: { storeId_name: { storeId, name: data.name } },
 		create: {
 			storeId,
-			name,
-			startTime: new Date(startTime),
-			endTime: new Date(endTime),
-			jobRoles,
+			name: data.name,
+			startTime: new Date(data.startTime),
+			endTime: new Date(data.endTime),
+			jobRoles: data.jobRoles,
+			count: data.count,
+			priority: data.priority,
+			absolute: data.absolute,
+			weeks: data.weeks,
 		},
 		update: {
-			name,
-			startTime: new Date(startTime),
-			endTime: new Date(endTime),
-			jobRoles,
+			name: data.name,
+			startTime: new Date(data.startTime),
+			endTime: new Date(data.endTime),
+			jobRoles: data.jobRoles,
+			count: data.count,
+			priority: data.priority,
+			absolute: data.absolute,
+			weeks: data.weeks,
 		},
 	});
 };
@@ -45,34 +51,16 @@ const deleteManyShiftPositions = async (storeId: string, ids: string[]) => {
 
 const upsertManyShiftPositions = async (
 	storeId: string,
-	datas: {
-		name: string;
-		startTime: string;
-		endTime: string;
-		jobRoles: string[];
-	}[],
+	datas: UpsertShiftPositionType[],
 ): Promise<ShiftPosition[]> => {
 	return await Promise.all(
-		datas.map((data) =>
-			upsertShiftPosition(
-				storeId,
-				data.name,
-				data.startTime,
-				data.endTime,
-				data.jobRoles,
-			),
-		),
+		datas.map((data) => upsertShiftPosition(storeId, data)),
 	);
 };
 
 export const bulkUpsertShiftPositions = async (
 	storeId: string,
-	datas: {
-		name: string;
-		startTime: string;
-		endTime: string;
-		jobRoles: string[];
-	}[],
+	datas: UpsertShiftPositionType[],
 ): Promise<ShiftPosition[]> => {
 	const existing = await getShiftPositionsByStoreId(storeId);
 	const namesToKeep = new Set(datas.map((d) => d.name));

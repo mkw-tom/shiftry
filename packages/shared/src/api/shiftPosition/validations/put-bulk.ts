@@ -62,6 +62,15 @@ export const UpsertShiftPositionValidate = z.object({
 					message: "Staff name must be a non-empty string",
 				}),
 				pictureUrl: z.string().optional(),
+				level: z
+					.number()
+					.int()
+					.min(1, {
+						message: "Level must be an integer greater than or equal to 1",
+					})
+					.max(3, {
+						message: "Level must be an integer less than or equal to 3",
+					}),
 			}),
 		)
 		.min(0),

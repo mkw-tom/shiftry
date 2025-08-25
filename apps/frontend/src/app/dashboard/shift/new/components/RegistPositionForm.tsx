@@ -4,16 +4,15 @@ import {
 	bulkUpsertShiftPositionType,
 } from "@shared/api/shiftPosition/validations/put-bulk";
 import { translateWeekToJapanese } from "@shared/utils/formatWeek";
-import React, { use, useState } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import { LuUserRound } from "react-icons/lu";
 import { MdAdd } from "react-icons/md";
+import { useGetShfitPositions } from "../api/get-shift-positions/hook";
 import { useCreateRequest } from "../context/useCreateRequest";
 import PriorityAndAbsoluteModal from "./PriorityAndAbsoluteModal";
 import UpsertPositionModal from "./UpsertPositionModal";
 
 const RegistPositionForm = () => {
-	// const [shiftPositioins, setShiftPositions] =
-	//   useState<bulkUpsertShiftPositionType>(dummyShiftPositions);
 	const { shiftPositioins, setShiftPositions } = useCreateRequest();
 	const [position, setPosition] = useState<UpsertShiftPositionType>({
 		name: "",
@@ -25,7 +24,34 @@ const RegistPositionForm = () => {
 		absolute: [],
 		priority: [],
 	});
+
 	const [editIndex, setEditIndex] = useState<number | null>(null);
+	const { handleGetShiftPositions } = useGetShfitPositions();
+
+	const loadedRef = useRef(false);
+	useEffect(() => {
+		if (loadedRef.current) return; // 2回目以降は実行しない
+		loadedRef.current = true;
+		(async () => {
+			const res = await handleGetShiftPositions();
+			if (res.ok && "jobRoles" in res) {
+				const shiftPositioin = res.shiftPositions.map((position) => {
+					return {
+						name: position.name,
+						weeks: position.weeks as UpsertShiftPositionType["weeks"],
+						startTime: new Date(position.startTime).toISOString(),
+						endTime: new Date(position.endTime).toISOString(),
+						priority: position.priority as UpsertShiftPositionType["priority"],
+						absolute: position.absolute as UpsertShiftPositionType["absolute"],
+						count: position.count as number,
+						jobRoles: position.jobRoles,
+					};
+				});
+
+				setShiftPositions(shiftPositioin);
+			}
+		})();
+	}, [handleGetShiftPositions, setShiftPositions]);
 
 	const openUpsertPositionModal = (
 		position: UpsertShiftPositionType,

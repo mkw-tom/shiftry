@@ -32,7 +32,10 @@ export const useUpsertShiftReqeust = () => {
 			if (!res.ok) {
 				if ("errors" in res) {
 					setError("入力に誤りがあります");
-					return res;
+					return {
+						ok: false,
+						message: `ErrorMessage：${res.message}, validationError: ${res.errors}`,
+					};
 				}
 				setError("通信エラーが発生しました");
 				return res;
