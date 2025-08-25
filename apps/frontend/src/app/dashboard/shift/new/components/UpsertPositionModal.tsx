@@ -43,19 +43,16 @@ const UpsertPositionModal = ({
 		loadedRef.current = true;
 		(async () => {
 			const res = await handleGetJobroles();
-			if (res.ok && "jobRoles" in res) {
-				const jobrolesOnlyName = res.jobRoles.map((j) => j.name);
-				setJobRoles(jobrolesOnlyName);
+			if (!res.ok && "message" in res) {
+				alert(res.message);
+				return;
 			}
+			const jobrolesOnlyName = res.jobRoles.map((j) => j.name);
+			setJobRoles(jobrolesOnlyName);
 		})();
 	}, [handleGetJobroles]);
 
-	const [jobRoles, setJobRoles] = useState<string[]>([
-		"レジ",
-		"清掃",
-		"接客（英語）",
-		"接客（スペイン語）",
-	]);
+	const [jobRoles, setJobRoles] = useState<string[]>([]);
 
 	const { selectDate, adjustStaffCount, checkWeeks } = useUpsertPosition({
 		position,
