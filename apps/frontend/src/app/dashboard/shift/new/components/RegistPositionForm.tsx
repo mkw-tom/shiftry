@@ -34,22 +34,24 @@ const RegistPositionForm = () => {
 		loadedRef.current = true;
 		(async () => {
 			const res = await handleGetShiftPositions();
-			if (res.ok && "jobRoles" in res) {
-				const shiftPositioin = res.shiftPositions.map((position) => {
-					return {
-						name: position.name,
-						weeks: position.weeks as UpsertShiftPositionType["weeks"],
-						startTime: new Date(position.startTime).toISOString(),
-						endTime: new Date(position.endTime).toISOString(),
-						priority: position.priority as UpsertShiftPositionType["priority"],
-						absolute: position.absolute as UpsertShiftPositionType["absolute"],
-						count: position.count as number,
-						jobRoles: position.jobRoles,
-					};
-				});
-
-				setShiftPositions(shiftPositioin);
+			if (!res.ok && "message" in res) {
+				alert(res.message);
+				return;
 			}
+
+			const shiftPositioin = res.shiftPositions.map((position) => {
+				return {
+					name: position.name,
+					weeks: position.weeks as UpsertShiftPositionType["weeks"],
+					startTime: new Date(position.startTime).toISOString(),
+					endTime: new Date(position.endTime).toISOString(),
+					priority: position.priority as UpsertShiftPositionType["priority"],
+					absolute: position.absolute as UpsertShiftPositionType["absolute"],
+					count: position.count as number,
+					jobRoles: position.jobRoles,
+				};
+			});
+			setShiftPositions(shiftPositioin);
 		})();
 	}, [handleGetShiftPositions, setShiftPositions]);
 
