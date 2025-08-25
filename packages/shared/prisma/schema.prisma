@@ -190,7 +190,12 @@ model ShiftPosition {
   name       String
   startTime  DateTime
   endTime    DateTime
-  jobRoles   String[] 
+  jobRoles   String[]
+  count      Int?
+  absolute   Json?
+  priority   Json?
+  weeks      String[]
+
 
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
