@@ -5,6 +5,7 @@ import { MDW, YMDHM } from "@shared/utils/formatDate.js";
 import { URI_DASHBOARD, aes } from "../../../../lib/env.js";
 import { getStoreByIdAllData } from "../../../../repositories/store.repository.js";
 import { decryptText } from "../../../../utils/aes.js";
+import { verifyUserStoreForOwnerAndManager } from "../../../common/authorization.service.js";
 import { sendGroupFlexMessage } from "../service.js";
 
 export const sendShiftRequestFunService = async (
@@ -39,7 +40,3 @@ export const sendShiftRequestFunService = async (
 
 	return { ok: true, message: "Message sent successfully" };
 };
-
-function verifyUserStoreForOwnerAndManager(uid: string, sid: string) {
-	throw new Error("Function not implemented.");
-}

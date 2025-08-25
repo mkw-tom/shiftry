@@ -7,7 +7,10 @@ import {
 } from "../../../repositories/shiftRequest.repository.js";
 import { getStoreById } from "../../../repositories/store.repository.js";
 import { getUserById } from "../../../repositories/user.repository.js";
-import { getUserStoreByUserIdAndStoreId } from "../../../repositories/userStore.repository.js";
+import {
+	getMemberFromStore,
+	getUserStoreByUserIdAndStoreId,
+} from "../../../repositories/userStore.repository.js";
 export const AuthMeService = async (
 	uid: string,
 	sid: string,
@@ -16,10 +19,11 @@ export const AuthMeService = async (
 		throw new Error("Invalid parameters");
 	}
 
-	const [user, store, userStore] = await Promise.all([
+	const [user, store, userStore, members] = await Promise.all([
 		getUserById(uid),
 		getStoreById(sid),
 		getUserStoreByUserIdAndStoreId(uid, sid),
+		getMemberFromStore(sid),
 	]);
 
 	if (!user) return { ok: false, message: "User not found" };
@@ -33,6 +37,7 @@ export const AuthMeService = async (
 		user: user,
 		store: store,
 		role: userStore?.role,
+		members: members,
 		ActiveShiftRequests: shiftRequest,
 	};
 };
