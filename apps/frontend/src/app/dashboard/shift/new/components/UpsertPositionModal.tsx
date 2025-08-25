@@ -467,6 +467,7 @@ const UpsertPositionModal = ({
 																	name: staff.user.name,
 																	id: staff.user.id,
 																	pictureUrl: staff.user.pictureUrl as string,
+																	level: 1,
 																},
 															],
 														}));

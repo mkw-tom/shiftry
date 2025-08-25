@@ -1,3 +1,4 @@
+import { error } from "node:console";
 import { useToast } from "@/app/dashboard/common/context/ToastProvider";
 import type { RequestShiftMessageType } from "@shared/api/webhook/line/validatioins";
 import { useRouter } from "next/navigation";
@@ -6,7 +7,6 @@ import { useBulkUpsertShiftPositions } from "../api/bulk-upsert-shift-positions/
 import { useSendShiftReqeust } from "../api/send-shift-request-line/hook";
 import { useUpsertShiftReqeust } from "../api/upsert-shift-request/hook";
 import { useCreateRequest } from "../context/useCreateRequest";
-import useUpsertJobrole from "../hook/useUpsertJobrole";
 
 const ActionButton = () => {
 	const { step, nextStep, prevStep, formData, setFormData, shiftPositioins } =

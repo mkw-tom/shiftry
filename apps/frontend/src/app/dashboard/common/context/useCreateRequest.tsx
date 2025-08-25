@@ -17,7 +17,7 @@ export const dummyShiftPositions: bulkUpsertShiftPositionType = [
 		count: 2,
 		weeks: ["monday", "tuesday", "wednesday", "thursday", "friday"],
 		absolute: [{ id: "1", name: "山田太郎" }],
-		priority: [{ id: "1", name: "スパイダー" }],
+		priority: [{ id: "1", name: "スパイダー", level: 1 }],
 	},
 	{
 		name: "ホール",
@@ -28,8 +28,8 @@ export const dummyShiftPositions: bulkUpsertShiftPositionType = [
 		weeks: ["saturday", "sunday"],
 		absolute: [{ id: "1", name: "山田太郎" }],
 		priority: [
-			{ id: "1", name: "スパイダー" },
-			{ id: "2", name: "スパイダー" },
+			{ id: "1", name: "スパイダー", level: 1 },
+			{ id: "2", name: "スパイダー", level: 2 },
 		],
 	},
 ];
