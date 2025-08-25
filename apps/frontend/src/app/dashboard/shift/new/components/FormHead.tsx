@@ -1,5 +1,6 @@
 "use client";
 import { useToast } from "@/app/dashboard/common/context/ToastProvider";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { useUpsertShiftReqeust } from "../api/upsert-shift-request/hook";
 import { useCreateRequest } from "../context/useCreateRequest";
@@ -8,6 +9,7 @@ const FormHead = () => {
 	const { handleUpsertShiftRequest } = useUpsertShiftReqeust();
 	const { formData, setFormData } = useCreateRequest();
 	const { showToast } = useToast();
+	const router = useRouter();
 
 	const saveDraftShiftRequest = async () => {
 		setFormData({ ...formData, status: "HOLD" });
@@ -19,6 +21,7 @@ const FormHead = () => {
 		}
 		showToast("下書き保存しました", "success");
 		alert("下書き保存しました");
+		router.push("/dashboard/home");
 	};
 
 	return (

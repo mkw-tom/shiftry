@@ -1,4 +1,4 @@
-import { liffId } from "@/app/lib/env";
+import { liffId } from "@/lib/env";
 import InitGate from "@/shared/components/InitGate";
 import FirstView from "../../../shared/components/FirstView";
 import RegisterStaffForm from "./components/ConnectForm";

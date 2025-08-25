@@ -1,6 +1,6 @@
 import AuthGate from "@/shared/components/AuthGate";
 import type { ReactNode } from "react";
-import { liffId } from "../lib/env";
+import { liffId } from "../../lib/env";
 import Header from "./common/components/Header";
 import BottomDrawer from "./common/components/bottomDrawer/BottomDrawer";
 import { ToastProvider } from "./common/context/ToastProvider";

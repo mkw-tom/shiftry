@@ -1,4 +1,4 @@
-import type { RootState } from "@/app/redux/store";
+import type { RootState } from "@/redux/store";
 import type { ErrorResponse } from "@shared/api/common/types/errors";
 import type { DeleteManyShiftRequestResponse } from "@shared/api/shift/request/types/delete-many";
 import { useCallback, useState } from "react";

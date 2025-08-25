@@ -1,4 +1,4 @@
-import { liffId } from "@/app/lib/env";
+import { liffId } from "@/lib/env";
 import FirstView from "@/shared/components/FirstView";
 import InitGate from "@/shared/components/InitGate";
 import React, { Suspense } from "react";

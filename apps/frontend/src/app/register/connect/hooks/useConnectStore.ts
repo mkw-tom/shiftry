@@ -1,5 +1,5 @@
 "use client";
-import { setStore } from "@/app/redux/slices/store";
+import { setStore } from "@/redux/slices/store";
 import liff from "@line/liff";
 import type { ErrorResponse } from "@shared/api/common/types/errors";
 import type { StoreConnectLineGroupResponse } from "@shared/api/store/types/connect-line-group";

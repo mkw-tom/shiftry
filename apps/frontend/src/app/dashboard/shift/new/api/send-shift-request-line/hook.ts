@@ -1,4 +1,4 @@
-import type { RootState } from "@/app/redux/store";
+import type { RootState } from "@/redux/store";
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,

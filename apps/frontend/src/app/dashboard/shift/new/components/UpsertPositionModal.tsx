@@ -1,4 +1,4 @@
-import type { RootState } from "@/app/redux/store";
+import type { RootState } from "@/redux/store";
 import { UserLite } from "@shared/api/common/types/prismaLite";
 import type {
 	UpsertShiftPositionType,
