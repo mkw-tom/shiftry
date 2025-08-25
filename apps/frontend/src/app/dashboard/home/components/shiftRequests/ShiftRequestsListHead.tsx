@@ -1,4 +1,4 @@
-import type { RootState } from "@/app/redux/store";
+import type { RootState } from "@/redux/store";
 import type { RequestStatus } from "@shared/api/common/types/prisma";
 import Link from "next/link";
 import type { Dispatch, SetStateAction } from "react";

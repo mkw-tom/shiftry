@@ -1,4 +1,4 @@
-import { API_URL } from "@/app/lib/env";
+import { API_URL } from "@/lib/env";
 import type { AutoLoginResponse } from "@shared/api/auth/types/auto-login";
 import type {
 	ErrorResponse,

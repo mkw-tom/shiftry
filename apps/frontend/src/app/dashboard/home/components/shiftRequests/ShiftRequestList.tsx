@@ -1,6 +1,6 @@
 "use client";
 import Head from "@/app/dashboard/home/components/Head";
-import type { RootState } from "@/app/redux/store";
+import type { RootState } from "@/redux/store";
 import type { ShiftRequestWithJson } from "@shared/api/common/types/merged";
 import type { RequestStatus } from "@shared/api/common/types/prisma";
 import Link from "next/link";

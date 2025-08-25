@@ -1,4 +1,4 @@
-import { API_URL } from "@/app/lib/env";
+import { API_URL } from "@/lib/env";
 import type { AuthMeResponse } from "@shared/api/auth/types/me";
 import type { ErrorResponse } from "@shared/api/common/types/errors";
 

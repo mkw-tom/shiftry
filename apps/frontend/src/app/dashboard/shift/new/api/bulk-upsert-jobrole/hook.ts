@@ -1,5 +1,5 @@
-import { saveActiveShiftRequest } from "@/app/redux/slices/activeShiftRequests";
-import type { AppDispatch, RootState } from "@/app/redux/store";
+import { saveActiveShiftRequest } from "@/redux/slices/activeShiftRequests";
+import type { AppDispatch, RootState } from "@/redux/store";
 import type {
 	ErrorResponse,
 	ValidationErrorResponse,

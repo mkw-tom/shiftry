@@ -1,4 +1,4 @@
-import type { RootState } from "@/app/redux/store";
+import type { RootState } from "@/redux/store";
 import type { ErrorResponse } from "@shared/api/common/types/errors";
 import { SubmittedShiftWithJson } from "@shared/api/common/types/merged";
 import type { GetSubmittedShiftMeResponse } from "@shared/api/shift/submit/types/get-me";

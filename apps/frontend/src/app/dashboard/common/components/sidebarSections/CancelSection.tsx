@@ -1,5 +1,5 @@
 "use client";
-import type { RootState } from "@/app/redux/store";
+import type { RootState } from "@/redux/store";
 import React from "react";
 import { TbCancel } from "react-icons/tb";
 import { useSelector } from "react-redux";

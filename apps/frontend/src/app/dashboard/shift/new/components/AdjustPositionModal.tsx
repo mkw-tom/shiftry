@@ -1,4 +1,4 @@
-import type { RootState } from "@/app/redux/store";
+import type { RootState } from "@/redux/store";
 import type { TimeSlotType } from "@shared/api/shift/request/validations/put";
 import type {
 	UpsertShiftPositionType,

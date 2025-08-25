@@ -1,5 +1,5 @@
 "use client";
-import type { RootState } from "@/app/redux/store";
+import type { RootState } from "@/redux/store";
 import { useMystoresHooks } from "@/shared/api/get-my-stores/hook";
 import Skeleton from "@/shared/components/Skeleton";
 import type { Store } from "@shared/api/common/types/prisma";

@@ -1,4 +1,4 @@
-import { API_URL } from "@/app/lib/env";
+import { API_URL } from "@/lib/env";
 import type { RegisterStaffResponse } from "@shared/api/auth/types/register-staff";
 import type {
 	storeIdandShfitReruestIdType,

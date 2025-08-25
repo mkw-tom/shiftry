@@ -1,5 +1,5 @@
-import { setStores } from "@/app/redux/slices/stores";
-import type { AppDispatch, RootState } from "@/app/redux/store";
+import { setStores } from "@/redux/slices/stores";
+import type { AppDispatch, RootState } from "@/redux/store";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getMyStores } from "./api";

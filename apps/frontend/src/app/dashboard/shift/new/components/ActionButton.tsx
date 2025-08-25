@@ -18,7 +18,7 @@ const ActionButton = () => {
 	const router = useRouter();
 
 	const saveAndSnedToShiftRequest = async () => {
-		setFormData({ ...formData, status: "CONFIRMED" });
+		setFormData({ ...formData, status: "REQUEST" });
 		const res = await handleUpsertShiftRequest(formData);
 		if (!res.ok) {
 			showToast("シフトリクエストの作成に失敗しました", "error");

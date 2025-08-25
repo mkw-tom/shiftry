@@ -1,4 +1,4 @@
-import type { RootState } from "@/app/redux/store";
+import type { RootState } from "@/redux/store";
 import { useMembersHook } from "@/shared/api/get-members/hook";
 import type {
 	Member,

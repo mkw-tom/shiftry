@@ -1,5 +1,5 @@
-import { setMembers } from "@/app/redux/slices/members";
-import type { AppDispatch, RootState } from "@/app/redux/store";
+import { setMembers } from "@/redux/slices/members";
+import type { AppDispatch, RootState } from "@/redux/store";
 import type { ErrorResponse } from "@shared/api/common/types/errors";
 import type { GetMemberFromStoreResponse } from "@shared/api/user/types/get-member";
 import { useEffect, useState } from "react";
