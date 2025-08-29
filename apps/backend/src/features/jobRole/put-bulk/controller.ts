@@ -22,6 +22,7 @@ const bulkUpsertJobRoleController = async (
 		}
 		const parsed = putBulkJobRoleValidate.safeParse(req.body);
 		if (!parsed.success) {
+			console.log(parsed.error.errors);
 			res.status(400).json({
 				ok: false,
 				message: "Invalid request value",
