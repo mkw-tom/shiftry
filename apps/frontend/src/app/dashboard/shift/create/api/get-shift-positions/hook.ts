@@ -4,7 +4,7 @@ import type {
 	ValidationErrorResponse,
 } from "@shared/api/common/types/errors";
 import { GetJobRolesResponse } from "@shared/api/jobRole/types/get";
-import type { GetShfitPositionsResponse } from "@shared/api/shiftPosition/types/get-by-store-id";
+import type { GetShiftPositionsResponse } from "@shared/api/shiftPosition/types/get-by-store-id";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getShiftPositions } from "./api";
@@ -16,7 +16,7 @@ export const useGetShfitPositions = () => {
 	const { jwt } = useSelector((state: RootState) => state.authToken);
 
 	const handleGetShiftPositions = async (): Promise<
-		GetShfitPositionsResponse | ErrorResponse | ValidationErrorResponse
+		GetShiftPositionsResponse | ErrorResponse | ValidationErrorResponse
 	> => {
 		setIsLoading(true);
 		setError(null);

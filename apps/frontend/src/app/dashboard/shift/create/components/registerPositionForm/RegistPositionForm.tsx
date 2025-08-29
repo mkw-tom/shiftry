@@ -1,4 +1,9 @@
+import { toISO, toISODateUTC } from "@/app/ utils/date";
 import { toHHmm } from "@/app/ utils/times";
+import {
+	AbsoluteUserType,
+	PriorityUserType,
+} from "@shared/api/shift/request/validations/put";
 import type {
 	UpsertShiftPositionBaseInput,
 	WeekDayType,
@@ -39,23 +44,20 @@ const RegistPositionForm = () => {
 				return;
 			}
 
-			const shiftPositions = res.shiftPositions.map((p) => {
-				return {
-					name: p.name,
-					weeks: p.weeks as WeekDayType[],
-					// ★ ISO→HH:mm に正規化
-					startTime: toHHmm(p.startTime),
-					endTime: toHHmm(p.endTime),
-					priority: p.priority ?? [],
-					absolute: p.absolute ?? [],
-					count: Number(p.count) ?? 1,
-					jobRoles: p.jobRoles ?? [],
-				} as UpsertShiftPositionBaseInput; // ← ここで型が合う
-			});
-
-			setShiftPositions(shiftPositions); // ← エラー解消
+			setShiftPositions(
+				res.shiftPositions.map((pos) => ({
+					...pos,
+					startTime: toISO(pos.startTime),
+					endTime: toISO(pos.endTime),
+					absolute: pos.absolute ?? [],
+					priority: pos.priority ?? [],
+					count:
+						typeof pos.count === "number" && pos.count !== null ? pos.count : 1,
+				})),
+			);
 		})();
 	}, [handleGetShiftPositions, setShiftPositions]);
+
 	const openUpsertPositionModal = (
 		position: UpsertShiftPositionBaseInput,
 		index: number | null,

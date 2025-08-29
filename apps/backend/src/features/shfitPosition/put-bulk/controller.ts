@@ -2,6 +2,7 @@ import type {
 	ErrorResponse,
 	ValidationErrorResponse,
 } from "@shared/api/common/types/errors.js";
+import type { AbsDTO, PriDTO, WeekDay } from "@shared/api/shiftPosition/dto.js";
 import type { BulkUpsertShiftPositionsResponse } from "@shared/api/shiftPosition/types/put-bulk.js";
 import { bulkUpsertShiftPositionValidate } from "@shared/api/shiftPosition/validations/put-bulk.js";
 import type { Request, Response } from "express";
@@ -36,10 +37,17 @@ const bulkUpsertShiftPosisionsController = async (
 
 		await verifyUserStoreForOwnerAndManager(auth.uid, auth.sid);
 
-		const shiftPositions = await bulkUpsertShiftPositions(
+		const shiftPositionsRaw = await bulkUpsertShiftPositions(
 			auth.sid,
 			parsed.data,
 		);
+		const shiftPositions = shiftPositionsRaw.map((pos) => ({
+			...pos,
+			weeks: pos.weeks as WeekDay[],
+			absolute: Array.isArray(pos.absolute) ? (pos.absolute as AbsDTO[]) : [],
+			priority: Array.isArray(pos.priority) ? (pos.priority as PriDTO[]) : [],
+		}));
+
 		res.json({ ok: true, shiftPositions });
 	} catch (error) {
 		console.error("Failed to get job roles:", error);
