@@ -114,28 +114,22 @@ const Positionlist = ({
 							}
 						/>
 						<div className="w-full h-auto flex  gap-4 items-center justify-end mt-2 pl-2">
-							{targetPosition.absolute === undefined ||
-								(targetPosition.absolute.length === 0 && (
-									<div
-										className="h-auto flex gap-2 items-center justify-center"
+							{/* 固定（absolute） */}
+							{targetPosition.absolute &&
+								targetPosition.absolute.length > 0 && (
+									<button
+										type="button"
+										className="h-auto flex items-center gap-2 justify-center"
 										onClick={() =>
 											openPriorytyAndAbsoluteModal(
 												targetPosition.name,
 												"absolute",
 											)
 										}
-										onKeyDown={(e) => {
-											if (e.key === "Enter" || e.key === " ") {
-												openPriorytyAndAbsoluteModal(
-													targetPosition.name,
-													"absolute",
-												);
-											}
-										}}
 									>
 										<p className="text-black">固定</p>
 										<div className="avatar-group -space-x-1">
-											{targetPosition.absolute?.map((staff) => (
+											{targetPosition.absolute.map((staff) => (
 												<div className="avatar" key={staff.id}>
 													<div className="w-4">
 														<img src={staff.pictureUrl} alt={staff.name} />
@@ -143,30 +137,25 @@ const Positionlist = ({
 												</div>
 											))}
 										</div>
-									</div>
-								))}
-							{targetPosition.priority === undefined ||
-								(targetPosition.priority.length === 0 && (
-									<div
-										className="h-auto flex gap-2  items-center justify-center px-1"
+									</button>
+								)}
+
+							{/* 優先（priority） */}
+							{targetPosition.priority &&
+								targetPosition.priority.length > 0 && (
+									<button
+										type="button"
+										className="h-auto flex items-center gap-2 justify-center px-1"
 										onClick={() =>
 											openPriorytyAndAbsoluteModal(
 												targetPosition.name,
 												"priority",
 											)
 										}
-										onKeyDown={(e) => {
-											if (e.key === "Enter" || e.key === " ") {
-												openPriorytyAndAbsoluteModal(
-													targetPosition.name,
-													"priority",
-												);
-											}
-										}}
 									>
 										<p className="text-black">優先</p>
 										<div className="avatar-group -space-x-2">
-											{targetPosition.priority?.map((staff) => (
+											{targetPosition.priority.map((staff) => (
 												<div className="avatar" key={staff.id}>
 													<div className="w-4">
 														<img src={staff.pictureUrl} alt={staff.name} />
@@ -174,8 +163,8 @@ const Positionlist = ({
 												</div>
 											))}
 										</div>
-									</div>
-								))}
+									</button>
+								)}
 						</div>
 					</li>
 				);
