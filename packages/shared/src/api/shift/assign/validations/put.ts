@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ShiftStatus } from "../../../common/types/prisma.js";
+import { SHIFT_STSTUS, ShiftStatus } from "../../../common/types/prisma.js";
 
 export const shiftsOfAssignValidate = z.object({
 	userId: z.string().uuid(),
@@ -17,7 +17,7 @@ export type ShiftsOfAssignType = z.infer<typeof shiftsOfAssignValidate>;
 export const upsertAssignShfitValidate = z.object({
 	shiftRequestId: z.string().uuid(),
 	shifts: shiftsOfAssignValidate.array(),
-	status: z.nativeEnum(ShiftStatus, {
+	status: z.enum(SHIFT_STSTUS, {
 		errorMap: () => ({ message: "Invalid status" }),
 	}),
 });

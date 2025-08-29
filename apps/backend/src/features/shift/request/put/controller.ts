@@ -3,11 +3,10 @@ import type {
 	ValidationErrorResponse,
 } from "@shared/api/common/types/errors.js";
 import type { UpsertShiftRequetResponse } from "@shared/api/shift/request/types/put.js";
-import { upsertShfitRequestValidate } from "@shared/api/shift/request/validations/put.js";
+import { upsertShiftRequestValidate } from "@shared/api/shift/request/validations/put.js";
 import type { Request, Response } from "express";
 import { upsertShiftRequest } from "../../../../repositories/shiftRequest.repository.js";
 import { verifyUserStoreForOwnerAndManager } from "../../../common/authorization.service.js";
-import { convertToRequestCalendar } from "./service.js";
 
 const upsertShiftRequestController = async (
 	req: Request,
@@ -23,7 +22,7 @@ const upsertShiftRequestController = async (
 		}
 		await verifyUserStoreForOwnerAndManager(auth.uid, auth.sid);
 
-		const prased = upsertShfitRequestValidate.safeParse(req.body);
+		const prased = upsertShiftRequestValidate.safeParse(req.body);
 		if (!prased.success) {
 			res.status(400).json({
 				ok: false,

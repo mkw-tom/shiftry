@@ -160,7 +160,7 @@ const ShiftRequestList = () => {
 						</div>
 
 						<Link
-							href={"/dashboard/shift/new"}
+							href={"/dashboard/shift/create"}
 							className="btn btn-sm w-auto border-none rounded-md bg-green02 text-white font-bold shadow-md"
 							// onClick={() => darawerOpen(DrawerView.CREATE_REQUEST, null)}
 						>

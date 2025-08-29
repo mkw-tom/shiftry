@@ -13,9 +13,19 @@ export type {
 	StoreCode,
 } from "@prisma/client";
 
-export {
+export type {
 	UserRole,
 	ShiftStatus,
 	ShiftType,
 	RequestStatus,
 } from "@prisma/client";
+
+export const SHIFT_STSTUS = ["ADJUSTMENT", "CONFIRMED"] as const;
+
+export const SHIFT_TYPE = ["MONTHLY", "WEEKLY"] as const;
+export const REQUEST_STATUS = [
+	"HOLD",
+	"REQUEST",
+	"ADJUSTMENT",
+	"CONFIRMED",
+] as const;
