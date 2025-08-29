@@ -20,14 +20,21 @@ const HHmm = z
 
 const timeLt = (a: string, b: string) => a < b; // "09:00" 形式なら文字比較でOK
 
+const ISODateTime = z
+	.string()
+	.min(1, { message: "入力必須です" })
+	.refine((v) => !Number.isNaN(Date.parse(v)), {
+		message: "日時は ISO 形式で入力してください",
+	});
+
 export const UpsertShiftPositionBase = z.object({
 	name: z
 		.string()
 		.trim()
 		.min(1, { message: "ポジション名を入力してください" })
 		.max(15, { message: "ポジション名は15文字以内で入力してください" }),
-	startTime: HHmm,
-	endTime: HHmm,
+	startTime: ISODateTime,
+	endTime: ISODateTime,
 	jobRoles: z
 		.array(
 			z
@@ -118,7 +125,9 @@ export const UpsertShiftPositionValidate = UpsertShiftPositionBase.superRefine(
 					ctx.addIssue({
 						code: z.ZodIssueCode.custom,
 						path: [label],
-						message: `${label === "absolute" ? "固定" : "優先"}スタッフに重複があります`,
+						message: `${
+							label === "absolute" ? "固定" : "優先"
+						}スタッフに重複があります`,
 					});
 					break;
 				}

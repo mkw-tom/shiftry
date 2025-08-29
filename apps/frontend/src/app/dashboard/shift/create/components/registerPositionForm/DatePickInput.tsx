@@ -1,8 +1,11 @@
-import { fromHHmm, toHHmm } from "@/app/ utils/times";
 import type { UpsertShiftPositionBaseInput } from "@shared/api/shiftPosition/validations/put-bulk";
 import { ja } from "date-fns/locale";
 import DatePicker from "react-datepicker";
 import { type Control, Controller } from "react-hook-form";
+
+// ISO <-> Date 変換ヘルパ
+const fromISO = (iso?: string | null) => (iso ? new Date(iso) : null);
+const toISO = (d: Date | null) => (d ? d.toISOString() : "");
 
 export default function DatePickInput({
 	control,
@@ -14,22 +17,22 @@ export default function DatePickInput({
 			<h3 className="text-sm text-gray-600">勤務時間（開始〜終了）</h3>
 
 			<div className="flex items-center gap-3 h-9">
-				{/* startTime */}
+				{/* startTime（ISOで保持） */}
 				<div className="flex flex-col">
 					<Controller
 						name="startTime"
 						control={control}
+						rules={{ required: "出勤時刻は必須です" }}
 						render={({ field: { value, onChange }, fieldState: { error } }) => (
 							<>
 								<DatePicker
-									selected={fromHHmm(value)} // 表示用に Date
-									onChange={(d) => onChange(toHHmm(d))} // 保存は "HH:mm"
-									// value は DatePicker では不要（selected が真）
+									selected={fromISO(value)} // ISO -> Date
+									onChange={(d) => onChange(toISO(d))} // Date -> ISO
 									showTimeSelect
 									showTimeSelectOnly
 									timeIntervals={30}
 									timeCaption="出勤"
-									dateFormat="HH:mm"
+									dateFormat="HH:mm" // 表示はHH:mm
 									locale={ja}
 									placeholderText="出勤"
 									className={`input input-bordered w-18 bg-base text-black border-gray-300 focus:outline-none focus:ring-2 ${
@@ -51,16 +54,17 @@ export default function DatePickInput({
 
 				<span className="text-gray-600">〜</span>
 
-				{/* endTime */}
+				{/* endTime（ISOで保持） */}
 				<div className="flex flex-col">
 					<Controller
 						name="endTime"
 						control={control}
+						rules={{ required: "退勤時刻は必須です" }}
 						render={({ field: { value, onChange }, fieldState: { error } }) => (
 							<>
 								<DatePicker
-									selected={fromHHmm(value)}
-									onChange={(d) => onChange(toHHmm(d))}
+									selected={fromISO(value)}
+									onChange={(d) => onChange(toISO(d))}
 									showTimeSelect
 									showTimeSelectOnly
 									timeIntervals={30}
