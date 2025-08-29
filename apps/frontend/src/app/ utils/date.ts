@@ -1,6 +1,9 @@
 // date-io.ts などに
 const pad = (n: number) => String(n).padStart(2, "0");
 
+export const toISO = (v: string | Date) =>
+	v instanceof Date ? v.toISOString() : new Date(v).toISOString();
+
 // Date(ローカル日付) -> "YYYY-MM-DDT00:00:00.000Z"（UTCの0時）
 export const toISODateUTC = (d?: Date | null): string =>
 	d

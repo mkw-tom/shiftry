@@ -1,10 +1,10 @@
 import { API_URL } from "@/lib/env";
 import type { ErrorResponse } from "@shared/api/common/types/errors";
-import type { GetShfitPositionsResponse } from "@shared/api/shiftPosition/types/get-by-store-id";
+import type { GetShiftPositionsResponse } from "@shared/api/shiftPosition/types/get-by-store-id";
 
 export const getShiftPositions = async (
 	jwt: string,
-): Promise<GetShfitPositionsResponse | ErrorResponse> => {
+): Promise<GetShiftPositionsResponse | ErrorResponse> => {
 	if (!jwt) {
 		throw new Error("JWT is not found");
 	}
