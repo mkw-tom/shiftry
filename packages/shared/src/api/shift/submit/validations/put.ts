@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ShiftStatus } from "../../../common/types/prisma.js";
+import { SHIFT_STSTUS, ShiftStatus } from "../../../common/types/prisma.js";
 
 // ✅ 曜日 + optional 時間帯の形式（例: "Monday&11:00-17:00"）
 export const availableWeekValidate = z.string().refine(
@@ -99,7 +99,7 @@ export const upsertSubmittedShiftValidate = z.object({
 		.min(1, "ニックネームは必須です")
 		.max(20, "20文字以内で入力してください"),
 	shifts: SubmittedCalenderValidate,
-	status: z.nativeEnum(ShiftStatus, {
+	status: z.enum(SHIFT_STSTUS, {
 		errorMap: () => ({ message: "Invalid status" }),
 	}),
 });
@@ -128,7 +128,7 @@ export const upsertSubmittedShiftFormValidate = z.object({
 		.min(1, "ニックネームは必須です")
 		.max(20, "20文字以内で入力してください"),
 	shifts: shiftsOfSubmittedValidate,
-	status: z.nativeEnum(ShiftStatus, {
+	status: z.enum(SHIFT_STSTUS, {
 		errorMap: () => ({ message: "Invalid status" }),
 	}),
 });

@@ -2,7 +2,10 @@ import type {
 	ErrorResponse,
 	ValidationErrorResponse,
 } from "@shared/api/common/types/errors.js";
-import { ShiftStatus } from "@shared/api/common/types/prisma.js";
+import {
+	SHIFT_STSTUS,
+	type ShiftStatus,
+} from "@shared/api/common/types/prisma.js";
 import type { CreateShiftAiResponse } from "@shared/api/shift/ai/types/post-create.js";
 import { CreateShiftAiValidate } from "@shared/api/shift/ai/validations/post-create.js";
 import type { Request, Response } from "express";
@@ -80,7 +83,7 @@ const createShiftController = async (
 		const upsertData = {
 			shiftRequestId,
 			shifts: resultShift,
-			status: ShiftStatus.ADJUSTMENT,
+			status: "ADJUSTMENT" as ShiftStatus,
 		};
 		await upsertAssignShfitService({ storeId, upsertData });
 
