@@ -1,3 +1,4 @@
+import { isoUTCToLocalDate, toISODateUTC } from "@/app/ utils/date";
 import { YMDW } from "@shared/utils/formatDate";
 import { ja } from "date-fns/locale";
 import DatePicker from "react-datepicker";
@@ -7,49 +8,48 @@ import { BiCalendar } from "react-icons/bi";
 import { useCreateRequest } from "../context/CreateRequestFormProvider";
 import useSelectDateForm from "../hook/form/useSelectDateForm";
 
-const toYMD = (d: Date | null | undefined) =>
-	d
-		? new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()))
-				.toISOString()
-				.slice(0, 10)
-		: "";
-const fromYMD = (s?: string) => (s ? new Date(s) : undefined);
-
 export function RangeCalendar() {
 	const { setFormData, formData } = useCreateRequest();
 
-	// RHF 初期値は context から取り込む
+	// RHF 初期値は context から取り込む（ISOを入れる）
 	const { control, errors, weekStart, weekEnd, setValue } = useSelectDateForm({
 		weekStart: formData.weekStart || "",
 		weekEnd: formData.weekEnd || "",
 		deadline: formData.deadline || "",
 	});
 
-	// RHFの状態から DayPicker の選択状態を作る
+	// RHFの状態（ISO）から DayPicker の選択状態(Date)を作る
 	const selectedRange: DateRange | undefined =
 		weekStart && weekEnd
 			? {
-					from: fromYMD(weekStart),
-					to: fromYMD(weekEnd),
+					from: isoUTCToLocalDate(weekStart),
+					to: isoUTCToLocalDate(weekEnd),
 				}
 			: undefined;
 
 	const handleRangeSelect = (range: DateRange | undefined) => {
-		const ws = toYMD(range?.from ?? null);
-		const we = toYMD(range?.to ?? null);
+		const wsIso = toISODateUTC(range?.from ?? null);
+		const weIso = toISODateUTC(range?.to ?? null);
 
-		setValue("weekStart", ws, { shouldDirty: true, shouldValidate: true });
-		setValue("weekEnd", we, { shouldDirty: true, shouldValidate: true });
+		// RHFへ
+		setValue("weekStart", wsIso, { shouldDirty: true, shouldValidate: true });
+		setValue("weekEnd", weIso, { shouldDirty: true, shouldValidate: true });
 
-		setFormData((prev) => ({
-			...prev,
-			weekStart: ws,
-			weekEnd: we,
-			deadline:
-				prev.deadline && ws && new Date(prev.deadline) > new Date(ws)
-					? ""
-					: prev.deadline,
-		}));
+		// Contextへ
+		setFormData((prev) => {
+			// 期限が週開始を超えてたらクリア
+			const wkStartLocal = isoUTCToLocalDate(wsIso);
+			const deadlineLocal = isoUTCToLocalDate(prev.deadline);
+			const shouldClearDeadline =
+				!!deadlineLocal && !!wkStartLocal && deadlineLocal > wkStartLocal;
+
+			return {
+				...prev,
+				weekStart: wsIso,
+				weekEnd: weIso,
+				deadline: shouldClearDeadline ? "" : prev.deadline,
+			};
+		});
 	};
 
 	return (
@@ -63,7 +63,6 @@ export function RangeCalendar() {
 					}`}
 				>
 					<BiCalendar className="text-xl" />
-
 					{selectedRange?.from && selectedRange?.to ? (
 						<span>
 							{YMDW(selectedRange.from)}〜 {YMDW(selectedRange.to)}
@@ -87,28 +86,28 @@ export function RangeCalendar() {
 						name="deadline"
 						control={control}
 						render={({ field: { value, onChange } }) => {
-							const wkStartDate = fromYMD(weekStart);
+							const wkStartDate = isoUTCToLocalDate(weekStart);
 							return (
 								<DatePicker
-									selected={value ? new Date(value) : null}
+									selected={isoUTCToLocalDate(value)}
 									onChange={(d: Date | null) => {
-										const ymd = toYMD(d ?? null);
-										onChange(ymd); // RHFへ
-										setFormData((prev) => ({ ...prev, deadline: ymd })); // Contextへ
+										const iso = toISODateUTC(d);
+										onChange(iso); // RHFへ ISO
+										setFormData((prev) => ({ ...prev, deadline: iso })); // Contextへ ISO
 									}}
 									locale={ja}
 									dateFormat="yyyy/MM/dd (eee)"
 									placeholderText="日付を選択"
-									minDate={new Date()} // 今日以降
-									maxDate={wkStartDate ?? undefined} // 週開始日まで
+									minDate={new Date()} // 今日以降（ローカル）
+									maxDate={wkStartDate ?? undefined} // 週開始まで（ローカルDate）
 									className="input input-bordered w-full border bg-base text-black border-gray-300 focus:outline-none focus:ring-2 focus:ring-success"
 								/>
 							);
 						}}
 					/>
 				</div>
-				{/* エラーメッセージ（必要なら表示） */}
 
+				{/* エラー表示（必要なら） */}
 				{errors.weekEnd?.message && (
 					<p className="text-error text-xs">{String(errors.weekEnd.message)}</p>
 				)}
@@ -119,14 +118,14 @@ export function RangeCalendar() {
 				)}
 			</div>
 
-			{/* 範囲カレンダー（選択→RHF+Context更新） */}
+			{/* 範囲カレンダー */}
 			<div className="px-4 mx-auto mt-1">
 				<DayPicker
 					mode="range"
 					selected={selectedRange}
 					onSelect={handleRangeSelect}
 					numberOfMonths={1}
-					defaultMonth={new Date()}
+					defaultMonth={selectedRange?.from ?? new Date()}
 					required={false}
 					locale={ja}
 					modifiersClassNames={{

@@ -1,5 +1,4 @@
 "use client";
-import { displayHHmm, toHHmm } from "@/app/ utils/times";
 import type { Member } from "@shared/api/common/types/prismaLite";
 import type { UpsertShiftRequetInput } from "@shared/api/shift/request/validations/put";
 import type { bulkUpsertShiftPositionInput } from "@shared/api/shiftPosition/validations/put-bulk";
@@ -273,6 +272,7 @@ export const CreateRequestProvider = ({
 		switch (step) {
 			case "select_date":
 				setStep("regist_position");
+				console.log("formData in context:", formData);
 				break;
 
 			case "regist_position":
@@ -280,6 +280,8 @@ export const CreateRequestProvider = ({
 					...prev,
 					requests: buildRequestsFromPositions(prev, shiftPositioins),
 				}));
+				console.log("Positions:", shiftPositioins);
+				console.log("Built Requests:", formData);
 				setStep("adjust_position");
 				break;
 

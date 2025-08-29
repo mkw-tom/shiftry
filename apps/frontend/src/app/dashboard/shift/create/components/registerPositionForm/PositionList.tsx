@@ -1,4 +1,4 @@
-import { displayHHmm } from "@/app/ utils/times";
+import { formatHHmm } from "@/app/ utils/times";
 import type { UpsertShiftPositionBaseInput } from "@shared/api/shiftPosition/validations/put-bulk";
 import { translateWeekToJapanese } from "@shared/utils/formatWeek";
 import React, { useState } from "react";
@@ -74,8 +74,8 @@ const Positionlist = ({
 									<span className="text-black">{targetPosition.count}</span>
 								</p>
 								<span className="text-black">
-									{displayHHmm(targetPosition.startTime)} ~{" "}
-									{displayHHmm(targetPosition.endTime)}
+									{formatHHmm(targetPosition.startTime)} ~{" "}
+									{formatHHmm(targetPosition.endTime)}
 								</span>
 							</div>
 
