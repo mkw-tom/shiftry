@@ -62,7 +62,7 @@ const ActionButton = () => {
 	};
 
 	const saveShiftPositionsAndJobRoles = async () => {
-		console.log("shiftPositions:", shiftPositioins)
+		console.log("shiftPositions:", shiftPositioins);
 		const spRes = await handleBulkUpsertShiftPositions(shiftPositioins);
 		if (!spRes.ok && "message" in spRes) {
 			showToast("シフトポジションの保存に失敗しました", "error");

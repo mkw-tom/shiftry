@@ -13,8 +13,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 				<BottomDrawerProvider>
 					<Header />
 					{/* <AuthGate liffId={liffId.dashboard}> */}
-						{children}
-						{/* </AuthGate> */}
+					{children}
+					{/* </AuthGate> */}
 					<BottomDrawer />
 				</BottomDrawerProvider>
 			</ToastProvider>
