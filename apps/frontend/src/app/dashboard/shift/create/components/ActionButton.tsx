@@ -65,7 +65,11 @@ const ActionButton = () => {
 		const spRes = await handleBulkUpsertShiftPositions(shiftPositioins);
 		if (!spRes.ok && "message" in spRes) {
 			showToast("シフトポジションの保存に失敗しました", "error");
-			alert(spRes.message);
+			const errorMessage =
+				"error" in spRes
+					? `errorMessage: ${spRes.message} validationError: ${spRes.error}`
+					: spRes.message;
+			alert(errorMessage);
 			nextStep();
 			return;
 		}
