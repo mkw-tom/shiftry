@@ -1,6 +1,6 @@
-import type { ShiftPosition } from "../../common/types/prisma.js";
+import type { ShiftPositionDTO } from "../dto.js";
 
-export type GetShfitPositionsResponse = {
-	ok: boolean;
-	shiftPositions: ShiftPosition[];
+export type GetShiftPositionsResponse = {
+	ok: true;
+	shiftPositions: ShiftPositionDTO[];
 };

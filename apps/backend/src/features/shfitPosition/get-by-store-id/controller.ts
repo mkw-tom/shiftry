@@ -2,7 +2,8 @@ import type {
 	ErrorResponse,
 	ValidationErrorResponse,
 } from "@shared/api/common/types/errors.js";
-import type { GetShfitPositionsResponse } from "@shared/api/shiftPosition/types/get-by-store-id.js";
+import type { AbsDTO, PriDTO, WeekDay } from "@shared/api/shiftPosition/dto.js";
+import type { GetShiftPositionsResponse } from "@shared/api/shiftPosition/types/get-by-store-id.js";
 import type { Request, Response } from "express";
 import { getShiftPositionsByStoreId } from "../../../repositories/ShiftPosition.js";
 import { verifyUserStoreForOwnerAndManager } from "../../common/authorization.service.js";
@@ -10,7 +11,7 @@ import { verifyUserStoreForOwnerAndManager } from "../../common/authorization.se
 const getShiftPosisiosnByStoreIdController = async (
 	req: Request,
 	res: Response<
-		GetShfitPositionsResponse | ErrorResponse | ValidationErrorResponse
+		GetShiftPositionsResponse | ErrorResponse | ValidationErrorResponse
 	>,
 ) => {
 	try {
@@ -21,7 +22,14 @@ const getShiftPosisiosnByStoreIdController = async (
 		}
 		await verifyUserStoreForOwnerAndManager(auth.uid, auth.sid);
 
-		const shiftPositions = await getShiftPositionsByStoreId(auth.sid);
+		const shiftPositionsRaw = await getShiftPositionsByStoreId(auth.sid);
+		const shiftPositions = shiftPositionsRaw.map((pos) => ({
+			...pos,
+			weeks: pos.weeks as WeekDay[],
+			absolute: Array.isArray(pos.absolute) ? (pos.absolute as AbsDTO[]) : [],
+			priority: Array.isArray(pos.priority) ? (pos.priority as PriDTO[]) : [],
+		}));
+
 		res.json({ ok: true, shiftPositions });
 	} catch (error) {
 		console.error("Failed to get job roles:", error);
