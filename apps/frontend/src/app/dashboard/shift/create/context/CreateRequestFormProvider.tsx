@@ -272,7 +272,6 @@ export const CreateRequestProvider = ({
 		switch (step) {
 			case "select_date":
 				setStep("regist_position");
-				console.log("formData in context:", formData);
 				break;
 
 			case "regist_position":
@@ -280,8 +279,6 @@ export const CreateRequestProvider = ({
 					...prev,
 					requests: buildRequestsFromPositions(prev, shiftPositioins),
 				}));
-				console.log("Positions:", shiftPositioins);
-				console.log("Built Requests:", formData);
 				setStep("adjust_position");
 				break;
 
