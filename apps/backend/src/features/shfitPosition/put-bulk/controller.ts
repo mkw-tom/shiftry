@@ -22,6 +22,10 @@ const bulkUpsertShiftPosisionsController = async (
 		}
 		const parsed = bulkUpsertShiftPositionValidate.safeParse(req.body);
 		if (!parsed.success) {
+			console.log(
+				"bulkUpsertShiftPositionValidate error:",
+				parsed.error.errors,
+			);
 			res.status(400).json({
 				ok: false,
 				message: "Invalid request value",
