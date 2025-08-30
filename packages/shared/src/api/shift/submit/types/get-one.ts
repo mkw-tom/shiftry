@@ -1,6 +1,6 @@
-import type { SubmittedShift } from "../../../common/types/prisma.js";
+import type { SubmittedShiftDTO } from "../dto.js";
 
 export interface GetSubmittedShiftUserOneResponse {
 	ok: true;
-	submittedShift: SubmittedShift | null;
+	submittedShift: SubmittedShiftDTO | null;
 }

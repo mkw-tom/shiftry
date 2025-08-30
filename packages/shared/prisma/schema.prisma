@@ -144,10 +144,10 @@ enum ShiftStatus {
 model SubmittedShift {
   id              String         @id @default(uuid())
   userId          String
-  name            String?
   storeId         String
   shiftRequestId  String
   shifts          Json
+  memo            String?
   status          ShiftStatus
 
   createdAt       DateTime       @default(now())
