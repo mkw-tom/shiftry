@@ -1,6 +1,5 @@
 "use client";
 import type { RootState } from "@/redux/store";
-import type { ShiftRequestWithJson } from "@shared/api/common/types/merged";
 import type { ShiftRequest } from "@shared/api/common/types/prisma";
 import { MDW, YMDHM, YMDW } from "@shared/utils/formatDate";
 import React, { useEffect, useState } from "react";
@@ -11,12 +10,13 @@ import { ar } from "zod/v4/locales";
 
 import { useBottomDrawer } from "@/app/dashboard/common/context/useBottomDrawer";
 import Head from "@/app/dashboard/home/components/Head";
+import type { ShiftRequestDTO } from "@shared/api/shift/request/dto";
 import { useGetArchiveShiftRequests } from "../api/get-archive-shift-request/hook";
 import ArchiveListCard from "./ArchiveListCard";
 import ArchiveListHead from "./ArchiveListHead";
 
 const ArchivePageContent = () => {
-	const [archiveData, setArchiveData] = useState<ShiftRequestWithJson[]>([]);
+	const [archiveData, setArchiveData] = useState<ShiftRequestDTO[]>([]);
 	const [filterValue, setFilterValue] = useState<number | "all">("all");
 	const [ids, setIds] = useState<string[]>([]);
 
@@ -28,7 +28,7 @@ const ArchivePageContent = () => {
 
 	const removeArchiveData = () => {
 		const newArchiveData = archiveData.filter(
-			(item: ShiftRequestWithJson) => !ids.includes(item.id),
+			(item: ShiftRequestDTO) => !ids.includes(item.id),
 		);
 		setArchiveData([...newArchiveData]);
 		setIds([]);
@@ -45,7 +45,7 @@ const ArchivePageContent = () => {
 				alert(res.message);
 				return;
 			}
-			setArchiveData([...res.archiveShiftRequests] as ShiftRequestWithJson[]);
+			setArchiveData([...res.archiveShiftRequests]);
 		};
 		fetchData();
 	}, [handleGetArchiveShiftRequests]);
@@ -98,7 +98,7 @@ const ArchivePageContent = () => {
 								<p className="text-gray02 font-bold">過去の履歴がありません</p>
 							</div>
 						)}
-						{filteredArchiveData.map((data: ShiftRequestWithJson) => {
+						{filteredArchiveData.map((data: ShiftRequestDTO) => {
 							return (
 								<ArchiveListCard
 									key={data.id}

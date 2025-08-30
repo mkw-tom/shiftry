@@ -8,5 +8,4 @@ export type {
 	shiftsOfSubmittedType,
 	availableWeekType,
 	specificDatesType,
-	SubmittedCalendarType,
 } from "../../shift/submit/validations/put.js";

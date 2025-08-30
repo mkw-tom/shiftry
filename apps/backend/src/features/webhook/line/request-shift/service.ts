@@ -2,7 +2,7 @@ import type { ErrorResponse } from "@shared/api/common/types/errors.js";
 import type { LineMessageAPIResponse } from "@shared/api/webhook/line/types.js";
 import type { RequestShiftMessageType } from "@shared/api/webhook/line/validatioins.js";
 import { MDW, YMDHM } from "@shared/utils/formatDate.js";
-import { URI_DASHBOARD, aes } from "../../../../lib/env.js";
+import { URI_DASHBOARD, aes, liffUrl } from "../../../../lib/env.js";
 import { getStoreByIdAllData } from "../../../../repositories/store.repository.js";
 import { decryptText } from "../../../../utils/aes.js";
 import { verifyUserStoreForOwnerAndManager } from "../../../common/authorization.service.js";
@@ -35,7 +35,7 @@ export const sendShiftRequestFunService = async (
 		text2: `期間：${MDW(new Date(startDate))} 〜 ${MDW(new Date(endDate))}`,
 		text3: `提出期限：${YMDHM(new Date(deadline))}`,
 		label: "シフト希望提出",
-		uri: `${URI_DASHBOARD}/shift/submit/${shiftRequestId}`,
+		uri: `${liffUrl.shiftSubmitPage}/${shiftRequestId}`,
 	});
 
 	return { ok: true, message: "Message sent successfully" };

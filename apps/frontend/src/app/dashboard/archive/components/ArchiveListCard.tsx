@@ -1,4 +1,5 @@
 import type { ShiftRequestWithJson } from "@shared/api/common/types/merged";
+import type { ShiftRequestDTO } from "@shared/api/shift/request/dto";
 import { MDW, YMDHM, YMDW } from "@shared/utils/formatDate";
 import React from "react";
 import {
@@ -10,7 +11,7 @@ const ArchiveListCard = ({
 	data,
 	handleCheck,
 }: {
-	data: ShiftRequestWithJson;
+	data: ShiftRequestDTO;
 	handleCheck: (id: string, checked: boolean) => void;
 }) => {
 	const { darawerOpen } = useBottomDrawer();
@@ -37,7 +38,7 @@ const ArchiveListCard = ({
 			<button
 				type="button"
 				className="btn btn-sm border-green02 text-green02 bg-white shadow-none"
-				onClick={() => darawerOpen(DrawerView.SUBMIT, data)}
+				// onClick={() => darawerOpen(DrawerView.SUBMIT, data)}
 			>
 				開く
 			</button>

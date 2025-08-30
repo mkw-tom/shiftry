@@ -1,3 +1,4 @@
+import { register } from "node:module";
 import express from "express";
 import { requireUser } from "../../../middlewares/auth.js";
 import { attachStoreId } from "../../../middlewares/request/attachStoreId.js";
@@ -15,14 +16,16 @@ const router = express.Router();
 router.get("/me", requireUser, getSubmittedShiftMeController);
 router.get(
 	"/one/:shiftRequestId",
+	requireUser,
 	validateshiftRequestId,
 	getSubmittedShiftUserOneController,
 );
 router.get(
 	"/:shiftRequestId",
+	requireUser,
 	validateshiftRequestId,
 	getSubmittedShiftsSpesificController,
 );
-router.put("/", upsertSubmittedShiftController);
+router.put("/", requireUser, upsertSubmittedShiftController);
 
 export default router;
