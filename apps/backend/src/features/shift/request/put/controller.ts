@@ -3,7 +3,10 @@ import type {
 	ValidationErrorResponse,
 } from "@shared/api/common/types/errors.js";
 import type { UpsertShiftRequetResponse } from "@shared/api/shift/request/types/put.js";
-import { upsertShiftRequestValidate } from "@shared/api/shift/request/validations/put.js";
+import {
+	type RequestsType,
+	upsertShiftRequestValidate,
+} from "@shared/api/shift/request/validations/put.js";
 import type { Request, Response } from "express";
 import { upsertShiftRequest } from "../../../../repositories/shiftRequest.repository.js";
 import { verifyUserStoreForOwnerAndManager } from "../../../common/authorization.service.js";
@@ -32,7 +35,13 @@ const upsertShiftRequestController = async (
 			return;
 		}
 
-		const shiftRequest = await upsertShiftRequest(auth.sid, prased.data);
+		const shiftRequestRaw = await upsertShiftRequest(auth.sid, prased.data);
+
+		// Convert requests property to the expected type
+		const shiftRequest = {
+			...shiftRequestRaw,
+			requests: shiftRequestRaw.requests as RequestsType,
+		};
 
 		res.status(200).json({ ok: true, shiftRequest });
 	} catch (error) {

@@ -1,4 +1,5 @@
 import type { ErrorResponse } from "@shared/api/common/types/errors.js";
+import type { RequestsType } from "@shared/api/common/types/json.js";
 import type { GetArchiveShiftRequestsResponse } from "@shared/api/shift/request/types/get-archive.js";
 import type { GetShiftRequestResponse } from "@shared/api/shift/request/types/get.js";
 import type { Request, Response } from "express";
@@ -23,11 +24,15 @@ const getArchiveShiftRequestsController = async (
 			return;
 		}
 
-		const archiveShiftRequests = await getArchivedShiftRequests(auth.sid);
+		const archiveShiftRequestsRaw = await getArchivedShiftRequests(auth.sid);
 
-		res
-			.status(200)
-			.json({ ok: true, archiveShiftRequests: archiveShiftRequests });
+		const archiveShiftRequests = archiveShiftRequestsRaw.map((request) => ({
+			...request,
+			requests:
+				request.requests === null ? {} : (request.requests as RequestsType),
+		}));
+
+		res.status(200).json({ ok: true, archiveShiftRequests });
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ ok: false, message: "Internal Server Error" });

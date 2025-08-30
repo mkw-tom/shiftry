@@ -3,11 +3,14 @@ import type {
 	ValidationErrorResponse,
 } from "@shared/api/common/types/errors.js";
 import type { UpsertSubmittedShfitResponse } from "@shared/api/shift/submit/types/put.js";
-import { upsertSubmittedShiftValidate } from "@shared/api/shift/submit/validations/put.js";
+import {
+	type SubmittedDataType,
+	upsertSubmittedShiftValidate,
+} from "@shared/api/shift/submit/validations/put.js";
 import type { Request, Response } from "express";
 import { upsertSubmittedShift } from "../../../../repositories/submittedShift.repository.js";
 import { verifyUserStore } from "../../../common/authorization.service.js";
-import { convertToSubmittedCalender } from "./service.js";
+// import { convertToSubmittedCalender } from "./service.js";
 
 const upsertSubmittedShiftController = async (
 	req: Request,
@@ -16,12 +19,16 @@ const upsertSubmittedShiftController = async (
 	>,
 ): Promise<void> => {
 	try {
-		const userId = req.userId as string;
-		const storeId = req.storeId as string;
-		await verifyUserStore(userId, storeId);
+		const auth = req.auth;
+		if (!auth?.uid || !auth?.sid) {
+			res.status(401).json({ ok: false, message: "Unauthorized" });
+			return;
+		}
+		await verifyUserStore(auth.uid, auth.sid);
 
 		const parsed = upsertSubmittedShiftValidate.safeParse(req.body);
 		if (!parsed.success) {
+			console.log("Validation errors:", parsed.error.errors);
 			res.status(400).json({
 				ok: false,
 				message: "Invalid request value",
@@ -29,11 +36,18 @@ const upsertSubmittedShiftController = async (
 			});
 			return;
 		}
-		const submittedShift = await upsertSubmittedShift(
-			userId,
-			storeId,
+		const submittedShiftRaw = await upsertSubmittedShift(
+			auth.uid,
+			auth.sid,
 			parsed.data,
 		);
+
+		const submittedShift = {
+			...submittedShiftRaw,
+			shifts: (submittedShiftRaw.shifts === null
+				? {}
+				: submittedShiftRaw.shifts) as SubmittedDataType,
+		};
 
 		res.json({ ok: true, submittedShift });
 	} catch (error) {
