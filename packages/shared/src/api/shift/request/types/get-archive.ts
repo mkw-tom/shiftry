@@ -1,6 +1,6 @@
-import type { ShiftRequest } from "../../../common/types/prisma.js";
+import type { ShiftRequestDTO } from "../dto.js";
 
 export type GetArchiveShiftRequestsResponse = {
 	ok: true;
-	archiveShiftRequests: ShiftRequest[];
+	archiveShiftRequests: ShiftRequestDTO[];
 };

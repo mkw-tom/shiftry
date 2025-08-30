@@ -1,4 +1,5 @@
 import type { ErrorResponse } from "@shared/api/common/types/errors.js";
+import type { RequestsType } from "@shared/api/common/types/json.js";
 import type { GetShiftRequestResponse } from "@shared/api/shift/request/types/get.js";
 import type { Request, Response } from "express";
 import { getShiftRequestByStoreId } from "../../../../repositories/shiftRequest.repository.js";
@@ -13,7 +14,12 @@ const getShiftRequestsController = async (
 		const storeId = req.storeId as string;
 		await verifyUserStore(userId, storeId);
 
-		const shiftRequests = await getShiftRequestByStoreId(storeId);
+		const shiftRequestsRaw = await getShiftRequestByStoreId(storeId);
+
+		const shiftRequests = shiftRequestsRaw.map((req) => ({
+			...req,
+			requests: req.requests === null ? {} : (req.requests as RequestsType),
+		}));
 
 		res.status(200).json({ ok: true, shiftRequests });
 	} catch (error) {

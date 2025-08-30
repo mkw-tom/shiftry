@@ -25,8 +25,8 @@ export const liffId = {
 	registerConnect: process.env.NEXT_PUBLIC_LIFF_ID_REGISTER_CONNECT as string,
 	registerStaff: process.env.NEXT_PUBLIC_LIFF_ID_REGISTER_STAFF as string,
 	dashboard: process.env.NEXT_PUBLIC_LIFF_ID_DASHBOARD as string,
+	shiftSubmit: process.env.NEXT_PUBLIC_LIFF_ID_SHIFT_SUBMIT as string,
 	createRequest: process.env.NEXT_PUBLIC_LIFF_ID_CREAETE_REQUEST as string,
-	submitRquest: process.env.NEXT_PUBLIC_LIFF_ID_SUBMIT_REQEUST as string,
 	generateShift: process.env.NEXT_PUBLIC_LIFF_ID_GENERATE_SHIFT as string,
 	adjustShift: process.env.NEXT_PUBLIC_LIFF_ID_ADJUST_SHIFT as string,
 	showConfirmedShift: process.env

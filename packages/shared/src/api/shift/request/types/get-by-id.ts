@@ -1,6 +1,6 @@
 import type { ShiftRequestDTO } from "../dto.js";
 
-export interface DeleteShiftRequestResponse {
+export interface GetShiftRequestSpecificResponse {
 	ok: true;
 	shiftRequest: ShiftRequestDTO;
 }
