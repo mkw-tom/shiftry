@@ -6,21 +6,16 @@ import type {
 import type { GetSubmittedShiftUserOneResponse } from "@shared/api/shift/submit/types/get-one";
 
 export const getSubmittedShiftUserOne = async ({
-	userToken,
-	storeToken,
+	jwt,
 	shiftRequestId,
 }: {
-	userToken: string;
-	storeToken: string;
+	jwt: string;
 	shiftRequestId: string;
 }): Promise<
 	GetSubmittedShiftUserOneResponse | ErrorResponse | ValidationErrorResponse
 > => {
-	if (!userToken) {
-		throw new Error("code is not found");
-	}
-	if (!storeToken) {
-		throw new Error("code is not found");
+	if (!jwt) {
+		throw new Error("jwt is not found");
 	}
 	if (!shiftRequestId) {
 		throw new Error("shiftRequestId is not found");
@@ -29,8 +24,7 @@ export const getSubmittedShiftUserOne = async ({
 		method: "GET",
 		headers: {
 			"Content-Type": "application/json",
-			Authorization: `Bearer ${userToken}`,
-			"x-store-id": storeToken,
+			Authorization: `Bearer ${jwt}`,
 		},
 	});
 

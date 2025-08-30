@@ -1,47 +1,50 @@
+import type { RootState } from "@/redux/store";
+import type { ErrorResponse } from "@shared/api/common/types/errors";
+import type { GetSubmittedShiftUserOneResponse } from "@shared/api/shift/submit/types/get-one";
+import { ValidationError } from "next/dist/compiled/amphtml-validator";
 import { useCallback, useState } from "react";
+import { useSelector } from "react-redux";
 import { getSubmittedShiftUserOne } from "./api";
 
 export const useGetSubmittedShiftUserOne = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+	const { jwt } = useSelector((state: RootState) => state.authToken);
 
 	const handleGetSubmitShiftUserOne = useCallback(
 		async ({
-			userToken,
-			storeToken,
 			shiftRequestId,
 		}: {
-			userToken: string;
-			storeToken: string;
 			shiftRequestId: string;
-		}) => {
+		}): Promise<GetSubmittedShiftUserOneResponse | ErrorResponse> => {
 			setIsLoading(true);
 			setError(null);
 			try {
+				if (!jwt) {
+					return { ok: false, message: "ログイン情報がありません" };
+				}
+				if (!shiftRequestId) {
+					return { ok: false, message: "シフトリクエストIDがありません" };
+				}
 				const res = await getSubmittedShiftUserOne({
-					userToken,
-					storeToken,
 					shiftRequestId,
+					jwt,
 				});
 				if (!res.ok) {
-					if ("errors" in res) {
-						setError("通信エラーが発生しました");
-						console.warn(res.message, res.errors);
-						return;
-					}
 					setError("通信エラーが発生しました");
-					console.warn("エラー:", res.message);
-					return;
+					return { ok: false, message: res.message };
 				}
+
 				return res;
 			} catch (err) {
 				setError("通信エラーが発生しました。");
 				window.alert("通信エラーが発生しました");
+				return { ok: false, message: "通信エラーが発生しました" };
 			} finally {
 				setIsLoading(false);
 			}
 		},
-		[],
+		[jwt],
 	);
 
 	return { handleGetSubmitShiftUserOne, isLoading, error };

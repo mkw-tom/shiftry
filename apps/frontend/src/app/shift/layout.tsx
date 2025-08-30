@@ -1,0 +1,17 @@
+import AuthGate from "@/shared/components/AuthGate";
+import type { ReactNode } from "react";
+import { liffId } from "../../lib/env";
+import Header from "../dashboard/common/components/Header";
+import BottomDrawer from "../dashboard/common/components/bottomDrawer/BottomDrawer";
+import { ToastProvider } from "../dashboard/common/context/ToastProvider";
+
+export default function DashboardLayout({ children }: { children: ReactNode }) {
+	return (
+		<>
+			<ToastProvider>
+				<Header />
+				{children}
+			</ToastProvider>
+		</>
+	);
+}
