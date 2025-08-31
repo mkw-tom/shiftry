@@ -1,26 +1,18 @@
 // utils/buildRequests.ts
-
 import { displayHHmm } from "@/app/ utils/times";
 import type { UpsertShiftRequetInput } from "@shared/api/shift/request/validations/put";
 import type { bulkUpsertShiftPositionInput } from "@shared/api/shiftPosition/validations/put-bulk";
 import { formatDateToYYYYMMDD } from "@shared/utils/formatDate";
 import { convertDateToWeekByEnglish } from "@shared/utils/formatWeek";
 
-/**
- * 週範囲と shiftPositions から requests を生成し、既存 requests を尊重してマージする
- * - 生成したスロットと既存スロットが衝突したら「既存を優先」して上書き
- * - 既存にしかないフィールドも保持（既存をスプレッドで後に置く）
- */
 export function buildRequestsFromPositions(
 	prev: UpsertShiftRequetInput,
 	shiftPositions: bulkUpsertShiftPositionInput,
 ): UpsertShiftRequetInput["requests"] {
-	const generated: UpsertShiftRequetInput["requests"] = {};
 	const existing = prev.requests ?? {};
-
 	if (!prev.weekStart || !prev.weekEnd) return existing;
 
-	// 週の全日を列挙
+	// 週の全日リスト（昇順）
 	const start = new Date(prev.weekStart);
 	const end = new Date(prev.weekEnd);
 	const days: Date[] = [];
@@ -28,15 +20,16 @@ export function buildRequestsFromPositions(
 		days.push(new Date(d));
 	}
 
-	// shiftPositions を日付×時刻スロットに展開
+	// positions → 日付×時刻スロット（生成分）
+	const generated: UpsertShiftRequetInput["requests"] = {};
 	for (const date of days) {
-		const dateKey = formatDateToYYYYMMDD(date); // "YYYY-MM-DD"
+		const dateKey = formatDateToYYYYMMDD(date);
 		for (const pos of shiftPositions) {
-			const weekKey = convertDateToWeekByEnglish(date); // "monday" など
+			const weekKey = convertDateToWeekByEnglish(date);
 			if (!pos.weeks.includes(weekKey)) continue;
 
-			const startTime = displayHHmm(pos.startTime); // -> "HH:mm"
-			const endTime = displayHHmm(pos.endTime); // -> "HH:mm"
+			const startTime = displayHHmm(pos.startTime); // "HH:mm"
+			const endTime = displayHHmm(pos.endTime); // "HH:mm"
 			const timeKey = `${startTime}-${endTime}`;
 
 			const slotFromPosition = {
@@ -63,21 +56,30 @@ export function buildRequestsFromPositions(
 		}
 	}
 
-	// 既存とマージ（既存優先・既存の余剰プロパティも保持）
-	const merged: UpsertShiftRequetInput["requests"] = { ...existing };
+	// 最終出力（全日付のキーを必ず作る）
+	const out: UpsertShiftRequetInput["requests"] = {};
 
-	for (const [dateKey, slots] of Object.entries(generated)) {
-		merged[dateKey] = {
-			...(existing[dateKey] ?? {}),
-			// 同じ timeKey がある場合は { ...generatedSlot, ...existingSlot } で既存優先・余剰保持
-			...Object.fromEntries(
-				Object.entries(slots ?? {}).map(([timeKey, genSlot]) => {
-					const oldSlot = existing[dateKey]?.[timeKey];
-					return [timeKey, oldSlot ? { ...genSlot, ...oldSlot } : genSlot];
-				}),
-			),
+	for (const date of days) {
+		const dateKey = formatDateToYYYYMMDD(date);
+		const ex = existing[dateKey]; // 既存（undefined | null | map）
+		const gen = generated[dateKey] ?? {}; // 生成（map or {}）
+
+		if (ex === null) {
+			// 既存で null 指定ならそのまま（定休日など）
+			out[dateKey] = null;
+			continue;
+		}
+
+		// map同士をマージ（既存優先＆余剰保持）
+		const mergedMap = {
+			...gen,
+			...(ex ?? {}),
 		};
+
+		// スロット0件 → null にする（＝空日もキーは出す）
+		out[dateKey] =
+			mergedMap && Object.keys(mergedMap).length > 0 ? mergedMap : null;
 	}
 
-	return merged;
+	return out;
 }
