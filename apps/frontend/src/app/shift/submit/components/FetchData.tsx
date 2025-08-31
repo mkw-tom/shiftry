@@ -57,7 +57,15 @@ const FetchData = ({ children }: PropsWithChildren) => {
 			}
 			if (cancelled) return;
 
-			setShiftRequestData(srRes.shiftRequest);
+			const fixDateFields = (sr: ShiftRequestDTO): ShiftRequestDTO => ({
+				...sr,
+				weekStart: new Date(sr.weekStart),
+				weekEnd: new Date(sr.weekEnd),
+				deadline: new Date(sr.deadline as Date),
+				createdAt: new Date(sr.createdAt),
+				updatedAt: new Date(sr.updatedAt),
+			});
+			setShiftRequestData(fixDateFields(srRes.shiftRequest));
 
 			const ssRes = await handleGetSubmitShiftUserOne({ shiftRequestId });
 			if (!ssRes.ok) {
