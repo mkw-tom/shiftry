@@ -35,7 +35,7 @@ export const sendShiftRequestFunService = async (
 		text2: `期間：${MDW(new Date(startDate))} 〜 ${MDW(new Date(endDate))}`,
 		text3: `提出期限：${YMDHM(new Date(deadline))}`,
 		label: "シフト希望提出",
-		uri: `${liffUrl.shiftSubmitPage}/${shiftRequestId}`,
+		uri: `${liffUrl.shiftSubmitPage}/?shiftRequestId=${shiftRequestId}`,
 	});
 
 	return { ok: true, message: "Message sent successfully" };

@@ -1,17 +1,17 @@
 "use client";
 import type { ShiftRequestDTO } from "@shared/api/shift/request/dto";
-import { set } from "date-fns";
+import { useSearchParams } from "next/navigation";
 import { type PropsWithChildren, use, useCallback, useEffect } from "react";
 import { MdErrorOutline } from "react-icons/md";
 import { useGetShiftRequestSpecific } from "../api/get-shftt-request-by-id/hook";
 import { useGetSubmittedShiftUserOne } from "../api/get-shift-submit-one/hook";
 import { useSubmitShiftForm } from "../context/SubmitShiftFormContextProvider";
 
-const FetchData = ({
-	shiftRequestId,
-	children,
-}: { shiftRequestId: string } & PropsWithChildren) => {
+const FetchData = ({ children }: PropsWithChildren) => {
 	const { setFormData, setShiftRequestData } = useSubmitShiftForm();
+	const serchParams = useSearchParams();
+	const shiftRequestId = serchParams.get("shiftRequestId");
+
 	const {
 		handleGetShiftRequestSpecific,
 		isLoading: srLoading,
@@ -30,7 +30,7 @@ const FetchData = ({
 		for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
 			const dateStr = d.toISOString().slice(0, 10);
 			const req = shiftRequestData.requests[dateStr];
-			shifts[dateStr] = req == null ? null : "anytime"; // 定休日→null / それ以外→"anytime"
+			shifts[dateStr] = req == null ? null : "anytime";
 		}
 		return shifts;
 	}, []);

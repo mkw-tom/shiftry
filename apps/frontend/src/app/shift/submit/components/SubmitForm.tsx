@@ -33,7 +33,6 @@ const isRange = (v?: ShiftValue) => !!v && v.includes("-");
 const SubmitForm = () => {
 	const { formData, setFormData, shiftRequestData } = useSubmitShiftForm();
 
-	// 取得できていないときのガード
 	if (!shiftRequestData || !shiftRequestData.requests) {
 		return (
 			<div className="text-center text-sm text-gray-500 mt-6">
@@ -312,7 +311,11 @@ const SubmitForm = () => {
 										<button
 											key={opt.value}
 											type="button"
-											className={`btn btn-sm w-full  ${active ? "btn-active bg-green02 text-white border-none shadow-md" : " bg-base shadow-md border-gray01 text-gray-600"}`}
+											className={`btn btn-sm w-full  ${
+												active
+													? "btn-active bg-green02 text-white border-none shadow-md"
+													: " bg-base shadow-md border-gray01 text-gray-600"
+											}`}
 											onClick={() => handleModalSelect(opt.value)}
 										>
 											{opt.label}
