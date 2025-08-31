@@ -1,7 +1,7 @@
+"use client";
 import type { RootState } from "@/redux/store";
 import type { ErrorResponse } from "@shared/api/common/types/errors";
 import type { GetSubmittedShiftUserOneResponse } from "@shared/api/shift/submit/types/get-one";
-import { ValidationError } from "next/dist/compiled/amphtml-validator";
 import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { getSubmittedShiftUserOne } from "./api";
