@@ -5,7 +5,7 @@ import Header from "../dashboard/common/components/Header";
 import BottomDrawer from "../dashboard/common/components/bottomDrawer/BottomDrawer";
 import { ToastProvider } from "../dashboard/common/context/ToastProvider";
 
-export default function DashboardLayout({ children }: { children: ReactNode }) {
+export default function Layout({ children }: { children: ReactNode }) {
 	return (
 		<>
 			<ToastProvider>

@@ -6,7 +6,7 @@ import FormHead from "./components/FormHead";
 import SubmitForm from "./components/SubmitForm";
 import { SubmitShiftFormContextProvider } from "./context/SubmitShiftFormContextProvider";
 
-export default async function ShiftPage() {
+export const Page = async () => {
 	return (
 		<main className="bg-white w-full h-lvh">
 			<div className="w-full h-auto pt-10 ">
@@ -29,4 +29,6 @@ export default async function ShiftPage() {
 			</div>
 		</main>
 	);
-}
+};
+
+export default Page;
