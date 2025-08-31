@@ -19,9 +19,10 @@ export default async function ShiftPage() {
 						}
 					>
 						<SubmitShiftFormContextProvider>
-							<FetchData />
-							<FormHead />
-							<SubmitForm />
+							<FetchData>
+								<FormHead />
+								<SubmitForm />
+							</FetchData>
 						</SubmitShiftFormContextProvider>
 					</Suspense>
 				</AuthGate>
