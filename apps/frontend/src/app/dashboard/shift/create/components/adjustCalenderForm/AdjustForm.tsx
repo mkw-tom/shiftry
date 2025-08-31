@@ -24,7 +24,6 @@ const AdjustPositionForm = () => {
 			absolute: [],
 			priority: [],
 		});
-	// const [editTime, setEditTime] = useState<string>("");
 
 	const openAdjustCalenerPositionModal = (
 		position: RequestPositionWithDateInput,
