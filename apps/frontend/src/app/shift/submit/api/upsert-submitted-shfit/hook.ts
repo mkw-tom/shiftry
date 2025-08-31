@@ -1,3 +1,4 @@
+"use client";
 import type { RootState } from "@/redux/store";
 import type { ErrorResponse } from "@shared/api/common/types/errors";
 import type { UpsertSubmittedShfitResponse } from "@shared/api/shift/submit/types/put";
