@@ -62,7 +62,7 @@ const ActionButtons = ({
             シフト作成
           </Link> */}
 					<Link
-						href={`${liffUrl.shiftSubmitPage}?shiftRequestId=${data.id}`}
+						href={`/shift/submit?shiftRequestId=${data.id}`}
 						className={
 							"btn flex-1 text-green01 bg-white  font-bold shadow-sm border-green01 rounded-md	 "
 						}

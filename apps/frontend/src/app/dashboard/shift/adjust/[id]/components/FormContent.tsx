@@ -8,7 +8,9 @@ import type {
 	ShiftsOfAssignType,
 } from "@shared/api/shift/assign/validations/put";
 import React, { useState, useEffect, useCallback } from "react";
-import { MdAdd } from "react-icons/md";
+import { BiError } from "react-icons/bi";
+import { LuSend } from "react-icons/lu";
+import { MdAdd, MdErrorOutline } from "react-icons/md";
 import { useAdjustShiftForm } from "../context/AdjustShiftFormContextProvider.tsx";
 import AssignPositionList from "./AssignPositionList";
 import FormHead from "./FormHead";
@@ -34,9 +36,23 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 			assigned: [],
 		});
 
-	const { getShiftRequestSpecific } = useGetShiftRequestSpecific();
-	const { getAssignShift } = useGetAssignShfit();
-	const { getSubmittedShfit } = useGetSubmittedShfit();
+	const {
+		getShiftRequestSpecific,
+		isLoading: srLoading,
+		error: srError,
+	} = useGetShiftRequestSpecific();
+	const {
+		getAssignShift,
+		isLoading: asLoading,
+		error: asError,
+	} = useGetAssignShfit();
+	const {
+		getSubmittedShfit,
+		isLoading: ssLoading,
+		error: ssError,
+	} = useGetSubmittedShfit();
+	const isLoading = srLoading || asLoading || ssLoading;
+	const isError = srError || asError || ssError;
 
 	// 初回のみ: shiftRequestData, assignShiftData, submittedShiftListを取得し、assignShiftDataのマージも初回のみ実行
 	useEffect(() => {
@@ -169,6 +185,7 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 	};
 
 	const dateFullRange = (): Date[] => {
+		if (!shiftRequestData) return [];
 		const start = new Date(shiftRequestData.weekStart);
 		const end = new Date(shiftRequestData.weekEnd);
 		const dates: Date[] = [];
@@ -189,6 +206,31 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 	);
 	const [selectDate, setSelectDate] = useState<Date>(daysWithSevenDays[0]);
 
+	if (isError) {
+		return (
+			<div className="w-full flex flex-col items-center gap-2 pt-16">
+				<MdErrorOutline className="text-gray02 text-2xl mt-20" />
+				<p className="text-center text-gray02 font-bold tracking-wide">
+					通信エラーが発生しました
+					<br />
+					{ssError && `提出データ：${ssError}`}
+					{srError && `雛形データ：${srError}`}
+					{asError && `割当データ：${asError}`}
+				</p>
+			</div>
+		);
+	}
+	if (shiftRequestData.id === "" || isLoading) {
+		return (
+			<div className="w-full flex flex-col items-center gap-2 pt-20">
+				<p className="loading loading-spinner text-green02" />
+				<p className="text-center text-green02 tracking-wide mt-2">
+					読み込み中...
+				</p>
+			</div>
+		);
+	}
+
 	return (
 		<div>
 			<FormHead />
@@ -201,7 +243,7 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 				setSelectDate={setSelectDate}
 			/>
 			<EditAssignPositionModal
-				date={String(selectDate)}
+				date={selectDate ? selectDate.toISOString().slice(0, 10) : ""}
 				time={""}
 				editAssignPosition={editAssignPosition}
 				setEditAssignPosition={setEditAssignPosition}
