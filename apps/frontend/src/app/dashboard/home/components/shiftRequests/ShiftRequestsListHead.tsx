@@ -41,11 +41,11 @@ const ShiftRequestsListHead = ({
 					<MdOutlineArrowOutward className="text-lg" />
 				</Link>
 			</div>
-			{user?.role === "OWNER" && (
-				<div className="w-full mx-auto px-2 py-2 flex">
-					<AddShiftButton />
-				</div>
-			)}
+			{/* {user?.role === "OWNER" && ( */}
+			<div className="w-full mx-auto px-2 py-2 flex">
+				<AddShiftButton />
+			</div>
+			{/* )} */}
 		</div>
 	);
 };

@@ -32,3 +32,8 @@ export const liffId = {
 	showConfirmedShift: process.env
 		.NEXT_PUBLIC_LIFF_ID_SHOW_CONFIRMED_SHIFT as string,
 };
+
+export const liffUrl = {
+	createRequestPage: process.env.NEXT_PUBLIC_LIFF_URL_CREATE_REQUEST,
+	shiftSubmitPage: process.env.NEXT_PUBLIC_LIFF_URL_SHIFT_SUBMIT,
+};

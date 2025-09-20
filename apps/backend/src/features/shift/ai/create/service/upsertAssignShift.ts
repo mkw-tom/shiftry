@@ -1,5 +1,5 @@
 import type { AssignShift } from "@shared/api/common/types/prisma.js";
-import type { upsertAssignShfitInputType } from "@shared/api/shift/assign/validations/put.js";
+import type { UpsertAssignShfitInput } from "@shared/api/shift/assign/validations/put.js";
 import { upsertAssignShfit } from "../../../../../repositories/assingShift.repostory.js";
 
 const upsertAssignShfitService = async ({
@@ -7,7 +7,7 @@ const upsertAssignShfitService = async ({
 	upsertData,
 }: {
 	storeId: string;
-	upsertData: upsertAssignShfitInputType;
+	upsertData: UpsertAssignShfitInput;
 }): Promise<AssignShift> => {
 	try {
 		const assignShift = await upsertAssignShfit(storeId, upsertData);

@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     "next-env.d.ts",
     "dist/types/**/*.ts"
-  ],
+, "src/app/api/hook"  ],
   "exclude": ["node_modules"]
 }

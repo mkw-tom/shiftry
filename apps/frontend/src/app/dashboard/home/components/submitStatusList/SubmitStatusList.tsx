@@ -1,5 +1,5 @@
 import type { RootState } from "@/redux/store";
-import type { ShiftRequestWithJson } from "@shared/api/common/types/merged";
+import type { ShiftRequestDTO } from "@shared/api/shift/request/dto";
 import React, { useEffect, useMemo, useState } from "react";
 import { LuSend } from "react-icons/lu";
 import { MdErrorOutline } from "react-icons/md";
@@ -19,10 +19,10 @@ const SubmitStatusList = () => {
 	}, [activeShiftRequests]);
 
 	const [shiftRequestsSubmitted, setShiftRequestsSubmitted] = useState<
-		ShiftRequestWithJson[]
+		ShiftRequestDTO[]
 	>([]);
 	const [shiftRequestsNotSubmit, setShiftRequestsNotSubmit] = useState<
-		ShiftRequestWithJson[]
+		ShiftRequestDTO[]
 	>([]);
 
 	useEffect(() => {
@@ -32,14 +32,14 @@ const SubmitStatusList = () => {
 				const submitted = res.submittedShifts;
 
 				const submittedIds = new Set(submitted.map((s) => s.shiftRequestId));
-				const onSubmit: ShiftRequestWithJson[] = [];
-				const notSubmit: ShiftRequestWithJson[] = [];
+				const onSubmit: ShiftRequestDTO[] = [];
+				const notSubmit: ShiftRequestDTO[] = [];
 
 				shiftRequestStatusRequest.map((data) => {
 					if (submittedIds.has(data.id)) {
-						onSubmit.push(data as ShiftRequestWithJson);
+						onSubmit.push(data as ShiftRequestDTO);
 					} else {
-						notSubmit.push(data as ShiftRequestWithJson);
+						notSubmit.push(data as ShiftRequestDTO);
 					}
 				});
 				setShiftRequestsSubmitted(onSubmit);
@@ -50,7 +50,7 @@ const SubmitStatusList = () => {
 		fetchData();
 	}, [fetchGetSubmitShiftMe, shiftRequestStatusRequest]);
 
-	// const dummyShiftRequestSubmitted: ShiftRequestWithJson[] = [
+	// const dummyShiftRequestSubmitted: ShiftRequestDTO[] = [
 	//   {
 	//     id: "1",
 	//     createdAt: new Date(),
@@ -105,7 +105,7 @@ const SubmitStatusList = () => {
 	//   },
 	// ];
 
-	// const dummyShiftRequestNotSubmitted: ShiftRequestWithJson[] = [
+	// const dummyShiftRequestNotSubmitted: ShiftRequestDTO[] = [
 	//   {
 	//     id: "3",
 	//     createdAt: new Date(),

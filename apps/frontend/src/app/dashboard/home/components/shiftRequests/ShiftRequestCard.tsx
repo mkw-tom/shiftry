@@ -1,5 +1,6 @@
 import type { ShiftRequestWithJson } from "@shared/api/common/types/merged";
 import type { RequestStatus } from "@shared/api/common/types/prisma";
+import type { ShiftRequestDTO } from "@shared/api/shift/request/dto";
 import { MDW, YMDHM, YMDW } from "@shared/utils/formatDate";
 import React, { type JSX, JSXElementConstructor } from "react";
 import { BiCheck, BiEdit, BiEditAlt } from "react-icons/bi";
@@ -32,7 +33,7 @@ const statusBadgeMap: Record<
 	},
 };
 
-const ShiftRequestCard = ({ data }: { data: ShiftRequestWithJson }) => {
+const ShiftRequestCard = ({ data }: { data: ShiftRequestDTO }) => {
 	const { text, colorClass, icon } = statusBadgeMap[data.status] ?? {
 		text: "不明",
 		colorClass: "bg-gray-400",

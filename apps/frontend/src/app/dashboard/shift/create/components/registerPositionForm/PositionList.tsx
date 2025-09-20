@@ -1,4 +1,4 @@
-import { formatHHmm } from "@/app/ utils/times";
+import { formatHHmm } from "@/app/utils/times";
 import type { UpsertShiftPositionBaseInput } from "@shared/api/shiftPosition/validations/put-bulk";
 import { translateWeekToJapanese } from "@shared/utils/formatWeek";
 import React, { useState } from "react";
