@@ -1,5 +1,6 @@
-import { dummyMembers } from "@/app/utils/dummyData/member";
+// import { dummyMembers } from "@/app/utils/dummyData/member";
 import { formatTimeRangeHHmm } from "@/app/utils/times";
+import type { RootState } from "@/redux/store.js";
 import {
 	type AssignPositionType,
 	AssignPositionWithDateInput,
@@ -8,6 +9,7 @@ import { YMDW } from "@shared/utils/formatDate";
 import React, { useEffect } from "react";
 import { IoWarning } from "react-icons/io5";
 import { LuUserRound } from "react-icons/lu";
+import { useSelector } from "react-redux";
 import { useAdjustShiftForm } from "../../context/AdjustShiftFormContextProvider.tsx";
 
 const AssignStaffModal = ({
@@ -104,7 +106,7 @@ const AssignStaffModal = ({
 		)
 		.map((sub) => sub.userId);
 
-	const members = dummyMembers;
+	const { members } = useSelector((state: RootState) => state.members);
 
 	const assignedMembers = members.filter((m) =>
 		(assignShiftData.shifts?.[date]?.[time]?.assigned ?? []).some(

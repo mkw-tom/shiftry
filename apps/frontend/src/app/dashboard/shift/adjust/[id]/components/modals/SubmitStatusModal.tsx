@@ -1,7 +1,9 @@
 import { dummySubmittedShiftList } from "@/app/utils/dummyData/SubmittedShifts";
-import { dummyMembers } from "@/app/utils/dummyData/member";
+import type { RootState } from "@/redux/store.js";
+// import { dummyMembers } from "@/app/utils/dummyData/member";
 import { YMDW } from "@shared/utils/formatDate";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { useAdjustShiftForm } from "../../context/AdjustShiftFormContextProvider.tsx";
 import SubmitStaffInfoModal from "./SubmitStaffInfoModal";
 
@@ -18,9 +20,9 @@ const SubmitStatusModal = ({
 	const { submittedShiftList } = useAdjustShiftForm();
 
 	const submittedIds = submittedShiftList.map((s) => s.userId);
-	// メンバー一覧
-	const members = dummyMembers;
-	// 提出済み・未提出で分ける
+
+	const { members } = useSelector((state: RootState) => state.members);
+
 	const submittedMembers = members.filter((m) =>
 		submittedIds.includes(m.user.id),
 	);

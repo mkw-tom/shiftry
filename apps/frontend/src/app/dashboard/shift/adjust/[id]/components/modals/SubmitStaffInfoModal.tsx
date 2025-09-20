@@ -1,10 +1,12 @@
-import { dummyMembers } from "@/app/utils/dummyData/member";
+// import { dummyMembers } from "@/app/utils/dummyData/member";
 import { formatTimeRangeHHmm } from "@/app/utils/times";
+import type { RootState } from "@/redux/store.js";
 import { YMDHM, YMDW } from "@shared/utils/formatDate";
 import React from "react";
 import { BiCircle } from "react-icons/bi";
 import { FcCancel } from "react-icons/fc";
 import { IoTimeOutline } from "react-icons/io5";
+import { useSelector } from "react-redux";
 import { useAdjustShiftForm } from "../../context/AdjustShiftFormContextProvider.tsx";
 
 const SubmitStaffInfoModal = ({
@@ -19,7 +21,8 @@ const SubmitStaffInfoModal = ({
 	if (!open || !userId) return null;
 	const { submittedShiftList } = useAdjustShiftForm();
 	const submitData = submittedShiftList.find((s) => s.userId === userId);
-	const member = dummyMembers.find((m) => m.user.id === userId);
+	const { members } = useSelector((state: RootState) => state.members);
+	const member = members.find((m) => m.user.id === userId);
 	if (!submitData || !member) return null;
 	return (
 		<dialog open className="modal modal-middle">
