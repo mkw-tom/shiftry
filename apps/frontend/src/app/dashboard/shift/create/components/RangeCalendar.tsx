@@ -1,4 +1,4 @@
-import { isoUTCToLocalDate, toISODateUTC } from "@/app/ utils/date";
+import { isoUTCToLocalDate, toISODateUTC } from "@/app/utils/date";
 import { YMDW } from "@shared/utils/formatDate";
 import { ja } from "date-fns/locale";
 import DatePicker from "react-datepicker";

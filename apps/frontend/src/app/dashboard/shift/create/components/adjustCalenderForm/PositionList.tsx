@@ -1,4 +1,4 @@
-import { formatTimeRangeHHmm } from "@/app/ utils/times";
+import { formatTimeRangeHHmm } from "@/app/utils/times";
 import type { RequestPositionWithDateInput } from "@shared/api/shift/request/validations/put";
 import type React from "react";
 import { useState } from "react";

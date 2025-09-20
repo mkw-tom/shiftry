@@ -1,10 +1,14 @@
 "use client";
+import { liffId, liffUrl } from "@/lib/env";
 import type { RootState } from "@/redux/store";
 import type { ShiftRequestWithJson } from "@shared/api/common/types/merged";
 import type { RequestStatus } from "@shared/api/common/types/prisma";
+import type { ShiftRequestDTO } from "@shared/api/shift/request/dto";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { LuSend } from "react-icons/lu";
 import { SiOpenai } from "react-icons/si";
+import { TbCalendarCheck } from "react-icons/tb";
 import { useSelector } from "react-redux";
 import {
 	DrawerView,
@@ -16,18 +20,19 @@ const ActionButtons = ({
 	data,
 }: {
 	status: RequestStatus;
-	data: ShiftRequestWithJson;
+	data: ShiftRequestDTO;
 }) => {
 	const { darawerOpen } = useBottomDrawer();
 	const router = useRouter();
-	const goToShiftPage = (id: string) => router.push(`/dashboard/shift/${id}`);
+	const gotoAdjustPage = (id: string) =>
+		router.push(`/dashboard/shift/adjust/${id}`);
 	const { user } = useSelector((state: RootState) => state.user);
 
-	const switchAdjustmentBtnAction = (data: ShiftRequestWithJson) => {
-		// if (user?.role === "STAFF") {
-		// 	return darawerOpen(DrawerView.SUBMIT, data);
-		// }
-		return goToShiftPage(data.id);
+	const switchAdjustmentBtnAction = (data: ShiftRequestDTO) => {
+		if (user?.role === "STAFF") {
+			return darawerOpen(DrawerView.SUBMIT, data);
+		}
+		return gotoAdjustPage(data.id);
 	};
 
 	switch (status) {
@@ -46,24 +51,25 @@ const ActionButtons = ({
 		case "REQUEST":
 			return (
 				<>
-					<button
-						type="button"
+					{/* <Link
+						href="/dashboard/shift/create"
+            className={
+              "btn flex-1 text-green01 bg-white  font-bold shadow-sm border-green01 rounded-md"
+            }
+            // onClick={() => darawerOpen(DrawerView.GENERATE, data)}
+          >
+            <SiOpenai />
+            シフト作成
+          </Link> */}
+					<Link
+						href={`${liffUrl.shiftSubmitPage}?shiftRequestId=${data.id}`}
 						className={
-							"btn flex-1 text-green01 bg-white  font-bold shadow-sm border-green01 rounded-md"
+							"btn flex-1 text-green01 bg-white  font-bold shadow-sm border-green01 rounded-md	 "
 						}
-						onClick={() => darawerOpen(DrawerView.GENERATE, data)}
 					>
-						<SiOpenai />
-						シフト作成
-					</button>
-					<button
-						type="button"
-						className="btn flex-1 text-white bg-green01  font-bold shadow-sm border-green01 rounded-md"
-						onClick={() => darawerOpen(DrawerView.SUBMIT, data)}
-					>
-						<LuSend />
+						{/* <LuSend /> */}
 						提出
-					</button>
+					</Link>
 				</>
 			);
 
@@ -76,7 +82,7 @@ const ActionButtons = ({
 					}
 					onClick={() => switchAdjustmentBtnAction(data)}
 				>
-					{/* {user?.role === "STAFF" ? "提出データを確認" : "シフト調整"} */}
+					{user?.role === "STAFF" ? "提出データを確認" : "シフト調整"}
 				</button>
 			);
 
@@ -84,10 +90,11 @@ const ActionButtons = ({
 			return (
 				<button
 					type="button"
-					className="btn flex-1 text-white bg-green02  font-bold shadow-sm border-green02 rounded-md"
-					onClick={() => goToShiftPage(data.id)}
+					className={
+						"btn flex-1 text-green02 bg-white  font-bold shadow-sm border-green02 rounded-md	 "
+					}
+					// onClick={() => gotoAdjustPage(data.id)}
 				>
-					{/* <TbCalendarCheck /> */}
 					完成確認
 				</button>
 			);

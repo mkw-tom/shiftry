@@ -1,8 +1,9 @@
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 import type { ShiftRequest } from "@shared/api/common/types/prisma";
+import type { ShiftRequestDTO } from "@shared/api/shift/request/dto";
 
 type ActiveShiftRequestsState = {
-	activeShiftRequests: ShiftRequest[];
+	activeShiftRequests: ShiftRequestDTO[];
 };
 
 const initialState: ActiveShiftRequestsState = {
@@ -13,10 +14,13 @@ export const userSlice = createSlice({
 	name: "activeShiftRequests",
 	initialState,
 	reducers: {
-		setActiveShiftRequests: (state, action: PayloadAction<ShiftRequest[]>) => {
+		setActiveShiftRequests: (
+			state,
+			action: PayloadAction<ShiftRequestDTO[]>,
+		) => {
 			state.activeShiftRequests = action.payload;
 		},
-		saveActiveShiftRequest: (state, action: PayloadAction<ShiftRequest>) => {
+		saveActiveShiftRequest: (state, action: PayloadAction<ShiftRequestDTO>) => {
 			const index = state.activeShiftRequests.findIndex(
 				(data) => data.id === action.payload.id,
 			);

@@ -5,7 +5,7 @@ interface ShiftRequestIdRequest extends Request {
 	shiftRequestId: string;
 }
 
-export const validateshiftRequestId = async (
+export const validateShiftRequestId = async (
 	req: Request,
 	res: Response,
 	next: NextFunction,
