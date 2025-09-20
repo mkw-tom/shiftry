@@ -4,7 +4,6 @@ import type {
 	ValidationErrorResponse,
 } from "@shared/api/common/types/errors";
 
-import type { GetAssignShiftResponse } from "@shared/api/shift/assign/types/get-by-shift-request-id";
 import type { UpsertAssigShiftResponse } from "@shared/api/shift/assign/types/put";
 import type { UpsertAssignShfitInput } from "@shared/api/shift/assign/validations/put";
 import { useSearchParams } from "next/navigation";
@@ -28,7 +27,7 @@ export const useUpsertAssignShift = () => {
 			upsertData: UpsertAssignShfitInput;
 			shiftRequestId: string;
 		}): Promise<
-			GetAssignShiftResponse | ErrorResponse | ValidationErrorResponse
+			UpsertAssigShiftResponse | ErrorResponse | ValidationErrorResponse
 		> => {
 			setIsLoading(true);
 			setError(null);
@@ -41,7 +40,7 @@ export const useUpsertAssignShift = () => {
 				const res = await useFetch<UpsertAssigShiftResponse>({
 					jwt,
 					method: "PUT",
-					path: assignShiftApi.index(shiftRequestId),
+					path: assignShiftApi.index(),
 					body: upsertData,
 				});
 
