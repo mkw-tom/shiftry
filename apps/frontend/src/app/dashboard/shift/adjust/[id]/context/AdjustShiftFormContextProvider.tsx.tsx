@@ -36,13 +36,31 @@ export const AdjustShiftFormContextProvider = ({
 }: {
 	children: React.ReactNode;
 }) => {
-	const [assignShiftData, setAssignShiftData] =
-		useState<AssignShiftDTO>(dummyAssignShift);
-	const [shiftRequestData, setShiftRequestData] =
-		useState<ShiftRequestDTO>(dummyShiftRequest);
+	const [assignShiftData, setAssignShiftData] = useState<AssignShiftDTO>({
+		id: "",
+		storeId: "",
+		shiftRequestId: "",
+		shifts: dummyAssignShift.shifts,
+		status: "ADJUSTMENT",
+		createdAt: new Date(),
+		updatedAt: new Date(),
+	});
+	const [shiftRequestData, setShiftRequestData] = useState<ShiftRequestDTO>({
+		id: "",
+		storeId: "",
+		type: "MONTHLY",
+		weekStart: new Date(),
+		weekEnd: new Date(),
+		deadline: new Date(),
+		requests: {},
+		status: "CONFIRMED",
+		createdAt: new Date(),
+		updatedAt: new Date(),
+	});
+
 	const [submittedShiftList, setSubmittedShiftList] = useState<
 		SubmittedShiftDTO[]
-	>(dummySubmittedShiftList);
+	>([]);
 	const [allJobRoles, setAllJobRoles] = useState<string[]>([
 		"レジ",
 		"品出し",

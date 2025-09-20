@@ -2,7 +2,11 @@
 import { useGetAssignShfit } from "@/app/api/hook/useGetAssignShift";
 import { useGetShiftRequestSpecific } from "@/app/api/hook/useGetShiftRequestSpecific";
 import { useGetSubmittedShfit } from "@/app/api/hook/useGetSubmittedShfit";
-import type { AssignPositionWithDateInput } from "@shared/api/shift/assign/validations/put";
+import type {
+	AssignPositionType,
+	AssignPositionWithDateInput,
+	ShiftsOfAssignType,
+} from "@shared/api/shift/assign/validations/put";
 import React, { useState, useEffect, useCallback } from "react";
 import { MdAdd } from "react-icons/md";
 import { useAdjustShiftForm } from "../context/AdjustShiftFormContextProvider.tsx";
@@ -47,6 +51,38 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 				if (asRes.ok) {
 					// assignShiftDataにshiftRequestData.requestsのname/countをマージ
 					const shiftRequest = srRes.shiftRequest;
+
+					if (!asRes.assignShift) {
+						const newShifts = Object.entries(shiftRequest.requests).reduce(
+							(acc, [date, times]) => {
+								if (!acc[date]) acc[date] = {};
+								if (times) {
+									Object.entries(times).map(([time, pos]) => {
+										if (!pos) return;
+										acc[date][time] = {
+											name: pos.name,
+											count: pos.count,
+											jobRoles: [],
+											assigned: [],
+											assignedCount: 0,
+											vacancies: pos.count,
+											status: "draft",
+										};
+									});
+								}
+								return acc;
+							},
+							{} as ShiftsOfAssignType,
+						);
+
+						setAssignShiftData((prev) => ({
+							...prev,
+							shifts: newShifts,
+						}));
+
+						return;
+					}
+
 					const prevAssign = asRes.assignShift;
 					const newShifts = { ...prevAssign.shifts };
 					Object.entries(shiftRequest.requests).map(([date, times]) => {

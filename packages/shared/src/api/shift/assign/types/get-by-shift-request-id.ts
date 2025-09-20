@@ -3,5 +3,5 @@ import type { AssignShiftDTO } from "../dto.js";
 
 export interface GetAssignShiftResponse {
 	ok: true;
-	assignShift: AssignShiftDTO;
+	assignShift: AssignShiftDTO | null;
 }

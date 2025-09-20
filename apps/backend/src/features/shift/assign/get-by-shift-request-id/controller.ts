@@ -1,5 +1,6 @@
 import type { ErrorResponse } from "@shared/api/common/types/errors.js";
 import type { ShiftsOfAssignType } from "@shared/api/common/types/json.js";
+import type { AssignShiftDTO } from "@shared/api/shift/assign/dto.js";
 import type { GetAssignShiftResponse } from "@shared/api/shift/assign/types/get-by-shift-request-id.js";
 import type { Request, Response } from "express";
 import { getAssignShift } from "../../../../repositories/assingShift.repostory.js";
@@ -24,18 +25,15 @@ const getAssignShiftController = async (
 		}
 		await verifyUserStore(auth.uid, auth.sid);
 
-		const assignShift = await getAssignShift(shiftRequestId);
-		if (!assignShift) {
-			res.status(404).json({ ok: false, message: "assignShift is not found" });
-			return;
-		}
+		const assignShift = (await getAssignShift(
+			shiftRequestId,
+		)) as AssignShiftDTO | null;
+		// if (!assignShift) {
+		// 	res.status(404).json({ ok: false, message: "assignShift is not found" });
+		// 	return;
+		// }
 
-		const safeAssignShift = {
-			...assignShift,
-			shifts: assignShift.shifts as ShiftsOfAssignType,
-		};
-
-		res.status(200).json({ ok: true, assignShift: safeAssignShift });
+		res.status(200).json({ ok: true, assignShift: assignShift });
 	} catch (error) {
 		console.error("Failed to get assign shift:", error);
 		res.status(500).json({ ok: false, message: "Internal Server Error" });

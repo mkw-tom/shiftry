@@ -1,5 +1,6 @@
 import type { AuthMeResponse } from "@shared/api/auth/types/me.js";
 import type { ErrorResponse } from "@shared/api/common/types/errors.js";
+import type { RequestsType } from "@shared/api/common/types/json.js";
 import { UserRole } from "@shared/api/common/types/prisma.js";
 import {
 	getActiveShiftRequests,
@@ -32,12 +33,17 @@ export const AuthMeService = async (
 
 	const shiftRequest = await getActiveShiftRequests(sid);
 
+	const mappedShiftRequests = shiftRequest.map((req) => ({
+		...req,
+		requests: req.requests as RequestsType,
+	}));
+
 	return {
 		ok: true,
 		user: user,
 		store: store,
 		role: userStore?.role,
 		members: members,
-		ActiveShiftRequests: shiftRequest,
+		ActiveShiftRequests: mappedShiftRequests,
 	};
 };
