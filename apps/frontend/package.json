@@ -44,6 +44,7 @@
     "@types/redux-persist": "^4.0.0",
     "daisyui": "^5.0.9",
     "dotenv": "^16.4.7",
+    "dotenv-cli": "^10.0.0",
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
     "tailwindcss": "^4",
