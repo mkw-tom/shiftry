@@ -1,6 +1,7 @@
 import type { AssignShift } from "../../../common/types/prisma.js";
+import type { AssignShiftDTO } from "../dto.js";
 
-export interface GetAssigShiftResponse {
+export interface GetAssignShiftResponse {
 	ok: true;
-	assignShift: AssignShift;
+	assignShift: AssignShiftDTO;
 }
