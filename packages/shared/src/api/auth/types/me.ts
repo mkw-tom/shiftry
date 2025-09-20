@@ -1,10 +1,10 @@
-import { ShiftRequestDTO } from "../../shift/request/dto.js";
 import type { UserRole } from "../../common/types/prisma.js";
 import type {
 	Member,
 	StoreLite,
 	UserLite,
 } from "../../common/types/prismaLite.js";
+import type { ShiftRequestDTO } from "../../shift/request/dto.js";
 
 export type AuthMeResponse = {
 	ok: true;
