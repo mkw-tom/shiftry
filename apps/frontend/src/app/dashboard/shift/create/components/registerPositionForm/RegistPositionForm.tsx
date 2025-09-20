@@ -1,5 +1,5 @@
-import { toISO, toISODateUTC } from "@/app/ utils/date";
-import { toHHmm } from "@/app/ utils/times";
+import { toISO, toISODateUTC } from "@/app/utils/date";
+import { toHHmm } from "@/app/utils/times";
 import {
 	AbsoluteUserType,
 	PriorityUserType,
