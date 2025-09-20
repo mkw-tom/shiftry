@@ -113,7 +113,9 @@ export const ShiftOfAssignValidate = z.record(ISODate, AssignDaySchema);
 export type ShiftsOfAssignType = z.infer<typeof ShiftOfAssignValidate>;
 
 export const upsertAssignShfitValidate = z.object({
-	shiftRequestId: z.string(),
+	shiftRequestId: z.string().uuid({
+		message: "Invalid shiftRequestId format",
+	}),
 	shifts: ShiftOfAssignValidate,
 	status: z.enum(SHIFT_STSTUS, {
 		errorMap: () => ({ message: "Invalid status" }),
