@@ -1,4 +1,5 @@
-import type { ShiftRequest, UserRole } from "../../common/types/prisma.js";
+import { ShiftRequestDTO } from "../../shift/request/dto.js";
+import type { UserRole } from "../../common/types/prisma.js";
 import type {
 	Member,
 	StoreLite,
@@ -11,5 +12,5 @@ export type AuthMeResponse = {
 	store: StoreLite;
 	role: UserRole;
 	members: Member[];
-	ActiveShiftRequests: ShiftRequest[];
+	ActiveShiftRequests: ShiftRequestDTO[];
 };
