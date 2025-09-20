@@ -61,7 +61,14 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 			// 1. shiftRequestData取得
 			const srRes = await getShiftRequestSpecific({ shiftRequestId });
 			if (isMounted && srRes.ok) {
-				setShiftRequestData(srRes.shiftRequest);
+				setShiftRequestData({
+					...srRes.shiftRequest,
+					weekStart: new Date(srRes.shiftRequest.weekStart as Date),
+					weekEnd: new Date(srRes.shiftRequest.weekEnd as Date),
+					deadline: new Date(srRes.shiftRequest.deadline as Date),
+					createdAt: new Date(srRes.shiftRequest.createdAt as Date),
+					updatedAt: new Date(srRes.shiftRequest.updatedAt as Date),
+				});
 				// 2. assignShiftData取得
 				const asRes = await getAssignShift({ shiftRequestId });
 				if (asRes.ok) {
