@@ -16,11 +16,14 @@ export const useUpsertShiftReqeust = () => {
 	const [error, setError] = useState<string | null>(null);
 	const dispatch = useDispatch<AppDispatch>();
 	const { jwt } = useSelector((state: RootState) => state.authToken);
-	const handleUpsertShiftRequest = useCallback(
-		async (
-			formData: UpsertShiftRequetInput,
-			shiftRequestId: string,
-		): Promise<
+	const upsertShiftRequest = useCallback(
+		async ({
+			formData,
+			shiftRequestId,
+		}: {
+			formData: UpsertShiftRequetInput;
+			shiftRequestId: string;
+		}): Promise<
 			UpsertShiftRequetResponse | ErrorResponse | ValidationErrorResponse
 		> => {
 			setIsLoading(true);
@@ -66,5 +69,5 @@ export const useUpsertShiftReqeust = () => {
 		[jwt, dispatch],
 	);
 
-	return { handleUpsertShiftRequest, isLoading, error };
+	return { upsertShiftRequest, isLoading, error };
 };

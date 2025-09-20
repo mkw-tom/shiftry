@@ -1,21 +1,11 @@
 "use client";
-import {
-	dummyAssignShift,
-	dummyAssignShiftInput,
-} from "@/app/utils/dummyData/AssginShfit";
-import { dummyShiftRequest } from "@/app/utils/dummyData/ShiftRequest";
-import { dummySubmittedShiftList } from "@/app/utils/dummyData/SubmittedShifts";
+import { dummyAssignShift } from "@/app/utils/dummyData/AssginShfit";
 import type { AssignShiftDTO } from "@shared/api/shift/assign/dto";
-import { UpsertAssignShfitInput } from "@shared/api/shift/assign/validations/put";
 import type { ShiftRequestDTO } from "@shared/api/shift/request/dto";
 import type { SubmittedShiftDTO } from "@shared/api/shift/submit/dto";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 type ContextType = {
-	// upsertAssingShiftInput: UpsertAssignShfitInput;
-	// setUpsertAssingShiftInput: React.Dispatch<
-	//   React.SetStateAction<UpsertAssignShfitInput>
-	// >;
 	shiftRequestData: ShiftRequestDTO;
 	setShiftRequestData: React.Dispatch<React.SetStateAction<ShiftRequestDTO>>;
 	assignShiftData: AssignShiftDTO;
