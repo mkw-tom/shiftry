@@ -1,4 +1,5 @@
 import { FiMenu } from "react-icons/fi";
+import ArchiveShiftSection from "./sidebarSections/ArchiveShiftSection";
 import CancelSection from "./sidebarSections/CancelSection";
 import MemberListSection from "./sidebarSections/MemberListSection";
 // import PaymentSectioin from "./sidebarSections/PaymentSectioin";
@@ -26,6 +27,7 @@ const Sideber = () => {
 					{/* <PaymentSectioin /> */}
 					<StoresSection />
 					<CancelSection />
+					<ArchiveShiftSection />
 				</ul>
 			</div>
 		</div>
