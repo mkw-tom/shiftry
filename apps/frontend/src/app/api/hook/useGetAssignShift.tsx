@@ -25,6 +25,10 @@ export const useGetAssignShfit = () => {
 		}): Promise<GetAssignShiftResponse | ErrorResponse> => {
 			setIsLoading(true);
 			setError(null);
+			if (!shiftRequestId) {
+				setError("シフトリクエストIDが見つかりません");
+				throw new Error("シフトリクエストIDが見つかりません");
+			}
 			try {
 				if (!jwt) {
 					setError("認証トークンが不足しています");
@@ -39,7 +43,7 @@ export const useGetAssignShfit = () => {
 				const res = await useFetch<GetAssignShiftResponse>({
 					jwt,
 					method: "GET",
-					path: assignShiftApi.index(shiftRequestId),
+					path: assignShiftApi.get(shiftRequestId),
 				});
 
 				if (!res.ok) {
