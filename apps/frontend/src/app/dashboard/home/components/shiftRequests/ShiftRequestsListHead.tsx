@@ -14,7 +14,7 @@ const ShiftRequestsListHead = ({
 	const { user } = useSelector((state: RootState) => state.user);
 
 	return (
-		<div className="w-full mx-auto h-auto flex flex-col pt-2 shadow-sm bg-white border-t-2">
+		<div className="w-full mx-auto h-auto flex flex-col pt-2 shadow-sm bg-white border-t-2 border-t-base">
 			<div className="w-full flex items-center justify-between mx-auto border-b-1 border-white pb-1 px-2 gap-1">
 				<Link
 					href={"/dashboard/shift/create"}

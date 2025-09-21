@@ -77,7 +77,7 @@ const SubmitStatusList = () => {
 	return (
 		<section className="w-full h-auto mx-auto overflow-hidden">
 			{/* <Head /> */}
-			<div className="w-full mx-auto h-auto flex flex-col pt-3 pb-2 shadow-sm bg-white border-t-2">
+			<div className="w-full mx-auto h-auto flex flex-col pt-3 pb-2 shadow-sm bg-white border-t-2 border-t-base">
 				<div className="w-full flex items-center justify-start mx-auto px-5 ">
 					<h2 className="text-green02 tracking-wide flex items-center gap-3 text-center font-bold">
 						<LuSend />
