@@ -7,17 +7,15 @@ import { ToastProvider } from "./common/context/ToastProvider";
 import { BottomDrawerProvider } from "./common/context/useBottomDrawer";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
-	return (
-		<>
-			<ToastProvider>
-				<BottomDrawerProvider>
-					<Header />
-					{/* <AuthGate liffId={liffId.dashboard}> */}
-					{children}
-					{/* </AuthGate> */}
-					<BottomDrawer />
-				</BottomDrawerProvider>
-			</ToastProvider>
-		</>
-	);
+  return (
+    <>
+      <ToastProvider>
+        <BottomDrawerProvider>
+          <Header />
+          <AuthGate liffId={liffId.dashboard}>{children}</AuthGate>
+          <BottomDrawer />
+        </BottomDrawerProvider>
+      </ToastProvider>
+    </>
+  );
 }
