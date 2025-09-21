@@ -1,4 +1,5 @@
 "use client";
+import { TEST_MODE } from "@/lib/env";
 import liff from "@line/liff";
 import React, { type PropsWithChildren } from "react";
 import { MdErrorOutline } from "react-icons/md";
@@ -14,6 +15,10 @@ const InitGate = ({
 	autoLogin?: boolean;
 	requireLiffContext?: boolean;
 } & PropsWithChildren) => {
+	if (TEST_MODE) {
+		return <>{children}</>;
+	}
+
 	const { error, loading, loggedIn } = useLiffInit(liffId, {
 		autoLogin,
 		requireLiffContext,

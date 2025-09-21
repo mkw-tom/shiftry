@@ -64,9 +64,9 @@ const ArchivePageContent = () => {
 				<div className="w-full h-auto mx-auto bg-white -mt-1 pt-3 ">
 					<div className="mx-auto w-40 flex flex-col items-center">
 						<h2 className="text-center text-green02 font-bold text-sm pb-1">
-							過去のシフト履歴
+							過去のシフト履歴：
+							<span className="">{archiveData.length}</span>件
 						</h2>
-						<div className="w-full mx-auto h-1.5 rounded-t-full bg-green02 opacity-80" />
 					</div>
 				</div>
 
@@ -81,7 +81,7 @@ const ArchivePageContent = () => {
 				<div className="w-full h-full  flex flex-col items-center gap-5 pt-3">
 					<ul className="w-full ">
 						{isLoading && (
-							<div className="w-full h-lvh flex flex-col items-center bg-gray01">
+							<div className="w-full h-lvh flex flex-col items-center">
 								<p className="loading loading-spinner text-green02 mt-20" />
 								<p className="text-green02 mt-2">読み込み中...</p>
 							</div>

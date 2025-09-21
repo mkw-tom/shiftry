@@ -4,6 +4,7 @@ import {
 	dummyShiftRequest,
 	dummyShiftRequests,
 } from "@/app/utils/dummyData/ShiftRequest";
+import { TEST_MODE } from "@/lib/env";
 import type { RootState } from "@/redux/store";
 import type { ShiftRequestWithJson } from "@shared/api/common/types/merged";
 import type { RequestStatus } from "@shared/api/common/types/prisma";
@@ -31,18 +32,22 @@ const ShiftRequestList = () => {
 	);
 
 	const filteredShiftRequests = useMemo(() => {
+		if (TEST_MODE) return dummyShiftRequests;
 		if (shfitListFilter === "ALL") return activeShiftRequests;
 		return activeShiftRequests.filter(
 			(data) => data.status === shfitListFilter,
 		);
 	}, [shfitListFilter, activeShiftRequests]);
 
-	const showShiftRequests =
-		user?.role === "STAFF"
-			? filteredShiftRequests.filter((data) => data.status !== "HOLD")
-			: filteredShiftRequests;
+	const showShiftRequests = () => {
+		if (TEST_MODE) return dummyShiftRequests;
+		if (user?.role === "STAFF") {
+			return filteredShiftRequests.filter((data) => data.status !== "HOLD");
+		}
+		return filteredShiftRequests;
+	};
 
-	if (activeShiftRequests.length === 0) {
+	if (activeShiftRequests.length === 0 && !TEST_MODE) {
 		return (
 			<section className="w-full h-auto mx-auto">
 				<ShiftRequestsListHead setShiftListFilter={setShiftListFilter} />
@@ -75,7 +80,7 @@ const ShiftRequestList = () => {
 			<ShiftRequestsListHead setShiftListFilter={setShiftListFilter} />
 			<div className="w-full h-full overflow-hidden bg-white mt-1">
 				<ul className="w-full h-[420px] mx-auto flex flex-col overflow-y-scroll pt-1 pb-80 ">
-					{showShiftRequests.map((data) => (
+					{showShiftRequests().map((data) => (
 						<ShiftRequestCard key={data.id} data={data} />
 					))}
 				</ul>
