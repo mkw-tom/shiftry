@@ -40,7 +40,7 @@ export const useUpsertAssignShift = () => {
 				const res = await useFetch<UpsertAssigShiftResponse>({
 					jwt,
 					method: "PUT",
-					path: assignShiftApi.index(),
+					path: assignShiftApi.put,
 					body: upsertData,
 				});
 

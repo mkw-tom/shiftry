@@ -3,6 +3,7 @@ import { get } from "node:http";
 export const assignShiftApi = {
 	index: (id?: string) => `shift/assign/${id}`,
 	get: (shiftRequestId: string) => `shift/assign/${shiftRequestId}`,
+	put: "shift/assign",
 };
 
 export const shiftReqeustApi = {
