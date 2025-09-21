@@ -40,7 +40,7 @@ export const useGetSubmittedShfit = () => {
 				const res = await useFetch<GetSubmittedShiftsSpecificResponse>({
 					jwt,
 					method: "GET",
-					path: submittedShiftApi.index(shiftRequestId),
+					path: submittedShiftApi.get(shiftRequestId),
 				});
 
 				if (!res.ok) {

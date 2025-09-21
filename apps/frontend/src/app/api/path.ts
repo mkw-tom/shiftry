@@ -1,20 +1,22 @@
 import { get } from "node:http";
 
 export const assignShiftApi = {
-	index: (id?: string) => `shift/assign/${id}`,
+	base: (id?: string) => `shift/assign/${id}`,
 	get: (shiftRequestId: string) => `shift/assign/${shiftRequestId}`,
 	put: "shift/assign",
 };
 
 export const shiftReqeustApi = {
-	index: (id?: string) => `shift/request/${id}`,
-	// get: (shiftRequestId: string) => `shift/request/${shiftRequestId}`,
+	base: "shift/request",
+	get: (shiftRequestId: string) => `shift/request/${shiftRequestId}`,
+	put: (shiftRequestId: string) => `shift/request/${shiftRequestId}`,
 };
 
 export const submittedShiftApi = {
-	index: (id?: string) => `shift/submit/${id}`,
+	base: "shift/submit",
 	me: "shift/submit/me",
 	one: (shiftRequestId: string) => `shift/submit/one/${shiftRequestId}`,
+	get: (shiftRequestId: string) => `shift/submit/${shiftRequestId}`,
 };
 
 export const shiftPositionApiPath = {

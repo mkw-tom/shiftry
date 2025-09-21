@@ -8,7 +8,7 @@ import type { UpsertShiftRequetResponse } from "@shared/api/shift/request/types/
 import type { UpsertShiftRequetInput } from "@shared/api/shift/request/validations/put";
 import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { assignShiftApi } from "../path";
+import { assignShiftApi, shiftReqeustApi } from "../path";
 import { useFetch } from "../useFetch";
 
 export const useUpsertShiftReqeust = () => {
@@ -37,7 +37,7 @@ export const useUpsertShiftReqeust = () => {
 				const res = await useFetch<UpsertShiftRequetResponse>({
 					jwt,
 					method: "PUT",
-					path: assignShiftApi.index(shiftRequestId),
+					path: shiftReqeustApi.put(shiftRequestId),
 					body: formData,
 				});
 
