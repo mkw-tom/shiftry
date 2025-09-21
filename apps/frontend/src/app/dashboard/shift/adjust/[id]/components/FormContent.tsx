@@ -100,6 +100,8 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 
 						setAssignShiftData((prev) => ({
 							...prev,
+							storeId: shiftRequest.storeId,
+							shiftRequestId: shiftRequestId,
 							shifts: newShifts,
 						}));
 
