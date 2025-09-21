@@ -37,7 +37,7 @@ export const useUpsertShiftReqeust = () => {
 				const res = await useFetch<UpsertShiftRequetResponse>({
 					jwt,
 					method: "PUT",
-					path: shiftReqeustApi.put(shiftRequestId),
+					path: shiftReqeustApi.put,
 					body: formData,
 				});
 
