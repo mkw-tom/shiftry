@@ -143,6 +143,7 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 				setSubmittedShiftList(ssRes.submittedShifts);
 			} else if (isMounted && "message" in ssRes) {
 				console.error(ssRes.message);
+				alert(`提出データの取得に失敗しました。error:${ssRes.message}`);
 			}
 		};
 		fetchShiftData();
