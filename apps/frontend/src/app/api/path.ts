@@ -9,7 +9,7 @@ export const assignShiftApi = {
 export const shiftReqeustApi = {
 	base: "shift/request",
 	get: (shiftRequestId: string) => `shift/request/${shiftRequestId}`,
-	put: (shiftRequestId: string) => `shift/request/${shiftRequestId}`,
+	put: "shift/request",
 };
 
 export const submittedShiftApi = {
