@@ -62,7 +62,11 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 			const srRes = await getShiftRequestSpecific({ shiftRequestId });
 			if (isMounted && srRes.ok) {
 				setShiftRequestData((prev) => ({
-					...prev,
+					id: srRes.shiftRequest.id,
+					type: srRes.shiftRequest.type,
+					storeId: srRes.shiftRequest.storeId,
+					requests: srRes.shiftRequest.requests,
+					status: srRes.shiftRequest.status,
 					weekStart: new Date(srRes.shiftRequest.weekStart as Date),
 					weekEnd: new Date(srRes.shiftRequest.weekEnd as Date),
 					deadline: new Date(srRes.shiftRequest.deadline as Date),
