@@ -26,11 +26,20 @@ const Button = () => {
 		if (!asRes.ok) {
 			if ("errors" in asRes) {
 				asRes.errors.map((error) => {
-					showToast(error.message, "error");
+					alert(asRes.message);
+					showToast(
+						`割り当てデータの保存に失敗しました。validationError:${asRes.message} ${asRes.errors}`,
+						"error",
+					);
 				});
 				return;
 			}
-			showToast("シフトの保存に失敗しました", "error");
+
+			alert(asRes.message);
+			showToast(
+				`割り当てデータの保存に失敗しました。error:${asRes.message}`,
+				"error",
+			);
 			return;
 		}
 
@@ -49,11 +58,19 @@ const Button = () => {
 		if (!srRes.ok) {
 			if ("errors" in srRes) {
 				srRes.errors.map((error) => {
-					showToast(error.message, "error");
+					alert(srRes.message);
+					showToast(
+						`割り当てデータの保存に失敗しました。validationError:${srRes.message} ${srRes.errors}`,
+						"error",
+					);
 				});
 				return;
 			}
-			showToast("シフトの保存に失敗しました", "error");
+			alert(srRes.message);
+			showToast(
+				`割り当てデータの保存に失敗しました。error:${srRes.message}`,
+				"error",
+			);
 			return;
 		}
 

@@ -5,7 +5,6 @@ import FormHead from "./components/FormHead";
 import Table from "./components/Table";
 import { AdjustShiftFormContextProvider } from "./context/AdjustShiftFormContextProvider.tsx";
 
-// params 型は Next.js が自動付与するため明示型注釈を削除
 export default async function Page({
 	params,
 }: {
