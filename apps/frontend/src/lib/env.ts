@@ -1,3 +1,6 @@
+/// Test-Mode
+export const TEST_MODE = process.env.NEXT_PUBLIC_TEST_MODE === "true";
+
 /// API-URL
 export const API_URL = process.env.NEXT_PUBLIC_API_URL as string;
 

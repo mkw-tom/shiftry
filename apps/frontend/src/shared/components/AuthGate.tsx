@@ -1,5 +1,6 @@
 // src/shared/auth/AuthGate.tsx
 "use client";
+import { TEST_MODE } from "@/lib/env";
 import { useRouter } from "next/navigation";
 import { type PropsWithChildren, useEffect } from "react";
 import { MdErrorOutline } from "react-icons/md";
@@ -9,6 +10,10 @@ export default function AuthGate({
 	liffId,
 	children,
 }: { liffId: string } & PropsWithChildren) {
+	if (TEST_MODE) {
+		return <>{children}</>;
+	}
+
 	const router = useRouter();
 	const { step, error, chooseStore } = useAuthFlow({
 		liffId,
