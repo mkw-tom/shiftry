@@ -23,14 +23,17 @@ const ActionButtons = ({
 	data: ShiftRequestDTO;
 }) => {
 	const { darawerOpen } = useBottomDrawer();
+
 	const router = useRouter();
+
 	const gotoAdjustPage = (id: string) =>
 		router.push(`/dashboard/shift/adjust/${id}`);
+
 	const { user } = useSelector((state: RootState) => state.user);
 
 	const switchAdjustmentBtnAction = (data: ShiftRequestDTO) => {
 		if (user?.role === "STAFF") {
-			return darawerOpen(DrawerView.SUBMIT, data);
+			return router.push(`/shift/submit?shiftRequestId=${data.id}`);
 		}
 		return gotoAdjustPage(data.id);
 	};

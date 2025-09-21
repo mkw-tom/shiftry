@@ -2,6 +2,7 @@ import type { ShiftRequestWithJson } from "@shared/api/common/types/merged";
 import type { ShiftStatus } from "@shared/api/common/types/prisma";
 import type { ShiftRequestDTO } from "@shared/api/shift/request/dto";
 import { MDW, YMDHM, YMDW } from "@shared/utils/formatDate";
+import { useRouter } from "next/navigation";
 import React, { type JSX } from "react";
 import { BiCheck } from "react-icons/bi";
 import { LuSend } from "react-icons/lu";
@@ -11,11 +12,10 @@ import {
 } from "../../../common/context/useBottomDrawer";
 
 const SubmittedCard = ({ data }: { data: ShiftRequestDTO }) => {
-	// const { text, colorClass, icon } = statusBadgeMap[data.status] ?? {
-	//   text: "不明",
-	//   colorClass: "bg-gray-400",
-	// };
-	const { darawerOpen } = useBottomDrawer();
+	const router = useRouter();
+
+	const gotoSumbmitShiftPage = (id: string) =>
+		router.push(`/shift/submit?shfitRequestId=${id}`);
 
 	return (
 		<li
@@ -47,8 +47,8 @@ const SubmittedCard = ({ data }: { data: ShiftRequestDTO }) => {
 				</div>
 				<button
 					type="button"
-					className="btn btn-sm border-green02 text-green02 bg-white"
-					onClick={() => darawerOpen(DrawerView.SUBMIT, data)}
+					className="btn btn-sm border-green02 text-green02 bg-white shadow-none"
+					onClick={() => gotoSumbmitShiftPage(data.id)}
 				>
 					{/* <LuSend /> */}
 					確認
