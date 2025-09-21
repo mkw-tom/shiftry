@@ -60,7 +60,7 @@ const Button = () => {
 				srRes.errors.map((error) => {
 					alert(srRes.message);
 					showToast(
-						`割り当てデータの保存に失敗しました。validationError:${srRes.message} ${srRes.errors}`,
+						`雛形データの保存に失敗しました。validationError:${srRes.message} ${srRes.errors}`,
 						"error",
 					);
 				});
@@ -68,7 +68,7 @@ const Button = () => {
 			}
 			alert(srRes.message);
 			showToast(
-				`割り当てデータの保存に失敗しました。error:${srRes.message}`,
+				`雛形データの保存に失敗しました。error:${srRes.message}`,
 				"error",
 			);
 			return;
