@@ -61,14 +61,14 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 			// 1. shiftRequestData取得
 			const srRes = await getShiftRequestSpecific({ shiftRequestId });
 			if (isMounted && srRes.ok) {
-				setShiftRequestData({
-					...srRes.shiftRequest,
+				setShiftRequestData((prev) => ({
+					...prev,
 					weekStart: new Date(srRes.shiftRequest.weekStart as Date),
 					weekEnd: new Date(srRes.shiftRequest.weekEnd as Date),
 					deadline: new Date(srRes.shiftRequest.deadline as Date),
 					createdAt: new Date(srRes.shiftRequest.createdAt as Date),
 					updatedAt: new Date(srRes.shiftRequest.updatedAt as Date),
-				});
+				}));
 				// 2. assignShiftData取得
 				const asRes = await getAssignShift({ shiftRequestId });
 				if (asRes.ok) {
@@ -133,10 +133,14 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 					});
 					setAssignShiftData({ ...prevAssign, shifts: newShifts });
 				} else {
-					console.error(asRes.message);
+					alert(
+						`割り当てデータの読み込みに失敗しました。error：${asRes.message}`,
+					);
 				}
 			} else if (isMounted && "message" in srRes) {
-				console.error(srRes.message);
+				alert(
+					`雛形データのう読み込みに失敗したmongodbした。error：${srRes.message}`,
+				);
 			}
 
 			// 3. submittedShiftList取得

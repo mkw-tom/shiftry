@@ -39,7 +39,7 @@ export const useGetAssignShfit = () => {
 				const res = await useFetch<GetAssignShiftResponse>({
 					jwt,
 					method: "GET",
-					path: assignShiftApi.get(shiftRequestId),
+					path: assignShiftApi.index(shiftRequestId),
 				});
 
 				if (!res.ok) {
