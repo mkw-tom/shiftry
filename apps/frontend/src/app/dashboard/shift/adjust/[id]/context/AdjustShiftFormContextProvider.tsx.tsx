@@ -30,7 +30,7 @@ export const AdjustShiftFormContextProvider = ({
 		id: "",
 		storeId: "",
 		shiftRequestId: "",
-		shifts: dummyAssignShift.shifts,
+		shifts: {},
 		status: "ADJUSTMENT",
 		createdAt: new Date(),
 		updatedAt: new Date(),
