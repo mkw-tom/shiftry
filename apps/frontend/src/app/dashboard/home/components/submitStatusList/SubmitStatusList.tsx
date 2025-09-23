@@ -86,7 +86,7 @@ const SubmitStatusList = () => {
 				</div>
 			</div>
 			{isLoading && (
-				<div className="w-full h-lvh flex flex-col items-center bg-gray01">
+				<div className="w-full h-lvh flex flex-col items-center">
 					<p className="loading loading-spinner text-green02 mt-20" />
 					<p className="text-green02 mt-2">読み込み中...</p>
 				</div>

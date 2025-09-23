@@ -40,20 +40,7 @@ const ShiftRequestsListHead = ({
 						{user?.role !== "STAFF" && <option value="HOLD">下書き</option>}
 					</select>
 				</div>
-
-				{/* <Link
-					href={"/dashboard/archive"}
-					className="flex items-center gap-1 text-white tracking-wide text-sm"
-				>
-					<span>過去の履歴</span>
-					<MdOutlineArrowOutward className="text-lg" />
-				</Link> */}
 			</div>
-			{/* {user?.role === "OWNER" && ( */}
-			{/* <div className="w-full mx-auto px-2 py-2 flex">
-				<AddShiftButton />
-			</div> */}
-			{/* )} */}
 		</div>
 	);
 };

@@ -2,6 +2,12 @@
 import { useGetAssignShfit } from "@/app/api/hook/useGetAssignShift";
 import { useGetShiftRequestSpecific } from "@/app/api/hook/useGetShiftRequestSpecific";
 import { useGetSubmittedShfit } from "@/app/api/hook/useGetSubmittedShfit";
+import { dummyAssignShift } from "@/app/utils/dummyData/AssginShfit";
+import { dummyShiftRequest } from "@/app/utils/dummyData/ShiftRequest";
+import { dummySubmittedShiftList } from "@/app/utils/dummyData/SubmittedShifts";
+import { dummyMembers } from "@/app/utils/dummyData/member";
+import { TEST_MODE } from "@/lib/env";
+import { setMembers } from "@/redux/slices/members";
 import type {
 	AssignPositionType,
 	AssignPositionWithDateInput,
@@ -11,6 +17,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { BiError } from "react-icons/bi";
 import { LuSend } from "react-icons/lu";
 import { MdAdd, MdErrorOutline } from "react-icons/md";
+import { useDispatch } from "react-redux";
 import { useAdjustShiftForm } from "../context/AdjustShiftFormContextProvider.tsx";
 import AssignPositionList from "./AssignPositionList";
 import FormHead from "./FormHead";
@@ -53,11 +60,23 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 	} = useGetSubmittedShfit();
 	const isLoading = srLoading || asLoading || ssLoading;
 	const isError = srError || asError || ssError;
+	const dispatch = useDispatch();
 
 	// 初回のみ: shiftRequestData, assignShiftData, submittedShiftListを取得し、assignShiftDataのマージも初回のみ実行
+
 	useEffect(() => {
 		let isMounted = true;
+
+		const fetchTestModeData = () => {
+			if (!TEST_MODE) return;
+			setShiftRequestData(dummyShiftRequest);
+			setAssignShiftData(dummyAssignShift);
+			setSubmittedShiftList(dummySubmittedShiftList);
+			dispatch(setMembers(dummyMembers));
+		};
+
 		const fetchShiftData = async () => {
+			if (TEST_MODE) return;
 			// 1. shiftRequestData取得
 			const srRes = await getShiftRequestSpecific({ shiftRequestId });
 			if (isMounted && srRes.ok) {
@@ -78,7 +97,6 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 				if (asRes.ok) {
 					// assignShiftDataにshiftRequestData.requestsのname/countをマージ
 					const shiftRequest = srRes.shiftRequest;
-
 					if (!asRes.assignShift) {
 						const newShifts = Object.entries(shiftRequest.requests).reduce(
 							(acc, [date, times]) => {
@@ -156,6 +174,8 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 				alert(`提出データの取得に失敗しました。error:${ssRes.message}`);
 			}
 		};
+
+		fetchTestModeData();
 		fetchShiftData();
 		return () => {
 			isMounted = false;
@@ -168,6 +188,7 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 		setAssignShiftData,
 		setSubmittedShiftList,
 		shiftRequestId,
+		dispatch,
 	]);
 
 	const openSubmitStatusModal = () => {
