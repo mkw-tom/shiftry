@@ -48,7 +48,7 @@ const SubmitStaffInfoModal = ({
 
 				<div className="w-full flex items-center justify-between my-1">
 					<div className="mb-2 text-xs text-gray-500">
-						提出日: {YMDHM(submitData.createdAt)}
+						提出日: {YMDHM(new Date(submitData.createdAt))}
 					</div>
 					<div className="mb-2 text-xs text-gray-500 flex items-center gap-2">
 						{submitData.status === "ADJUSTMENT" ? (

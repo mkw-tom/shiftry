@@ -1,7 +1,9 @@
+import type { RootState } from "@/redux/store";
 import type { ShiftRequestWithJson } from "@shared/api/common/types/merged";
 import type { ShiftRequestDTO } from "@shared/api/shift/request/dto";
 import { MDW, YMDHM, YMDW } from "@shared/utils/formatDate";
 import React from "react";
+import { useSelector } from "react-redux";
 import {
 	DrawerView,
 	useBottomDrawer,
@@ -15,17 +17,20 @@ const ArchiveListCard = ({
 	handleCheck: (id: string, checked: boolean) => void;
 }) => {
 	const { darawerOpen } = useBottomDrawer();
+	const { user } = useSelector((state: RootState) => state.user);
 
 	return (
 		<li
 			key={data.id}
 			className="flex items-center justify-start w-full h-auto p-4 border-b border-gray01"
 		>
-			<input
-				type="checkbox"
-				className="checkbox checkbox-sm checkbox-success mr-4"
-				onChange={(e) => handleCheck(data.id, e.target.checked)}
-			/>
+			{user?.role !== "STAFF" && (
+				<input
+					type="checkbox"
+					className="checkbox checkbox-sm checkbox-success mr-4"
+					onChange={(e) => handleCheck(data.id, e.target.checked)}
+				/>
+			)}
 			<div className="flex flex-col gap-1 items-start flex-1">
 				<p className="text-black opacity-70 tracking-wide">
 					{YMDW(new Date(data.weekStart))} ~{" "}

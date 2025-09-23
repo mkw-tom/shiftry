@@ -1,3 +1,4 @@
+import { TEST_MODE, TEST_USER_ROLE } from "@/lib/env";
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 import type { User, UserRole } from "@shared/api/common/types/prisma";
 
@@ -11,11 +12,9 @@ type UserState = {
 const initialState: UserState = {
 	user: {
 		id: "",
-		// lineId: "",
 		name: "",
 		pictureUrl: "",
-		role: "STAFF", // Default role, can be changed later
-		// role: "OWNER",
+		role: TEST_MODE ? TEST_USER_ROLE : "STAFF",
 	},
 };
 

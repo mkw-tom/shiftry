@@ -54,16 +54,6 @@ const ActionButtons = ({
 		case "REQUEST":
 			return (
 				<>
-					{/* <Link
-						href="/dashboard/shift/create"
-            className={
-              "btn flex-1 text-green01 bg-white  font-bold shadow-sm border-green01 rounded-md"
-            }
-            // onClick={() => darawerOpen(DrawerView.GENERATE, data)}
-          >
-            <SiOpenai />
-            シフト作成
-          </Link> */}
 					<Link
 						href={`/shift/submit?shiftRequestId=${data.id}`}
 						className={

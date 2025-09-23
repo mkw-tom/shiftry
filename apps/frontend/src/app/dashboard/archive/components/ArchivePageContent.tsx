@@ -10,6 +10,8 @@ import { ar } from "zod/v4/locales";
 
 import { useBottomDrawer } from "@/app/dashboard/common/context/useBottomDrawer";
 import Head from "@/app/dashboard/home/components/Head";
+import { dummyShiftRequests } from "@/app/utils/dummyData/ShiftRequest";
+import { TEST_MODE } from "@/lib/env";
 import type { ShiftRequestDTO } from "@shared/api/shift/request/dto";
 import { useGetArchiveShiftRequests } from "../api/get-archive-shift-request/hook";
 import ArchiveListCard from "./ArchiveListCard";
@@ -39,7 +41,12 @@ const ArchivePageContent = () => {
 	const { darawerOpen } = useBottomDrawer();
 
 	useEffect(() => {
+		const fetchTestModeData = () => {
+			if (!TEST_MODE) return;
+			setArchiveData(dummyShiftRequests);
+		};
 		const fetchData = async () => {
+			if (TEST_MODE) return;
 			const res = await handleGetArchiveShiftRequests();
 			if (!res.ok) {
 				alert(res.message);
@@ -47,6 +54,7 @@ const ArchivePageContent = () => {
 			}
 			setArchiveData([...res.archiveShiftRequests]);
 		};
+		fetchTestModeData();
 		fetchData();
 	}, [handleGetArchiveShiftRequests]);
 

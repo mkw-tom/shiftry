@@ -24,10 +24,10 @@ const Sideber = () => {
 				<ul className="menu bg-base lg:bg-white  text-base-content min-h-full w-72 p-4 scroll-auto border-t-[6px] border-green02 ">
 					<UserSection />
 					<MemberListSection />
+					<ArchiveShiftSection />
 					{/* <PaymentSectioin /> */}
 					<StoresSection />
 					<CancelSection />
-					<ArchiveShiftSection />
 				</ul>
 			</div>
 		</div>

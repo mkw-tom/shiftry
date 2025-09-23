@@ -40,7 +40,12 @@ const ShiftRequestList = () => {
 	}, [shfitListFilter, activeShiftRequests]);
 
 	const showShiftRequests = () => {
-		if (TEST_MODE) return dummyShiftRequests;
+		if (TEST_MODE) {
+			if (user?.role === "STAFF") {
+				return dummyShiftRequests.filter((data) => data.status !== "HOLD");
+			}
+			return dummyShiftRequests;
+		}
 		if (user?.role === "STAFF") {
 			return filteredShiftRequests.filter((data) => data.status !== "HOLD");
 		}
@@ -77,7 +82,9 @@ const ShiftRequestList = () => {
 	return (
 		<section className="w-full h-auto mx-auto overflow-hidden">
 			{/* <Head /> */}
-			<ShiftRequestsListHead setShiftListFilter={setShiftListFilter} />
+			{user?.role !== "STAFF" && (
+				<ShiftRequestsListHead setShiftListFilter={setShiftListFilter} />
+			)}
 			<div className="w-full h-full overflow-hidden bg-white mt-1">
 				<ul className="w-full h-[420px] mx-auto flex flex-col overflow-y-scroll pt-1 pb-80 ">
 					{showShiftRequests().map((data) => (
