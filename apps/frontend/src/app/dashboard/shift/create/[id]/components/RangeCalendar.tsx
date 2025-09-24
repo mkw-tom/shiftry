@@ -6,24 +6,29 @@ import { type DateRange, DayPicker } from "react-day-picker";
 import { Controller } from "react-hook-form";
 import { BiCalendar } from "react-icons/bi";
 import { useCreateRequest } from "../context/CreateRequestFormProvider";
-import useSelectDateForm from "../hook/form/useSelectDateForm";
+import useSelectDateForm from "../hook/useSelectDateForm";
 
 export function RangeCalendar() {
 	const { setFormData, formData } = useCreateRequest();
 
 	// RHF 初期値は context から取り込む（ISOを入れる）
-	const { control, errors, weekStart, weekEnd, setValue } = useSelectDateForm({
-		weekStart: formData.weekStart || "",
-		weekEnd: formData.weekEnd || "",
-		deadline: formData.deadline || "",
-	});
+	const { control, errors, weekStart, weekEnd, setValue, deadline } =
+		useSelectDateForm({
+			weekStart: formData.weekStart || "",
+			weekEnd: formData.weekEnd || "",
+			deadline: formData.deadline || "",
+		});
 
 	// RHFの状態（ISO）から DayPicker の選択状態(Date)を作る
 	const selectedRange: DateRange | undefined =
-		weekStart && weekEnd
+		(formData.weekStart && formData.weekEnd) || (weekEnd && weekStart)
 			? {
-					from: isoUTCToLocalDate(weekStart),
-					to: isoUTCToLocalDate(weekEnd),
+					from: formData.weekStart
+						? new Date(formData.weekStart)
+						: isoUTCToLocalDate(weekStart || ""),
+					to: formData.weekEnd
+						? new Date(formData.weekEnd)
+						: isoUTCToLocalDate(weekEnd || ""),
 				}
 			: undefined;
 
@@ -54,42 +59,43 @@ export function RangeCalendar() {
 
 	return (
 		<div className="w-full flex flex-col gap-2 h-auto text-black">
-			<div className="w-full flex flex-col gap-2 pb-2 pl-1">
-				<p
-					className={`mt-2 text-center flex items-center gap-2 border-l-6 p-2 pl-2 ${
-						selectedRange?.from && selectedRange?.to
-							? "border-green01"
-							: "border-gray01"
-					}`}
-				>
-					<BiCalendar className="text-xl" />
+			<div className="w-full flex flex-col gap-2 pl-2">
+				<h2 className="text-start text-sm font-bold border-green02 text-green02 flex items-center gap-2 mt-2 ">
+					<BiCalendar
+						className={`text-lg ${
+							selectedRange?.from && selectedRange?.to ? "text-green02" : ""
+						}`}
+					/>
 					{selectedRange?.from && selectedRange?.to ? (
-						<span>
-							{YMDW(selectedRange.from)}〜 {YMDW(selectedRange.to)}
+						<span className="text-green02 font-bold text-sm">
+							{YMDW(selectedRange.from)}~ {YMDW(selectedRange.to)}
 						</span>
 					) : (
 						<span className="text-gray-500">選択されていません</span>
 					)}
-				</p>
+				</h2>
 
 				{/* 提出期限（RHF: Controller） */}
 				<div
-					className={`w-full flex items-center border-l-6 pl-2 ${
+					className={`w-full flex items-center pl-1 gap-2 ${
 						!selectedRange?.from && !selectedRange?.to
 							? "opacity-30 pointer-events-none"
 							: ""
 					} ${formData.deadline ? "border-green01 " : "border-gray01"}`}
 				>
-					<span>提出期限：</span>
+					<span className="text-sm text-700">提出期限</span>
 
 					<Controller
 						name="deadline"
 						control={control}
 						render={({ field: { value, onChange } }) => {
 							const wkStartDate = isoUTCToLocalDate(weekStart);
+							const selectedDeadline = formData.deadline
+								? new Date(formData.deadline)
+								: isoUTCToLocalDate(value);
 							return (
 								<DatePicker
-									selected={isoUTCToLocalDate(value)}
+									selected={selectedDeadline}
 									onChange={(d: Date | null) => {
 										const iso = toISODateUTC(d);
 										onChange(iso); // RHFへ ISO
@@ -100,7 +106,7 @@ export function RangeCalendar() {
 									placeholderText="日付を選択"
 									minDate={new Date()} // 今日以降（ローカル）
 									maxDate={wkStartDate ?? undefined} // 週開始まで（ローカルDate）
-									className="input input-bordered w-full border bg-base text-black border-gray-300 focus:outline-none focus:ring-2 focus:ring-success"
+									className="input input-sm input-bordered w-full border bg-base text-black border-gray-300 focus:outline-none focus:ring-2 focus:ring-success z-50"
 								/>
 							);
 						}}
@@ -119,13 +125,13 @@ export function RangeCalendar() {
 			</div>
 
 			{/* 範囲カレンダー */}
-			<div className="px-4 mx-auto mt-1">
+			<div className="px-4 mx-auto">
 				<DayPicker
 					mode="range"
 					selected={selectedRange}
 					onSelect={handleRangeSelect}
 					numberOfMonths={1}
-					defaultMonth={selectedRange?.from ?? new Date()}
+					defaultMonth={selectedRange?.from}
 					required={false}
 					locale={ja}
 					modifiersClassNames={{
@@ -133,7 +139,7 @@ export function RangeCalendar() {
 						range_start: "bg-green03 font-bold rounded-md",
 						range_end: "bg-green03 font-bold rounded-md",
 					}}
-					className="w-full"
+					className="w-full z-0"
 				/>
 			</div>
 		</div>

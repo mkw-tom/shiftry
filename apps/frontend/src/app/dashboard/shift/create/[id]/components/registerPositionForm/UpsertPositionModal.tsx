@@ -15,7 +15,7 @@ import { fa } from "zod/v4/locales";
 import { useBulkUpsertJobroles } from "../../api/bulk-upsert-jobrole/hook";
 import { useGetJobroles } from "../../api/get-jobroles-all/hook";
 import { useCreateRequest } from "../../context/CreateRequestFormProvider";
-import useRegisterPositionForm from "../../hook/form/useRegisterPositionForm";
+import useRegisterPositionForm from "../../hook/useRegisterPositionForm";
 import CountInput from "./CountInput";
 import DatePickInput from "./DatePickInput";
 import JobRoleInput from "./JobRoleInput";
