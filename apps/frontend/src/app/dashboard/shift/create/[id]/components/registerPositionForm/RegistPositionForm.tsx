@@ -1,13 +1,7 @@
-import { toISO, toISODateUTC } from "@/app/utils/date";
-import { toHHmm } from "@/app/utils/times";
-import {
-	AbsoluteUserType,
-	PriorityUserType,
-} from "@shared/api/shift/request/validations/put";
-import type {
-	UpsertShiftPositionBaseInput,
-	WeekDayType,
-} from "@shared/api/shiftPosition/validations/put-bulk";
+import { toISO } from "@/app/utils/date";
+import { dummyShiftPositions } from "@/app/utils/dummyData/shiftPosition";
+import { TEST_MODE } from "@/lib/env";
+import type { UpsertShiftPositionBaseInput } from "@shared/api/shiftPosition/validations/put-bulk";
 import React, { use, useEffect, useRef, useState } from "react";
 import { LuUserRound } from "react-icons/lu";
 import { MdAdd } from "react-icons/md";
@@ -37,13 +31,29 @@ const RegistPositionForm = () => {
 	useEffect(() => {
 		if (loadedRef.current) return;
 		loadedRef.current = true;
-		(async () => {
+		const setTestData = () => {
+			if (!TEST_MODE) return;
+			setShiftPositions(
+				dummyShiftPositions.map((pos) => ({
+					...pos,
+					startTime: toISO(String(pos.startTime)),
+					endTime: toISO(String(pos.endTime)),
+					absolute: pos.absolute ?? [],
+					priority: pos.priority ?? [],
+					count:
+						typeof pos.count === "number" && pos.count !== null ? pos.count : 1,
+				})),
+			);
+			return;
+		};
+
+		const fetchData = async () => {
+			if (TEST_MODE) return;
 			const res = await handleGetShiftPositions();
 			if (!res.ok && "message" in res) {
 				alert(res.message);
 				return;
 			}
-
 			setShiftPositions(
 				res.shiftPositions.map((pos) => ({
 					...pos,
@@ -55,7 +65,9 @@ const RegistPositionForm = () => {
 						typeof pos.count === "number" && pos.count !== null ? pos.count : 1,
 				})),
 			);
-		})();
+		};
+		setTestData();
+		fetchData();
 	}, [handleGetShiftPositions, setShiftPositions]);
 
 	const openUpsertPositionModal = (
