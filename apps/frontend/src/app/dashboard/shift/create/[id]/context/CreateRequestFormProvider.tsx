@@ -6,7 +6,7 @@ import type { bulkUpsertShiftPositionInput } from "@shared/api/shiftPosition/val
 import { formatDateToYYYYMMDD } from "@shared/utils/formatDate";
 import { convertDateToWeekByEnglish } from "@shared/utils/formatWeek";
 import { type ReactNode, createContext, useContext, useState } from "react";
-import { buildRequestsFromPositions } from "../utils/buildRequests";
+import { buildRequestsFromPositions } from "../utils/generateRequests";
 
 type CreateRequestContextType = {
 	step: CreateRequestStep;

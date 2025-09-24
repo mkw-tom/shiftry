@@ -1,5 +1,6 @@
 import { error } from "node:console";
 import { useToast } from "@/app/dashboard/common/context/ToastProvider";
+import { TEST_MODE } from "@/lib/env";
 import type { RequestShiftMessageType } from "@shared/api/webhook/line/validatioins";
 import next from "next";
 import { useRouter } from "next/navigation";
@@ -62,6 +63,8 @@ const ActionButton = () => {
 	};
 
 	const saveShiftPositionsAndJobRoles = async () => {
+		if (TEST_MODE) return nextStep();
+
 		const spRes = await handleBulkUpsertShiftPositions(shiftPositioins);
 		if (!spRes.ok && "message" in spRes) {
 			showToast("シフトポジションの保存に失敗しました", "error");
@@ -80,7 +83,7 @@ const ActionButton = () => {
 			nextStep();
 			return;
 		}
-		showToast("データを保存しました", "success");
+		showToast("シフトポジションを保存しました", "success");
 		nextStep();
 	};
 
