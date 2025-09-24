@@ -15,6 +15,7 @@ export type WeekDay =
 	| "sunday";
 
 export type ShiftPositionDTO = {
+	id: string;
 	name: string;
 	startTime: Date; // ISO
 	endTime: Date; // ISO
