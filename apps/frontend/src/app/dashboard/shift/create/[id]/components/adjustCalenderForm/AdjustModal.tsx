@@ -6,7 +6,7 @@ import { useBulkUpsertJobroles } from "../../api/bulk-upsert-jobrole/hook";
 import { useGetJobroles } from "../../api/get-jobroles-all/hook";
 import { useCreateRequest } from "../../context/CreateRequestFormProvider";
 
-import useAdjustPositionForm from "../../hook/form/useAdjustPositoinForm";
+import useAdjustPositionForm from "../../hook/useAdjustPositoinForm";
 import CountInput from "./CountInput";
 import DatePickInput from "./DatePickInput";
 import AddJobRoleInput from "./JobRoleInput";

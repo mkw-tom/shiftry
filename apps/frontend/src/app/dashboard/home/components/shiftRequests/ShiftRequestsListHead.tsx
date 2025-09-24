@@ -17,7 +17,7 @@ const ShiftRequestsListHead = ({
 		<div className="w-full mx-auto h-auto flex flex-col pt-2 shadow-sm bg-white border-t-2 border-t-base">
 			<div className="w-full flex items-center justify-between mx-auto border-b-1 border-white pb-1 px-2 gap-1">
 				<Link
-					href={"/dashboard/shift/create"}
+					href={"/dashboard/shift/create/new"}
 					className="btn btn-sm bg-white text-green02 font-bold flex-1 border-dashed border-1 border-gray01 shadow-none"
 				>
 					<MdAdd className="text-lg" />
