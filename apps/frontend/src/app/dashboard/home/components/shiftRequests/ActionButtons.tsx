@@ -41,14 +41,13 @@ const ActionButtons = ({
 	switch (status) {
 		case "HOLD":
 			return (
-				<button
-					type="button"
+				<Link
+					href={`/dashboard/shift/create/${data.id}`}
 					className="btn btn-outline flex-1 text-gray02 bg-white  font-bold shadow-sm border-gray02 rounded-md"
-					onClick={() => darawerOpen(DrawerView.CREATE_REQUEST, data)}
 				>
 					{/* <FaRegEdit /> */}
 					下書き再開
-				</button>
+				</Link>
 			);
 
 		case "REQUEST":
