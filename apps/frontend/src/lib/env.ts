@@ -1,8 +1,7 @@
 import type { UserRole } from "@shared/api/common/types/prisma";
 /// Test-Mode
 export const TEST_MODE = process.env.NEXT_PUBLIC_TEST_MODE === "true";
-export const TEST_USER_ROLE = process.env
-	.NEXT_PUBLIC_TEST_USER_ROLE as UserRole;
+export const TEST_USER_ROLE = process.env.NEXT_PUBLIC_TEST_USER_ROLE as string;
 /// API-URL
 export const API_URL = process.env.NEXT_PUBLIC_API_URL as string;
 
