@@ -31,7 +31,8 @@ const AssignPositionList = ({
 	>;
 }) => {
 	// const { formData, setFormData } = useCreateRequest();
-	const { assignShiftData, setAssignShiftData } = useAdjustShiftForm();
+	const { assignShiftData, setAssignShiftData, shiftRequestData } =
+		useAdjustShiftForm();
 	const [assignStaffData, setAssignStaffData] = useState<{
 		name: string;
 		count: number;
@@ -134,38 +135,44 @@ const AssignPositionList = ({
 														)}
 													</h1>
 
-													<div className="flex items-center">
-														<button
-															type="button"
-															className="btn btn-sm w-12 btn-link text-green01 border-none"
-															onClick={() =>
-																openEditAssignPositionModal(
-																	targetPosition,
-																	date,
-																)
-															}
-														>
-															編集
-														</button>
-														<button
-															type="button"
-															className="btn  btn-sm w-12 btn-link  text-gray02 border-none"
-															onClick={() => deleteCalenerPosition(date, time)}
-														>
-															削除
-														</button>
-														{editAssignPosition.name === position.name &&
-															`${editAssignPosition.startTime}-${editAssignPosition.endTime}` ===
-																time && (
-																<EditAssignPositionModal
-																	time={time}
-																	date={date}
-																	editAssignPosition={editAssignPosition}
-																	setEditAssignPosition={setEditAssignPosition}
-																	mode="adjust"
-																/>
-															)}
-													</div>
+													{shiftRequestData.status === "ADJUSTMENT" && (
+														<div className="flex items-center">
+															<button
+																type="button"
+																className="btn btn-sm w-12 btn-link text-green01 border-none"
+																onClick={() =>
+																	openEditAssignPositionModal(
+																		targetPosition,
+																		date,
+																	)
+																}
+															>
+																編集
+															</button>
+															<button
+																type="button"
+																className="btn  btn-sm w-12 btn-link  text-gray02 border-none"
+																onClick={() =>
+																	deleteCalenerPosition(date, time)
+																}
+															>
+																削除
+															</button>
+															{editAssignPosition.name === position.name &&
+																`${editAssignPosition.startTime}-${editAssignPosition.endTime}` ===
+																	time && (
+																	<EditAssignPositionModal
+																		time={time}
+																		date={date}
+																		editAssignPosition={editAssignPosition}
+																		setEditAssignPosition={
+																			setEditAssignPosition
+																		}
+																		mode="adjust"
+																	/>
+																)}
+														</div>
+													)}
 												</div>
 												<div className="w-full flex items-start justify-between px-1">
 													<div className="flex items-center ">
@@ -192,16 +199,6 @@ const AssignPositionList = ({
 														))}
 													</div>
 												</div>
-
-												{/* <PriorityAndAbsoluteModal
-													name={position.name}
-													mode={mode}
-													data={
-														mode === "absolute"
-															? position.absolute
-															: position.priority
-													}
-												/> */}
 
 												<ShowAssignListModal
 													date={date}
@@ -248,16 +245,18 @@ const AssignPositionList = ({
 														time={time}
 														assignStaffData={assignStaffData}
 													/>
-													<button
-														type="button"
-														className="btn btn-sm w-full border-green01 text-green01 font-bold bg-white shadow-none"
-														onClick={() =>
-															openAssignStaffModal(date, time, position)
-														}
-													>
-														<LuUserRoundPlus className="text-[14px]" />
-														調整
-													</button>
+													{shiftRequestData.status === "ADJUSTMENT" && (
+														<button
+															type="button"
+															className="btn btn-sm w-full border-green01 text-green01 font-bold bg-white shadow-none"
+															onClick={() =>
+																openAssignStaffModal(date, time, position)
+															}
+														>
+															<LuUserRoundPlus className="text-[14px]" />
+															調整
+														</button>
+													)}
 												</div>
 											</li>
 										);

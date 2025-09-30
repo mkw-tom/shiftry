@@ -1,3 +1,5 @@
+import { dummyMembers } from "@/app/utils/dummyData/member";
+import { TEST_MODE } from "@/lib/env";
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 import type {
 	Member,
@@ -9,7 +11,7 @@ type MembersState = {
 };
 
 const initialState: MembersState = {
-	members: [],
+	members: TEST_MODE ? dummyMembers : [],
 };
 
 export const userSlice = createSlice({

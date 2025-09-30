@@ -2,21 +2,41 @@
 import { useUpsertAssignShift } from "@/app/api/hook/useUpsertAssignShift";
 import { useUpsertShiftReqeust } from "@/app/api/hook/useUpsertShiftReqeust";
 import { useToast } from "@/app/dashboard/common/context/ToastProvider";
+import { TEST_MODE } from "@/lib/env";
+import type { ShiftStatus } from "@shared/api/common/types/prisma.js";
 import type { UpsertAssignShfitInput } from "@shared/api/shift/assign/validations/put";
 import type { UpsertShiftRequetInput } from "@shared/api/shift/request/validations/put.js";
 import React from "react";
+import { BiCheck, BiDownload } from "react-icons/bi";
+import { BsTable } from "react-icons/bs";
+import { PiTable } from "react-icons/pi";
+import { RiArrowGoBackFill, RiFileListLine } from "react-icons/ri";
+import { TfiViewList } from "react-icons/tfi";
 import { useAdjustShiftForm } from "../context/AdjustShiftFormContextProvider.tsx";
+import { useViewSwitch } from "../context/ViewSwitchProvider";
 
 const Button = () => {
+	const { viewMode, toggleViewMode } = useViewSwitch();
 	const { upsertAssignShift } = useUpsertAssignShift();
-	const { assignShiftData, shiftRequestData } = useAdjustShiftForm();
+	const {
+		assignShiftData,
+		shiftRequestData,
+		setAssignShiftData,
+		setShiftRequestData,
+	} = useAdjustShiftForm();
 	const { upsertShiftRequest } = useUpsertShiftReqeust();
 	const { showToast } = useToast();
 
-	const handleUpsertShiftData = async () => {
+	const handleUpsertShiftData = async (status: ShiftStatus) => {
+		if (TEST_MODE) {
+			setShiftRequestData((prev) => ({ ...prev, status: status }));
+			setAssignShiftData((prev) => ({ ...prev, status: status }));
+			showToast("テストモードのため、保存処理はスキップされました", "success");
+			return;
+		}
 		const upsertAssignShiftData: UpsertAssignShfitInput = {
 			shiftRequestId: assignShiftData.shiftRequestId,
-			status: "CONFIRMED",
+			status: status,
 			shifts: assignShiftData.shifts,
 		};
 		const asRes = await upsertAssignShift({
@@ -46,7 +66,7 @@ const Button = () => {
 		const upsertShiftRequestData: UpsertShiftRequetInput = {
 			type: shiftRequestData.type,
 			requests: shiftRequestData.requests,
-			status: "CONFIRMED",
+			status: status,
 			weekEnd: String(shiftRequestData.weekEnd),
 			weekStart: String(shiftRequestData.weekStart),
 			deadline: String(shiftRequestData.deadline),
@@ -60,7 +80,7 @@ const Button = () => {
 				srRes.errors.map((error) => {
 					alert(srRes.message);
 					showToast(
-						`雛形データの保存に失敗しました。validationError:${srRes.message} ${srRes.errors}`,
+						`雛形データの更新に失敗しました。validationError:${srRes.message} ${srRes.errors}`,
 						"error",
 					);
 				});
@@ -68,35 +88,100 @@ const Button = () => {
 			}
 			alert(srRes.message);
 			showToast(
-				`雛形データの保存に失敗しました。error:${srRes.message}`,
+				`雛形データの更新に失敗しました。error:${srRes.message}`,
 				"error",
 			);
 			return;
 		}
 
-		if (srRes.ok && asRes.ok) {
-			showToast("シフトを保存しました", "success");
+		if (status === "CONFIRMED") {
+			showToast("シフトが完成しました", "success");
+		}
+		if (status === "ADJUSTMENT") {
+			showToast("再調整に変更しました", "success");
 		}
 	};
 
-	return (
-		<div className="absolute bottom-5 left-0 right-0 w-full mx-auto flex justify-center bg-base  px-3 pb-5 pt-3 gap-1">
-			<button
-				type="button"
-				className="btn w-2/5 bg-gray02 text-white border-none"
-			>
-				{/* <PiMegaphoneSimple className="text-[14px]"/> */}
-				欠員ヘルプ通知
-			</button>
-			<button
-				type="button"
-				className="btn w-3/5 bg-green02 text-white border-none"
-				onClick={handleUpsertShiftData}
-			>
-				調整を確定
-			</button>
-		</div>
-	);
+	if (!shiftRequestData || !shiftRequestData.id) return <div />;
+
+	if (shiftRequestData.status === "CONFIRMED") {
+		return (
+			<div className="fixed bottom-0 left-0 w-full flex items-center justify-around gap-2 p-3 bg-white border-t border-gray01 z-10">
+				<button
+					type="button"
+					className="btn btn-sm bg-gray02 text-white border-none"
+				>
+					ヘルプ通知
+				</button>
+				<div className="flex gap-2 items-center flex-1">
+					<button
+						type="button"
+						className="btn btn-sm bg-green02 text-white border-none flex-1"
+						onClick={() => handleUpsertShiftData("ADJUSTMENT")}
+					>
+						<RiArrowGoBackFill />
+						再調整
+					</button>
+					<button
+						type="button"
+						className="btn btn-sm bg-black text-white font-bold px-4 border-none"
+						onClick={() => {
+							/* TODO: SVGダウンロード処理 */
+						}}
+					>
+						<BiDownload />
+						保存
+					</button>
+				</div>
+
+				<button
+					type="button"
+					onClick={toggleViewMode}
+					className="btn btn-sm border-gray01 btn-square "
+				>
+					{viewMode === "table" ? (
+						<RiFileListLine className="text-lg" />
+					) : (
+						<BsTable className="text-lg" />
+					)}
+				</button>
+			</div>
+		);
+	}
+
+	if (shiftRequestData.status === "ADJUSTMENT") {
+		return (
+			<div className="fixed bottom-0 left-0 w-full flex justify-center gap-2 p-3 bg-white/90 border-t border-gray01 z-50">
+				<div className="flex gap-2 items-center flex-1">
+					<button
+						type="button"
+						className="btn btn-sm bg-gray02 text-white border-none"
+					>
+						ヘルプ通知
+					</button>
+					<button
+						type="button"
+						className="btn btn-sm bg-green02 text-white border-none flex-1"
+						onClick={() => handleUpsertShiftData("CONFIRMED")}
+					>
+						<BiCheck />
+						シフト完成
+					</button>
+				</div>
+				<button
+					type="button"
+					onClick={toggleViewMode}
+					className="btn btn-sm border-gray01 btn-square "
+				>
+					{viewMode === "table" ? (
+						<RiFileListLine className="text-lg" />
+					) : (
+						<BsTable className="text-lg" />
+					)}
+				</button>
+			</div>
+		);
+	}
 };
 
 export default Button;
