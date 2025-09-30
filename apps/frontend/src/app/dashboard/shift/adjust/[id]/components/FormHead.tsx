@@ -63,6 +63,8 @@ const FormHead = () => {
 		}
 	};
 
+	if (shiftRequestData.status === "CONFIRMED") return <div className="pt-4" />;
+
 	return (
 		<div className="w-full mx-auto pt-5 border-b border-gray01 pb-1 flex items-center px-3">
 			<h2 className="text-green02 font-bold text-sm ">シフト調整</h2>

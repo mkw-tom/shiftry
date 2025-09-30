@@ -48,25 +48,25 @@ const Table = ({
 	};
 
 	return (
-		<div className="w-full max-w-lg mx-auto">
+		<div className="w-full mx-auto">
 			{/* カレンダーUI */}
 			<div className="mx-2 w-auto">
 				<div className="flex items-center justify-between mt-2">
 					<button
 						type="button"
-						className="btn btn-xs btn-circle btn-success"
+						className="btn btn-xs btn-circle bg-green02 border-none"
 						onClick={prevWeek}
 						disabled={daysSplitIndex === 0}
 					>
 						<IoMdArrowRoundBack className="text-lg text-white" />
 					</button>
-					<h1 className="font-bold text-gray-800">
+					<h1 className="font-bold flex items-center gap-1 text-green02 text-sm">
 						{YMDW(daysWithSevenDays[0])} ~{" "}
 						{YMDW(daysWithSevenDays[daysWithSevenDays.length - 1])}
 					</h1>
 					<button
 						type="button"
-						className="btn btn-xs btn-circle btn-success"
+						className="btn btn-xs btn-circle bg-green02 border-none"
 						onClick={nextWeek}
 						disabled={
 							daysWithSevenDays.length < 7 || dateFullRange().length <= 7

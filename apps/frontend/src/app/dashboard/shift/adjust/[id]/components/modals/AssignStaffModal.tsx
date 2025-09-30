@@ -95,11 +95,8 @@ const AssignStaffModal = ({
 			};
 		});
 		modal?.close();
-		// checkedUidsを初期値に戻す
 	};
-	// ...existing code...
 
-	// dateに希望があるstaffId一覧
 	const hopeStaffIds = submittedShiftList
 		.filter(
 			(sub) => sub.shifts[date] !== null && sub.shifts[date] !== undefined,
@@ -198,14 +195,6 @@ const AssignStaffModal = ({
 							}
 							// 希望者かどうか
 							const isHope = hopeStaffIds.includes(m.user.id);
-							// assignedのみ（希望者でも非希望者でもない）
-							const assignedData = (
-								assignShiftData.shifts?.[date]?.[time]?.assigned ?? []
-							).find((a) => a.uid === m.user.id);
-							const isAssignedOnly =
-								assignedMembers.some((am) => am.user.id === m.user.id) &&
-								!isHope;
-							// 固定・優先バッジ（assignShiftData.shiftsから判定）
 							let sourceBadge = null;
 							const shiftPos = shiftRequestData.requests?.[date]?.[time];
 							if (shiftPos) {
@@ -226,7 +215,9 @@ const AssignStaffModal = ({
 							return (
 								<li
 									key={m.user.id}
-									className={`flex items-center justify-between gap-2 w-full p-2 ${!isHope ? "bg-gray-100" : ""}`}
+									className={`flex items-center justify-between gap-2 w-full p-2 ${
+										!isHope ? "bg-gray-100" : ""
+									}`}
 								>
 									<div className="flex items-center gap-2 flex-1">
 										<div />

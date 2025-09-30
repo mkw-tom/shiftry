@@ -72,7 +72,7 @@ const ActionButtons = ({
 					className={
 						"btn flex-1 text-green01 bg-white  font-bold shadow-sm border-green01 rounded-md	 "
 					}
-					onClick={() => switchAdjustmentBtnAction(data)}
+					onClick={() => gotoAdjustPage(data.id)}
 				>
 					{user?.role === "STAFF" ? "提出データを確認" : "シフト調整"}
 				</button>
@@ -85,7 +85,7 @@ const ActionButtons = ({
 					className={
 						"btn flex-1 text-green02 bg-white  font-bold shadow-sm border-green02 rounded-md	 "
 					}
-					// onClick={() => gotoAdjustPage(data.id)}
+					onClick={() => gotoAdjustPage(data.id)}
 				>
 					完成確認
 				</button>

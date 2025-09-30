@@ -17,16 +17,20 @@ import React, { useState, useEffect, useCallback } from "react";
 import { BiError } from "react-icons/bi";
 import { LuSend } from "react-icons/lu";
 import { MdAdd, MdErrorOutline } from "react-icons/md";
+import { RiArrowGoBackFill } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { useAdjustShiftForm } from "../context/AdjustShiftFormContextProvider.tsx";
+import { useViewSwitch } from "../context/ViewSwitchProvider";
 import AssignPositionList from "./AssignPositionList";
 import FormHead from "./FormHead";
+import ShiftTableView from "./ShiftTableView";
 import Table from "./Table";
 import AutoAssignModal from "./modals/AutoAssignModal";
 import EditAssignPositionModal from "./modals/EditAssignPositionModal";
 import SubmitStatusModal from "./modals/SubmitStatusModal";
 
 const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
+	const { viewMode } = useViewSwitch();
 	const {
 		shiftRequestData,
 		setShiftRequestData,
@@ -243,7 +247,9 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 		daysSplitIndex * 7,
 		7 * (daysSplitIndex + 1),
 	);
-	const [selectDate, setSelectDate] = useState<Date>(daysWithSevenDays[0]);
+	const [selectDate, setSelectDate] = useState<Date>(
+		daysWithSevenDays[0] ?? new Date(shiftRequestData.weekStart),
+	);
 
 	if (isError) {
 		return (
@@ -270,6 +276,15 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 		);
 	}
 
+	if (viewMode === "table") {
+		return (
+			<div>
+				<FormHead />
+				<ShiftTableView />
+			</div>
+		);
+	}
+
 	return (
 		<div>
 			<FormHead />
@@ -289,30 +304,44 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 				mode="new"
 			/>
 			<div className="w-full flex gap-1 items-center justify-center shadow-sm  p-1 bg-white">
-				<button
-					type="button"
-					className="btn btn-sm bg-white text-green01 font-bold flex-1 border-dashed border-1 border-gray01 shadow-none"
-					onClick={() =>
-						openEditAssignPositionModal(editAssignPosition, String(selectDate))
-					}
-				>
-					<MdAdd className="text-lg" />
-					ポジションを追加
-				</button>
+				{shiftRequestData.status === "ADJUSTMENT" ? (
+					<>
+						<button
+							type="button"
+							className="btn btn-sm bg-white text-green01 font-bold flex-1 border-dashed border-1 border-gray01 shadow-none"
+							onClick={() =>
+								openEditAssignPositionModal(
+									editAssignPosition,
+									String(selectDate),
+								)
+							}
+						>
+							<MdAdd className="text-lg" />
+							ポジションを追加
+						</button>
 
-				<AutoAssignModal />
-				<button
-					type="button"
-					className="btn btn-sm  border-green01 text-green01 font-bold bg-white shadow-none"
-					onClick={() => openAutoAssignModal(shiftRequestData.id)}
-				>
-					{/* <AiOutlineOpenAI className="text-[14px]"/> */}
-					自動割当
-				</button>
-				{/* <button className="btn btn-sm  border-green01 text-green01 font-bold bg-white shadow-none">
-          <AiOutlineOpenAI className="text-[14px]"/>
-          AI提案
-        </button> */}
+						<AutoAssignModal />
+						<button
+							type="button"
+							className="btn btn-sm  border-green01 text-green01 font-bold bg-white shadow-none"
+							onClick={() => openAutoAssignModal(shiftRequestData.id)}
+						>
+							自動割当
+						</button>
+					</>
+				) : (
+					<>
+						<button
+							type="button"
+							className="btn btn-sm  border-green01 text-green01 font-bold bg-white shadow-none flex-1"
+							onClick={() => openAutoAssignModal(shiftRequestData.id)}
+						>
+							{/* <AiOutlineOpenAI className="text-[14px]"/> */}
+							再調整依頼
+						</button>
+					</>
+				)}
+
 				<button
 					type="button"
 					className="btn btn-sm border-gray02 text-gray02 font-bold bg-white shadow-none"
