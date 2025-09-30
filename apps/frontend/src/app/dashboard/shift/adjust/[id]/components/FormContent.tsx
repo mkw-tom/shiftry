@@ -205,11 +205,8 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 	const openEditAssignPositionModal = (
 		position: AssignPositionWithDateInput,
 		date: string,
+		mode: "new" | "adjust",
 	) => {
-		const modal = document.getElementById(`${date}-${position.name}`);
-		if (modal) {
-			(modal as HTMLDialogElement).showModal();
-		}
 		setEditAssignPosition({
 			name: position.name,
 			startTime: position.startTime,
@@ -218,6 +215,20 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 			jobRoles: position.jobRoles || [],
 			assigned: position.assigned || [],
 		});
+
+		setTimeout(() => {
+			if (mode === "new") {
+				const modal = document.getElementById("new-position-modal");
+				if (modal) {
+					(modal as HTMLDialogElement).showModal();
+				}
+			} else {
+				const modal = document.getElementById(`${date}-${position.name}`);
+				if (modal) {
+					(modal as HTMLDialogElement).showModal();
+				}
+			}
+		}, 0);
 	};
 
 	const openAutoAssignModal = (id: string) => {
@@ -313,6 +324,7 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 								openEditAssignPositionModal(
 									editAssignPosition,
 									String(selectDate),
+									"new",
 								)
 							}
 						>

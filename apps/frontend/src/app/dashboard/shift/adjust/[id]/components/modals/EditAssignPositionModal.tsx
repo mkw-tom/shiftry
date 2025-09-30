@@ -33,10 +33,17 @@ const EditAssignPositionModal = ({
 		useEditAssignPositionForm({ initValue: editAssignPosition });
 
 	const closeAdjustCalenerPositionModal = () => {
-		const modal = document.getElementById(
-			`${date}-${editAssignPosition.name}`,
-		) as HTMLDialogElement | null;
-		modal?.close();
+		if (mode === "new") {
+			const modal = document.getElementById(
+				"new-position-modal",
+			) as HTMLDialogElement | null;
+			modal?.close();
+		} else {
+			const modal = document.getElementById(
+				`${date}-${editAssignPosition.name}`,
+			) as HTMLDialogElement | null;
+			modal?.close();
+		}
 
 		setEditAssignPosition({
 			name: "",
@@ -94,7 +101,11 @@ const EditAssignPositionModal = ({
 	};
 	return (
 		<dialog
-			id={`${date}-${editAssignPosition.name}`}
+			id={
+				mode === "new"
+					? "new-position-modal"
+					: `${date}-${editAssignPosition.name}`
+			}
 			className="modal modal-bottom"
 		>
 			<form

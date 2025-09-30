@@ -24,6 +24,7 @@ const AssignPositionList = ({
 	openEditAssignPositionModal: (
 		position: RequestPositionWithDateInput,
 		date: string,
+		mode: "new" | "adjust",
 	) => void;
 	editAssignPosition: AssignPositionWithDateInput;
 	setEditAssignPosition: React.Dispatch<
@@ -48,18 +49,19 @@ const AssignPositionList = ({
 		time: string,
 		position: AssignPositionType,
 	) => {
-		const modal = document.getElementById(
-			`${date}-${time}-${position.name}-assign-staff`,
-		) as HTMLDialogElement | null;
-		if (modal) {
-			modal.showModal();
-		}
-
 		setAssignStaffData({
 			name: position.name,
 			count: position.count,
 			assigned: position.assigned,
 		});
+		setTimeout(() => {
+			const modal = document.getElementById(
+				`${date}-${time}-${position.name}-assign-staff`,
+			) as HTMLDialogElement | null;
+			if (modal) {
+				modal.showModal();
+			}
+		}, 0);
 	};
 
 	const openShowAssignListModal = (
@@ -144,6 +146,7 @@ const AssignPositionList = ({
 																	openEditAssignPositionModal(
 																		targetPosition,
 																		date,
+																		"adjust",
 																	)
 																}
 															>
