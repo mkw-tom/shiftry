@@ -79,8 +79,6 @@ const ShiftRequestList = () => {
 		);
 	}
 
-	console.log(user?.role);
-
 	return (
 		<section className="w-full h-auto mx-auto overflow-hidden">
 			{/* <Head /> */}

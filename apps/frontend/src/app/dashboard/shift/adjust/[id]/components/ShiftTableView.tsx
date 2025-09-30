@@ -61,7 +61,7 @@ export default function ShiftTableView() {
 			<div className="overflow-x-auto w-full h-[500px] pb-56">
 				<table
 					className="table border border-gray01 table-fixed"
-					style={{ minWidth: `${7 * 5 + 1}rem` }}
+					style={{ minWidth: `${7 * weekDates.length}rem` }}
 				>
 					<thead className="sticky top-0 z-10">
 						<tr>
