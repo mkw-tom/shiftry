@@ -106,14 +106,27 @@ const Button = () => {
 
 	if (shiftRequestData.status === "CONFIRMED") {
 		return (
-			<div className="fixed bottom-0 left-0 w-full flex items-center justify-around gap-2 p-3 bg-white border-t border-gray01 z-10">
-				<button
-					type="button"
-					className="btn btn-sm bg-gray02 text-white border-none"
-				>
-					ヘルプ通知
-				</button>
+			<div className="fixed bottom-0 left-0 w-full flex items-center justify-around gap-2  px-3 pt-3 pb-6 bg-white border-t border-gray01 z-10">
 				<div className="flex gap-2 items-center flex-1">
+					{viewMode === "table" ? (
+						<button
+							type="button"
+							onClick={toggleViewMode}
+							className="btn btn-sm border-gray01 bg-white text-black shadow-none w-28"
+						>
+							<RiFileListLine className="text-xl" />
+							調整
+						</button>
+					) : (
+						<button
+							type="button"
+							onClick={toggleViewMode}
+							className="btn btn-sm border-gray01 bg-white text-black shadow-none w-28"
+						>
+							<BsTable className="text-lg" />
+							テーブル
+						</button>
+					)}
 					<button
 						type="button"
 						className="btn btn-sm bg-green02 text-white border-none flex-1"
@@ -133,32 +146,34 @@ const Button = () => {
 						保存
 					</button>
 				</div>
-
-				<button
-					type="button"
-					onClick={toggleViewMode}
-					className="btn btn-sm border-gray01 btn-square "
-				>
-					{viewMode === "table" ? (
-						<RiFileListLine className="text-lg" />
-					) : (
-						<BsTable className="text-lg" />
-					)}
-				</button>
 			</div>
 		);
 	}
 
 	if (shiftRequestData.status === "ADJUSTMENT") {
 		return (
-			<div className="fixed bottom-0 left-0 w-full flex justify-center gap-2 p-3 bg-white/90 border-t border-gray01 z-50">
-				<div className="flex gap-2 items-center flex-1">
+			<div className="fixed bottom-0 left-0 w-full flex justify-center gap-2 px-3 pt-3 pb-6 bg-white border-t border-gray01 z-50 ">
+				{viewMode === "table" ? (
 					<button
 						type="button"
-						className="btn btn-sm bg-gray02 text-white border-none"
+						onClick={toggleViewMode}
+						className="btn btn-sm border-gray01 bg-white text-black shadow-none w-28"
 					>
-						ヘルプ通知
+						<RiFileListLine className="text-xl" />
+						リスト
 					</button>
+				) : (
+					<button
+						type="button"
+						onClick={toggleViewMode}
+						className="btn btn-sm border-gray01 bg-white text-black shadow-none w-28"
+					>
+						<BsTable className="text-lg" />
+						テーブル
+					</button>
+				)}
+
+				<div className="flex gap-2 items-center flex-1">
 					<button
 						type="button"
 						className="btn btn-sm bg-green02 text-white border-none flex-1"
@@ -167,18 +182,13 @@ const Button = () => {
 						<BiCheck />
 						シフト完成
 					</button>
+					<button
+						type="button"
+						className="btn btn-sm bg-gray02 text-white border-none"
+					>
+						ヘルプ通知
+					</button>
 				</div>
-				<button
-					type="button"
-					onClick={toggleViewMode}
-					className="btn btn-sm border-gray01 btn-square "
-				>
-					{viewMode === "table" ? (
-						<RiFileListLine className="text-lg" />
-					) : (
-						<BsTable className="text-lg" />
-					)}
-				</button>
 			</div>
 		);
 	}
