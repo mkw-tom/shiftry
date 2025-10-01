@@ -1,3 +1,4 @@
+import type { Prisma, PrismaClient } from "@prisma/client";
 import { ShiftRequestWithJson } from "@shared/api/common/types/merged.js";
 import type { ShiftRequest } from "@shared/api/common/types/prisma.js";
 import { addHours, startOfToday, subDays } from "date-fns";
@@ -9,6 +10,7 @@ const jstStartOfToday = addHours(startOfToday(), 9);
 export const upsertShiftRequest = async (
 	storeId: string,
 	data: UpsertShiftRequetType,
+	db: Prisma.TransactionClient | PrismaClient = prisma,
 ): Promise<ShiftRequest> => {
 	return await prisma.shiftRequest.upsert({
 		where: {
