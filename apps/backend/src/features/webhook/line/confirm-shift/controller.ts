@@ -6,9 +6,11 @@ import type { LineMessageAPIResponse } from "@shared/api/webhook/line/types.js";
 import { ConfirmShiftMessageValidate } from "@shared/api/webhook/line/validatioins.js";
 import { MDW } from "@shared/utils/formatDate.js";
 import type { Request, Response } from "express";
+import prisma from "../../../../config/database.js";
 import { URI_SHIFT_CONFIRMATION } from "../../../../lib/env.js";
 import { verifyUserStoreForOwnerAndManager } from "../../../common/authorization.service.js";
 import { sendGroupFlexMessage } from "../service.js";
+import { sendConfirmedShiftService } from "./service.js";
 
 const sendConfirmShiftFuncController = async (
 	req: Request,
@@ -17,10 +19,12 @@ const sendConfirmShiftFuncController = async (
 	>,
 ): Promise<void> => {
 	try {
-		const userId = req.userId as string;
-		const storeId = req.storeId as string;
-		const groupId = req.groupId as string;
-		await verifyUserStoreForOwnerAndManager(userId, storeId);
+		const auth = req.auth;
+
+		if (!auth || !auth.uid || !auth.sid) {
+			return void res.status(401).json({ ok: false, message: "Unauthorized" });
+		}
+		await verifyUserStoreForOwnerAndManager(auth.uid, auth.sid);
 
 		const parse = ConfirmShiftMessageValidate.safeParse(req.body);
 		if (!parse.success) {
@@ -32,19 +36,23 @@ const sendConfirmShiftFuncController = async (
 			});
 			return;
 		}
-		const { shiftRequestId, startDate, endDate } = parse.data;
-		await sendGroupFlexMessage(groupId, {
-			text1: "シフトが出来上がりました！",
-			text2: "以下のボタンからシフト確認をお願いします！",
-			text3: `期間：${MDW(new Date(startDate))} 〜 ${MDW(new Date(endDate))}`,
-			label: "シフト確認",
-			uri: `${URI_SHIFT_CONFIRMATION}/${shiftRequestId}`,
-		});
 
-		res.status(200).json({
-			ok: true,
-			message: "Successfully sent shift confirmation message",
-		});
+		const response = await sendConfirmedShiftService(
+			auth.uid,
+			auth.sid,
+			parse.data,
+		);
+		if (!response.ok) {
+			const msg = response.message ?? "Bad Request";
+			const status = msg.includes("not found")
+				? 404
+				: msg.includes("permission")
+					? 403
+					: 400;
+			return void res.status(status).json(response);
+		}
+
+		return void res.status(200).json(response);
 	} catch (error) {
 		console.error("❌ Webhook処理エラー:", error);
 		res.status(500).json({ ok: false, message: "Failed to send message " });
