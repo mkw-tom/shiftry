@@ -22,3 +22,13 @@ export const submittedShiftApi = {
 export const shiftPositionApiPath = {
 	bulk: "shift-position/put-bulk",
 };
+
+export const lineMessageApi = {
+	confirmedShift: "webhook/line/confirmed-shift",
+	requestShift: "webhook/line/request-shift",
+	event: "webhook/line/event",
+};
+
+export const shiftNotificationApi = {
+	confirm: "/notification/confirm",
+};

@@ -11,12 +11,6 @@ const router = express.Router();
 
 router.post("/request-shift", requireUser, sendShiftRequestFuncController);
 router.post("/event", eventController);
-router.post(
-	"/confirm-shift",
-	attachUserId,
-	attachStoreId,
-	attachGroupId,
-	sendConfirmShiftFuncController,
-);
+router.post("/confirmed-shift", requireUser, sendConfirmShiftFuncController);
 
 export default router;
