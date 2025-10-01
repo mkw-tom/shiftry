@@ -32,18 +32,21 @@ export const notificationConfirmedShiftUsecase = async ({
 			const shiftRequestRaw = await upsertShiftRequest(
 				sid,
 				upsertShiftReqeustData,
+				tx,
 			);
 			if (!shiftRequestRaw) {
 				throw new Error("Shift request upsert failed");
 			}
+
 			const assignShiftRaw = await upsertAssignShfit(
 				sid,
 				upsertAssignShiftData,
+				tx,
 			);
-
 			if (!assignShiftRaw) {
 				throw new Error("Assign shift upsert failed");
 			}
+
 			const store = await getStoreByIdAllData(sid);
 			if (!store) {
 				throw new Error("Store or UserStore not found");
