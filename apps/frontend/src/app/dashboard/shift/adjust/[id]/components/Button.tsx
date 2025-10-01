@@ -1,4 +1,5 @@
 "use client";
+import { useNotificationConfirmShift } from "@/app/api/hook/useNotificationConfirmShift";
 import { useUpsertAssignShift } from "@/app/api/hook/useUpsertAssignShift";
 import { useUpsertShiftReqeust } from "@/app/api/hook/useUpsertShiftReqeust";
 import { useToast } from "@/app/dashboard/common/context/ToastProvider";
@@ -9,101 +10,150 @@ import type { UpsertShiftRequetInput } from "@shared/api/shift/request/validatio
 import React from "react";
 import { BiCheck, BiDownload } from "react-icons/bi";
 import { BsTable } from "react-icons/bs";
-import { PiTable } from "react-icons/pi";
 import { RiArrowGoBackFill, RiFileListLine } from "react-icons/ri";
-import { TfiViewList } from "react-icons/tfi";
 import { useAdjustShiftForm } from "../context/AdjustShiftFormContextProvider.tsx";
 import { useViewSwitch } from "../context/ViewSwitchProvider";
 
 const Button = () => {
 	const { viewMode, toggleViewMode } = useViewSwitch();
-	const { upsertAssignShift } = useUpsertAssignShift();
+	// const { upsertAssignShift } = useUpsertAssignShift();
 	const {
 		assignShiftData,
 		shiftRequestData,
 		setAssignShiftData,
 		setShiftRequestData,
 	} = useAdjustShiftForm();
-	const { upsertShiftRequest } = useUpsertShiftReqeust();
+	// const { upsertShiftRequest } = useUpsertShiftReqeust();
 	const { showToast } = useToast();
+	const { notificationConfirmShift } = useNotificationConfirmShift();
 
-	const handleUpsertShiftData = async (status: ShiftStatus) => {
-		if (TEST_MODE) {
+	const handleNotificationShiftData = async (status: ShiftStatus) => {
+		try {
+			if (TEST_MODE) {
+				setShiftRequestData((prev) => ({ ...prev, status: status }));
+				setAssignShiftData((prev) => ({ ...prev, status: status }));
+				showToast(
+					"テストモードのため、保存処理はスキップされました",
+					"success",
+				);
+				return;
+			}
+			const upsertAssignShiftData: UpsertAssignShfitInput = {
+				shiftRequestId: assignShiftData.shiftRequestId,
+				status: status,
+				shifts: assignShiftData.shifts,
+			};
+
+			const upsertShiftRequestData: UpsertShiftRequetInput = {
+				type: shiftRequestData.type,
+				requests: shiftRequestData.requests,
+				status: status,
+				weekEnd: String(shiftRequestData.weekEnd),
+				weekStart: String(shiftRequestData.weekStart),
+				deadline: String(shiftRequestData.deadline),
+			};
+
+			const res = await notificationConfirmShift({
+				upsertShiftReqeustData: upsertShiftRequestData,
+				upsertAssignShiftData: upsertAssignShiftData,
+			});
+			if (!res.ok) {
+				showToast("LINE通知の送信に失敗しました", "error");
+				alert(res.message);
+				return;
+			}
 			setShiftRequestData((prev) => ({ ...prev, status: status }));
 			setAssignShiftData((prev) => ({ ...prev, status: status }));
-			showToast("テストモードのため、保存処理はスキップされました", "success");
-			return;
-		}
-		const upsertAssignShiftData: UpsertAssignShfitInput = {
-			shiftRequestId: assignShiftData.shiftRequestId,
-			status: status,
-			shifts: assignShiftData.shifts,
-		};
-		const asRes = await upsertAssignShift({
-			upsertData: upsertAssignShiftData,
-			shiftRequestId: assignShiftData.shiftRequestId,
-		});
-		if (!asRes.ok) {
-			if ("errors" in asRes) {
-				asRes.errors.map((error) => {
-					alert(asRes.message);
-					showToast(
-						`割り当てデータの保存に失敗しました。validationError:${asRes.message} ${asRes.errors}`,
-						"error",
-					);
-				});
-				return;
+			if (status === "CONFIRMED") {
+				showToast("シフトが完成しました", "success");
 			}
-
-			alert(asRes.message);
-			showToast(
-				`割り当てデータの保存に失敗しました。error:${asRes.message}`,
-				"error",
-			);
-			return;
-		}
-
-		const upsertShiftRequestData: UpsertShiftRequetInput = {
-			type: shiftRequestData.type,
-			requests: shiftRequestData.requests,
-			status: status,
-			weekEnd: String(shiftRequestData.weekEnd),
-			weekStart: String(shiftRequestData.weekStart),
-			deadline: String(shiftRequestData.deadline),
-		};
-		const srRes = await upsertShiftRequest({
-			formData: upsertShiftRequestData,
-			shiftRequestId: assignShiftData.shiftRequestId,
-		});
-		if (!srRes.ok) {
-			if ("errors" in srRes) {
-				srRes.errors.map((error) => {
-					alert(srRes.message);
-					showToast(
-						`雛形データの更新に失敗しました。validationError:${srRes.message} ${srRes.errors}`,
-						"error",
-					);
-				});
-				return;
+			if (status === "ADJUSTMENT") {
+				showToast("再調整に変更しました", "success");
 			}
-			alert(srRes.message);
-			showToast(
-				`雛形データの更新に失敗しました。error:${srRes.message}`,
-				"error",
-			);
+		} catch (error) {
+			showToast("LINE通知の送信に失敗しました", "error");
+			alert(error);
 			return;
-		}
-
-		setShiftRequestData((prev) => ({ ...prev, status: status }));
-		setAssignShiftData((prev) => ({ ...prev, status: status }));
-
-		if (status === "CONFIRMED") {
-			showToast("シフトが完成しました", "success");
-		}
-		if (status === "ADJUSTMENT") {
-			showToast("再調整に変更しました", "success");
 		}
 	};
+
+	// const handleUpsertShiftData = async (status: ShiftStatus) => {
+	//   if (TEST_MODE) {
+	//     setShiftRequestData((prev) => ({ ...prev, status: status }));
+	//     setAssignShiftData((prev) => ({ ...prev, status: status }));
+	//     showToast("テストモードのため、保存処理はスキップされました", "success");
+	//     return;
+	//   }
+	//   const upsertAssignShiftData: UpsertAssignShfitInput = {
+	//     shiftRequestId: assignShiftData.shiftRequestId,
+	//     status: status,
+	//     shifts: assignShiftData.shifts,
+	//   };
+	//   const asRes = await upsertAssignShift({
+	//     upsertData: upsertAssignShiftData,
+	//     shiftRequestId: assignShiftData.shiftRequestId,
+	//   });
+	//   if (!asRes.ok) {
+	//     if ("errors" in asRes) {
+	//       asRes.errors.map((error) => {
+	//         alert(asRes.message);
+	//         showToast(
+	//           `割り当てデータの保存に失敗しました。validationError:${asRes.message} ${asRes.errors}`,
+	//           "error"
+	//         );
+	//       });
+	//       return;
+	//     }
+
+	//     alert(asRes.message);
+	//     showToast(
+	//       `割り当てデータの保存に失敗しました。error:${asRes.message}`,
+	//       "error"
+	//     );
+	//     return;
+	//   }
+
+	//   const upsertShiftRequestData: UpsertShiftRequetInput = {
+	//     type: shiftRequestData.type,
+	//     requests: shiftRequestData.requests,
+	//     status: status,
+	//     weekEnd: String(shiftRequestData.weekEnd),
+	//     weekStart: String(shiftRequestData.weekStart),
+	//     deadline: String(shiftRequestData.deadline),
+	//   };
+	//   const srRes = await upsertShiftRequest({
+	//     formData: upsertShiftRequestData,
+	//     shiftRequestId: assignShiftData.shiftRequestId,
+	//   });
+	//   if (!srRes.ok) {
+	//     if ("errors" in srRes) {
+	//       srRes.errors.map((error) => {
+	//         alert(srRes.message);
+	//         showToast(
+	//           `雛形データの更新に失敗しました。validationError:${srRes.message} ${srRes.errors}`,
+	//           "error"
+	//         );
+	//       });
+	//       return;
+	//     }
+	//     alert(srRes.message);
+	//     showToast(
+	//       `雛形データの更新に失敗しました。error:${srRes.message}`,
+	//       "error"
+	//     );
+	//     return;
+	//   }
+
+	//   setShiftRequestData((prev) => ({ ...prev, status: status }));
+	//   setAssignShiftData((prev) => ({ ...prev, status: status }));
+
+	//   if (status === "CONFIRMED") {
+	//     showToast("シフトが完成しました", "success");
+	//   }
+	//   if (status === "ADJUSTMENT") {
+	//     showToast("再調整に変更しました", "success");
+	//   }
+	// };
 
 	if (!shiftRequestData || !shiftRequestData.id) return <div />;
 
@@ -133,7 +183,8 @@ const Button = () => {
 					<button
 						type="button"
 						className="btn btn-sm bg-green02 text-white border-none flex-1"
-						onClick={() => handleUpsertShiftData("ADJUSTMENT")}
+						// onClick={() => handleUpsertShiftData("ADJUSTMENT")}
+						onClick={() => handleNotificationShiftData("ADJUSTMENT")}
 					>
 						<RiArrowGoBackFill />
 						再調整
@@ -180,7 +231,8 @@ const Button = () => {
 					<button
 						type="button"
 						className="btn btn-sm bg-green02 text-white border-none flex-1"
-						onClick={() => handleUpsertShiftData("CONFIRMED")}
+						// onClick={() => handleUpsertShiftData("CONFIRMED")}
+						onClick={() => handleNotificationShiftData("CONFIRMED")}
 					>
 						<BiCheck />
 						シフト完成
