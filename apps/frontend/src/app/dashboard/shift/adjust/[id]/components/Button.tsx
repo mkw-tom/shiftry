@@ -94,6 +94,9 @@ const Button = () => {
 			return;
 		}
 
+		setShiftRequestData((prev) => ({ ...prev, status: status }));
+		setAssignShiftData((prev) => ({ ...prev, status: status }));
+
 		if (status === "CONFIRMED") {
 			showToast("シフトが完成しました", "success");
 		}
