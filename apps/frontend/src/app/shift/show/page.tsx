@@ -1,12 +1,12 @@
+import Button from "@/app/dashboard/shift/adjust/[id]/components/Button";
+import { AdjustShiftFormContextProvider } from "@/app/dashboard/shift/adjust/[id]/context/AdjustShiftFormContextProvider.tsx";
+import { ViewSwitchProvider } from "@/app/dashboard/shift/adjust/[id]/context/ViewSwitchProvider";
 import { liffId } from "@/lib/env";
 import AuthGate from "@/shared/components/AuthGate";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import React from "react";
-import Button from "./components/Button";
-import FormContent from "./components/FormContent";
-import { AdjustShiftFormContextProvider } from "./context/AdjustShiftFormContextProvider.tsx";
-import { ViewSwitchProvider } from "./context/ViewSwitchProvider";
+import FormContent from "./FormContent";
 
 const page = () => {
 	return (

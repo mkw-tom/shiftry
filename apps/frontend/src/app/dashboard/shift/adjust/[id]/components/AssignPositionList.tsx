@@ -140,8 +140,8 @@ const AssignPositionList = ({
 														)}
 													</h1>
 
-													{shiftRequestData.status === "ADJUSTMENT" ||
-														(user?.role !== "STAFF" && (
+													{shiftRequestData.status === "ADJUSTMENT" &&
+														user?.role !== "STAFF" && (
 															<div className="flex items-center">
 																<button
 																	type="button"
@@ -179,7 +179,7 @@ const AssignPositionList = ({
 																		/>
 																	)}
 															</div>
-														))}
+														)}
 												</div>
 												<div className="w-full flex items-start justify-between px-1">
 													<div className="flex items-center ">
@@ -252,8 +252,8 @@ const AssignPositionList = ({
 														time={time}
 														assignStaffData={assignStaffData}
 													/>
-													{shiftRequestData.status === "ADJUSTMENT" ||
-														(user?.role !== "STAFF" && (
+													{shiftRequestData.status === "ADJUSTMENT" &&
+														user?.role !== "STAFF" && (
 															<button
 																type="button"
 																className="btn btn-sm w-full border-green01 text-green01 font-bold bg-white shadow-none"
@@ -264,7 +264,7 @@ const AssignPositionList = ({
 																<LuUserRoundPlus className="text-[14px]" />
 																調整
 															</button>
-														))}
+														)}
 												</div>
 											</li>
 										);
