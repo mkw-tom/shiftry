@@ -35,7 +35,7 @@ export const sendConfirmedShiftService = async (
 		text2: "以下のボタンからシフト確認をお願いします！",
 		text3: `期間：${MDW(new Date(startDate))} 〜 ${MDW(new Date(endDate))}`,
 		label: "シフト確認",
-		uri: `${liffUrl.dashboardPage}/shift/adjust/${shiftRequestId}`,
+		uri: `${liffUrl.shiftShowPage}?shiftRequestId=${shiftRequestId}`,
 	});
 
 	return { ok: true, message: "Message sent successfully" };
