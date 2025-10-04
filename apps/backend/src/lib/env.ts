@@ -75,6 +75,8 @@ export const liffUrl = {
 	registerStaffPage: process.env.LIFF_URL_REGISTER_STAFF as string,
 	dashboardPage: process.env.LIFF_URL_DASHBOARD as string,
 	shiftSubmitPage: process.env.LIFF_URL_SHIFT_SUBMIT as string,
+	shiftShowPage: process.env.LIFF_URL_SHIFT_SHOW as string,
+
 	createRequestPage: process.env.LIFF_URL_CREATE_REQUEST as string,
 	// submitRequestPage: process.env.LIFF_URL_SUBMIT_REQUEST as string,
 	generateShiftPage: process.env.LIFF_URL_GENERATE_SHIFT as string,
