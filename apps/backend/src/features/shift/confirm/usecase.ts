@@ -67,7 +67,7 @@ export const shiftConfirmResponseUsecase = async ({
 					new Date(shiftRequestRaw.weekEnd),
 				)}`,
 				label: "シフト確認",
-				uri: `${liffUrl.showConfirmShiftPage}?shiftRequestId=${shiftRequestRaw.id}`,
+				uri: `${liffUrl.shiftShowPage}?shiftRequestId=${shiftRequestRaw.id}`,
 			});
 
 			const shiftRequest: ShiftRequestDTO = {
