@@ -20,20 +20,20 @@ const router = express.Router();
 router.use(requireUser);
 
 router.delete(
-  "/:weekStart",
-  requireUser,
-  validateShiftRequestId,
-  deleteShiftRequestController
+	"/:weekStart",
+	requireUser,
+	validateShiftRequestId,
+	deleteShiftRequestController,
 );
 router.post("/bulk", deleteManyShiftRequestController);
 router.get("/", getShiftRequestsController);
 router.get("/active", requireUser, getAcvtiveShiftRequestsController);
 router.get("/archive", requireUser, getArchiveShiftRequestsController);
 router.get(
-  "/:shiftRequestId",
-  requireUser,
-  validateShiftRequestId,
-  getShiftRequestSpecificController
+	"/:shiftRequestId",
+	requireUser,
+	validateShiftRequestId,
+	getShiftRequestSpecificController,
 );
 router.put("/", upsertShiftRequestController);
 
