@@ -26,7 +26,7 @@ const UserSection = () => {
 			<div className="flex gap-5 items-center mb-6 mt-8">
 				{/* <div className="w-14 h-14 bg-gray01 rounded-full" /> */}
 				<img
-					src={user?.pictureUrl as string}
+					src={user?.pictureUrl || "/default_user_image.png"}
 					alt="ユーザー画像"
 					className="w-14 h-14 rounded-full"
 				/>
