@@ -14,6 +14,7 @@ import type {
 	AssignPositionWithDateInput,
 	ShiftsOfAssignType,
 } from "@shared/api/shift/assign/validations/put";
+import { useSearchParams } from "next/navigation";
 import React, { useState, useEffect, useCallback } from "react";
 import { BiError } from "react-icons/bi";
 import { LuSend } from "react-icons/lu";
@@ -31,7 +32,10 @@ import AutoAssignModal from "./modals/AutoAssignModal";
 import EditAssignPositionModal from "./modals/EditAssignPositionModal";
 import SubmitStatusModal from "./modals/SubmitStatusModal";
 
-const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
+const FormContent = () => {
+	const params = useSearchParams();
+	const shiftRequestId = params.get("shiftRequestId");
+
 	const { viewMode } = useViewSwitch();
 	const { user } = useSelector((state: RootState) => state.user);
 	const {
@@ -84,6 +88,8 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 
 		const fetchShiftData = async () => {
 			if (TEST_MODE) return;
+			if (!shiftRequestId) return;
+
 			// 1. shiftRequestData取得
 			const srRes = await getShiftRequestSpecific({ shiftRequestId });
 			if (isMounted && srRes.ok) {
