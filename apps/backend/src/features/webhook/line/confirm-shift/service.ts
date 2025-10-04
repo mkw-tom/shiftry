@@ -9,34 +9,34 @@ import { verifyUserStoreForOwnerAndManager } from "../../../common/authorization
 import { sendGroupFlexMessage } from "../service.js";
 
 export const sendConfirmedShiftService = async (
-  uid: string,
-  sid: string,
-  body: ConfirmShiftMessageType
+	uid: string,
+	sid: string,
+	body: ConfirmShiftMessageType,
 ): Promise<LineMessageAPIResponse | ErrorResponse> => {
-  const { shiftRequestId, startDate, endDate } = body;
+	const { shiftRequestId, startDate, endDate } = body;
 
-  await verifyUserStoreForOwnerAndManager(uid, sid);
+	await verifyUserStoreForOwnerAndManager(uid, sid);
 
-  const store = await getStoreByIdAllData(sid);
-  if (!store) {
-    return { ok: false, message: "Store or UserStore not found" };
-  }
+	const store = await getStoreByIdAllData(sid);
+	if (!store) {
+		return { ok: false, message: "Store or UserStore not found" };
+	}
 
-  const groupId_enc = store.groupId_enc;
-  if (!groupId_enc) {
-    return { ok: false, message: "Store is not linked with LINE group" };
-  }
-  const groupId = decryptText(groupId_enc, {
-    [aes.keyVersionGroupId]: aes.keyGroupId,
-  });
+	const groupId_enc = store.groupId_enc;
+	if (!groupId_enc) {
+		return { ok: false, message: "Store is not linked with LINE group" };
+	}
+	const groupId = decryptText(groupId_enc, {
+		[aes.keyVersionGroupId]: aes.keyGroupId,
+	});
 
-  await sendGroupFlexMessage(groupId, {
-    text1: "シフトが出来上がりました！",
-    text2: "以下のボタンからシフト確認をお願いします！",
-    text3: `期間：${MDW(new Date(startDate))} 〜 ${MDW(new Date(endDate))}`,
-    label: "シフト確認",
-    uri: `${liffUrl.dashboardPage}/shift/adjust/${shiftRequestId}`,
-  });
+	await sendGroupFlexMessage(groupId, {
+		text1: "シフトが出来上がりました！",
+		text2: "以下のボタンからシフト確認をお願いします！",
+		text3: `期間：${MDW(new Date(startDate))} 〜 ${MDW(new Date(endDate))}`,
+		label: "シフト確認",
+		uri: `${liffUrl.dashboardPage}/shift/adjust/${shiftRequestId}`,
+	});
 
-  return { ok: true, message: "Message sent successfully" };
+	return { ok: true, message: "Message sent successfully" };
 };
