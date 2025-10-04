@@ -16,14 +16,14 @@ import { useViewSwitch } from "../context/ViewSwitchProvider";
 
 const Button = () => {
 	const { viewMode, toggleViewMode } = useViewSwitch();
-	// const { upsertAssignShift } = useUpsertAssignShift();
+	const { upsertAssignShift } = useUpsertAssignShift();
 	const {
 		assignShiftData,
 		shiftRequestData,
 		setAssignShiftData,
 		setShiftRequestData,
 	} = useAdjustShiftForm();
-	// const { upsertShiftRequest } = useUpsertShiftReqeust();
+	const { upsertShiftRequest } = useUpsertShiftReqeust();
 	const { showToast } = useToast();
 	const { notificationConfirmShift } = useNotificationConfirmShift();
 
@@ -53,15 +53,67 @@ const Button = () => {
 				deadline: String(shiftRequestData.deadline),
 			};
 
-			const res = await notificationConfirmShift({
-				upsertShiftReqeustData: upsertShiftRequestData,
-				upsertAssignShiftData: upsertAssignShiftData,
-			});
-			if (!res.ok) {
-				showToast("LINE通知の送信に失敗しました", "error");
-				alert(res.message);
-				return;
+			if (status === "CONFIRMED") {
+				const res = await notificationConfirmShift({
+					upsertShiftReqeustData: upsertShiftRequestData,
+					upsertAssignShiftData: upsertAssignShiftData,
+				});
+				if (!res.ok) {
+					showToast("LINE通知の送信に失敗しました", "error");
+					alert(res.message);
+					return;
+				}
 			}
+
+			if (status === "ADJUSTMENT") {
+				const asRes = await upsertAssignShift({
+					upsertData: upsertAssignShiftData,
+					shiftRequestId: assignShiftData.shiftRequestId,
+				});
+				if (!asRes.ok) {
+					if ("errors" in asRes) {
+						asRes.errors.map((error) => {
+							alert(asRes.message);
+							showToast(
+								`割り当てデータの保存に失敗しました。validationError:${asRes.message} ${asRes.errors}`,
+								"error",
+							);
+						});
+						return;
+					}
+
+					alert(asRes.message);
+					showToast(
+						`割り当てデータの保存に失敗しました。error:${asRes.message}`,
+						"error",
+					);
+					return;
+				}
+
+				const srRes = await upsertShiftRequest({
+					formData: upsertShiftRequestData,
+					shiftRequestId: assignShiftData.shiftRequestId,
+				});
+				if (!srRes.ok) {
+					if ("errors" in srRes) {
+						srRes.errors.map((error) => {
+							alert(srRes.message);
+							showToast(
+								`雛形データの更新に失敗しました。validationError:${srRes.message} ${srRes.errors}`,
+								"error",
+							);
+						});
+						return;
+					}
+					alert(srRes.message);
+					showToast(
+						`雛形データの更新に失敗しました。error:${srRes.message}`,
+						"error",
+					);
+					return;
+				}
+			}
+
 			setShiftRequestData((prev) => ({ ...prev, status: status }));
 			setAssignShiftData((prev) => ({ ...prev, status: status }));
 			if (status === "CONFIRMED") {
@@ -104,7 +156,6 @@ const Button = () => {
 	//       });
 	//       return;
 	//     }
-
 	//     alert(asRes.message);
 	//     showToast(
 	//       `割り当てデータの保存に失敗しました。error:${asRes.message}`,

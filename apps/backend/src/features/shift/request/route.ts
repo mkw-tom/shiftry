@@ -36,6 +36,5 @@ router.get(
 	getShiftRequestSpecificController,
 );
 router.put("/", upsertShiftRequestController);
-router.post("/notification/confirm", notificationConfirmedShiftController);
 
 export default router;
