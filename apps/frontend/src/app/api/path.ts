@@ -30,5 +30,5 @@ export const lineMessageApi = {
 };
 
 export const shiftNotificationApi = {
-	confirm: "shift/notification/confirm",
+	confirm: "shift/confirm",
 };

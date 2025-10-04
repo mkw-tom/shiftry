@@ -4,6 +4,7 @@ import type {
 	ValidationErrorResponse,
 } from "@shared/api/common/types/errors";
 import type { UpsertAssignShfitInput } from "@shared/api/shift/assign/validations/put";
+import type { ShiftConfirmResponse } from "@shared/api/shift/confirm/type";
 import type { UpsertShiftRequetInput } from "@shared/api/shift/request/validations/put";
 import type { LineMessageAPIResponse } from "@shared/api/webhook/line/types";
 import { useState } from "react";
@@ -11,19 +12,19 @@ import { useSelector } from "react-redux";
 import { shiftNotificationApi } from "../path";
 import { useFetch } from "../useFetch";
 
-export const useNotificationConfirmShift = () => {
+export const useShiftConfirm = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const { jwt } = useSelector((state: RootState) => state.authToken);
 
-	const notificationConfirmShift = async ({
+	const shiftConfirm = async ({
 		upsertShiftReqeustData,
 		upsertAssignShiftData,
 	}: {
 		upsertShiftReqeustData: UpsertShiftRequetInput;
 		upsertAssignShiftData: UpsertAssignShfitInput;
 	}): Promise<
-		LineMessageAPIResponse | ErrorResponse | ValidationErrorResponse
+		ShiftConfirmResponse | ErrorResponse | ValidationErrorResponse
 	> => {
 		setIsLoading(true);
 		setError(null);
@@ -36,7 +37,7 @@ export const useNotificationConfirmShift = () => {
 				setError("シフトデータが見つかりません。");
 				return { ok: false, message: "シフトデータが見つかりません。" };
 			}
-			const res = await useFetch<LineMessageAPIResponse>({
+			const res = await useFetch<ShiftConfirmResponse>({
 				jwt,
 				method: "POST",
 				path: shiftNotificationApi.confirm,
@@ -55,5 +56,5 @@ export const useNotificationConfirmShift = () => {
 		}
 	};
 
-	return { notificationConfirmShift, isLoading, error };
+	return { shiftConfirm, isLoading, error };
 };

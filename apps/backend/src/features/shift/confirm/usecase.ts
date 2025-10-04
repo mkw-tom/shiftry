@@ -3,22 +3,22 @@ import type {
 	ShiftsOfAssignType,
 	UpsertAssignShfitInput,
 } from "@shared/api/shift/assign/validations/put.js";
-import type { NotificationConfirmShiftResponse } from "@shared/api/shift/notification/confirm/type.js";
+import type { ShiftConfirmResponse } from "@shared/api/shift/confirm/type.js";
 import type { ShiftRequestDTO } from "@shared/api/shift/request/dto.js";
 import type {
 	RequestsType,
 	UpsertShiftRequetType,
 } from "@shared/api/shift/request/validations/put.js";
 import { MDW } from "@shared/utils/formatDate.js";
-import prisma from "../../../../config/database.js";
-import { aes, liffUrl } from "../../../../lib/env.js";
-import { upsertAssignShfit } from "../../../../repositories/assingShift.repostory.js";
-import { upsertShiftRequest } from "../../../../repositories/shiftRequest.repository.js";
-import { getStoreByIdAllData } from "../../../../repositories/store.repository.js";
-import { decryptText } from "../../../../utils/aes.js";
-import { sendGroupFlexMessage } from "../../../webhook/line/service.js";
+import prisma from "../../../config/database.js";
+import { aes, liffUrl } from "../../../lib/env.js";
+import { upsertAssignShfit } from "../../../repositories/assingShift.repostory.js";
+import { upsertShiftRequest } from "../../../repositories/shiftRequest.repository.js";
+import { getStoreByIdAllData } from "../../../repositories/store.repository.js";
+import { decryptText } from "../../../utils/aes.js";
+import { sendGroupFlexMessage } from "../../webhook/line/service.js";
 
-export const notificationConfirmedShiftUsecase = async ({
+export const shiftConfirmResponseUsecase = async ({
 	sid,
 	upsertShiftReqeustData,
 	upsertAssignShiftData,
@@ -26,7 +26,7 @@ export const notificationConfirmedShiftUsecase = async ({
 	sid: string;
 	upsertShiftReqeustData: UpsertShiftRequetType;
 	upsertAssignShiftData: UpsertAssignShfitInput;
-}): Promise<NotificationConfirmShiftResponse> => {
+}): Promise<ShiftConfirmResponse> => {
 	try {
 		const result = await prisma.$transaction(async (tx) => {
 			const shiftRequestRaw = await upsertShiftRequest(
@@ -93,7 +93,7 @@ export const notificationConfirmedShiftUsecase = async ({
 			assignShift: result.assignShift,
 		};
 	} catch (error) {
-		console.error("Error in notificationConfirmedShiftUseCase:", error);
+		console.error("Error in shiftConfirmResponseUsecase:", error);
 		throw error;
 	}
 };

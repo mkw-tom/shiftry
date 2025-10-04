@@ -3,17 +3,15 @@ import type {
 	ValidationErrorResponse,
 } from "@shared/api/common/types/errors.js";
 import { upsertAssignShfitValidate } from "@shared/api/shift/assign/validations/put.js";
-import type { NotificationConfirmShiftResponse } from "@shared/api/shift/notification/confirm/type.js";
+import type { ShiftConfirmResponse } from "@shared/api/shift/confirm/type.js";
 import { upsertShiftRequestValidate } from "@shared/api/shift/request/validations/put.js";
 import type { Request, Response } from "express";
-import { verifyUserStoreForOwnerAndManager } from "../../../common/authorization.service.js";
-import { notificationConfirmedShiftUsecase } from "./usecase.js";
+import { verifyUserStoreForOwnerAndManager } from "../../common/authorization.service.js";
+import { shiftConfirmResponseUsecase } from "./usecase.js";
 
-const notificationConfirmedShiftController = async (
+const shiftConfirmController = async (
 	req: Request,
-	res: Response<
-		NotificationConfirmShiftResponse | ValidationErrorResponse | ErrorResponse
-	>,
+	res: Response<ShiftConfirmResponse | ValidationErrorResponse | ErrorResponse>,
 ): Promise<void> => {
 	try {
 		const auth = req.auth;
@@ -46,7 +44,7 @@ const notificationConfirmedShiftController = async (
 			return;
 		}
 
-		const noticeRes = await notificationConfirmedShiftUsecase({
+		const noticeRes = await shiftConfirmResponseUsecase({
 			sid: auth.sid,
 			upsertShiftReqeustData: upsertShiftReqeustDataParsed.data,
 			upsertAssignShiftData: upsertAssignShiftDataParsed.data,
@@ -59,4 +57,4 @@ const notificationConfirmedShiftController = async (
 	}
 };
 
-export default notificationConfirmedShiftController;
+export default shiftConfirmController;
