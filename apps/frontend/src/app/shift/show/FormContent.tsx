@@ -2,6 +2,14 @@
 import { useGetAssignShfit } from "@/app/api/hook/useGetAssignShift";
 import { useGetShiftRequestSpecific } from "@/app/api/hook/useGetShiftRequestSpecific";
 import { useGetSubmittedShfit } from "@/app/api/hook/useGetSubmittedShfit";
+import AssignPositionList from "@/app/dashboard/shift/adjust/[id]/components/AssignPositionList";
+import FormHead from "@/app/dashboard/shift/adjust/[id]/components/FormHead";
+import ShiftControlButtons from "@/app/dashboard/shift/adjust/[id]/components/ShiftControlButtons";
+import ShiftTableView from "@/app/dashboard/shift/adjust/[id]/components/ShiftTableView";
+import Table from "@/app/dashboard/shift/adjust/[id]/components/Table";
+import EditAssignPositionModal from "@/app/dashboard/shift/adjust/[id]/components/modals/EditAssignPositionModal";
+import { useAdjustShiftForm } from "@/app/dashboard/shift/adjust/[id]/context/AdjustShiftFormContextProvider.tsx";
+import { useViewSwitch } from "@/app/dashboard/shift/adjust/[id]/context/ViewSwitchProvider";
 import { dummyAssignShift } from "@/app/utils/dummyData/AssginShfit";
 import { dummyShiftRequest } from "@/app/utils/dummyData/ShiftRequest";
 import { dummySubmittedShiftList } from "@/app/utils/dummyData/SubmittedShifts";
@@ -21,16 +29,6 @@ import { LuSend } from "react-icons/lu";
 import { MdAdd, MdErrorOutline } from "react-icons/md";
 import { RiArrowGoBackFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
-import { useAdjustShiftForm } from "../context/AdjustShiftFormContextProvider.tsx";
-import { useViewSwitch } from "../context/ViewSwitchProvider";
-import AssignPositionList from "./AssignPositionList";
-import FormHead from "./FormHead";
-import ShiftControlButtons from "./ShiftControlButtons";
-import ShiftTableView from "./ShiftTableView";
-import Table from "./Table";
-import AutoAssignModal from "./modals/AutoAssignModal";
-import EditAssignPositionModal from "./modals/EditAssignPositionModal";
-import SubmitStatusModal from "./modals/SubmitStatusModal";
 
 const FormContent = () => {
 	const params = useSearchParams();
