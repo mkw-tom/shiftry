@@ -11,10 +11,10 @@ type UserState = {
 
 const initialState: UserState = {
 	user: {
-		id: "",
+		id: TEST_MODE ? "user_001" : "",
 		name: "",
 		pictureUrl: "",
-		role: "OWNER",
+		role: "STAFF",
 	},
 };
 
