@@ -1,11 +1,11 @@
 import express from "express";
 import { requireUser } from "../../../middlewares/auth.js";
-import notificationConfirmedShiftController from "./confirm/controller.js";
+import shiftConfirmController from "./controller.js";
 
 const router = express.Router();
 
 router.use(requireUser);
 
-router.post("/confirm", notificationConfirmedShiftController);
+router.post("/", shiftConfirmController);
 
 export default router;

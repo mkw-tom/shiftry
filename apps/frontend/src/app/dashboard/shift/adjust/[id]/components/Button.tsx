@@ -1,5 +1,5 @@
 "use client";
-import { useNotificationConfirmShift } from "@/app/api/hook/useNotificationConfirmShift";
+import { useShiftConfirm } from "@/app/api/hook/useShfitConfirm";
 import { useUpsertAssignShift } from "@/app/api/hook/useUpsertAssignShift";
 import { useUpsertShiftReqeust } from "@/app/api/hook/useUpsertShiftReqeust";
 import { useToast } from "@/app/dashboard/common/context/ToastProvider";
@@ -25,7 +25,7 @@ const Button = () => {
 	} = useAdjustShiftForm();
 	const { upsertShiftRequest } = useUpsertShiftReqeust();
 	const { showToast } = useToast();
-	const { notificationConfirmShift } = useNotificationConfirmShift();
+	const { shiftConfirm } = useShiftConfirm();
 
 	const handleNotificationShiftData = async (status: ShiftStatus) => {
 		try {
@@ -54,7 +54,7 @@ const Button = () => {
 			};
 
 			if (status === "CONFIRMED") {
-				const res = await notificationConfirmShift({
+				const res = await shiftConfirm({
 					upsertShiftReqeustData: upsertShiftRequestData,
 					upsertAssignShiftData: upsertAssignShiftData,
 				});

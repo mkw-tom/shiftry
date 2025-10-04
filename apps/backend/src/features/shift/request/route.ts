@@ -5,7 +5,7 @@ import { attachStoreId } from "../../../middlewares/request/attachStoreId.js";
 import { attachUserId } from "../../../middlewares/request/attachUserId.js";
 import { validateShiftRequestId } from "../../../middlewares/validations/shiftRequestId.validate.js";
 import { validateWeekStart } from "../../../middlewares/validations/weekStart.validate.js";
-import notificationConfirmedShiftController from "../notification/confirm/controller.js";
+import notificationConfirmedShiftController from "../confirm/controller.js";
 import deleteShiftRequestController from "./delete-by-week-start/controller.js";
 import deleteManyShiftRequestController from "./delete-many/controller.js";
 import getAcvtiveShiftRequestsController from "./get-active/controller.js";
