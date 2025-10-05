@@ -69,8 +69,8 @@ const JobRoleInput: React.FC<Props> = ({
 				<input
 					value={inputJobRoleValue}
 					onChange={(e) => setInputJobRoleValue(e.target.value)}
-					className="input input-bordered w-4/5 text-black bg-white border-gray-300 focus:outline-none focus:ring-2 focus:ring-success"
-					placeholder="業務名を入力 （例：レジ）"
+					className="input input-bordered w-4/5 text-[16px] text-black bg-white border-gray-300 focus:outline-none focus:ring-2 focus:ring-success"
+					placeholder="例：早朝レジ"
 				/>
 
 				<button

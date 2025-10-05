@@ -63,14 +63,14 @@ const JobRoleInput: React.FC<Props> = ({
 
 	return (
 		<div className="mt-5 w-full h-auto relative">
-			<h3 className="text-sm text-gray-600">業務バッジを追加（任意）</h3>
+			<h3 className="text-sm text-gray-600 mb-1">業務バッジを追加（任意）</h3>
 
 			<div className="flex items-center gap-1">
 				<input
 					value={inputJobRoleValue}
 					onChange={(e) => setInputJobRoleValue(e.target.value)}
-					className="input input-bordered w-4/5 text-black bg-white border-gray-300 focus:outline-none focus:ring-2 focus:ring-success"
-					placeholder="業務名を入力 （例：レジ）"
+					className="input input-bordered text-[16px] w-4/5 text-black bg-white border-gray-300 focus:outline-none focus:ring-2 focus:ring-success"
+					placeholder="例：早朝レジ"
 				/>
 
 				<button

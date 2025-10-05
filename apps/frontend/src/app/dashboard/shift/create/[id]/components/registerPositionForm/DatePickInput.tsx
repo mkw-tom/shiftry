@@ -35,7 +35,7 @@ export default function DatePickInput({
 									dateFormat="HH:mm" // 表示はHH:mm
 									locale={ja}
 									placeholderText="出勤"
-									className={`input input-bordered w-18 bg-base text-black border-gray-300 focus:outline-none focus:ring-2 ${
+									className={`input input-bordered text-[16px] w-18 bg-base text-black border-gray-300 focus:outline-none focus:ring-2 ${
 										error
 											? "border-red-500 focus:ring-red-400"
 											: "focus:ring-success"
@@ -72,7 +72,7 @@ export default function DatePickInput({
 									dateFormat="HH:mm"
 									locale={ja}
 									placeholderText="退勤"
-									className={`input input-bordered w-18 bg-base text-black border-gray-300 focus:outline-none focus:ring-2 ${
+									className={`input input-bordered text-[16px] w-18 bg-base text-black border-gray-300 focus:outline-none focus:ring-2 ${
 										error
 											? "border-red-500 focus:ring-red-400"
 											: "focus:ring-success"
