@@ -32,7 +32,7 @@ const CountInput = ({
 				</button>
 
 				{/* ここはただの表示。hidden は不要 */}
-				<span className="mx-2 text-black">{count}</span>
+				<span className="mx-2 text-black text-[16px]">{count}</span>
 
 				<button
 					type="button"

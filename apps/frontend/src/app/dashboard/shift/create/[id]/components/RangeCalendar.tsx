@@ -106,7 +106,7 @@ export function RangeCalendar() {
 									placeholderText="日付を選択"
 									minDate={new Date()} // 今日以降（ローカル）
 									maxDate={wkStartDate ?? undefined} // 週開始まで（ローカルDate）
-									className="input input-sm input-bordered w-full border bg-base text-black border-gray-300 focus:outline-none focus:ring-2 focus:ring-success z-50"
+									className="input input-bordered text-[16px] scale-[0.8] w-full border bg-base text-black border-gray-300 focus:outline-none focus:ring-2 focus:ring-success z-50 -ml-3"
 								/>
 							);
 						}}
