@@ -1,21 +1,25 @@
 import { useToast } from "@/app/dashboard/common/context/ToastProvider";
 import { YMDW } from "@shared/utils/formatDate";
 import React, { use, useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { ja } from "date-fns/locale";
 import { useAdjustShiftForm } from "../../context/AdjustShiftFormContextProvider.tsx";
 import { useAutoAssign } from "../../hook/useAutoAssign";
 
 const AutoAssignModal = () => {
 	const { shiftRequestData, assignShiftData, setAssignShiftData } =
 		useAdjustShiftForm();
+	const [datePicking, setDatePicking] = useState(false);
 	const [checkedFields, setCheckedFields] = useState<string[]>([]);
 	const [successAssign, setSuccessAssign] = useState<boolean>(false);
 	// 割当期間の選択
 	const [assignRange, setAssignRange] = useState<"all" | "range" | "single">(
 		"all",
 	);
-	const [rangeStart, setRangeStart] = useState<string>("");
-	const [rangeEnd, setRangeEnd] = useState<string>("");
-	const [singleDate, setSingleDate] = useState<string>("");
+	const [rangeStart, setRangeStart] = useState<Date | null>(null);
+	const [rangeEnd, setRangeEnd] = useState<Date | null>(null);
+	const [singleDate, setSingleDate] = useState<Date | null>(null);
 
 	const { autoAssignFunc, isLoading } = useAutoAssign({
 		assignShiftData,
@@ -53,6 +57,14 @@ const AutoAssignModal = () => {
 		return true;
 	};
 
+	function formatDateLocal(date: Date) {
+		// YYYY-MM-DD（ローカルタイム）で返す
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, "0");
+		const day = String(date.getDate()).padStart(2, "0");
+		return `${year}-${month}-${day}`;
+	}
+
 	const handleAutoAssign = async () => {
 		setSuccessAssign(false);
 		let period: {
@@ -61,10 +73,17 @@ const AutoAssignModal = () => {
 			end?: string;
 			date?: string;
 		} = { type: assignRange };
-		if (assignRange === "range") {
-			period = { type: "range", start: rangeStart, end: rangeEnd };
-		} else if (assignRange === "single") {
-			period = { type: "single", date: singleDate };
+		if (assignRange === "range" && rangeStart && rangeEnd) {
+			period = {
+				type: "range",
+				start: formatDateLocal(rangeStart),
+				end: formatDateLocal(rangeEnd),
+			};
+		} else if (assignRange === "single" && singleDate) {
+			period = {
+				type: "single",
+				date: formatDateLocal(singleDate),
+			};
 		}
 		if (!isInputValid()) return;
 		autoAssignFunc(checkedFields, period);
@@ -88,9 +107,13 @@ const AutoAssignModal = () => {
 		<>
 			<dialog
 				id={`auto-assign-${shiftRequestData.id}`}
-				className="modal modal-middle"
+				className="modal modal-middle z-40"
 			>
-				<div className="modal-box max-w-xs bg-white">
+				<div
+					className={`modal-box max-w-xs bg-white ${
+						datePicking ? "h-[500px]" : "h-auto"
+					}`}
+				>
 					<button
 						type="button"
 						className="btn btn-sm btn-circle absolute right-2 top-2 shadow-none bg-white text-gray02 border border-gray02"
@@ -142,71 +165,84 @@ const AutoAssignModal = () => {
 							</label>
 						</div>
 						{assignRange === "range" && (
-							<div className="flex gap-2 mb-2">
-								<input
-									type="date"
-									className="input input-sm border border-gray02 focus:outline-none focus:ring-0 focus:border-gray02 bg-base text-gray-700"
-									value={rangeStart}
-									min={
+							<div className="flex flex-col gap-2 mb-2 items-center my-5">
+								<DatePicker
+									locale={ja}
+									selected={rangeStart}
+									placeholderText="日付を選択"
+									onChange={(date) => {
+										if (date) setRangeStart(date);
+									}}
+									selectsStart
+									startDate={rangeStart}
+									endDate={rangeEnd}
+									minDate={
 										shiftRequestData.weekStart
 											? new Date(shiftRequestData.weekStart)
-													.toISOString()
-													.slice(0, 10)
 											: undefined
 									}
-									max={
+									maxDate={
 										shiftRequestData.weekEnd
 											? new Date(shiftRequestData.weekEnd)
-													.toISOString()
-													.slice(0, 10)
 											: undefined
 									}
-									onChange={(e) => setRangeStart(e.target.value)}
+									dateFormat="yyyy-MM-dd"
+									className="input text-[16px] border border-gray01 focus:outline-none focus:ring-0 focus:border-gray01 bg-base text-gray-700"
+									onCalendarOpen={() => setDatePicking(true)}
+									onCalendarClose={() => setDatePicking(false)}
 								/>
-								<span className="text-gray-500">~</span>
-								<input
-									type="date"
-									className="input input-sm border border-gray02 focus:outline-none focus:ring-0 focus:border-gray02 bg-base text-gray-700"
-									value={rangeEnd}
-									min={
+								<span className="text-gray-500">から</span>
+								<DatePicker
+									locale={ja}
+									selected={rangeEnd}
+									placeholderText="日付を選択"
+									onChange={(date) => {
+										if (date) setRangeEnd(date);
+									}}
+									selectsEnd
+									startDate={rangeStart}
+									endDate={rangeEnd}
+									minDate={
 										shiftRequestData.weekStart
 											? new Date(shiftRequestData.weekStart)
-													.toISOString()
-													.slice(0, 10)
 											: undefined
 									}
-									max={
+									maxDate={
 										shiftRequestData.weekEnd
 											? new Date(shiftRequestData.weekEnd)
-													.toISOString()
-													.slice(0, 10)
 											: undefined
 									}
-									onChange={(e) => setRangeEnd(e.target.value)}
+									dateFormat="yyyy-MM-dd"
+									className="input text-[16px] border border-gray01 focus:outline-none focus:ring-0 focus:border-gray01 bg-base text-gray-700 "
+									onCalendarOpen={() => setDatePicking(true)}
+									onCalendarClose={() => setDatePicking(false)}
 								/>
 							</div>
 						)}
 						{assignRange === "single" && (
-							<div className="flex gap-2 mb-2">
-								<input
-									type="date"
-									className="input input-sm border border-gray02 focus:outline-none focus:ring-0 focus:border-gray02 bg-base text-gray-700"
-									value={singleDate}
-									min={
+							<div className="flex flex-col gap-2 mb-2 items-center jusify-center my-5">
+								<DatePicker
+									locale={ja}
+									selected={singleDate}
+									placeholderText="日付を選択"
+									onChange={(date) => {
+										if (date === null) alert("日付が正しく選択されていません");
+										if (date) setSingleDate(date);
+									}}
+									minDate={
 										shiftRequestData.weekStart
 											? new Date(shiftRequestData.weekStart)
-													.toISOString()
-													.slice(0, 10)
 											: undefined
 									}
-									max={
+									maxDate={
 										shiftRequestData.weekEnd
 											? new Date(shiftRequestData.weekEnd)
-													.toISOString()
-													.slice(0, 10)
 											: undefined
 									}
-									onChange={(e) => setSingleDate(e.target.value)}
+									dateFormat="yyyy-MM-dd"
+									className="input text-[16px] border border-gray01 focus:outline-none focus:ring-0 focus:border-gray01 bg-base text-gray-700"
+									onCalendarOpen={() => setDatePicking(true)}
+									onCalendarClose={() => setDatePicking(false)}
 								/>
 							</div>
 						)}
