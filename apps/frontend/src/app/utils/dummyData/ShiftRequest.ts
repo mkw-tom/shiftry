@@ -22,6 +22,11 @@ export const dummyShiftRequest: ShiftRequestDTO = {
 						name: "いちたろう",
 						pictureUrl: "https://placehold.co/64x64",
 					},
+					{
+						id: "user_006",
+						name: "ろくたろう",
+						pictureUrl: "https://placehold.co/64x64",
+					},
 				],
 				jobRoles: [],
 				priority: [
@@ -30,6 +35,18 @@ export const dummyShiftRequest: ShiftRequestDTO = {
 						name: "にたろう",
 						pictureUrl: "https://placehold.co/64x64",
 						level: 1,
+					},
+					{
+						id: "user_003",
+						name: "さんたろう",
+						pictureUrl: "https://placehold.co/64x64",
+						level: 2,
+					},
+					{
+						id: "user_004",
+						name: "よんたろう",
+						pictureUrl: "https://placehold.co/64x64",
+						level: 3,
 					},
 				],
 			},
@@ -51,6 +68,12 @@ export const dummyShiftRequest: ShiftRequestDTO = {
 						pictureUrl: "https://placehold.co/64x64",
 						level: 1,
 					},
+					{
+						id: "user_007",
+						name: "ななたろう",
+						pictureUrl: "https://placehold.co/64x64",
+						level: 2,
+					},
 				],
 			},
 		},
@@ -65,12 +88,25 @@ export const dummyShiftRequest: ShiftRequestDTO = {
 						pictureUrl: "https://placehold.co/64x64",
 					},
 				],
-				jobRoles: [],
-				priority: [],
+				jobRoles: ["洗い物"],
+				priority: [
+					{
+						id: "user_008",
+						name: "はちたろう",
+						pictureUrl: "https://placehold.co/64x64",
+						level: 1,
+					},
+					{
+						id: "user_009",
+						name: "くたろう",
+						pictureUrl: "https://placehold.co/64x64",
+						level: 2,
+					},
+				],
 			},
 		},
 		"2025-10-22": {
-			"05:00-08:30": {
+			"09:00-12:00": {
 				name: "テスト",
 				count: 2,
 				absolute: [
@@ -80,13 +116,26 @@ export const dummyShiftRequest: ShiftRequestDTO = {
 						pictureUrl: "https://placehold.co/64x64",
 					},
 				],
-				jobRoles: [],
-				priority: [],
+				jobRoles: ["洗い物"],
+				priority: [
+					{
+						id: "user_002",
+						name: "にたろう",
+						pictureUrl: "https://placehold.co/64x64",
+						level: 1,
+					},
+					{
+						id: "user_003",
+						name: "さんたろう",
+						pictureUrl: "https://placehold.co/64x64",
+						level: 1,
+					},
+				],
 			},
 		},
 		"2025-10-23": {
 			"05:00-08:30": {
-				name: "テスト",
+				name: "朝",
 				count: 2,
 				absolute: [
 					{
@@ -95,8 +144,27 @@ export const dummyShiftRequest: ShiftRequestDTO = {
 						pictureUrl: "https://placehold.co/64x64",
 					},
 				],
-				jobRoles: [],
-				priority: [],
+				jobRoles: ["レジ", "接客"],
+				priority: [
+					{
+						id: "user_004",
+						name: "よんたろう",
+						pictureUrl: "https://placehold.co/64x64",
+						level: 3,
+					},
+					{
+						id: "user_005",
+						name: "ごたろう",
+						pictureUrl: "https://placehold.co/64x64",
+						level: 2,
+					},
+					{
+						id: "user_006",
+						name: "ろくたろう",
+						pictureUrl: "https://placehold.co/64x64",
+						level: 1,
+					},
+				],
 			},
 		},
 		"2025-10-24": null,
