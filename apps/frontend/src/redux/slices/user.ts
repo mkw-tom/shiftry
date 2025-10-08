@@ -14,7 +14,7 @@ const initialState: UserState = {
 		id: TEST_MODE ? "user_001" : "",
 		name: "",
 		pictureUrl: "",
-		role: "STAFF",
+		role: "OWNER",
 	},
 };
 
