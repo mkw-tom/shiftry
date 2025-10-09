@@ -10,8 +10,10 @@ import { useState } from "react";
 import { BiCheck } from "react-icons/bi";
 import { LuUserRound } from "react-icons/lu";
 import { LuUserRoundPlus } from "react-icons/lu";
+import { PiOpenAiLogo } from "react-icons/pi";
 import { useSelector } from "react-redux";
 import { useAdjustShiftForm } from "../context/AdjustShiftFormContextProvider.tsx";
+import AiSuggestionModal from "./AiModal/AiSuggestionModal";
 import AssignStaffModal from "./modals/AssignStaffModal";
 import EditAssignPositionModal from "./modals/EditAssignPositionModal";
 import ShowAssignListModal from "./modals/ShowAssignListModal";
@@ -78,6 +80,26 @@ const AssignPositionList = ({
 		if (modal) {
 			modal.showModal();
 		}
+	};
+
+	const openAISuggestionModal = (
+		date: string,
+		time: string,
+		position: AssignPositionType,
+	) => {
+		setAssignStaffData({
+			name: position.name,
+			count: position.count,
+			assigned: position.assigned,
+		});
+		setTimeout(() => {
+			const modal = document.getElementById(
+				`${date}-${time}-${position.name}-ai-suggestion-modal`,
+			) as HTMLDialogElement | null;
+			if (modal) {
+				modal.showModal();
+			}
+		}, 0);
 	};
 
 	const deleteCalenerPosition = (date: string, time: string) => {
@@ -252,18 +274,36 @@ const AssignPositionList = ({
 														time={time}
 														assignStaffData={assignStaffData}
 													/>
+													<AiSuggestionModal
+														date={date}
+														time={time}
+														assignStaffData={assignStaffData}
+													/>
+
 													{shiftRequestData.status === "ADJUSTMENT" &&
 														user?.role !== "STAFF" && (
-															<button
-																type="button"
-																className="btn btn-sm w-full border-green01 text-green01 font-bold bg-white shadow-none"
-																onClick={() =>
-																	openAssignStaffModal(date, time, position)
-																}
-															>
-																<LuUserRoundPlus className="text-[14px]" />
-																調整
-															</button>
+															<div className="w-full flex items-center gap-1">
+																<button
+																	type="button"
+																	className="btn btn-sm w-2/3 border-green01 text-green01 font-bold bg-white shadow-none"
+																	onClick={() =>
+																		openAssignStaffModal(date, time, position)
+																	}
+																>
+																	<LuUserRoundPlus className="text-[14px]" />
+																	調整
+																</button>
+																<button
+																	type="button"
+																	className="btn btn-sm w-1/3 border-purple-500 text-purple-500 bg-white font-bold shadow-none"
+																	onClick={() =>
+																		openAISuggestionModal(date, time, position)
+																	}
+																>
+																	<PiOpenAiLogo />
+																	AI調整
+																</button>
+															</div>
 														)}
 												</div>
 											</li>
