@@ -216,8 +216,10 @@ const AssignStaffModal = ({
 								<li
 									key={m.user.id}
 									className={`flex items-center justify-between gap-2 w-full p-2 ${
-										!isHope ? "bg-gray-100" : ""
-									}`}
+										!isHope && !checkedUids.includes(m.user.id)
+											? "opacity-40"
+											: ""
+									} `}
 								>
 									<div className="flex items-center gap-2 flex-1">
 										<div />
@@ -228,13 +230,7 @@ const AssignStaffModal = ({
 										/>
 										<div className="flex flex-col">
 											<div className="flex items-center gap-2">
-												<span
-													className={
-														isHope
-															? "font-bold text-gray-700"
-															: "font-bold text-gray-400"
-													}
-												>
+												<span className="text-black font-bold">
 													{m.user.name}
 												</span>
 												<span
@@ -318,7 +314,7 @@ const AssignStaffModal = ({
 					>
 						<LuUserRound className="text-lg" />
 						{previewVacancies > 0 ? (
-							<span className="ml-2">{`不足 ${previewVacancies}/${assignStaffData.count}`}</span>
+							<span className="ml-2">{`不足 ${checkedUids.length}/${assignStaffData.count}`}</span>
 						) : (
 							<span className="ml-2">{`充足 ${checkedUids.length}/${assignStaffData.count}`}</span>
 						)}
