@@ -17,7 +17,7 @@ const SuggestedAssinStaffList = ({
 	setCheckedUids: React.Dispatch<React.SetStateAction<string[]>>;
 	date: string;
 	time: string;
-	AiSuggestedStaffIds: string[];
+	AiSuggestedStaffIds?: string[];
 	previewVacancies: number;
 }) => {
 	const { submittedShiftList, shiftRequestData } = useAdjustShiftForm();
@@ -62,8 +62,10 @@ const SuggestedAssinStaffList = ({
 							}
 						}
 					}
-					// 希望者かどうか
-					const isHope = AiSuggestedStaffIds.includes(m.user.id);
+
+					const isHope =
+						Array.isArray(AiSuggestedStaffIds) &&
+						AiSuggestedStaffIds.includes(m.user.id);
 					let sourceBadge = null;
 					const shiftPos = shiftRequestData.requests?.[date]?.[time];
 					if (shiftPos) {
@@ -86,14 +88,24 @@ const SuggestedAssinStaffList = ({
 							key={m.user.id}
 							className={`flex items-center justify-between gap-2 w-full p-2 ${
 								!isHope && !checkedUids.includes(m.user.id) ? "opacity-50" : ""
-							} ${AiSuggestedStaffIds.includes(m.user.id) ? "bg-purple-50" : ""}`}
+							} ${
+								Array.isArray(AiSuggestedStaffIds) &&
+								AiSuggestedStaffIds.includes(m.user.id)
+									? "bg-purple-50"
+									: ""
+							}`}
 						>
 							<div className="flex items-center gap-2 flex-1">
 								<div />
 								<img
 									src={m.user.pictureUrl ?? ""}
 									alt={m.user.name}
-									className={`w-8 h-8 rounded-full ${AiSuggestedStaffIds.includes(m.user.id) ? "ring-2 ring-purple-400" : ""}`}
+									className={`w-8 h-8 rounded-full ${
+										Array.isArray(AiSuggestedStaffIds) &&
+										AiSuggestedStaffIds.includes(m.user.id)
+											? "ring-2 ring-purple-400"
+											: ""
+									}`}
 								/>
 								<div className="flex flex-col">
 									<div className="flex items-center gap-2">
