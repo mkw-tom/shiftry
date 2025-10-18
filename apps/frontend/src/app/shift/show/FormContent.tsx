@@ -237,7 +237,7 @@ const FormContent = () => {
 			}
 		}, 0);
 	};
-	
+
 	const dateFullRange = (): Date[] => {
 		if (!shiftRequestData) return [];
 		const start = new Date(shiftRequestData.weekStart);
