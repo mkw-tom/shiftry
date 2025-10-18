@@ -8,6 +8,7 @@ import {
 } from "@shared/api/shift/assign/validations/put";
 import type { SubmittedShiftDTO } from "@shared/api/shift/submit/dto";
 import { YMDW } from "@shared/utils/formatDate";
+import { set } from "date-fns";
 import React, { useEffect } from "react";
 import { IoWarning } from "react-icons/io5";
 import { LuUserRound } from "react-icons/lu";
@@ -33,6 +34,7 @@ const AiSuggestionModal = ({
 		submittedShiftList,
 		setAssignShiftData,
 		shiftRequestData,
+		setShiftRequestData,
 	} = useAdjustShiftForm();
 
 	const [aiSuggestedMembersSubmit, setAiSuggestedMembersSubmit] =
@@ -49,6 +51,7 @@ const AiSuggestionModal = ({
 		setCheckedUids((assignStaffData.assigned ?? []).map((a) => a.uid));
 		const aiSuggestRes = dummySubmittedShiftList;
 		setAiSuggestedMembersSubmit(aiSuggestRes);
+
 		setTimeout(() => {
 			setSuggetstedloading(false);
 		}, 5000);

@@ -5,13 +5,149 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ja } from "date-fns/locale";
 import { useAdjustShiftForm } from "../../context/AdjustShiftFormContextProvider.tsx";
-import { useAutoAssign } from "../../hook/useAutoAssign";
+import { useAiAdjustMode } from "../../context/AiAdjustModeProvider";
 
-const AutoAssignModal = () => {
+const dummyAIResult = {
+	"2025-10-20": {
+		"05:00-08:30": {
+			name: "あさ",
+			count: 2,
+			jobRoles: ["レジ", "接客"],
+			assigned: [
+				{
+					uid: "user_001",
+					displayName: "いちたろう",
+					pictureUrl: "https://placehold.co/64x64",
+					source: "absolute" as const,
+					confirmed: true,
+				},
+				{
+					uid: "user_006",
+					displayName: "ろくたろう",
+					pictureUrl: "https://placehold.co/64x64",
+					source: "absolute" as const,
+					confirmed: true,
+				},
+			],
+			assignedCount: 2,
+			vacancies: 0,
+			status: "confirmed",
+			updatedAt: "2025-09-10T04:30:00.000Z",
+			updatedBy: "owner_999",
+		},
+		"18:00-22:00": {
+			name: "よる",
+			count: 2,
+			jobRoles: ["ホール"],
+			assigned: [
+				{
+					uid: "user_001",
+					displayName: "いちたろう",
+					pictureUrl: "https://placehold.co/64x64",
+					source: "absolute" as const,
+					confirmed: true,
+				},
+				{
+					uid: "user_007",
+					displayName: "ななたろう",
+					pictureUrl: "https://placehold.co/64x64",
+					source: "priority" as const,
+					confirmed: false,
+				},
+			],
+			assignedCount: 2,
+			vacancies: 0,
+			status: "proposed",
+			updatedAt: "2025-09-10T04:31:00.000Z",
+			updatedBy: "system",
+		},
+	},
+	"2025-10-21": {
+		"09:00-13:00": {
+			name: "午前",
+			count: 1,
+			jobRoles: ["洗い物"],
+			assigned: [
+				{
+					uid: "user_005",
+					displayName: "ごたろう",
+					pictureUrl: "https://placehold.co/64x64",
+					source: "absolute" as const,
+					confirmed: true,
+				},
+			],
+			assignedCount: 1,
+			vacancies: 0,
+			status: "draft",
+			updatedAt: "2025-09-10T04:35:00.000Z",
+			updatedBy: "system",
+		},
+	},
+	"2025-10-22": {
+		"09:00-12:00": {
+			name: "午前",
+			count: 2,
+			jobRoles: ["洗い物"],
+			assigned: [
+				{
+					uid: "user_001",
+					displayName: "いちたろう",
+					pictureUrl: "https://placehold.co/64x64",
+					source: "absolute" as const,
+					confirmed: true,
+				},
+				{
+					uid: "user_002",
+					displayName: "にたろう",
+					pictureUrl: "https://placehold.co/64x64",
+					source: "priority" as const,
+					confirmed: false,
+				},
+			],
+			assignedCount: 2,
+			vacancies: 0,
+			status: "draft",
+			updatedAt: "2025-09-10T04:35:00.000Z",
+			updatedBy: "system",
+		},
+	},
+	"2025-10-23": {
+		"05:00-08:30": {
+			name: "朝",
+			count: 2,
+			jobRoles: ["レジ", "接客"],
+			assigned: [
+				{
+					uid: "user_001",
+					displayName: "いちたろう",
+					pictureUrl: "https://placehold.co/64x64",
+					source: "absolute" as const,
+					confirmed: true,
+				},
+				{
+					uid: "user_004",
+					displayName: "よんたろう",
+					pictureUrl: "https://placehold.co/64x64",
+					source: "priority" as const,
+					confirmed: false,
+				},
+			],
+			assignedCount: 2,
+			vacancies: 0,
+			status: "confirmed",
+			updatedAt: "2025-09-10T04:30:00.000Z",
+			updatedBy: "owner_999",
+		},
+	},
+};
+
+const AIAssignModal = () => {
 	const { shiftRequestData, assignShiftData, setAssignShiftData } =
 		useAdjustShiftForm();
+
+	const { useAiAssign, isAiLoading, aiError } = useAiAdjustMode();
 	const [datePicking, setDatePicking] = useState(false);
-	const [checkedFields, setCheckedFields] = useState<string[]>([]);
+	// const [checkedFields, setCheckedFields] = useState<string[]>([]);
 	const [successAssign, setSuccessAssign] = useState<boolean>(false);
 	// 割当期間の選択
 	const [assignRange, setAssignRange] = useState<"all" | "range" | "single">(
@@ -21,27 +157,27 @@ const AutoAssignModal = () => {
 	const [rangeEnd, setRangeEnd] = useState<Date | null>(null);
 	const [singleDate, setSingleDate] = useState<Date | null>(null);
 
-	const { autoAssignFunc, isLoading } = useAutoAssign({
-		assignShiftData,
-		shiftRequestData,
-		setAssignShiftData,
-	});
+	// const { autoAssignFunc, isLoading } = useAutoAssign({
+	//   assignShiftData,
+	//   shiftRequestData,
+	//   setAssignShiftData,
+	// });
 	const { showToast } = useToast();
 
-	const checkFunc = (targetField: "absolute" | "priority") => {
-		if (checkedFields.includes(targetField)) {
-			const newCheckedFields = checkedFields.filter(
-				(field) => field !== targetField,
-			);
-			setCheckedFields(newCheckedFields);
-		} else {
-			const newCheckedFields = [...checkedFields, targetField];
-			setCheckedFields(newCheckedFields);
-		}
-	};
+	// const checkFunc = (targetField: "absolute" | "priority") => {
+	//   if (checkedFields.includes(targetField)) {
+	//     const newCheckedFields = checkedFields.filter(
+	//       (field) => field !== targetField
+	//     );
+	//     setCheckedFields(newCheckedFields);
+	//   } else {
+	//     const newCheckedFields = [...checkedFields, targetField];
+	//     setCheckedFields(newCheckedFields);
+	//   }
+	// };
 	const onCloseAutoAssignModal = () => {
 		const modal = document.getElementById(
-			"auto-assign-modal",
+			"ai-assign-modal",
 		) as HTMLDialogElement | null;
 		modal?.close();
 	};
@@ -65,7 +201,7 @@ const AutoAssignModal = () => {
 		return `${year}-${month}-${day}`;
 	}
 
-	const handleAutoAssign = async () => {
+	const handleAiAssign = async () => {
 		setSuccessAssign(false);
 		let period: {
 			type: "all" | "range" | "single";
@@ -86,24 +222,26 @@ const AutoAssignModal = () => {
 			};
 		}
 		if (!isInputValid()) return;
-		autoAssignFunc(checkedFields, period);
+		useAiAssign(dummyAIResult);
 		setSuccessAssign(true);
 	};
 
 	useEffect(() => {
-		if (!isLoading && successAssign) {
+		if (!isAiLoading && successAssign) {
+			// モーダルを閉じる
 			const modal = document.getElementById(
-				"auto-assign-modal",
+				"ai-assign-modal",
 			) as HTMLDialogElement | null;
 			modal?.close();
-			showToast("自動割当が完了しました", "success");
+			// トースト表示
+			showToast("AI調整が完了しました", "success");
 			setSuccessAssign(false);
 		}
-	}, [isLoading, successAssign, showToast]);
+	}, [isAiLoading, successAssign, showToast]);
 
 	return (
 		<>
-			<dialog id={"auto-assign-modal"} className="modal modal-middle z-40">
+			<dialog id={"ai-assign-modal"} className="modal modal-middle z-40">
 				<div
 					className={`modal-box max-w-xs bg-white ${
 						datePicking ? "h-[500px]" : "h-auto"
@@ -112,12 +250,12 @@ const AutoAssignModal = () => {
 					<button
 						type="button"
 						className="btn btn-sm btn-circle absolute right-2 top-2 shadow-none bg-white text-gray02 border border-gray02"
-						disabled={isLoading}
+						disabled={isAiLoading}
 						onClick={() => onCloseAutoAssignModal()}
 					>
 						✕
 					</button>
-					<h3 className="font-bold  text-green01 mb-1">シフト自動割当</h3>
+					<h3 className="font-bold  text-purple-500 mb-1">AIシフト調整</h3>
 					<h3 className="text-gray-600 text-sm mb-3 ml-1">
 						{YMDW(shiftRequestData.weekStart)} ~{" "}
 						{YMDW(shiftRequestData.weekEnd)}
@@ -130,8 +268,10 @@ const AutoAssignModal = () => {
 									type="radio"
 									value="all"
 									checked={assignRange === "all"}
-									onChange={() => setAssignRange("all")}
-									className="radio radio-sm radio-success"
+									onChange={(e) =>
+										setAssignRange(e.target.value as "all" | "range" | "single")
+									}
+									className="radio radio-sm radio-primary"
 								/>
 								<span className="text-sm text-gray-700">全体</span>
 							</label>
@@ -140,8 +280,10 @@ const AutoAssignModal = () => {
 									type="radio"
 									value="range"
 									checked={assignRange === "range"}
-									onChange={() => setAssignRange("range")}
-									className="radio radio-sm radio-success"
+									onChange={(e) =>
+										setAssignRange(e.target.value as "all" | "range" | "single")
+									}
+									className="radio radio-sm radio-primary"
 								/>
 								<span className="text-sm text-gray-700">特定期間</span>
 							</label>
@@ -150,8 +292,10 @@ const AutoAssignModal = () => {
 									type="radio"
 									value="single"
 									checked={assignRange === "single"}
-									onChange={() => setAssignRange("single")}
-									className="radio radio-sm radio-success"
+									onChange={(e) =>
+										setAssignRange(e.target.value as "all" | "range" | "single")
+									}
+									className="radio radio-sm radio-primary"
 								/>
 								<span className="text-sm text-gray-700">1日だけ</span>
 							</label>
@@ -239,43 +383,41 @@ const AutoAssignModal = () => {
 							</div>
 						)}
 					</div>
-					<div className="flex items-center gap-4 mb-6">
-						<label className="flex items-center gap-2 cursor-pointer">
-							<input
-								type="checkbox"
-								className="checkbox checkbox-sm checkbox-success"
-								checked={!!checkedFields.includes("absolute")}
-								onChange={() => checkFunc("absolute")}
-								disabled={isLoading}
-							/>
-							<span className="text-gray-700 text-sm">固定</span>
-						</label>
-						<label className="flex items-center gap-2 cursor-pointer">
-							<input
-								type="checkbox"
-								className="checkbox checkbox-sm checkbox-success"
-								value={"priority"}
-								checked={!!checkedFields.includes("priority")}
-								onChange={() => checkFunc("priority")}
-								disabled={isLoading}
-							/>
-							<span className="text-gray-700 text-sm">優先</span>
-						</label>
-					</div>
+					{/* <div className="flex items-center gap-4 mb-6">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                className="checkbox checkbox-sm checkbox-primary"
+                checked={!!checkedFields.includes("absolute")}
+                onChange={() => checkFunc("absolute")}
+                disabled={isLoading}
+              />
+              <span className="text-gray-700 text-sm">固定</span>
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                className="checkbox checkbox-sm checkbox-primary"
+                value={"priority"}
+                checked={!!checkedFields.includes("priority")}
+                onChange={() => checkFunc("priority")}
+                disabled={isLoading}
+              />
+              <span className="text-gray-700 text-sm">優先</span>
+            </label>
+          </div> */}
 					<button
 						type="button"
-						className={`btn border-green01 text-green01 bg-white btn-block shadow-none bg-none ${
-							(checkedFields.length === 0 || !isInputValid()) && "opacity-40"
+						className={`btn border-purple-500 text-purple-500 bg-white btn-block shadow-none bg-none ${
+							!isInputValid() && "opacity-40"
 						}`}
-						onClick={() => handleAutoAssign()}
-						disabled={
-							isLoading || checkedFields.length === 0 || !isInputValid()
-						}
+						onClick={() => handleAiAssign()}
+						disabled={isAiLoading || !isInputValid()}
 					>
-						{isLoading ? (
+						{isAiLoading ? (
 							<span className="loading loading-dots" />
 						) : (
-							"自動割当を実行"
+							"AI調整を実行"
 						)}
 					</button>
 				</div>
@@ -284,4 +426,4 @@ const AutoAssignModal = () => {
 	);
 };
 
-export default AutoAssignModal;
+export default AIAssignModal;

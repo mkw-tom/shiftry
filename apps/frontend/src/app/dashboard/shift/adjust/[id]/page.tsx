@@ -4,6 +4,7 @@ import FormContent from "./components/FormContent";
 import FormHead from "./components/FormHead";
 import Table from "./components/Table";
 import { AdjustShiftFormContextProvider } from "./context/AdjustShiftFormContextProvider.tsx";
+import { AiAdjustModeProvider } from "./context/AiAdjustModeProvider";
 import { ViewSwitchProvider } from "./context/ViewSwitchProvider";
 
 export default async function Page({
@@ -17,10 +18,12 @@ export default async function Page({
 		<main className="bg-white w-full min-h-screen">
 			<div className="mt-10" />
 			<ViewSwitchProvider>
-				<AdjustShiftFormContextProvider>
-					<FormContent shiftRequestId={shiftReuqestId} />
-					<Button />
-				</AdjustShiftFormContextProvider>
+				<AiAdjustModeProvider>
+					<AdjustShiftFormContextProvider>
+						<FormContent shiftRequestId={shiftReuqestId} />
+						<Button />
+					</AdjustShiftFormContextProvider>
+				</AiAdjustModeProvider>
 			</ViewSwitchProvider>
 		</main>
 	);

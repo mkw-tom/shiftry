@@ -8,11 +8,14 @@ import type { RequestPositionWithDateInput } from "@shared/api/shift/request/val
 import type React from "react";
 import { useState } from "react";
 import { BiCheck } from "react-icons/bi";
+import { IoClose } from "react-icons/io5";
 import { LuUserRound } from "react-icons/lu";
 import { LuUserRoundPlus } from "react-icons/lu";
+import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { PiOpenAiLogo } from "react-icons/pi";
 import { useSelector } from "react-redux";
 import { useAdjustShiftForm } from "../context/AdjustShiftFormContextProvider.tsx";
+import { useAiAdjustMode } from "../context/AiAdjustModeProvider";
 import AiSuggestionModal from "./AiModal/AiSuggestionModal";
 import AssignStaffModal from "./modals/AssignStaffModal";
 import EditAssignPositionModal from "./modals/EditAssignPositionModal";
@@ -35,7 +38,14 @@ const AssignPositionList = ({
 		React.SetStateAction<AssignPositionWithDateInput>
 	>;
 }) => {
-	// const { formData, setFormData } = useCreateRequest();
+	const {
+		aiMode,
+		AiModified,
+		allowModified,
+		rejectModified,
+		allowModifiedDatas,
+		rejectModifiedDatas,
+	} = useAiAdjustMode();
 	const { assignShiftData, setAssignShiftData, shiftRequestData } =
 		useAdjustShiftForm();
 	const [assignStaffData, setAssignStaffData] = useState<{
@@ -142,10 +152,18 @@ const AssignPositionList = ({
 										const vacancies =
 											position.vacancies ?? requiredCount - assignedCount;
 										const isFull = assignedCount >= requiredCount;
+
+										const aiIsFull =
+											aiMode && AiModified[date]?.[time]
+												? AiModified[date][time].assignedCount >=
+													AiModified[date][time].count
+												: false;
 										return (
 											<li
 												key={`${date}-${time}`}
-												className="text-gray01 text-sm flex flex-col items-start gap-1 border-b border-gray01 py-3 px-2"
+												className={`text-gray01 text-sm flex flex-col items-start gap-1 border-b border-gray01 py-3 px-2
+												
+												`}
 											>
 												<div className="flex items-center justify-between w-full">
 													<h1 className="text-gray02 border-l-4 border-l-gray02 font-bold pl-2 w-2/3 flex items-center gap-2 py-1.5">
@@ -160,9 +178,32 @@ const AssignPositionList = ({
 																不足 {assignedCount}/{requiredCount}
 															</span>
 														)}
+
+														{aiMode && (
+															<MdKeyboardDoubleArrowRight className="text-purple-500" />
+														)}
+
+														{aiMode &&
+															(aiIsFull ? (
+																<span className="badge badge-sm bg-green-500 text-white border-none">
+																	充足
+																</span>
+															) : (
+																<span className="badge badge-sm bg-red-500 text-white border-none">
+																	不足 {assignedCount}/{requiredCount}
+																</span>
+															))}
 													</h1>
 
-													{shiftRequestData.status === "ADJUSTMENT" &&
+													{aiMode && AiModified[date]?.[time] && (
+														<div className="text-xs flex items-center  text-purple-500 badge badge-sm badge-outline animate-pulse">
+															<PiOpenAiLogo className="" />
+															<span>AI調整中</span>
+														</div>
+													)}
+
+													{!aiMode &&
+														shiftRequestData.status === "ADJUSTMENT" &&
 														user?.role !== "STAFF" && (
 															<div className="flex items-center">
 																<button
@@ -266,6 +307,29 @@ const AssignPositionList = ({
 																	</div>
 																))}
 															</div>
+															{aiMode && (
+																<>
+																	<MdKeyboardDoubleArrowRight className="text-purple-500 mt-0.5" />
+
+																	<div className="avatar-group -space-x-1">
+																		{AiModified[date]?.[time]?.assigned.map(
+																			(staff) => (
+																				<div
+																					className="avatar border-1 border-purple-500"
+																					key={staff.uid}
+																				>
+																					<div className="w-5">
+																						<img
+																							src={staff.pictureUrl}
+																							alt={staff.displayName}
+																						/>
+																					</div>
+																				</div>
+																			),
+																		)}
+																	</div>
+																</>
+															)}
 														</div>
 													</div>
 
@@ -283,25 +347,43 @@ const AssignPositionList = ({
 													{shiftRequestData.status === "ADJUSTMENT" &&
 														user?.role !== "STAFF" && (
 															<div className="w-full flex items-center gap-1">
+																{aiMode && AiModified[date]?.[time] && (
+																	<>
+																		<button
+																			type="button"
+																			className={`btn btn-sm w-1/4 font-bold shadow-none ${
+																				allowModifiedDatas[date]?.[time]
+																					? "bg-purple-500 text-white border-none"
+																					: "btn-outline bg-white text-purple-500"
+																			}`}
+																			onClick={() => allowModified(date, time)}
+																		>
+																			<BiCheck />
+																			適用
+																		</button>
+																		<button
+																			type="button"
+																			className={`btn btn-sm w-1/4 font-bold shadow-none ${
+																				rejectModifiedDatas[date]?.[time]
+																					? "bg-gray02 border-none text-white"
+																					: "btn-outline bg-white text-gray02"
+																			}`}
+																			onClick={() => rejectModified(date, time)}
+																		>
+																			<IoClose />
+																			拒否
+																		</button>
+																	</>
+																)}
 																<button
 																	type="button"
-																	className="btn btn-sm w-2/3 border-green01 text-green01 font-bold bg-white shadow-none"
+																	className="btn btn-sm flex-1 border-green01 text-green01 font-bold bg-white shadow-none"
 																	onClick={() =>
 																		openAssignStaffModal(date, time, position)
 																	}
 																>
 																	<LuUserRoundPlus className="text-[14px]" />
 																	調整
-																</button>
-																<button
-																	type="button"
-																	className="btn btn-sm w-1/3 border-purple-500 text-purple-500 bg-white font-bold shadow-none"
-																	onClick={() =>
-																		openAISuggestionModal(date, time, position)
-																	}
-																>
-																	<PiOpenAiLogo />
-																	AI調整
 																</button>
 															</div>
 														)}
