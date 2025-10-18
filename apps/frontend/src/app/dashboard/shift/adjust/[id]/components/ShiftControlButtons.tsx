@@ -3,6 +3,8 @@ import type { RequestPositionWithDateInput } from "@shared/api/shift/request/val
 import React from "react";
 import { MdAdd } from "react-icons/md";
 import { useAdjustShiftForm } from "../context/AdjustShiftFormContextProvider.tsx";
+import { useAiAdjustMode } from "../context/AiAdjustModeProvider";
+import AIAssignModal from "./AiModal/AIAssignModal";
 import AutoAssignModal from "./modals/AutoAssignModal";
 import SubmitStatusModal from "./modals/SubmitStatusModal";
 
@@ -10,7 +12,6 @@ const ShiftControlButtons = ({
 	selectDate,
 	openEditAssignPositionModal,
 	editAssignPosition,
-	openAutoAssignModal,
 	openSubmitStatusModal,
 }: {
 	selectDate: Date;
@@ -20,17 +21,32 @@ const ShiftControlButtons = ({
 		mode: "new" | "adjust",
 	) => void;
 	editAssignPosition: AssignPositionWithDateInput;
-	openAutoAssignModal: (shiftRequestId: string) => void;
 	openSubmitStatusModal: () => void;
 }) => {
+	const { aiMode } = useAiAdjustMode();
 	const { shiftRequestData } = useAdjustShiftForm();
+
+	const openAutoAssignModal = () => {
+		const modal = document.getElementById("auto-assign-modal");
+		if (modal) {
+			(modal as HTMLDialogElement).showModal();
+		}
+	};
+	const openAIAssignModal = () => {
+		const modal = document.getElementById("ai-assign-modal");
+		if (modal) {
+			(modal as HTMLDialogElement).showModal();
+		}
+	};
+
 	return (
 		<div className="w-full flex gap-1 items-center justify-center shadow-sm  p-1 bg-white">
 			{shiftRequestData.status === "ADJUSTMENT" ? (
 				<>
 					<button
 						type="button"
-						className="btn btn-sm bg-white text-green01 font-bold flex-1 border-dashed border-1 border-gray01 shadow-none"
+						className={`btn btn-sm bg-white text-green01 font-bold flex-1 border-dashed border-1 border-gray01 shadow-none ${aiMode && "opacity-40"}`}
+						disabled={aiMode}
 						onClick={() =>
 							openEditAssignPositionModal(
 								editAssignPosition,
@@ -40,14 +56,23 @@ const ShiftControlButtons = ({
 						}
 					>
 						<MdAdd className="text-lg" />
-						ポジションを追加
+						追加
 					</button>
 
+					<AIAssignModal />
 					<AutoAssignModal />
 					<button
 						type="button"
-						className="btn btn-sm  border-green01 text-green01 font-bold bg-white shadow-none"
-						onClick={() => openAutoAssignModal(shiftRequestData.id)}
+						className="btn btn-sm  border-purple-500 text-purple-500 font-bold bg-white shadow-none"
+						onClick={() => openAIAssignModal()}
+					>
+						AI調整
+					</button>
+					<button
+						type="button"
+						className={`btn btn-sm  border-green01 text-green01 font-bold bg-white shadow-none ${aiMode && "opacity-40"}`}
+						onClick={() => openAutoAssignModal()}
+						disabled={aiMode}
 					>
 						自動割当
 					</button>
@@ -57,7 +82,7 @@ const ShiftControlButtons = ({
 					<button
 						type="button"
 						className="btn btn-sm  border-green01 text-green01 font-bold bg-white shadow-none flex-1"
-						onClick={() => openAutoAssignModal(shiftRequestData.id)}
+						onClick={() => openAutoAssignModal()}
 					>
 						{/* <AiOutlineOpenAI className="text-[14px]"/> */}
 						再調整依頼

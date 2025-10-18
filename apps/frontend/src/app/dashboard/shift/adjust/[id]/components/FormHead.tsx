@@ -9,8 +9,10 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { useSelector } from "react-redux";
 import { useAdjustShiftForm } from "../context/AdjustShiftFormContextProvider.tsx";
+import { useAiAdjustMode } from "../context/AiAdjustModeProvider";
 
 const FormHead = () => {
+	const { aiMode } = useAiAdjustMode();
 	const { upsertAssignShift } = useUpsertAssignShift();
 	const { assignShiftData, shiftRequestData } = useAdjustShiftForm();
 	const { upsertShiftRequest } = useUpsertShiftReqeust();
@@ -74,8 +76,9 @@ const FormHead = () => {
 			<h2 className="text-green02 font-bold text-sm ">シフト調整</h2>
 			<button
 				type="button"
-				className="btn btn-sm btn-link text-gray-500 ml-auto"
+				className={`btn btn-sm btn-link text-gray-500 ml-auto ${aiMode && "opacity-40"}`}
 				onClick={handleUpsertDraftShiftData}
+				disabled={aiMode}
 			>
 				下書き保存
 			</button>

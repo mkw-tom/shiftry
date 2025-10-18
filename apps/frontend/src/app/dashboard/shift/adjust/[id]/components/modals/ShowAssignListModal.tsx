@@ -6,6 +6,11 @@ import {
 import { YMDW } from "@shared/utils/formatDate";
 import React from "react";
 import { LuUserRound } from "react-icons/lu";
+import {
+	MdKeyboardDoubleArrowDown,
+	MdKeyboardDoubleArrowRight,
+} from "react-icons/md";
+import { useAiAdjustMode } from "../../context/AiAdjustModeProvider";
 
 const ShowAssignListModal = ({
 	date,
@@ -17,12 +22,18 @@ const ShowAssignListModal = ({
 	position: AssignPositionType;
 }) => {
 	const { name, assigned, count, vacancies } = position;
+	const { aiMode, AiModified, allowModifiedDatas, rejectModifiedDatas } =
+		useAiAdjustMode();
 	const onCloseAssignListModal = () => {
 		const modal = document.getElementById(
 			`assign-list-${date}-${time}-${name}`,
 		) as HTMLDialogElement | null;
 		modal?.close();
 	};
+	const aiIsFull =
+		aiMode && AiModified[date]?.[time]
+			? AiModified[date][time].assignedCount >= AiModified[date][time].count
+			: false;
 
 	return (
 		<dialog
@@ -45,6 +56,8 @@ const ShowAssignListModal = ({
 				</div>
 				<div className="mb-2 flex flex-col gap-1">
 					<h2 className="font-bold text-gray02 mb-2 flex items-center gap-3">
+						<span className="text-gray-600 font-bold ml-1">{name}</span>
+
 						{vacancies === 0 ? (
 							<span className="badge badge-sm bg-green-500 text-white border-none">
 								充足
@@ -61,7 +74,23 @@ const ShowAssignListModal = ({
 							</span>
 						)}
 
-						<span className="text-gray-600 font-bold">{name}</span>
+						{aiMode && AiModified[date]?.[time] && (
+							<MdKeyboardDoubleArrowRight className="text-purple-500" />
+						)}
+
+						{aiMode &&
+							AiModified[date]?.[time] &&
+							(aiIsFull ? (
+								<span className="badge badge-sm bg-green-500 text-white border-none">
+									充足 {aiMode && AiModified[date]?.[time].assignedCount}/
+									{aiMode && AiModified[date]?.[time].count}
+								</span>
+							) : (
+								<span className="badge badge-sm bg-red-500 text-white border-none">
+									不足 {aiMode && AiModified[date]?.[time].assignedCount}/
+									{aiMode && AiModified[date]?.[time].count}
+								</span>
+							))}
 					</h2>
 				</div>
 
@@ -94,6 +123,36 @@ const ShowAssignListModal = ({
 						))
 					)}
 				</div>
+				{aiMode && AiModified[date]?.[time] && (
+					<>
+						<MdKeyboardDoubleArrowDown className="text-purple-500/30 mx-auto text-2xl my-2" />
+						<div className="border-1 border-purple-500 p-3 bg-purple-50 flex flex-col gap-2">
+							{AiModified[date]?.[time]?.assigned.map((user) => (
+								<div key={user.uid} className="flex items-center gap-3">
+									<div className="avatar">
+										<div className="w-8 rounded-full">
+											<img
+												src={user.pictureUrl || ""}
+												alt={user.displayName || "User Avatar"}
+											/>
+										</div>
+									</div>
+									<span className="text-gray-700">{user.displayName}</span>
+									{user.source === "absolute" && (
+										<span className="badge badge-sm badge-dash text-info text-xs ml-1">
+											固定
+										</span>
+									)}
+									{user.source === "priority" && (
+										<span className="badge badge-sm badge-dash text-green01 text-xs ml-1">
+											優先
+										</span>
+									)}
+								</div>
+							))}
+						</div>
+					</>
+				)}
 			</div>
 		</dialog>
 	);

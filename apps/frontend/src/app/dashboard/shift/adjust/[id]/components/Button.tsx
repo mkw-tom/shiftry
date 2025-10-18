@@ -14,10 +14,13 @@ import { BsTable } from "react-icons/bs";
 import { RiArrowGoBackFill, RiFileListLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
 import { useAdjustShiftForm } from "../context/AdjustShiftFormContextProvider.tsx";
+import { useAiAdjustMode } from "../context/AiAdjustModeProvider";
 import { useViewSwitch } from "../context/ViewSwitchProvider";
+import AIModeBottomDrawer from "./AIModeBottomDrawer";
 
 const Button = () => {
 	const { viewMode, toggleViewMode } = useViewSwitch();
+	const { aiMode } = useAiAdjustMode();
 	const { upsertAssignShift } = useUpsertAssignShift();
 	const {
 		assignShiftData,
@@ -210,6 +213,7 @@ const Button = () => {
 	// };
 
 	if (!shiftRequestData || !shiftRequestData.id) return <div />;
+
 	if (user?.role === "STAFF") {
 		return (
 			<div className="fixed bottom-0 left-0 w-full flex items-center justify-around gap-2  px-3 pt-3 pb-6 bg-white border-t border-gray01 z-10">
@@ -235,7 +239,11 @@ const Button = () => {
 					)}
 					<button
 						type="button"
-						className={`btn btn-sm bg-black text-white font-bold px-4 border-none flex-1 ${shiftRequestData.status !== "CONFIRMED" ? "opacity-20 pointer-events-none" : ""}`}
+						className={`btn btn-sm bg-black text-white font-bold px-4 border-none flex-1 ${
+							shiftRequestData.status !== "CONFIRMED"
+								? "opacity-20 pointer-events-none"
+								: ""
+						}`}
 						onClick={() => {
 							/* TODO: SVGダウンロード処理 */
 						}}
@@ -247,6 +255,8 @@ const Button = () => {
 			</div>
 		);
 	}
+
+	if (aiMode) return <AIModeBottomDrawer />;
 
 	if (shiftRequestData.status === "CONFIRMED") {
 		return (
