@@ -14,11 +14,11 @@ export const aiShiftAdjustController = async (
 	>,
 ): Promise<void> => {
 	try {
-		// const auth = req.auth;
-		// if (!auth?.uid || !auth?.sid) {
-		//   res.status(401).json({ ok: false, message: "Unauthorized" });
-		//   return;
-		// }
+		const auth = req.auth;
+		if (!auth?.uid || !auth?.sid) {
+			res.status(401).json({ ok: false, message: "Unauthorized" });
+			return;
+		}
 
 		const parsed = AiShiftAdjustValidate.safeParse(req.body);
 		if (!parsed.success) {
