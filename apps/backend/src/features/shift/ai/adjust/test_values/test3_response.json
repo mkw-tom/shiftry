@@ -1,0 +1,307 @@
+{
+	"ok": true,
+	"ai_modified": {
+		"2025-10-20": {
+			"05:00-08:30": {
+				"name": "あさ",
+				"count": 2,
+				"jobRoles": ["レジ", "接客"],
+				"assigned": [
+					{
+						"uid": "user_006",
+						"displayName": "ろくたろう",
+						"pictureUrl": "",
+						"confirmed": true
+					},
+					{
+						"uid": "user_005",
+						"displayName": "ごたろう",
+						"pictureUrl": "",
+						"confirmed": true
+					}
+				],
+				"assignedCount": 2,
+				"vacancies": 0,
+				"status": "confirmed",
+				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedBy": "ai_adjustment"
+			},
+			"18:00-22:00": {
+				"name": "よる",
+				"count": 2,
+				"jobRoles": ["ホール"],
+				"assigned": [
+					{
+						"uid": "user_002",
+						"displayName": "にたろう",
+						"pictureUrl": "",
+						"confirmed": true
+					},
+					{
+						"uid": "user_008",
+						"displayName": "はちたろう",
+						"pictureUrl": "",
+						"confirmed": true
+					}
+				],
+				"assignedCount": 2,
+				"vacancies": 0,
+				"status": "proposed",
+				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedBy": "ai_adjustment"
+			}
+		},
+		"2025-10-21": {
+			"09:00-13:00": {
+				"name": "午前",
+				"count": 1,
+				"jobRoles": ["洗い物"],
+				"assigned": [
+					{
+						"uid": "user_001",
+						"displayName": "いちたろう",
+						"pictureUrl": "",
+						"confirmed": true
+					}
+				],
+				"assignedCount": 1,
+				"vacancies": 0,
+				"status": "draft",
+				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedBy": "ai_adjustment"
+			},
+			"18:00-22:00": {
+				"name": "よる",
+				"count": 1,
+				"jobRoles": ["ホール"],
+				"assigned": [
+					{
+						"uid": "user_008",
+						"displayName": "はちたろう",
+						"pictureUrl": "",
+						"confirmed": true
+					}
+				],
+				"assignedCount": 1,
+				"vacancies": 0,
+				"status": "confirmed",
+				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedBy": "ai_adjustment"
+			}
+		},
+		"2025-10-22": {
+			"09:00-12:00": {
+				"name": "テスト",
+				"count": 2,
+				"jobRoles": ["洗い物"],
+				"assigned": [
+					{
+						"uid": "user_002",
+						"displayName": "にたろう",
+						"pictureUrl": "",
+						"confirmed": true
+					},
+					{
+						"uid": "user_003",
+						"displayName": "さんたろう",
+						"pictureUrl": "",
+						"confirmed": true
+					}
+				],
+				"assignedCount": 2,
+				"vacancies": 0,
+				"status": "draft",
+				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedBy": "ai_adjustment"
+			}
+		},
+		"2025-10-23": {
+			"05:00-08:30": {
+				"name": "朝",
+				"count": 2,
+				"jobRoles": ["レジ", "接客"],
+				"assigned": [
+					{
+						"uid": "user_004",
+						"displayName": "よんたろう",
+						"pictureUrl": "",
+						"confirmed": true
+					},
+					{
+						"uid": "user_006",
+						"displayName": "ろくたろう",
+						"pictureUrl": "",
+						"confirmed": true
+					}
+				],
+				"assignedCount": 2,
+				"vacancies": 0,
+				"status": "confirmed",
+				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedBy": "ai_adjustment"
+			},
+			"18:00-21:00": {
+				"name": "早番よる",
+				"count": 1,
+				"jobRoles": ["ホール"],
+				"assigned": [
+					{
+						"uid": "user_001",
+						"displayName": "いちたろう",
+						"pictureUrl": "",
+						"confirmed": true
+					}
+				],
+				"assignedCount": 1,
+				"vacancies": 0,
+				"status": "draft",
+				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedBy": "ai_adjustment"
+			}
+		},
+		"2025-10-24": {
+			"09:00-12:00": {
+				"name": "午前",
+				"count": 2,
+				"jobRoles": ["洗い物"],
+				"assigned": [
+					{
+						"uid": "user_003",
+						"displayName": "さんたろう",
+						"pictureUrl": "",
+						"confirmed": true
+					},
+					{
+						"uid": "user_001",
+						"displayName": "いちたろう",
+						"pictureUrl": "",
+						"confirmed": true
+					}
+				],
+				"assignedCount": 2,
+				"vacancies": 0,
+				"status": "proposed",
+				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedBy": "ai_adjustment"
+			},
+			"18:00-23:00": {
+				"name": "ロング夜",
+				"count": 2,
+				"jobRoles": ["ホール"],
+				"assigned": [
+					{
+						"uid": "user_002",
+						"displayName": "にたろう",
+						"pictureUrl": "",
+						"confirmed": true
+					},
+					{
+						"uid": "user_001",
+						"displayName": "いちたろう",
+						"pictureUrl": "",
+						"confirmed": true
+					}
+				],
+				"assignedCount": 2,
+				"vacancies": 0,
+				"status": "proposed",
+				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedBy": "ai_adjustment"
+			}
+		},
+		"2025-10-25": {
+			"10:00-14:00": {
+				"name": "土曜昼",
+				"count": 2,
+				"jobRoles": ["キッチン補助"],
+				"assigned": [
+					{
+						"uid": "user_007",
+						"displayName": "ななたろう",
+						"pictureUrl": "",
+						"confirmed": true
+					},
+					{
+						"uid": "user_001",
+						"displayName": "いちたろう",
+						"pictureUrl": "",
+						"confirmed": true
+					}
+				],
+				"assignedCount": 2,
+				"vacancies": 0,
+				"status": "confirmed",
+				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedBy": "ai_adjustment"
+			},
+			"18:00-22:00": {
+				"name": "土曜夜",
+				"count": 2,
+				"jobRoles": ["ホール"],
+				"assigned": [
+					{
+						"uid": "user_002",
+						"displayName": "にたろう",
+						"pictureUrl": "",
+						"confirmed": true
+					},
+					{
+						"uid": "user_007",
+						"displayName": "ななたろう",
+						"pictureUrl": "",
+						"confirmed": true
+					}
+				],
+				"assignedCount": 2,
+				"vacancies": 0,
+				"status": "draft",
+				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedBy": "ai_adjustment"
+			}
+		},
+		"2025-10-26": {
+			"09:00-12:00": {
+				"name": "日曜午前",
+				"count": 1,
+				"jobRoles": ["洗い物"],
+				"assigned": [
+					{
+						"uid": "user_001",
+						"displayName": "いちたろう",
+						"pictureUrl": "",
+						"confirmed": true
+					}
+				],
+				"assignedCount": 1,
+				"vacancies": 0,
+				"status": "draft",
+				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedBy": "ai_adjustment"
+			},
+			"12:00-16:00": {
+				"name": "日曜昼",
+				"count": 1,
+				"jobRoles": ["レジ"],
+				"assigned": [
+					{
+						"uid": "user_002",
+						"displayName": "にたろう",
+						"pictureUrl": "",
+						"confirmed": true
+					}
+				],
+				"assignedCount": 1,
+				"vacancies": 0,
+				"status": "draft",
+				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedBy": "ai_adjustment"
+			}
+		}
+	},
+	"meta": {
+		"model": "gpt-4o-mini-2024-07-18",
+		"promptTokens": 4902,
+		"completionTokens": 1582,
+		"totalTokens": 6484
+	}
+}

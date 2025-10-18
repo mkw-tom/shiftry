@@ -87,6 +87,7 @@ export const AssignPositionValidate = AssignPositionValidateBase.superRefine(
 	},
 );
 export type AssignPositionType = z.infer<typeof AssignPositionValidate>;
+export type AssignPositionInput = z.input<typeof AssignPositionValidate>;
 
 const HHmm = z
 	.string()

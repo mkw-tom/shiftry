@@ -1,15 +1,25 @@
-import type { $Enums } from "@prisma/client";
-import type { RequestsType } from "./validations/put.js";
+import { z } from "zod";
+import { RequestsValidate } from "./validations/put.js";
 
-export type ShiftRequestDTO = {
-	type: $Enums.ShiftType;
-	status: $Enums.RequestStatus;
-	id: string;
-	storeId: string;
-	weekStart: Date;
-	weekEnd: Date;
-	requests: RequestsType;
-	deadline: Date | null;
-	createdAt: Date;
-	updatedAt: Date;
-};
+// PrismaのEnum型をZodで再現
+const ShiftTypeEnum = z.enum(["MONTHLY", "WEEKLY"]);
+const RequestStatusEnum = z.enum([
+	"HOLD",
+	"REQUEST",
+	"ADJUSTMENT",
+	"CONFIRMED",
+]);
+
+export const ShiftRequestDTOValidate = z.object({
+	type: ShiftTypeEnum,
+	status: RequestStatusEnum,
+	id: z.string(),
+	storeId: z.string(),
+	weekStart: z.coerce.date(),
+	weekEnd: z.coerce.date(),
+	requests: RequestsValidate,
+	deadline: z.coerce.date().nullable(),
+	createdAt: z.coerce.date(),
+	updatedAt: z.coerce.date(),
+});
+export type ShiftRequestDTO = z.infer<typeof ShiftRequestDTOValidate>;

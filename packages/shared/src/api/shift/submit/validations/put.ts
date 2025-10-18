@@ -69,22 +69,23 @@ export const timeRangeSchema = z.string().regex(/^\d{2}:\d{2}-\d{2}:\d{2}$/, {
 });
 
 // 各日付の値："anytime" or "HH:MM-HH:MM" or null
-export const dateValueSchema = z.union([
+export const submitValueSchema = z.union([
 	z.literal("anytime"),
 	timeRangeSchema,
 	z.null(),
 ]);
-
+export type submitValueType = z.infer<typeof submitValueSchema>;
 // 全体のカレンダースキーマ（"2025-08-01": 値）
 export const SubmittedDataValidate = z.record(
 	z.string().regex(/^\d{4}-\d{2}-\d{2}$/, {
 		message: "Date must be in format YYYY-MM-DD",
 	}),
-	dateValueSchema,
+	submitValueSchema,
 );
 
 // 型定義
 export type SubmittedDataType = z.infer<typeof SubmittedDataValidate>;
+export type SubmittedDataInput = z.input<typeof SubmittedDataValidate>;
 
 export const upsertSubmittedShiftValidate = z.object({
 	shiftRequestId: z.string(),
