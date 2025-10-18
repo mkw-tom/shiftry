@@ -7,10 +7,14 @@ import {
 } from "@shared/api/shift/assign/validations/put";
 import { YMDW } from "@shared/utils/formatDate";
 import React, { useEffect } from "react";
+import { BiCheck } from "react-icons/bi";
 import { IoWarning } from "react-icons/io5";
+import { IoClose } from "react-icons/io5";
 import { LuUserRound } from "react-icons/lu";
+import { PiOpenAiLogo } from "react-icons/pi";
 import { useSelector } from "react-redux";
 import { useAdjustShiftForm } from "../../context/AdjustShiftFormContextProvider.tsx";
+import { useAiAdjustMode } from "../../context/AiAdjustModeProvider";
 
 const AssignStaffModal = ({
 	date,
@@ -25,6 +29,14 @@ const AssignStaffModal = ({
 		assigned: AssignPositionType["assigned"];
 	};
 }) => {
+	const {
+		aiMode,
+		AiModified,
+		allowModified,
+		rejectModified,
+		rejectModifiedDatas,
+		allowModifiedDatas,
+	} = useAiAdjustMode();
 	const {
 		assignShiftData,
 		submittedShiftList,
@@ -132,9 +144,22 @@ const AssignStaffModal = ({
 			<form className="modal-box h-auto  bg-white">
 				<div className=" text-gray-600 font-bold mb-2">
 					{YMDW(new Date(date))}
+					<button
+						type="button"
+						className="btn btn-sm btn-circle absolute right-2 top-2 shadow-none bg-white text-gray02 border border-gray02"
+						onClick={() => closeAssignStaffModal()}
+					>
+						✕
+					</button>
 				</div>
-				<h2 className="font-bold text-green02 mb-3 ml-1">
-					{assignStaffData.name}
+				<h2 className="font-bold text-green02 mb-3 ml-1 flex items-center justify-between">
+					<span>{assignStaffData.name}</span>
+					{aiMode && AiModified[date]?.[time] && (
+						<div className="text-xs flex items-center  text-purple-500 badge badge-sm badge-outline animate-pulse">
+							<PiOpenAiLogo className="" />
+							<span>AI調整中</span>
+						</div>
+					)}
 				</h2>
 				<div className="flex items-center mb-3 ml-1">
 					<div className="flex items-center gap-3">
@@ -216,10 +241,20 @@ const AssignStaffModal = ({
 								<li
 									key={m.user.id}
 									className={`flex items-center justify-between gap-2 w-full p-2 ${
-										!isHope && !checkedUids.includes(m.user.id)
-											? "opacity-40"
-											: ""
-									} `}
+										aiMode &&
+										AiModified[date]?.[time]?.assigned.some(
+											(a) => a.uid === m.user.id,
+										)
+											? "bg-purple-100"
+											: !isHope && !checkedUids.includes(m.user.id)
+												? "opacity-40"
+												: ""
+									}
+                  ${
+										rejectModifiedDatas[date]?.[time]?.assigned.some(
+											(a) => a.uid === m.user.id,
+										) && "bg-purple-100"
+									}`}
 								>
 									<div className="flex items-center gap-2 flex-1">
 										<div />
@@ -274,8 +309,28 @@ const AssignStaffModal = ({
 									</div>
 									<input
 										type="checkbox"
-										className="checkbox checkbox-sm checkbox-success mr-2"
-										checked={isChecked}
+										className={`checkbox checkbox-sm mr-2
+                      ${aiMode && "pointer-events-none"}
+                      ${
+												rejectModifiedDatas[date]?.[time]
+													? isChecked && "checkbox-success"
+													: aiMode &&
+															AiModified[date]?.[time]?.assigned.some(
+																(a) => a.uid === m.user.id,
+															)
+														? "checkbox-primary"
+														: isChecked && "checkbox-success"
+											}
+                    `}
+										checked={
+											rejectModifiedDatas[date]?.[time]
+												? isChecked
+												: isChecked ||
+													(aiMode &&
+														AiModified[date]?.[time]?.assigned.some(
+															(a) => a.uid === m.user.id,
+														))
+										}
 										onChange={(e) => {
 											if (previewVacancies <= 0 && e.target.checked) return;
 											if (e.target.checked) {
@@ -293,32 +348,66 @@ const AssignStaffModal = ({
 					)}
 				</ul>
 				<div className="modal-action flex items-center gap-1 w-full">
-					<button
-						type="button"
-						className="btn bg-gray02 text-white w-1/3 border-none"
-						onClick={closeAssignStaffModal}
-					>
-						中止
-					</button>
-					<button
-						type="submit"
-						className={`btn w-2/3 border-none ${
-							previewVacancies > 0
-								? "bg-red-500 text-white"
-								: "bg-green01 text-white"
-						}`}
-						onClick={(e) => {
-							e.preventDefault();
-							handleSave();
-						}}
-					>
-						<LuUserRound className="text-lg" />
-						{previewVacancies > 0 ? (
-							<span className="ml-2">{`不足 ${checkedUids.length}/${assignStaffData.count}`}</span>
-						) : (
-							<span className="ml-2">{`充足 ${checkedUids.length}/${assignStaffData.count}`}</span>
-						)}
-					</button>
+					{aiMode && AiModified[date]?.[time] ? (
+						<>
+							<button
+								type="submit"
+								className={`btn w-2/3  ${
+									allowModifiedDatas[date]?.[time]
+										? "bg-purple-500 border-none text-white"
+										: "btn-outline bg-white text-purple-500"
+								}`}
+								onClick={(e) => {
+									e.preventDefault();
+									allowModified(date, time);
+									closeAssignStaffModal();
+								}}
+							>
+								<BiCheck className="text-lg" />
+								{AiModified[date]?.[time]?.vacancies > 0 ? (
+									<span className="ml-2">{`不足 ${AiModified[date]?.[time]?.assigned.length}/${AiModified[date]?.[time]?.count}`}</span>
+								) : (
+									<span className="ml-2">{`適用 ${AiModified[date]?.[time]?.assigned.length}/${AiModified[date]?.[time]?.count}`}</span>
+								)}
+							</button>
+							<button
+								type="submit"
+								className={`btn w-1/3 ${
+									rejectModifiedDatas[date]?.[time]
+										? "bg-gray02 border-none text-white"
+										: "btn-outline bg-white text-gray02"
+								}`}
+								onClick={(e) => {
+									e.preventDefault();
+									rejectModified(date, time);
+									closeAssignStaffModal();
+								}}
+							>
+								<IoClose className="t" />
+								拒否
+							</button>
+						</>
+					) : (
+						<button
+							type="submit"
+							className={`btn flex-1 border-none ${
+								previewVacancies > 0
+									? "bg-red-500 text-white"
+									: "bg-green01 text-white"
+							}`}
+							onClick={(e) => {
+								e.preventDefault();
+								handleSave();
+							}}
+						>
+							<LuUserRound className="text-lg" />
+							{previewVacancies > 0 ? (
+								<span className="ml-2">{`不足 ${checkedUids.length}/${assignStaffData.count}`}</span>
+							) : (
+								<span className="ml-2">{`充足 ${checkedUids.length}/${assignStaffData.count}`}</span>
+							)}
+						</button>
+					)}
 				</div>
 			</form>
 		</dialog>

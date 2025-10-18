@@ -1,12 +1,15 @@
-import type { $Enums } from "@prisma/client";
-import type { ShiftsOfAssignType } from "./validations/put.js";
+import { z } from "zod";
+import { ShiftOfAssignValidate } from "./validations/put.js";
 
-export type AssignShiftDTO = {
-	id: string;
-	storeId: string;
-	shiftRequestId: string;
-	shifts: ShiftsOfAssignType;
-	status: $Enums.ShiftStatus;
-	updatedAt: Date;
-	createdAt: Date;
-};
+const ShiftStatusEnum = z.enum(["ADJUSTMENT", "CONFIRMED"]);
+
+export const AssignShiftDTOValidate = z.object({
+	id: z.string(),
+	storeId: z.string(),
+	shiftRequestId: z.string(),
+	shifts: ShiftOfAssignValidate,
+	status: ShiftStatusEnum,
+	updatedAt: z.coerce.date(),
+	createdAt: z.coerce.date(),
+});
+export type AssignShiftDTO = z.infer<typeof AssignShiftDTOValidate>;

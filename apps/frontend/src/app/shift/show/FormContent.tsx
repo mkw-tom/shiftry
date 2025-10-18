@@ -238,13 +238,6 @@ const FormContent = () => {
 		}, 0);
 	};
 
-	const openAutoAssignModal = (id: string) => {
-		const modal = document.getElementById(`auto-assign-${id}`);
-		if (modal) {
-			(modal as HTMLDialogElement).showModal();
-		}
-	};
-
 	const dateFullRange = (): Date[] => {
 		if (!shiftRequestData) return [];
 		const start = new Date(shiftRequestData.weekStart);
@@ -326,7 +319,6 @@ const FormContent = () => {
 				<ShiftControlButtons
 					selectDate={selectDate}
 					openEditAssignPositionModal={openEditAssignPositionModal}
-					openAutoAssignModal={openAutoAssignModal}
 					openSubmitStatusModal={openSubmitStatusModal}
 					editAssignPosition={editAssignPosition}
 				/>
