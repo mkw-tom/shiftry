@@ -10,20 +10,22 @@
 					{
 						"uid": "user_006",
 						"displayName": "ろくたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "absolute"
 					},
 					{
 						"uid": "user_005",
 						"displayName": "ごたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "priority"
 					}
 				],
 				"assignedCount": 2,
 				"vacancies": 0,
 				"status": "confirmed",
-				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedAt": "2025-10-19T04:19:22.866Z",
 				"updatedBy": "ai_adjustment"
 			},
 			"18:00-22:00": {
@@ -34,20 +36,22 @@
 					{
 						"uid": "user_002",
 						"displayName": "にたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "auto"
 					},
 					{
 						"uid": "user_008",
 						"displayName": "はちたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "manual"
 					}
 				],
 				"assignedCount": 2,
 				"vacancies": 0,
 				"status": "proposed",
-				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedAt": "2025-10-19T04:19:22.866Z",
 				"updatedBy": "ai_adjustment"
 			}
 		},
@@ -58,16 +62,17 @@
 				"jobRoles": ["洗い物"],
 				"assigned": [
 					{
-						"uid": "user_001",
-						"displayName": "いちたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"uid": "user_003",
+						"displayName": "さんたろう",
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "auto"
 					}
 				],
 				"assignedCount": 1,
 				"vacancies": 0,
 				"status": "draft",
-				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedAt": "2025-10-19T04:19:22.866Z",
 				"updatedBy": "ai_adjustment"
 			},
 			"18:00-22:00": {
@@ -78,14 +83,15 @@
 					{
 						"uid": "user_008",
 						"displayName": "はちたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "priority"
 					}
 				],
 				"assignedCount": 1,
 				"vacancies": 0,
 				"status": "confirmed",
-				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedAt": "2025-10-19T04:19:22.866Z",
 				"updatedBy": "ai_adjustment"
 			}
 		},
@@ -98,20 +104,22 @@
 					{
 						"uid": "user_002",
 						"displayName": "にたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "auto"
 					},
 					{
 						"uid": "user_003",
 						"displayName": "さんたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "priority"
 					}
 				],
 				"assignedCount": 2,
 				"vacancies": 0,
 				"status": "draft",
-				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedAt": "2025-10-19T04:19:22.866Z",
 				"updatedBy": "ai_adjustment"
 			}
 		},
@@ -124,20 +132,22 @@
 					{
 						"uid": "user_004",
 						"displayName": "よんたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "priority"
 					},
 					{
 						"uid": "user_006",
 						"displayName": "ろくたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "priority"
 					}
 				],
 				"assignedCount": 2,
 				"vacancies": 0,
 				"status": "confirmed",
-				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedAt": "2025-10-19T04:19:22.866Z",
 				"updatedBy": "ai_adjustment"
 			},
 			"18:00-21:00": {
@@ -148,14 +158,15 @@
 					{
 						"uid": "user_001",
 						"displayName": "いちたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "manual"
 					}
 				],
 				"assignedCount": 1,
 				"vacancies": 0,
 				"status": "draft",
-				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedAt": "2025-10-19T04:19:22.866Z",
 				"updatedBy": "ai_adjustment"
 			}
 		},
@@ -168,20 +179,22 @@
 					{
 						"uid": "user_003",
 						"displayName": "さんたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "priority"
 					},
 					{
 						"uid": "user_001",
 						"displayName": "いちたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "manual"
 					}
 				],
 				"assignedCount": 2,
 				"vacancies": 0,
 				"status": "proposed",
-				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedAt": "2025-10-19T04:19:22.866Z",
 				"updatedBy": "ai_adjustment"
 			},
 			"18:00-23:00": {
@@ -192,20 +205,22 @@
 					{
 						"uid": "user_002",
 						"displayName": "にたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "priority"
 					},
 					{
 						"uid": "user_001",
 						"displayName": "いちたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "manual"
 					}
 				],
 				"assignedCount": 2,
 				"vacancies": 0,
 				"status": "proposed",
-				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedAt": "2025-10-19T04:19:22.866Z",
 				"updatedBy": "ai_adjustment"
 			}
 		},
@@ -218,20 +233,22 @@
 					{
 						"uid": "user_007",
 						"displayName": "ななたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "priority"
 					},
 					{
 						"uid": "user_001",
 						"displayName": "いちたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "manual"
 					}
 				],
 				"assignedCount": 2,
 				"vacancies": 0,
 				"status": "confirmed",
-				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedAt": "2025-10-19T04:19:22.866Z",
 				"updatedBy": "ai_adjustment"
 			},
 			"18:00-22:00": {
@@ -242,20 +259,22 @@
 					{
 						"uid": "user_002",
 						"displayName": "にたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "priority"
 					},
 					{
 						"uid": "user_007",
 						"displayName": "ななたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "manual"
 					}
 				],
 				"assignedCount": 2,
 				"vacancies": 0,
 				"status": "draft",
-				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedAt": "2025-10-19T04:19:22.866Z",
 				"updatedBy": "ai_adjustment"
 			}
 		},
@@ -268,14 +287,15 @@
 					{
 						"uid": "user_001",
 						"displayName": "いちたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "auto"
 					}
 				],
 				"assignedCount": 1,
 				"vacancies": 0,
 				"status": "draft",
-				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedAt": "2025-10-19T04:19:22.866Z",
 				"updatedBy": "ai_adjustment"
 			},
 			"12:00-16:00": {
@@ -286,22 +306,23 @@
 					{
 						"uid": "user_002",
 						"displayName": "にたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "manual"
 					}
 				],
 				"assignedCount": 1,
 				"vacancies": 0,
 				"status": "draft",
-				"updatedAt": "2025-10-18T10:54:54.448Z",
+				"updatedAt": "2025-10-19T04:19:22.866Z",
 				"updatedBy": "ai_adjustment"
 			}
 		}
 	},
 	"meta": {
 		"model": "gpt-4o-mini-2024-07-18",
-		"promptTokens": 4902,
-		"completionTokens": 1582,
-		"totalTokens": 6484
+		"promptTokens": 5661,
+		"completionTokens": 1644,
+		"totalTokens": 7305
 	}
 }

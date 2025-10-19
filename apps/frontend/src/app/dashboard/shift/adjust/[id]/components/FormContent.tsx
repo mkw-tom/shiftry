@@ -5,10 +5,16 @@ import { useGetSubmittedShfit } from "@/app/api/hook/useGetSubmittedShfit";
 import { dummyAssignShift } from "@/app/utils/dummyData/AssginShfit";
 import { dummyShiftRequest } from "@/app/utils/dummyData/ShiftRequest";
 import { dummySubmittedShiftList } from "@/app/utils/dummyData/SubmittedShifts";
+import {
+	demoAssignShift,
+	demoMembers,
+	demoSubmissions,
+	demoTemplateShift,
+} from "@/app/utils/dummyData/aiAdjustDemo";
 import { dummyMembers } from "@/app/utils/dummyData/member";
 import { TEST_MODE } from "@/lib/env";
 import { setMembers } from "@/redux/slices/members";
-import type { RootState } from "@/redux/store.js";
+import type { RootState } from "@/redux/store";
 import type {
 	AssignPositionType,
 	AssignPositionWithDateInput,
@@ -76,10 +82,10 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 
 		const fetchTestModeData = () => {
 			if (!TEST_MODE) return;
-			setShiftRequestData(dummyShiftRequest);
-			setAssignShiftData(dummyAssignShift);
-			setSubmittedShiftList(dummySubmittedShiftList);
-			dispatch(setMembers(dummyMembers));
+			setShiftRequestData(demoTemplateShift);
+			setAssignShiftData(demoAssignShift);
+			setSubmittedShiftList(demoSubmissions);
+			dispatch(setMembers(demoMembers));
 		};
 
 		const fetchShiftData = async () => {

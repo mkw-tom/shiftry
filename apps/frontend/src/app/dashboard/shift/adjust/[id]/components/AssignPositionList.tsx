@@ -16,7 +16,6 @@ import { PiOpenAiLogo } from "react-icons/pi";
 import { useSelector } from "react-redux";
 import { useAdjustShiftForm } from "../context/AdjustShiftFormContextProvider.tsx";
 import { useAiAdjustMode } from "../context/AiAdjustModeProvider";
-import AiSuggestionModal from "./AiModal/AiSuggestionModal";
 import AssignStaffModal from "./modals/AssignStaffModal";
 import EditAssignPositionModal from "./modals/EditAssignPositionModal";
 import ShowAssignListModal from "./modals/ShowAssignListModal";
@@ -300,7 +299,7 @@ const AssignPositionList = ({
 																	>
 																		<div className="w-5">
 																			<img
-																				src={staff.pictureUrl}
+																				src={staff.pictureUrl || ""}
 																				alt={staff.displayName}
 																			/>
 																		</div>
@@ -320,7 +319,7 @@ const AssignPositionList = ({
 																				>
 																					<div className="w-5">
 																						<img
-																							src={staff.pictureUrl}
+																							src={staff.pictureUrl || ""}
 																							alt={staff.displayName}
 																						/>
 																					</div>
@@ -334,11 +333,6 @@ const AssignPositionList = ({
 													</div>
 
 													<AssignStaffModal
-														date={date}
-														time={time}
-														assignStaffData={assignStaffData}
-													/>
-													<AiSuggestionModal
 														date={date}
 														time={time}
 														assignStaffData={assignStaffData}

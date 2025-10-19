@@ -13,8 +13,9 @@
 import type { AiModifiedType } from "@shared/api/shift/ai/types/post-adjust.js";
 import type {
 	CurrentAssignmentsInput,
-	submissionsInput,
+	SubmissionsInput,
 } from "@shared/api/shift/ai/validations/post-adjust.js";
+import type { AssignStatusType } from "@shared/api/shift/assign/validations/put.js";
 import { applyCountIntegrity, normalizeAssignedList } from "./normalization.js";
 import { buildSubmissionsIndex, isAvailable } from "./timeAndAvailability.js";
 
@@ -35,16 +36,21 @@ export function mergeCurrentAssignments(
 					count: cur?.count,
 					jobRoles: cur?.jobRoles ?? [],
 					assigned: [],
-					status: cur?.status ?? "proposed",
+					status: cur?.status ?? ("proposed" as AssignStatusType),
 					assignedCount: cur?.assignedCount ?? 0,
 					vacancies: cur?.vacancies ?? 0,
-					updatedAt: cur?.updatedAt ?? null,
-					updatedBy: cur?.updatedBy ?? null,
+					updatedAt: cur?.updatedAt ?? "",
+					updatedBy: cur?.updatedBy ?? "",
 				};
 			}
 			const out = aiModified[date][range];
 			if (cur?.assigned == null) return;
-			const curAssigned = normalizeAssignedList(cur?.assigned ?? []);
+			const curAssigned = normalizeAssignedList(
+				(cur?.assigned ?? []).map((a) => ({
+					...a,
+					pictureUrl: a.pictureUrl,
+				})),
+			);
 
 			out.assigned = normalizeAssignedList([
 				...curAssigned, // 既存を先頭に
@@ -70,7 +76,7 @@ export function mergeCurrentAssignments(
  */
 export function sanitizeAiModified(
 	aiModified: AiModifiedType,
-	submissions: submissionsInput[],
+	submissions: SubmissionsInput[],
 	locked: Set<string>,
 	opts?: { treatMissingAsUnavailable?: boolean },
 ) {
