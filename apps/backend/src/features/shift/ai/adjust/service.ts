@@ -3,12 +3,7 @@ import type {
 	AIShiftSlot,
 	AiModifiedType,
 } from "@shared/api/shift/ai/types/post-adjust.js";
-import type {
-	ConstraintsInput,
-	CurrentAssignmentsInput,
-	TemplateShiftInput,
-	submissionsInput,
-} from "@shared/api/shift/ai/validations/post-adjust.js";
+import type { AIShiftAdjustRequestInput } from "@shared/api/shift/ai/validations/post-adjust.js";
 import openai from "../../../../config/openai.js";
 import {
 	backfillToCount,
@@ -20,16 +15,17 @@ import {
 } from "./utils/index.js";
 
 export const getAIShiftAdjustment = async ({
-	templateShift,
-	submissions,
-	currentAssignments,
-	constraints,
+	datas,
 }: {
-	templateShift: TemplateShiftInput;
-	submissions: submissionsInput[];
-	currentAssignments: CurrentAssignmentsInput;
-	constraints?: ConstraintsInput;
+	datas: AIShiftAdjustRequestInput;
 }): Promise<AIShiftAdjustResponse> => {
+	const {
+		templateShift,
+		submissions,
+		currentAssignments,
+		memberProfiles,
+		constraints,
+	} = datas;
 	/** ---- システムプロンプト ---- */
 	const systemPrompt = `
 あなたは小規模店舗向けのシフト調整AIです。
@@ -166,6 +162,7 @@ ${JSON.stringify(constraints ?? {}, null, 2)}
 			parsed.ai_modified,
 			templateShift,
 			submissions,
+			memberProfiles,
 			locked,
 		);
 	}
@@ -176,6 +173,7 @@ ${JSON.stringify(constraints ?? {}, null, 2)}
 			parsed.ai_modified,
 			templateShift,
 			submissions,
+			memberProfiles,
 			locked,
 		);
 	}

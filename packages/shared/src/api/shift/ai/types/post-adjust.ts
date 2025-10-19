@@ -1,9 +1,6 @@
-/**
- * AIシフト調整APIのレスポンス型
- * --------------------------------------------
- * 各日付ごとに時間帯スロットがあり、
- * それぞれにシフト情報・割当メンバーが格納される。
- */
+import type { AssignStatusType } from "../../../../api/shift/assign/validations/put.js";
+import type { AIAssignedUserType } from "../validations/post-adjust.js";
+
 export type AIShiftAdjustResponse = {
 	ok: true;
 	ai_modified: AiModifiedType;
@@ -14,20 +11,14 @@ export type AIShiftSlot = {
 	name: string;
 	count: number;
 	jobRoles: string[];
-	assigned: AIAssignedUser[];
+	assigned: AIAssignedUserType[];
 	assignedCount: number;
 	vacancies: number;
-	status: "proposed" | "draft" | "confirmed";
+	status: AssignStatusType;
 	updatedAt: string;
 	updatedBy: string;
 };
 
-export type AIAssignedUser = {
-	uid: string;
-	displayName: string;
-	pictureUrl: string;
-	confirmed: boolean;
-};
 export type AiModifiedType = Record<string, Record<string, AIShiftSlot>>;
 
 export interface AIMetaInfo {

@@ -13,7 +13,8 @@ import { useAiAdjustMode } from "../context/AiAdjustModeProvider";
 const AIModeBottomDrawer = () => {
 	const { assignShiftData, setAssignShiftData } = useAdjustShiftForm();
 	const { showToast } = useToast();
-	const { AiModified, setAiMode, validate, clearStates } = useAiAdjustMode();
+	const { AiModified, setAiMode, validate, clearStates, allowModifiedDatas } =
+		useAiAdjustMode();
 	const modifiedKeys = Object.keys(AiModified);
 	const [currentIdx, setCurrentIdx] = React.useState(0);
 	const [collapsed, setCollapsed] = React.useState(true);
@@ -39,11 +40,17 @@ const AIModeBottomDrawer = () => {
 		}
 		setAssignShiftData((prev) => {
 			const newShifts = { ...prev.shifts };
-			Object.entries(AiModified).map(([date, times]) => {
+			Object.entries(allowModifiedDatas).map(([date, times]) => {
 				Object.entries(times).map(([timeRange, info]) => {
 					newShifts[date][timeRange] = {
 						...newShifts[date][timeRange],
-						assigned: info?.assigned ?? [],
+						assigned: Array.isArray(info?.assigned)
+							? info.assigned.map((staff) => ({
+									...staff,
+									confirmed: staff.confirmed ?? false,
+									pictureUrl: staff.pictureUrl ?? undefined,
+								}))
+							: [],
 						assignedCount: info?.assignedCount ?? 0,
 						vacancies: info
 							? info.count - info.assignedCount
@@ -153,7 +160,7 @@ const AIModeBottomDrawer = () => {
 														>
 															<div className="w-5">
 																<img
-																	src={staff.pictureUrl}
+																	src={staff.pictureUrl || ""}
 																	alt={staff.displayName}
 																/>
 															</div>

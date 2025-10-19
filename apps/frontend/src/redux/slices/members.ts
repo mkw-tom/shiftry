@@ -1,3 +1,4 @@
+import { demoMembers } from "@/app/utils/dummyData/aiAdjustDemo";
 import { dummyMembers } from "@/app/utils/dummyData/member";
 import { TEST_MODE } from "@/lib/env";
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
@@ -11,7 +12,7 @@ type MembersState = {
 };
 
 const initialState: MembersState = {
-	members: TEST_MODE ? dummyMembers : [],
+	members: TEST_MODE ? demoMembers : [],
 };
 
 export const userSlice = createSlice({

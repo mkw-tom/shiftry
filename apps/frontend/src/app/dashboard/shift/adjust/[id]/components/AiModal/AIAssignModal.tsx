@@ -3,149 +3,29 @@ import { YMDW } from "@shared/utils/formatDate";
 import React, { use, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { ja } from "date-fns/locale";
+import { useAiAdjust } from "@/app/api/hook/useAiAdjust";
+import { demoMembers } from "@/app/utils/dummyData/aiAdjustDemo";
+import type {
+	AIShiftAdjustRequest,
+	MemberProfileType,
+} from "@shared/api/shift/ai/validations/post-adjust.js";
+import { ja, te } from "date-fns/locale";
 import { useAdjustShiftForm } from "../../context/AdjustShiftFormContextProvider.tsx";
 import { useAiAdjustMode } from "../../context/AiAdjustModeProvider";
 
-const dummyAIResult = {
-	"2025-10-20": {
-		"05:00-08:30": {
-			name: "あさ",
-			count: 2,
-			jobRoles: ["レジ", "接客"],
-			assigned: [
-				{
-					uid: "user_001",
-					displayName: "いちたろう",
-					pictureUrl: "https://placehold.co/64x64",
-					source: "absolute" as const,
-					confirmed: true,
-				},
-				{
-					uid: "user_006",
-					displayName: "ろくたろう",
-					pictureUrl: "https://placehold.co/64x64",
-					source: "absolute" as const,
-					confirmed: true,
-				},
-			],
-			assignedCount: 2,
-			vacancies: 0,
-			status: "confirmed",
-			updatedAt: "2025-09-10T04:30:00.000Z",
-			updatedBy: "owner_999",
-		},
-		"18:00-22:00": {
-			name: "よる",
-			count: 2,
-			jobRoles: ["ホール"],
-			assigned: [
-				{
-					uid: "user_001",
-					displayName: "いちたろう",
-					pictureUrl: "https://placehold.co/64x64",
-					source: "absolute" as const,
-					confirmed: true,
-				},
-				{
-					uid: "user_007",
-					displayName: "ななたろう",
-					pictureUrl: "https://placehold.co/64x64",
-					source: "priority" as const,
-					confirmed: false,
-				},
-			],
-			assignedCount: 2,
-			vacancies: 0,
-			status: "proposed",
-			updatedAt: "2025-09-10T04:31:00.000Z",
-			updatedBy: "system",
-		},
-	},
-	"2025-10-21": {
-		"09:00-13:00": {
-			name: "午前",
-			count: 1,
-			jobRoles: ["洗い物"],
-			assigned: [
-				{
-					uid: "user_005",
-					displayName: "ごたろう",
-					pictureUrl: "https://placehold.co/64x64",
-					source: "absolute" as const,
-					confirmed: true,
-				},
-			],
-			assignedCount: 1,
-			vacancies: 0,
-			status: "draft",
-			updatedAt: "2025-09-10T04:35:00.000Z",
-			updatedBy: "system",
-		},
-	},
-	"2025-10-22": {
-		"09:00-12:00": {
-			name: "午前",
-			count: 2,
-			jobRoles: ["洗い物"],
-			assigned: [
-				{
-					uid: "user_001",
-					displayName: "いちたろう",
-					pictureUrl: "https://placehold.co/64x64",
-					source: "absolute" as const,
-					confirmed: true,
-				},
-				{
-					uid: "user_002",
-					displayName: "にたろう",
-					pictureUrl: "https://placehold.co/64x64",
-					source: "priority" as const,
-					confirmed: false,
-				},
-			],
-			assignedCount: 2,
-			vacancies: 0,
-			status: "draft",
-			updatedAt: "2025-09-10T04:35:00.000Z",
-			updatedBy: "system",
-		},
-	},
-	"2025-10-23": {
-		"05:00-08:30": {
-			name: "朝",
-			count: 2,
-			jobRoles: ["レジ", "接客"],
-			assigned: [
-				{
-					uid: "user_001",
-					displayName: "いちたろう",
-					pictureUrl: "https://placehold.co/64x64",
-					source: "absolute" as const,
-					confirmed: true,
-				},
-				{
-					uid: "user_004",
-					displayName: "よんたろう",
-					pictureUrl: "https://placehold.co/64x64",
-					source: "priority" as const,
-					confirmed: false,
-				},
-			],
-			assignedCount: 2,
-			vacancies: 0,
-			status: "confirmed",
-			updatedAt: "2025-09-10T04:30:00.000Z",
-			updatedBy: "owner_999",
-		},
-	},
-};
-
 const AIAssignModal = () => {
-	const { shiftRequestData, assignShiftData, setAssignShiftData } =
-		useAdjustShiftForm();
-
-	const { useAiAssign, isAiLoading, aiError } = useAiAdjustMode();
+	const {
+		shiftRequestData,
+		assignShiftData,
+		setAssignShiftData,
+		submittedShiftList,
+	} = useAdjustShiftForm();
+	const {
+		aiAdjust,
+		isLoading: isAiAdjustLoading,
+		error: aiAdjustError,
+	} = useAiAdjust();
+	const { startAiAdjustMode } = useAiAdjustMode();
 	const [datePicking, setDatePicking] = useState(false);
 	// const [checkedFields, setCheckedFields] = useState<string[]>([]);
 	const [successAssign, setSuccessAssign] = useState<boolean>(false);
@@ -203,31 +83,59 @@ const AIAssignModal = () => {
 
 	const handleAiAssign = async () => {
 		setSuccessAssign(false);
-		let period: {
-			type: "all" | "range" | "single";
-			start?: string;
-			end?: string;
-			date?: string;
-		} = { type: assignRange };
-		if (assignRange === "range" && rangeStart && rangeEnd) {
-			period = {
-				type: "range",
-				start: formatDateLocal(rangeStart),
-				end: formatDateLocal(rangeEnd),
-			};
-		} else if (assignRange === "single" && singleDate) {
-			period = {
-				type: "single",
-				date: formatDateLocal(singleDate),
-			};
-		}
+		// let period: {
+		// 	type: "all" | "range" | "single";
+		// 	start?: string;
+		// 	end?: string;
+		// 	date?: string;
+		// } = { type: assignRange };
+		// if (assignRange === "range" && rangeStart && rangeEnd) {
+		// 	period = {
+		// 		type: "range",
+		// 		start: formatDateLocal(rangeStart),
+		// 		end: formatDateLocal(rangeEnd),
+		// 	};
+		// } else if (assignRange === "single" && singleDate) {
+		// 	period = {
+		// 		type: "single",
+		// 		date: formatDateLocal(singleDate),
+		// 	};
+		// }
 		if (!isInputValid()) return;
-		useAiAssign(dummyAIResult);
+
+		const memberProfiles: MemberProfileType[] = demoMembers.map((member) => ({
+			uid: member.user.id,
+			displayName: member.user.name,
+			pictureUrl: member.user.pictureUrl ?? undefined,
+			jobRoles: member.user.jobRoles
+				? member.user.jobRoles.map(
+						(roleObj: { roleId: string; role: { id: string; name: string } }) =>
+							roleObj.role.name,
+					)
+				: [],
+		}));
+
+		const body: AIShiftAdjustRequest = {
+			templateShift: shiftRequestData,
+			submissions: submittedShiftList,
+			currentAssignments: assignShiftData.shifts,
+			memberProfiles: memberProfiles,
+			// assignPeriod: period,
+		};
+		const res = await aiAdjust(body);
+		if (!res.ok || !("ai_modified" in res)) {
+			showToast(
+				`AI調整に失敗しました。${res.message || "通信エラー"}`,
+				"error",
+			);
+			return;
+		}
+		startAiAdjustMode(res.ai_modified);
 		setSuccessAssign(true);
 	};
 
 	useEffect(() => {
-		if (!isAiLoading && successAssign) {
+		if (!isAiAdjustLoading && successAssign) {
 			// モーダルを閉じる
 			const modal = document.getElementById(
 				"ai-assign-modal",
@@ -237,7 +145,7 @@ const AIAssignModal = () => {
 			showToast("AI調整が完了しました", "success");
 			setSuccessAssign(false);
 		}
-	}, [isAiLoading, successAssign, showToast]);
+	}, [isAiAdjustLoading, successAssign, showToast]);
 
 	return (
 		<>
@@ -250,7 +158,7 @@ const AIAssignModal = () => {
 					<button
 						type="button"
 						className="btn btn-sm btn-circle absolute right-2 top-2 shadow-none bg-white text-gray02 border border-gray02"
-						disabled={isAiLoading}
+						disabled={isAiAdjustLoading}
 						onClick={() => onCloseAutoAssignModal()}
 					>
 						✕
@@ -272,6 +180,7 @@ const AIAssignModal = () => {
 										setAssignRange(e.target.value as "all" | "range" | "single")
 									}
 									className="radio radio-sm radio-primary"
+									disabled={isAiAdjustLoading}
 								/>
 								<span className="text-sm text-gray-700">全体</span>
 							</label>
@@ -284,6 +193,7 @@ const AIAssignModal = () => {
 										setAssignRange(e.target.value as "all" | "range" | "single")
 									}
 									className="radio radio-sm radio-primary"
+									disabled={isAiAdjustLoading}
 								/>
 								<span className="text-sm text-gray-700">特定期間</span>
 							</label>
@@ -296,6 +206,7 @@ const AIAssignModal = () => {
 										setAssignRange(e.target.value as "all" | "range" | "single")
 									}
 									className="radio radio-sm radio-primary"
+									disabled={isAiAdjustLoading}
 								/>
 								<span className="text-sm text-gray-700">1日だけ</span>
 							</label>
@@ -412,9 +323,9 @@ const AIAssignModal = () => {
 							!isInputValid() && "opacity-40"
 						}`}
 						onClick={() => handleAiAssign()}
-						disabled={isAiLoading || !isInputValid()}
+						disabled={isAiAdjustLoading || !isInputValid()}
 					>
-						{isAiLoading ? (
+						{isAiAdjustLoading ? (
 							<span className="loading loading-dots" />
 						) : (
 							"AI調整を実行"

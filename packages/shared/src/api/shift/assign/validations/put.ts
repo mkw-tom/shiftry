@@ -39,6 +39,13 @@ export const AssignUserSchema = z.object({
 });
 export type AssignUserType = z.infer<typeof AssignUserSchema>;
 
+export const AssignStatusEnum = z.enum([
+	"draft",
+	"proposed",
+	"confirmed",
+	"published",
+]);
+export type AssignStatusType = z.infer<typeof AssignStatusEnum>;
 export const AssignPositionValidateBase = z.object({
 	name: z
 		.string()
@@ -58,7 +65,7 @@ export const AssignPositionValidateBase = z.object({
 	assigned: z.array(AssignUserSchema).default([]),
 	assignedCount: z.number().int().optional(),
 	vacancies: z.number().int().optional(),
-	status: z.enum(["draft", "proposed", "confirmed", "published"]).optional(),
+	status: AssignStatusEnum.optional(),
 	updatedAt: z.string().datetime().optional(),
 	updatedBy: z.string().optional(),
 });

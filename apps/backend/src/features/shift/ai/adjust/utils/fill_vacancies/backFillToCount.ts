@@ -13,9 +13,11 @@
 
 import type { AiModifiedType } from "@shared/api/shift/ai/types/post-adjust.js";
 import type {
+	MemberProfileInput,
+	SubmissionsInput,
 	TemplateShiftInput,
-	submissionsInput,
 } from "@shared/api/shift/ai/validations/post-adjust.js";
+import { getPictureUrlByUid } from "../getMemberProfile.js";
 import { buildHintIndex } from "../indexBuilders.js";
 import {
 	applyCountIntegrity,
@@ -26,7 +28,8 @@ import { buildSubmissionsIndex, isAvailable } from "../timeAndAvailability.js";
 export function backfillToCount(
 	aiModified: AiModifiedType,
 	templateShift: TemplateShiftInput,
-	submissions: submissionsInput[],
+	submissions: SubmissionsInput[],
+	memberProfiles: MemberProfileInput[],
 	locked: Set<string>,
 ) {
 	const { index: hintIndex, nameIndex } = buildHintIndex(templateShift);
@@ -62,11 +65,20 @@ export function backfillToCount(
 			for (const c of candidates) {
 				if (assigned.length >= count) break;
 				if (locked.has(`${date}::${range}::${c.uid}`)) continue; // 念のため
+				let source: "absolute" | "priority" | "manual" = "manual";
+				if (c.inAbs) {
+					source = "absolute";
+				} else if (c.priLevel !== 999) {
+					source = "priority";
+				}
+
+				const pic = getPictureUrlByUid(memberProfiles, c.uid);
 				assigned.push({
 					uid: c.uid,
 					displayName: nameIndex.get(c.uid) ?? c.uid,
-					pictureUrl: "",
+					pictureUrl: pic,
 					confirmed: true,
+					source,
 				});
 				already.add(c.uid);
 			}
