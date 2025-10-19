@@ -1,6 +1,6 @@
 "use client";
 import { ShiftsOfAssignType } from "@shared/api/common/types/json";
-import type { AssignUserType } from "@shared/api/shift/assign/validations/put";
+import type { AiModifiedType } from "@shared/api/shift/ai/types/post-adjust";
 import {
 	type ReactNode,
 	createContext,
@@ -9,32 +9,13 @@ import {
 	useState,
 } from "react";
 
-// Define AiModifiedType based on your usage
-export type AiModifiedType = {
-	[date: string]: {
-		[time: string]: {
-			name: string;
-			count: number;
-			jobRoles: string[];
-			assigned: AssignUserType[];
-			assignedCount: number;
-			vacancies: number;
-			status: string;
-			updatedAt: string;
-			updatedBy: string;
-		} | null;
-	};
-};
-
 type AiAdjustModeContextType = {
 	aiMode: boolean;
 	setAiMode: React.Dispatch<React.SetStateAction<boolean>>;
 	AiModified: AiModifiedType;
-	useAiAssign: (modified: AiModifiedType) => void;
+	startAiAdjustMode: (modified: AiModifiedType) => void;
 	allowModified: (date: string, time: string) => boolean;
 	rejectModified: (date: string, time: string) => void;
-	isAiLoading: boolean;
-	aiError: string | null;
 	allowModifiedDatas: AiModifiedType;
 	rejectModifiedDatas: AiModifiedType;
 	validate: boolean;
@@ -55,8 +36,6 @@ export const useAiAdjustMode = () => {
 
 export const AiAdjustModeProvider = ({ children }: { children: ReactNode }) => {
 	const [aiMode, setAiMode] = useState(false);
-	const [isAiLoading, setIsAiLoading] = useState(false);
-	const [aiError, setAiError] = useState<string | null>(null);
 	const [AiModified, setAiModified] = useState<AiModifiedType>({});
 	const [allowModifiedDatas, setAllowModifiedDatas] = useState<AiModifiedType>(
 		{},
@@ -64,25 +43,27 @@ export const AiAdjustModeProvider = ({ children }: { children: ReactNode }) => {
 	const [rejectModifiedDatas, setRejectModifiedDatas] =
 		useState<AiModifiedType>({});
 
-	const validate =
-		Object.entries(AiModified).length ===
-		Object.entries(allowModifiedDatas).length +
-			Object.entries(rejectModifiedDatas).length;
+	const validate = useMemo(() => {
+		// AiModifiedの全date/timeがallow/rejectどちらかに入っているか
+		let total = 0;
+		let checked = 0;
+		for (const [date, times] of Object.entries(AiModified)) {
+			for (const time of Object.keys(times)) {
+				total++;
+				if (
+					allowModifiedDatas[date]?.[time] !== undefined ||
+					rejectModifiedDatas[date]?.[time] !== undefined
+				) {
+					checked++;
+				}
+			}
+		}
+		return total > 0 && total === checked;
+	}, [AiModified, allowModifiedDatas, rejectModifiedDatas]);
 
-	const useAiAssign = (modified: AiModifiedType) => {
-		setIsAiLoading(true);
-		setAiError(null);
-		setTimeout(() => {
-			// ここでAPI呼び出しなどの非同期処理を行う
-			// 成功した場合
-			setAiError(null);
-			setIsAiLoading(false);
-			setAiMode(true);
-			setAiModified(modified);
-		}, 2000); // 2秒後に完了とする例
-		// 失敗した場合
-		// setAiError("エラーメッセージ");
-		// setIsAiLoading(false);
+	const startAiAdjustMode = (modified: AiModifiedType) => {
+		setAiMode(true);
+		setAiModified(modified);
 	};
 
 	const allowModified = (date: string, time: string) => {
@@ -92,7 +73,7 @@ export const AiAdjustModeProvider = ({ children }: { children: ReactNode }) => {
 				if (!newState[date]) {
 					newState[date] = {};
 				}
-				newState[date][time] = null;
+				delete newState[date][time];
 				return newState;
 			});
 		}
@@ -101,7 +82,12 @@ export const AiAdjustModeProvider = ({ children }: { children: ReactNode }) => {
 			if (!newState[date]) {
 				newState[date] = {};
 			}
-			newState[date][time] = AiModified[date] ? AiModified[date]?.[time] : null;
+			if (
+				AiModified[date]?.[time] !== undefined &&
+				AiModified[date]?.[time] !== null
+			) {
+				newState[date][time] = AiModified[date][time];
+			}
 			return newState;
 		});
 		return true;
@@ -114,7 +100,7 @@ export const AiAdjustModeProvider = ({ children }: { children: ReactNode }) => {
 				if (!newState[date]) {
 					newState[date] = {};
 				}
-				newState[date][time] = null;
+				delete newState[date][time];
 				return newState;
 			});
 		}
@@ -123,7 +109,9 @@ export const AiAdjustModeProvider = ({ children }: { children: ReactNode }) => {
 			if (!newState[date]) {
 				newState[date] = {};
 			}
-			newState[date][time] = AiModified[date] ? AiModified[date]?.[time] : null;
+			if (AiModified[date]?.[time] !== undefined) {
+				newState[date][time] = AiModified[date][time];
+			}
 			return newState;
 		});
 		return true;
@@ -141,11 +129,9 @@ export const AiAdjustModeProvider = ({ children }: { children: ReactNode }) => {
 				aiMode,
 				setAiMode,
 				AiModified,
-				useAiAssign,
+				startAiAdjustMode,
 				allowModified,
 				rejectModified,
-				isAiLoading,
-				aiError,
 				allowModifiedDatas,
 				rejectModifiedDatas,
 				validate,
