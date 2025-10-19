@@ -1,103 +1,53 @@
 import { z } from "zod";
+import { ShiftOfAssignValidate } from "../../../../api/shift/assign/validations/put.js";
+import { ShiftRequestDTOValidate } from "../../../../api/shift/request/dto.js";
+import { SubmittedShiftDTOValidate } from "../../../../api/shift/submit/dto.js";
 
-/**
- * ---- 各要素の共通スキーマ ----
- */
-
-// Priority（優先度）
-const PriorityValidate = z.object({
-	id: z.string(),
-	name: z.string(),
-	level: z.number().int().min(1),
-});
-
-// Absolute（固定メンバー）
-const AbsoluteValidate = z.object({
-	id: z.string(),
-	name: z.string(),
-});
-
-// シフト枠（1日あたりの1スロット）
-const ShiftSlotValidate = z.object({
-	name: z.string(),
-	count: z.number().int().min(1),
-	jobRoles: z.array(z.string()).default([]),
-	absolute: z.array(AbsoluteValidate).default([]),
-	priority: z.array(PriorityValidate).default([]),
-});
-
-// シフトリクエスト（雛形）
-const TemplateShiftValidate = z.object({
-	id: z.string(),
-	storeId: z.string(),
-	weekStart: z.string().datetime(),
-	weekEnd: z.string().datetime(),
-	type: z.enum(["WEEKLY", "DAILY"]).default("WEEKLY"),
-	status: z.enum(["ADJUSTMENT", "CONFIRMED", "DRAFT"]).default("ADJUSTMENT"),
-	requests: z.record(
-		// 日付キー
-		z
-			.string()
-			.regex(/^\d{4}-\d{2}-\d{2}$/),
-		// 時間スロット群
-		z.record(z.string().regex(/^\d{2}:\d{2}-\d{2}:\d{2}$/), ShiftSlotValidate),
-	),
-});
+const TemplateShiftValidate = ShiftRequestDTOValidate;
 export type TemplateShiftType = z.infer<typeof TemplateShiftValidate>;
 export type TemplateShiftInput = z.input<typeof TemplateShiftValidate>;
 
-// 提出データ（スタッフの可用時間）
-const SubmissionValidate = z.object({
-	userId: z.string(),
-	status: z.enum(["ADJUSTMENT", "CONFIRMED", "DRAFT"]).default("ADJUSTMENT"),
-	memo: z.string().nullable().optional(),
-	shifts: z.record(
-		z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-		z.union([
-			z.literal("anytime"),
-			z.string().regex(/^\d{2}:\d{2}-\d{2}:\d{2}$/),
-			z.null(),
-		]),
-	),
-});
-export type SubmissionType = z.infer<typeof SubmissionValidate>;
-export type submissionsInput = z.input<typeof SubmissionValidate>;
+export const sourceEnum = z.enum(["absolute", "priority", "auto", "manual"]);
+export type SourceType = z.infer<typeof sourceEnum>;
 
-// 現在のアサイン状態
-const AssignedUserValidate = z.object({
+const AiAssignedUserValidate = z.object({
 	uid: z.string(),
 	displayName: z.string(),
 	pictureUrl: z.string().nullable().optional(),
 	confirmed: z.boolean().optional(),
+	source: sourceEnum,
 });
-export type AssignedUserType = z.infer<typeof AssignedUserValidate>;
+export type AIAssignedUserType = z.infer<typeof AiAssignedUserValidate>;
 
-const CurrentAssignmentSlotValidate = z.object({
-	name: z.string(),
-	count: z.number().int().min(1),
-	jobRoles: z.array(z.string()).default([]),
-	assigned: z.array(AssignedUserValidate).default([]),
-	assignedCount: z.number().int().min(0).default(0),
-	vacancies: z.number().int().min(0).default(0),
-	status: z.enum(["draft", "proposed", "confirmed"]).default("draft"),
-	updatedAt: z.string().datetime(),
-	updatedBy: z.string(),
-});
-export type CurrentAssignmentSlotType = z.infer<
-	typeof CurrentAssignmentSlotValidate
->;
-
-const CurrentAssignmentsValidate = z.record(
-	z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-	z.record(
-		z.string().regex(/^\d{2}:\d{2}-\d{2}:\d{2}$/),
-		CurrentAssignmentSlotValidate,
-	),
-);
+export const CurrentAssignmentsValidate = ShiftOfAssignValidate;
 export type CurrentAssignmentsType = z.infer<typeof CurrentAssignmentsValidate>;
 export type CurrentAssignmentsInput = z.input<
 	typeof CurrentAssignmentsValidate
 >;
+
+export const SubmissionsValidate = SubmittedShiftDTOValidate;
+export type SubmissionsType = z.infer<typeof SubmissionsValidate>;
+export type SubmissionsInput = z.input<typeof SubmissionsValidate>;
+
+export const memberProfileValidate = z.object({
+	uid: z.string().min(1, "uid is required"),
+	displayName: z
+		.string()
+		.trim()
+		.min(1, "displayName must not be empty")
+		.optional(),
+	pictureUrl: z
+		.string()
+		.url("Invalid URL format")
+		.refine(
+			(val) => val.startsWith("http://") || val.startsWith("https://"),
+			"URL must start with http:// or https://",
+		)
+		.optional(),
+	jobRoles: z.array(z.string().min(1)).optional(),
+});
+export type MemberProfileType = z.infer<typeof memberProfileValidate>;
+export type MemberProfileInput = z.input<typeof memberProfileValidate>;
 
 export const ConstraintsValidate = z.object({
 	maxShiftsPerUserPerWeek: z.number().int().min(1).optional(),
@@ -111,8 +61,9 @@ export type ConstraintsInput = z.input<typeof ConstraintsValidate>;
  */
 export const AiShiftAdjustValidate = z.object({
 	templateShift: TemplateShiftValidate,
-	submissions: z.array(SubmissionValidate),
 	currentAssignments: CurrentAssignmentsValidate,
+	submissions: z.array(SubmittedShiftDTOValidate),
+	memberProfiles: z.array(memberProfileValidate),
 	constraints: ConstraintsValidate.optional(),
 });
 
@@ -120,3 +71,4 @@ export const AiShiftAdjustValidate = z.object({
  * ---- 型補完 ----
  */
 export type AIShiftAdjustRequest = z.infer<typeof AiShiftAdjustValidate>;
+export type AIShiftAdjustRequestInput = z.input<typeof AiShiftAdjustValidate>;
