@@ -6,6 +6,7 @@ import type { AIShiftAdjustResponse } from "@shared/api/shift/ai/types/post-adju
 import { AiShiftAdjustValidate } from "@shared/api/shift/ai/validations/post-adjust.js";
 import type { Request, Response } from "express";
 import { getAIShiftAdjustment } from "./service.js";
+import { testResponseService } from "./test.service.js";
 
 export const aiShiftAdjustController = async (
 	req: Request,
@@ -29,10 +30,20 @@ export const aiShiftAdjustController = async (
 			});
 			return;
 		}
-		const { templateShift, submissions, currentAssignments, constraints } =
-			parsed.data;
+		const {
+			templateShift,
+			submissions,
+			currentAssignments,
+			memberProfiles,
+			constraints,
+		} = parsed.data;
 
-		if (!templateShift || !submissions || !currentAssignments) {
+		if (
+			!templateShift ||
+			!submissions ||
+			!currentAssignments ||
+			!memberProfiles
+		) {
 			res.status(400).json({
 				ok: false,
 				message: "必須データが不足しています。",
@@ -40,11 +51,18 @@ export const aiShiftAdjustController = async (
 			return;
 		}
 
+		if (process.env.NODE_ENV === "test") {
+			return testResponseService(res);
+		}
+
 		const result = await getAIShiftAdjustment({
-			templateShift,
-			submissions,
-			currentAssignments,
-			constraints,
+			datas: {
+				templateShift,
+				submissions,
+				currentAssignments,
+				memberProfiles,
+				constraints,
+			},
 		});
 
 		res.status(200).json(result);

@@ -6,6 +6,9 @@
 		"weekEnd": "2025-10-26T23:59:59.999Z",
 		"type": "WEEKLY",
 		"status": "ADJUSTMENT",
+		"deadline": "2025-10-19T23:59:59.999Z",
+		"createdAt": "2025-10-15T09:00:00.000Z",
+		"updatedAt": "2025-10-15T09:00:00.000Z",
 		"requests": {
 			"2025-10-20": {
 				"05:00-08:30": {
@@ -125,6 +128,11 @@
 	},
 	"submissions": [
 		{
+			"id": "sub_001",
+			"shiftRequestId": "sr_week_demo_assigned_01",
+			"storeId": "shop_123",
+			"createdAt": "2025-10-15T09:00:00.000Z",
+			"updatedAt": "2025-10-15T09:00:00.000Z",
 			"userId": "user_001",
 			"status": "ADJUSTMENT",
 			"memo": "午前中心で入れます",
@@ -139,6 +147,11 @@
 			}
 		},
 		{
+			"id": "sub_002",
+			"shiftRequestId": "sr_week_demo_assigned_01",
+			"storeId": "shop_123",
+			"createdAt": "2025-10-15T09:01:00.000Z",
+			"updatedAt": "2025-10-15T09:01:00.000Z",
 			"userId": "user_002",
 			"status": "CONFIRMED",
 			"memo": "夜シフト希望多めです",
@@ -153,6 +166,11 @@
 			}
 		},
 		{
+			"id": "sub_003",
+			"shiftRequestId": "sr_week_demo_assigned_01",
+			"storeId": "shop_123",
+			"createdAt": "2025-10-15T09:02:00.000Z",
+			"updatedAt": "2025-10-15T09:02:00.000Z",
 			"userId": "user_003",
 			"status": "CONFIRMED",
 			"memo": "テスト期間のため短時間のみ",
@@ -167,6 +185,11 @@
 			}
 		},
 		{
+			"id": "sub_004",
+			"shiftRequestId": "sr_week_demo_assigned_01",
+			"storeId": "shop_123",
+			"createdAt": "2025-10-15T09:03:00.000Z",
+			"updatedAt": "2025-10-15T09:03:00.000Z",
 			"userId": "user_004",
 			"status": "ADJUSTMENT",
 			"memo": "",
@@ -181,6 +204,11 @@
 			}
 		},
 		{
+			"id": "sub_005",
+			"shiftRequestId": "sr_week_demo_assigned_01",
+			"storeId": "shop_123",
+			"createdAt": "2025-10-15T09:04:00.000Z",
+			"updatedAt": "2025-10-15T09:04:00.000Z",
 			"userId": "user_005",
 			"status": "ADJUSTMENT",
 			"memo": "",
@@ -195,6 +223,11 @@
 			}
 		},
 		{
+			"id": "sub_006",
+			"shiftRequestId": "sr_week_demo_assigned_01",
+			"storeId": "shop_123",
+			"createdAt": "2025-10-15T09:05:00.000Z",
+			"updatedAt": "2025-10-15T09:05:00.000Z",
 			"userId": "user_006",
 			"status": "CONFIRMED",
 			"memo": "朝だけOK",
@@ -209,6 +242,11 @@
 			}
 		},
 		{
+			"id": "sub_007",
+			"shiftRequestId": "sr_week_demo_assigned_01",
+			"storeId": "shop_123",
+			"createdAt": "2025-10-15T09:06:00.000Z",
+			"updatedAt": "2025-10-15T09:06:00.000Z",
 			"userId": "user_007",
 			"status": "ADJUSTMENT",
 			"memo": "土日優先",
@@ -223,6 +261,11 @@
 			}
 		},
 		{
+			"id": "sub_008",
+			"shiftRequestId": "sr_week_demo_assigned_01",
+			"storeId": "shop_123",
+			"createdAt": "2025-10-15T09:07:00.000Z",
+			"updatedAt": "2025-10-15T09:07:00.000Z",
 			"userId": "user_008",
 			"status": "CONFIRMED",
 			"memo": "",
@@ -247,8 +290,9 @@
 					{
 						"uid": "user_006",
 						"displayName": "ろくたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "absolute"
 					}
 				],
 				"assignedCount": 1,
@@ -289,8 +333,9 @@
 					{
 						"uid": "user_008",
 						"displayName": "はちたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "priority"
 					}
 				],
 				"assignedCount": 1,
@@ -322,8 +367,9 @@
 					{
 						"uid": "user_004",
 						"displayName": "よんたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "priority"
 					}
 				],
 				"assignedCount": 1,
@@ -353,8 +399,9 @@
 					{
 						"uid": "user_003",
 						"displayName": "さんたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "priority"
 					}
 				],
 				"assignedCount": 1,
@@ -384,8 +431,9 @@
 					{
 						"uid": "user_007",
 						"displayName": "ななたろう",
-						"pictureUrl": "",
-						"confirmed": true
+						"pictureUrl": "https://example.com/avatar.png",
+						"confirmed": true,
+						"source": "priority"
 					}
 				],
 				"assignedCount": 1,

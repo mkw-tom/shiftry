@@ -13,7 +13,7 @@
  *  - サーバや外部APIへの依存は禁止（共有ライブラリ想定）
  */
 
-import type { submissionsInput } from "@shared/api/shift/ai/validations/post-adjust.js";
+import type { SubmissionsInput } from "@shared/api/shift/ai/validations/post-adjust.js";
 
 /** 2つの時間レンジ "HH:mm-HH:mm" 同士が重なるかを返す */
 export function timeOverlap(rangeA: string, rangeB: string): boolean {
@@ -23,7 +23,7 @@ export function timeOverlap(rangeA: string, rangeB: string): boolean {
 }
 
 /** submissions から uid→日付→可用レンジ を引けるインデックス(Map)を構築 */
-export function buildSubmissionsIndex(submissions: submissionsInput[]) {
+export function buildSubmissionsIndex(submissions: SubmissionsInput[]) {
 	const idx = new Map<string, Record<string, string | null | "anytime">>();
 	for (const s of submissions) idx.set(s.userId, s.shifts ?? {});
 	return idx;

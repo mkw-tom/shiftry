@@ -15,22 +15,33 @@ import type {
 	AIShiftSlot,
 	AiModifiedType,
 } from "@shared/api/shift/ai/types/post-adjust.js";
+import type {
+	AIAssignedUserType,
+	SourceType,
+} from "@shared/api/shift/ai/validations/post-adjust.js";
 
-/** assignedエントリを {uid, displayName, pictureUrl, confirmed} へ正規化＋重複排除 */
-// biome-ignore lint/suspicious/noExplicitAny: AI出力の型補正のためany許容
-export function normalizeAssignedList(arr: any[]) {
-	const list = Array.isArray(arr) ? arr : [];
+function normalizeSource(
+	src: string,
+): "absolute" | "priority" | "auto" | "manual" {
+	if (
+		src === "absolute" ||
+		src === "priority" ||
+		src === "manual" ||
+		src === "auto"
+	)
+		return src;
+	// 空文字や未定義などは "auto" に寄せる
+	return "auto";
+}
 
-	// biome-ignore lint/suspicious/noExplicitAny: AI出力の型補正のためany許容
-	const normalized = list.map((a: any) => {
+export function normalizeAssignedList(arr: AIAssignedUserType[]) {
+	const normalized = arr.map((a) => {
 		const uid = String(a?.uid ?? "").trim();
-		const displayName =
-			typeof a?.displayName === "string" && a.displayName.trim().length > 0
-				? a.displayName
-				: uid;
-		const pictureUrl = typeof a?.pictureUrl === "string" ? a.pictureUrl : "";
+		const displayName = a.displayName;
+		const pictureUrl = a.pictureUrl ?? null;
 		const confirmed = Boolean(a?.confirmed);
-		return { uid, displayName, pictureUrl, confirmed };
+		const source = normalizeSource(a?.source);
+		return { uid, displayName, pictureUrl, confirmed, source };
 	});
 
 	const seen = new Set<string>();
