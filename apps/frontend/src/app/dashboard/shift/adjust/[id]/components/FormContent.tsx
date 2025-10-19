@@ -81,7 +81,7 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 		let isMounted = true;
 
 		const fetchTestModeData = () => {
-			if (!TEST_MODE) return;
+			// if (!TEST_MODE) return;
 			setShiftRequestData(demoTemplateShift);
 			setAssignShiftData(demoAssignShift);
 			setSubmittedShiftList(demoSubmissions);
@@ -189,7 +189,7 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 		};
 
 		fetchTestModeData();
-		fetchShiftData();
+		// fetchShiftData();
 		return () => {
 			isMounted = false;
 		};
