@@ -12,6 +12,7 @@ import assignShiftRoutes from "./features/shift/assign/route.js";
 import shiftConfirmRoutes from "./features/shift/confirm/route.js";
 import shiftRequestRoutes from "./features/shift/request/route.js";
 import submittedShiftRoutes from "./features/shift/submit/route.js";
+import staffPreferenceRoutes from "./features/staffPreference/route.js";
 import storeRoutes from "./features/store/route.js";
 import userRoutes from "./features/user/route.js";
 import userJobRoleRotes from "./features/userJobRole/route.js";
@@ -82,6 +83,7 @@ app.use("/api/shift/ai", aiRoutes);
 app.use("/api/jobrole", jobRoleRotes);
 app.use("/api/userjobrole", userJobRoleRotes);
 app.use("/api/shift-position", shiftPositionRoutes);
+app.use("/api/staff_preference", staffPreferenceRoutes);
 
 app.use(
 	(
