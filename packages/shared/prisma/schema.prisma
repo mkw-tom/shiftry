@@ -64,11 +64,35 @@ model UserStore {
   user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   store    Store  @relation(fields: [storeId], references: [id], onDelete: Cascade)
 
+  staffPreference StaffPreference? @relation("UserStorePreference")
+  
   createdAt        DateTime         @default(now())
   updatedAt        DateTime?        @updatedAt
 
   @@id([userId, storeId])
 }
+
+
+/// スタッフの基本希望データ
+model StaffPreference {
+  userId   String
+  storeId  String
+
+  // 希望のコア（Weeklyテンプレ）
+  weeklyAvailability Json   // 例: { mon:"anytime", tue:"09:00-13:00", ... }
+  weekMin  Int
+  weekMax  Int
+
+  note               String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userStore UserStore @relation("UserStorePreference", fields: [userId, storeId], references: [userId, storeId], onDelete: Cascade)
+
+  @@id([userId, storeId])
+}
+
 
 model StoreCode {
   id         String   @id @default(uuid())
