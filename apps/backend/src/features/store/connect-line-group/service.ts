@@ -3,7 +3,7 @@ import type { StoreConnectLineGroupResponse } from "@shared/api/store/types/conn
 import prisma from "../../../config/database.js";
 import { aes, hmac } from "../../../lib/env.js";
 import {
-	deleteLineStagingGroupById,
+	deleteLineStagingGroupByHash,
 	getLineStagingGroupByHash,
 } from "../../../repositories/lineStagingGroup.js";
 import {
@@ -117,7 +117,10 @@ export async function connectStoreToGroupService(
 
 				await createUserStore(user.id, store.id, "STAFF", tx);
 
-				await deleteLineStagingGroupById(stagingData.id, tx);
+				await deleteLineStagingGroupByHash(
+					stagingData.groupId_hash as string,
+					tx,
+				);
 			});
 		});
 	}

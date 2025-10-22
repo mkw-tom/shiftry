@@ -16,8 +16,8 @@ export const joinUseCase = async (replyToken: string, groupId: string) => {
 			uri: signedUrl,
 		};
 
-		await createStagingData(groupId);
 		await sendGroupMessageByTrigger(replyToken, joinMessage);
+		await createStagingData(groupId);
 
 		return { ok: true, message: "Join use case executed successfully" };
 	} catch (error) {

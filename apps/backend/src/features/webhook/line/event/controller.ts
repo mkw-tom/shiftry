@@ -1,8 +1,9 @@
 import type { ErrorResponse } from "@shared/api/common/types/errors.js";
 import type { LineMessageAPIResponse } from "@shared/api/webhook/line/types.js";
 import type { Request, Response } from "express";
-import { liffUrl } from "../../../../lib/env.js";
-import { deleteLineStagingGroupById } from "../../../../repositories/lineStagingGroup.js";
+import { hmac, liffUrl } from "../../../../lib/env.js";
+import { deleteLineStagingGroupByHash } from "../../../../repositories/lineStagingGroup.js";
+import { hmacSha256 } from "../../../../utils/hmac.js";
 import { sendGroupMessageByTrigger } from "../service.js";
 import { joinUseCase } from "./services/join.usecase.js";
 
@@ -29,7 +30,11 @@ const eventController = async (
 
 			if (event.type === "leave" && event.source.groupId) {
 				try {
-					await deleteLineStagingGroupById(event.source.groupId);
+					const groupId_hash = hmacSha256(
+						event.source.groupId,
+						hmac.saltGroupId,
+					);
+					await deleteLineStagingGroupByHash(event.source.groupId);
 				} catch (error) {
 					console.error("❌ Webhook処理エラー:", error);
 				}

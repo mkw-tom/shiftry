@@ -30,11 +30,11 @@ export const getLineStagingGroupByHash = async (
 	return lineStagingGroup;
 };
 
-export const deleteLineStagingGroupById = async (
-	id: string,
+export const deleteLineStagingGroupByHash = async (
+	groupId_hash: string,
 	db: Prisma.TransactionClient | PrismaClient = prisma,
 ) => {
 	await db.lineStagingGroup.delete({
-		where: { id },
+		where: { groupId_hash },
 	});
 };
