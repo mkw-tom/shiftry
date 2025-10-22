@@ -11,6 +11,7 @@ export type {
 	JobRole,
 	UserJobRole,
 	StoreCode,
+	StaffPreference,
 } from "@prisma/client";
 
 export type {
