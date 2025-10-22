@@ -18,14 +18,14 @@ export const createStagingData = async (groupId: string) => {
 		const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
 		return await prisma.$transaction(async (tx) => {
-			const groupData = {
-				groupId_hash: groupId_hash,
-				groupId_enc: groupId_enc,
+			// 1) ステージング・グループ作成（upsertでもOK）
+			const lineStagingGroup = await createLineStagingGroup(tx, {
+				groupId_hash,
+				groupId_enc,
 				groupKeyVersion_enc: aes.keyVersionGroupId,
 				groupKeyVersion_hash: hmac.keyVersionGroupId,
-				expiresAt: expiresAt,
-			};
-			const lineStagingGroup = await createLineStagingGroup(tx, groupData);
+				expiresAt,
+			});
 
 			let start: string | undefined = undefined;
 
@@ -33,40 +33,45 @@ export const createStagingData = async (groupId: string) => {
 				const idsRes = await lineBot.getGroupMembersIds(groupId, start);
 				const userIds = idsRes.memberIds ?? [];
 				start = idsRes.next ?? undefined;
+
 				for (const uid of userIds) {
+					// 2) プロフィール取得
 					const prof = await lineBot.getGroupMemberProfile(groupId, uid);
 
-					const sub = await verifyIdToken(uid);
-					if (!sub)
-						return { ok: false, message: "Invalid or missing ID token" };
-					const lineHash = hmacSha256(sub, hmac.saltLineId);
-					const lineEnc = encryptText(sub, aes.keyLineId, aes.keyVersionLineId);
+					// 3) userId をそのまま暗号・ハッシュ（IDトークン検証は不要）
+					const lineId_hash = hmacSha256(uid, hmac.saltLineId);
+					const lineId_enc = encryptText(
+						uid,
+						aes.keyLineId,
+						aes.keyVersionLineId,
+					);
 
-					const memberData = {
-						stagingGroupId: lineStagingGroup.id,
-						lineId_hash: lineHash,
-						lineId_enc: lineEnc,
-						lineKeyVersion_enc: aes.keyVersionLineId,
-						lineKeyVersion_hash: hmac.keyVersionLineId,
-						name: prof.displayName,
-						pictureUrl: prof.pictureUrl ?? "",
-					};
+					// 4) 既存チェック（重複回避）
+					const exists = await tx.lineStagingMember.findFirst({
+						where: { stagingGroupId: lineStagingGroup.id, lineId_hash },
+						select: { id: true },
+					});
+					if (exists) continue;
 
-					await crateLineStagingMember(tx, memberData);
-
+					// 5) 1回だけ作成（2重insertしない）
 					await tx.lineStagingMember.create({
 						data: {
 							stagingGroupId: lineStagingGroup.id,
-							lineId_hash: lineHash,
-							lineId_enc: lineEnc,
+							lineId_hash,
+							lineId_enc,
 							lineKeyVersion_enc: aes.keyVersionLineId,
 							lineKeyVersion_hash: hmac.keyVersionLineId,
-							name: prof.displayName,
-							pictureUrl: prof.pictureUrl,
+							name: prof.displayName ?? "",
+							pictureUrl: prof.pictureUrl ?? null, // バリデーションがURL必須なら null/空文字の扱いに注意
 						},
 					});
 				}
 			} while (start);
+
+			return { ok: true, groupId_hash, createdGroupId: lineStagingGroup.id };
 		});
-	} catch (error) {}
+	} catch (error) {
+		console.error("❌ Staging data creation error:", error);
+		return { ok: false, message: "Staging data creation failed" };
+	}
 };
