@@ -1,13 +1,10 @@
 import type { ErrorResponse } from "@shared/api/common/types/errors.js";
 import type { LineMessageAPIResponse } from "@shared/api/webhook/line/types.js";
 import type { Request, Response } from "express";
-import {
-	URI_CONNECT_LINE_GROUP,
-	URI_REGISTER_OWNER,
-	liffUrl,
-} from "../../../../lib/env.js";
-import { generateJWT } from "../../../../utils/JWT/jwt.js";
+import { liffUrl } from "../../../../lib/env.js";
+import { deleteLineStagingGroupById } from "../../../../repositories/lineStagingGroup.js";
 import { sendGroupMessageByTrigger } from "../service.js";
+import { joinUseCase } from "./services/join.usecase.js";
 
 const eventController = async (
 	req: Request,
@@ -22,21 +19,17 @@ const eventController = async (
 
 	try {
 		for (const event of events) {
-			/// 🔹 グループに招待された時の自動メッセージ
 			if (event.type === "join" && event.source.groupId) {
 				try {
-					const groupId_jwt = generateJWT({ groupId: event.source.groupId });
-					const signedUrl = `${liffUrl.connectLineGroupPage}?groupId=${groupId_jwt}`;
+					await joinUseCase(event.replyToken, event.source.groupId);
+				} catch (error) {
+					console.error("❌ Webhook処理エラー:", error);
+				}
+			}
 
-					const joinMessage = {
-						text1: "グループに招待ありがとうございます！🎉",
-						text2: "今日からシフト作成をお手伝いします！",
-						text3: "オーナー様のみ連携お願いします！",
-						label: "LINEグループ連携",
-						uri: signedUrl,
-					};
-
-					await sendGroupMessageByTrigger(event.replyToken, joinMessage);
+			if (event.type === "leave" && event.source.groupId) {
+				try {
+					await deleteLineStagingGroupById(event.source.groupId);
 				} catch (error) {
 					console.error("❌ Webhook処理エラー:", error);
 				}

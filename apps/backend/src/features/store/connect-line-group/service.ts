@@ -1,14 +1,25 @@
 import type { ErrorResponse } from "@shared/api/common/types/errors.js";
 import type { StoreConnectLineGroupResponse } from "@shared/api/store/types/connect-line-group.js";
+import prisma from "../../../config/database.js";
 import { aes, hmac } from "../../../lib/env.js";
+import {
+	deleteLineStagingGroupById,
+	getLineStagingGroupByHash,
+} from "../../../repositories/lineStagingGroup.js";
 import {
 	connectStoreToGroup,
 	findStoreByGroupHashExcept,
 	getStoreByIdAllData,
 } from "../../../repositories/store.repository.js";
 import { getStoreCodeByHash } from "../../../repositories/storeCode.repository.js";
-import { getUserByLineIdHash } from "../../../repositories/user.repository.js";
-import { getUserStoreByUserIdAndStoreId } from "../../../repositories/userStore.repository.js";
+import {
+	getUserByLineIdHash,
+	upsertUser,
+} from "../../../repositories/user.repository.js";
+import {
+	createUserStore,
+	getUserStoreByUserIdAndStoreId,
+} from "../../../repositories/userStore.repository.js";
 import { encryptText } from "../../../utils/aes.js";
 import { hmacSha256 } from "../../../utils/hmac.js";
 import { verifyIdToken } from "../../common/liff.service.js";
@@ -86,6 +97,30 @@ export async function connectStoreToGroupService(
 		hmac.keyVersionGroupId,
 		aes.keyVersionGroupId,
 	);
+
+	const stagingData = await getLineStagingGroupByHash(groupId_hash);
+
+	if (stagingData?.groupId_hash === groupId_hash) {
+		stagingData.members.map((member) => {
+			prisma.$transaction(async (tx) => {
+				const user = await upsertUser(
+					{
+						name: member.name,
+						pictureUrl: member.pictureUrl ?? "",
+						lineId_hash: member.lineId_hash as string,
+						lineId_enc: member.lineId_enc as string,
+						lineKeyVersion_hash: hmac.keyVersionLineId,
+						lineKeyVersion_enc: aes.keyVersionLineId,
+					},
+					tx,
+				);
+
+				await createUserStore(user.id, store.id, "STAFF", tx);
+
+				await deleteLineStagingGroupById(stagingData.id, tx);
+			});
+		});
+	}
 
 	return { ok: true, store: store, kind: "LINKED" };
 }

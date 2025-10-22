@@ -64,11 +64,35 @@ model UserStore {
   user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   store    Store  @relation(fields: [storeId], references: [id], onDelete: Cascade)
 
+  staffPreference StaffPreference? @relation("UserStorePreference")
+  
   createdAt        DateTime         @default(now())
   updatedAt        DateTime?        @updatedAt
 
   @@id([userId, storeId])
 }
+
+
+/// スタッフの基本希望データ
+model StaffPreference {
+  userId   String
+  storeId  String
+
+  // 希望のコア（Weeklyテンプレ）
+  weeklyAvailability Json   // 例: { mon:"anytime", tue:"09:00-13:00", ... }
+  weekMin  Int
+  weekMax  Int
+
+  note               String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userStore UserStore @relation("UserStorePreference", fields: [userId, storeId], references: [userId, storeId], onDelete: Cascade)
+
+  @@id([userId, storeId])
+}
+
 
 model StoreCode {
   id         String   @id @default(uuid())
@@ -83,6 +107,48 @@ model StoreCode {
   updatedAt  DateTime @updatedAt
 
   store      Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+}
+
+
+/// LINEグループの“生”情報を短期保存（ステージング）
+model LineStagingGroup {
+  id                 String   @id @default(uuid())
+  groupId_hash     String?  @unique
+  groupId_enc      String?
+  groupKeyVersion_hash  String  @default("K1")
+  groupKeyVersion_enc  String  @default("K1")
+
+  platform           String   @default("line") // 将来拡張
+  isRoom             Boolean  @default(false)  // group/room 区別したければ
+
+  capturedAt         DateTime @default(now())
+  expiresAt          DateTime // TTLで定期削除（例: 7日）
+
+  members            LineStagingMember[]
+}
+
+/// ステージング上のメンバー（グループスナップショット）
+model LineStagingMember {
+  id                 String   @id @default(uuid())
+  stagingGroupId     String
+  
+  lineId_hash    String?  @unique
+  lineId_enc     String?
+
+  lineKeyVersion_hash String  @default("K1")
+  lineKeyVersion_enc String  @default("K1")
+  consentAt      DateTime? @default(now())
+
+  name           String
+  pictureUrl     String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime?         @updatedAt
+
+  stagingGroup       LineStagingGroup @relation(fields: [stagingGroupId], references: [id], onDelete: Cascade)
+
+  @@index([stagingGroupId])
+  @@index([lineId_hash])
+  @@unique([stagingGroupId, lineId_hash]) // 重複防止
 }
 
 // シフト募集データ
