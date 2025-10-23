@@ -1,9 +1,8 @@
 import { liffUrl } from "../../../../../lib/env.js";
 import { generateJWT } from "../../../../../utils/JWT/jwt.js";
 import { sendGroupMessageByTrigger } from "../../service.js";
-import { createStagingData } from "./createStagingData.js";
 
-export const joinUseCase = async (replyToken: string, groupId: string) => {
+export const joinService = async (replyToken: string, groupId: string) => {
 	try {
 		const groupId_jwt = generateJWT({ groupId });
 		const signedUrl = `${liffUrl.connectLineGroupPage}?groupId=${groupId_jwt}`;
@@ -17,7 +16,6 @@ export const joinUseCase = async (replyToken: string, groupId: string) => {
 		};
 
 		await sendGroupMessageByTrigger(replyToken, joinMessage);
-		await createStagingData(groupId);
 
 		return { ok: true, message: "Join use case executed successfully" };
 	} catch (error) {
