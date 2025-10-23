@@ -98,32 +98,5 @@ export async function connectStoreToGroupService(
 		aes.keyVersionGroupId,
 	);
 
-	const stagingData = await getLineStagingGroupByHash(groupId_hash);
-
-	if (stagingData?.groupId_hash === groupId_hash) {
-		stagingData.members.map((member) => {
-			prisma.$transaction(async (tx) => {
-				const user = await upsertUser(
-					{
-						name: member.name,
-						pictureUrl: member.pictureUrl ?? "",
-						lineId_hash: member.lineId_hash as string,
-						lineId_enc: member.lineId_enc as string,
-						lineKeyVersion_hash: hmac.keyVersionLineId,
-						lineKeyVersion_enc: aes.keyVersionLineId,
-					},
-					tx,
-				);
-
-				await createUserStore(user.id, store.id, "STAFF", tx);
-
-				await deleteLineStagingGroupByHash(
-					stagingData.groupId_hash as string,
-					tx,
-				);
-			});
-		});
-	}
-
 	return { ok: true, store: store, kind: "LINKED" };
 }

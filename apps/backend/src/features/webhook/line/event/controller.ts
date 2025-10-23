@@ -5,7 +5,7 @@ import { hmac, liffUrl } from "../../../../lib/env.js";
 import { deleteLineStagingGroupByHash } from "../../../../repositories/lineStagingGroup.js";
 import { hmacSha256 } from "../../../../utils/hmac.js";
 import { sendGroupMessageByTrigger } from "../service.js";
-import { joinUseCase } from "./services/join.usecase.js";
+import { joinService } from "./services/join.service.js";
 
 const eventController = async (
 	req: Request,
@@ -22,23 +22,23 @@ const eventController = async (
 		for (const event of events) {
 			if (event.type === "join" && event.source.groupId) {
 				try {
-					await joinUseCase(event.replyToken, event.source.groupId);
+					await joinService(event.replyToken, event.source.groupId);
 				} catch (error) {
 					console.error("❌ Webhook処理エラー:", error);
 				}
 			}
 
-			if (event.type === "leave" && event.source.groupId) {
-				try {
-					const groupId_hash = hmacSha256(
-						event.source.groupId,
-						hmac.saltGroupId,
-					);
-					await deleteLineStagingGroupByHash(event.source.groupId);
-				} catch (error) {
-					console.error("❌ Webhook処理エラー:", error);
-				}
-			}
+			// if (event.type === "leave" && event.source.groupId) {
+			// 	try {
+			// 		const groupId_hash = hmacSha256(
+			// 			event.source.groupId,
+			// 			hmac.saltGroupId,
+			// 		);
+			// 		await deleteLineStagingGroupByHash(event.source.groupId);
+			// 	} catch (error) {
+			// 		console.error("❌ Webhook処理エラー:", error);
+			// 	}
+			// }
 
 			if (event.type === "follow" && event.source.userId) {
 				try {
