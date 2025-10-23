@@ -2,6 +2,7 @@ import type { ErrorResponse } from "@shared/api/common/types/errors.js";
 import type { StoreConnectLineGroupResponse } from "@shared/api/store/types/connect-line-group.js";
 import type { Request, Response } from "express";
 import { connectStoreToGroupService } from "./service.js";
+import { staffJoinMessageService } from "./staffJoinMessage.service.js";
 
 const storeConnectLineGroupController = async (
 	req: Request,
@@ -49,6 +50,8 @@ const storeConnectLineGroupController = async (
 				default:
 					status = 400;
 			}
+
+			await staffJoinMessageService(groupId, storeCode);
 
 			return void res.status(status).json(response);
 		}
