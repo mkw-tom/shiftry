@@ -1,5 +1,6 @@
 import type { MessageContens } from "@shared/api/webhook/line/types.js";
-import apiClient from "../../../config/axios.js";
+// import apiClient from "../../../config/axios.js";
+import lineBot from "../../../config/line.js";
 
 //☑️ トリガーを受け取ってメッセージ送信する
 export const sendGroupMessageByTrigger = async (
@@ -9,46 +10,46 @@ export const sendGroupMessageByTrigger = async (
 	try {
 		const { text1, text2, text3, label, uri } = messageContents;
 		const message = {
-			type: "flex",
+			type: "flex" as const,
 			altText: "LINEグループ連携のお願い",
 			contents: {
-				type: "bubble",
+				type: "bubble" as const,
 				body: {
-					type: "box",
-					layout: "vertical",
+					type: "box" as const,
+					layout: "vertical" as const,
 					contents: [
 						{
-							type: "text",
+							type: "text" as const,
 							text: text1,
-							weight: "bold",
-							size: "md",
-							margin: "md",
+							weight: "bold" as const,
+							size: "md" as const,
+							margin: "md" as const,
 						},
 						{
-							type: "text",
+							type: "text" as const,
 							text: text2,
-							size: "sm",
-							margin: "sm",
+							size: "sm" as const,
+							margin: "sm" as const,
 						},
 						{
-							type: "text",
+							type: "text" as const,
 							text: text3,
-							size: "sm",
-							margin: "md",
+							size: "sm" as const,
+							margin: "md" as const,
 						},
 					],
 				},
 				footer: {
-					type: "box",
-					layout: "vertical",
-					spacing: "sm",
+					type: "box" as const,
+					layout: "vertical" as const,
+					spacing: "sm" as const,
 					contents: [
 						{
-							type: "button",
-							style: "primary",
+							type: "button" as const,
+							style: "primary" as const,
 							color: "#1DB446", // LINEっぽい緑
 							action: {
-								type: "uri",
+								type: "uri" as const,
 								label: label,
 								uri: uri,
 							},
@@ -59,10 +60,11 @@ export const sendGroupMessageByTrigger = async (
 			},
 		};
 
-		await apiClient.post("/v2/bot/message/reply", {
-			replyToken: replyToken,
-			messages: [message],
-		});
+		await lineBot.replyMessage({ replyToken, messages: [message] });
+		// await apiClient.post("/v2/bot/message/reply", {
+		// 	replyToken: replyToken,
+		// 	messages: [message],
+		// });
 
 		console.log("✅ LINEメッセージ送信成功！");
 	} catch (error) {
@@ -79,46 +81,46 @@ export const sendGroupFlexMessage = async (
 		const { text1, text2, text3, label, uri } = messageContents;
 
 		const flexMessage = {
-			type: "flex",
+			type: "flex" as const,
 			altText: "スタッフ登録のご案内",
 			contents: {
-				type: "bubble",
+				type: "bubble" as const,
 				body: {
-					type: "box",
-					layout: "vertical",
+					type: "box" as const,
+					layout: "vertical" as const,
 					contents: [
 						{
-							type: "text",
+							type: "text" as const,
 							text: text1,
-							weight: "bold",
-							size: "md",
-							margin: "md",
+							weight: "bold" as const,
+							size: "md" as const,
+							margin: "md" as const,
 						},
 						{
-							type: "text",
+							type: "text" as const,
 							text: text2,
-							size: "sm",
-							margin: "sm",
+							size: "sm" as const,
+							margin: "sm" as const,
 						},
 						{
-							type: "text",
+							type: "text" as const,
 							text: text3,
-							size: "sm",
-							margin: "md",
+							size: "sm" as const,
+							margin: "md" as const,
 						},
 					],
 				},
 				footer: {
-					type: "box",
-					layout: "vertical",
-					spacing: "sm",
+					type: "box" as const,
+					layout: "vertical" as const,
+					spacing: "sm" as const,
 					contents: [
 						{
-							type: "button",
-							style: "primary",
+							type: "button" as const,
+							style: "primary" as const,
 							color: "#1DB446",
 							action: {
-								type: "uri",
+								type: "uri" as const,
 								label: label,
 								uri: uri,
 							},
@@ -129,10 +131,11 @@ export const sendGroupFlexMessage = async (
 			},
 		};
 
-		await apiClient.post("/v2/bot/message/push", {
-			to: groupId,
-			messages: [flexMessage],
-		});
+		await lineBot.pushMessage({ to: groupId, messages: [flexMessage] });
+		// await apiClient.post("/v2/bot/message/push", {
+		// 	to: groupId,
+		// 	messages: [flexMessage],
+		// });
 
 		console.log("✅ グループにFlexメッセージ送信成功！");
 	} catch (error) {
