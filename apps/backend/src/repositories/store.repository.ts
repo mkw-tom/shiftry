@@ -1,6 +1,9 @@
 import type { Prisma, PrismaClient } from "@prisma/client";
 import type { Store } from "@shared/api/common/types/prisma.js";
-import type { StoreLite } from "@shared/api/common/types/prismaLite.js";
+import type {
+	StoreCodeLite,
+	StoreLite,
+} from "@shared/api/common/types/prismaLite.js";
 import prisma from "../config/database.js";
 
 export const createStore = async (
@@ -27,10 +30,15 @@ export const createStore = async (
 export const getStoreByGroupIdHash = async (
 	groupId_hash: string,
 	db: Prisma.TransactionClient | PrismaClient = prisma,
-): Promise<StoreLite | null> => {
+): Promise<(StoreLite & { storeCode: { code_enc: string } | null }) | null> => {
 	return await db.store.findUnique({
 		where: { groupId_hash: groupId_hash },
-		select: { id: true, name: true, isActive: true },
+		select: {
+			id: true,
+			name: true,
+			isActive: true,
+			storeCode: { select: { code_enc: true } },
+		},
 	});
 };
 
