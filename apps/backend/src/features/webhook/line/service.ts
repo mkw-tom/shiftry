@@ -80,7 +80,7 @@ export const sendGroupFlexMessage = async (
 	try {
 		const { text1, text2, text3, label, uri } = messageContents;
 
-		const flexMessage = {
+		const messages = {
 			type: "flex" as const,
 			altText: "スタッフ登録のご案内",
 			contents: {
@@ -131,7 +131,7 @@ export const sendGroupFlexMessage = async (
 			},
 		};
 
-		await lineBot.pushMessage({ to: groupId, messages: [flexMessage] });
+		await lineBot.pushMessage({ to: groupId, messages: [messages] });
 		// await apiClient.post("/v2/bot/message/push", {
 		// 	to: groupId,
 		// 	messages: [flexMessage],
