@@ -1,12 +1,8 @@
 "use client";
-import type { Member } from "@shared/api/common/types/prismaLite";
 import type { UpsertShiftRequetInput } from "@shared/api/shift/request/validations/put";
 import type { bulkUpsertShiftPositionInput } from "@shared/api/shiftPosition/validations/put-bulk";
-
-import { formatDateToYYYYMMDD } from "@shared/utils/formatDate";
-import { convertDateToWeekByEnglish } from "@shared/utils/formatWeek";
+import { useRouter } from "next/navigation";
 import { type ReactNode, createContext, useContext, useState } from "react";
-import { buildRequestsFromPositions } from "../utils/generateRequests";
 
 type CreateRequestContextType = {
 	step: CreateRequestStep;
@@ -26,8 +22,7 @@ type CreateRequestContextType = {
 export type CreateRequestStep =
 	| "select_date"
 	| "regist_position"
-	| "adjust_position"
-	| "confirm";
+	| "go_to_adjust_page";
 
 export const formDataInit: UpsertShiftRequetInput = {
 	type: "WEEKLY",
@@ -57,38 +52,22 @@ export const CreateRequestProvider = ({
 }: {
 	children: ReactNode;
 }) => {
+	const router = useRouter();
 	const [step, setStep] = useState<CreateRequestStep>("select_date");
 	const [formData, setFormData] =
 		useState<UpsertShiftRequetInput>(formDataInit);
 	const [shiftPositioins, setShiftPositions] =
 		useState<bulkUpsertShiftPositionInput>([]);
-	const [allJobRoles, setAllJobRoles] = useState<string[]>([
-		// "レジ",
-		// "品出し",
-		// "接客",
-		// "清掃",
-		// "レジ締め",
-		// "レジ管理",
-	]);
+	const [allJobRoles, setAllJobRoles] = useState<string[]>([]);
 
 	const nextStep = async () => {
 		switch (step) {
 			case "select_date":
 				setStep("regist_position");
 				break;
-
 			case "regist_position":
-				setFormData((prev) => ({
-					...prev,
-					requests: buildRequestsFromPositions(prev, shiftPositioins),
-				}));
-				setStep("adjust_position");
+				setStep("go_to_adjust_page");
 				break;
-
-			case "adjust_position":
-				setStep("confirm");
-				break;
-
 			default:
 				throw new Error("Unknown step");
 		}
@@ -99,11 +78,8 @@ export const CreateRequestProvider = ({
 			case "regist_position":
 				setStep("select_date");
 				break;
-			case "adjust_position":
+			case "go_to_adjust_page":
 				setStep("regist_position");
-				break;
-			case "confirm":
-				setStep("adjust_position");
 				break;
 			default:
 				throw new Error("Cannot go back from this step");
