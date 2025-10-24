@@ -25,8 +25,9 @@ export const getUserById = async (userId: string): Promise<UserLite | null> => {
 
 export const getUserByLineIdHash = async (
 	lineId_hash: string,
+	db: Prisma.TransactionClient | PrismaClient = prisma,
 ): Promise<UserLite | null> => {
-	return await prisma.user.findUnique({
+	return await db.user.findUnique({
 		where: { lineId_hash: lineId_hash },
 		select: {
 			id: true,
