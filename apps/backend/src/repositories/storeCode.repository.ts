@@ -1,4 +1,4 @@
-import { StoreCode } from "@prisma/client";
+import { type Prisma, type PrismaClient, StoreCode } from "@prisma/client";
 import type { StoreCodeLite } from "@shared/api/common/types/prismaLite.js";
 import prisma from "../config/database.js";
 import { aes, hmac } from "../lib/env.js";
@@ -30,8 +30,9 @@ export const UpsertStoreCode = async (
 
 export const getStoreCodeByHash = async (
 	code_hash: string,
+	db: Prisma.TransactionClient | PrismaClient = prisma,
 ): Promise<StoreCodeLite | null> => {
-	return await prisma.storeCode.findUnique({
+	return await db.storeCode.findUnique({
 		where: { code_hash: code_hash },
 		select: {
 			storeId: true,

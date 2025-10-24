@@ -20,5 +20,6 @@ export const joinService = async (replyToken: string, groupId: string) => {
 		return { ok: true, message: "Join use case executed successfully" };
 	} catch (error) {
 		console.error("❌ Webhook処理エラー:", error);
+		throw new Error("joinService failed");
 	}
 };
