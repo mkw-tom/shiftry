@@ -21,6 +21,6 @@ export const staffJoinMessageService = async (
 			message: "staffJoinMessageService executed successfully",
 		};
 	} catch (error) {
-		return { ok: false, message: "staffJoinMessageService failed" };
+		throw new Error("staffJoinMessageService failed");
 	}
 };
