@@ -25,7 +25,12 @@ const ConnectForm = () => {
 		}
 
 		if (res?.ok) {
-			alert(`LINEグループ連携が完了しました✨。店舗名：${res.store.name}`);
+			// kind: "ALREADY_LINKED" | "LINKED"
+			const alertMessage =
+				res.kind === "ALREADY_LINKED"
+					? "既にLINEグループと連携されています。"
+					: "LINEグループとの連携が完了しました✨";
+			alert(`${alertMessage}。店舗名：${res.store.name}`);
 			liff.closeWindow();
 		}
 	};
