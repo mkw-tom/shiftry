@@ -1,6 +1,7 @@
 import type { MessageContens } from "@shared/api/webhook/line/types.js";
 // import apiClient from "../../../config/axios.js";
-import lineBot from "../../../config/line.js";
+// import lineBot from "../../../config/line.js";
+import apiClient from "../../../config/axios.js";
 
 //☑️ トリガーを受け取ってメッセージ送信する
 export const sendGroupMessageByTrigger = async (
@@ -60,11 +61,11 @@ export const sendGroupMessageByTrigger = async (
 			},
 		};
 
-		await lineBot.replyMessage({ replyToken, messages: [message] });
-		// await apiClient.post("/v2/bot/message/reply", {
-		// 	replyToken: replyToken,
-		// 	messages: [message],
-		// });
+		// await lineBot.replyMessage({ replyToken, messages: [message] });
+		await apiClient.post("/v2/bot/message/reply", {
+			replyToken: replyToken,
+			messages: [message],
+		});
 
 		console.log("✅ LINEメッセージ送信成功！");
 	} catch (error) {
@@ -131,11 +132,11 @@ export const sendGroupFlexMessage = async (
 			},
 		};
 
-		await lineBot.pushMessage({ to: groupId, messages: [flexMessage] });
-		// await apiClient.post("/v2/bot/message/push", {
-		// 	to: groupId,
-		// 	messages: [flexMessage],
-		// });
+		// await lineBot.pushMessage({ to: groupId, messages: [flexMessage] });
+		await apiClient.post("/v2/bot/message/push", {
+			to: groupId,
+			messages: [flexMessage],
+		});
 
 		console.log("✅ グループにFlexメッセージ送信成功！");
 	} catch (error) {
