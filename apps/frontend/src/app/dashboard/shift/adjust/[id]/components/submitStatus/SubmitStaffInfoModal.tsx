@@ -1,4 +1,3 @@
-// import { dummyMembers } from "@/app/utils/dummyData/member";
 import { formatTimeRangeHHmm } from "@/app/utils/times";
 import type { RootState } from "@/redux/store.js";
 import { YMDHM, YMDW } from "@shared/utils/formatDate";
@@ -10,11 +9,9 @@ import { useSelector } from "react-redux";
 import { useAdjustShiftForm } from "../../context/AdjustShiftFormContextProvider.tsx";
 
 const SubmitStaffInfoModal = ({
-	open,
 	onClose,
 	userId,
 }: {
-	open: boolean;
 	onClose: () => void;
 	userId: string | null;
 }) => {
@@ -25,11 +22,11 @@ const SubmitStaffInfoModal = ({
 	const member = members.find((m) => m.user.id === userId);
 	if (!submitData || !member) return null;
 	return (
-		<dialog open className="modal modal-middle">
+		<dialog id={`submit-info-modal-${userId}`} className="modal modal-middle">
 			<div className="modal-box max-w-xs bg-white">
 				<button
 					type="button"
-					className="btn btn-sm btn-circle absolute right-2 top-2 bg-white text-gray02 border border-gray02 shadow-none"
+					className="btn btn-sm btn-circle absolute right-2 top-2 bottom-0 bg-white text-gray02 border border-gray02 shadow-none"
 					onClick={onClose}
 				>
 					✕
