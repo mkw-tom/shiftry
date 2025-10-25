@@ -84,3 +84,15 @@ export const deleteUser = async (userId: string): Promise<User> => {
 		where: { id: userId },
 	});
 };
+
+export const createUserByHand = async (
+	username: string,
+	db: Prisma.TransactionClient | PrismaClient = prisma,
+) => {
+	return db.user.create({
+		data: {
+			name: username,
+			pictureUrl: null,
+		},
+	});
+};
