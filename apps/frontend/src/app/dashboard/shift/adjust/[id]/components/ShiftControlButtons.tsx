@@ -6,7 +6,7 @@ import { useAdjustShiftForm } from "../context/AdjustShiftFormContextProvider.ts
 import { useAiAdjustMode } from "../context/AiAdjustModeProvider";
 import AIAssignModal from "./AiModal/AIAssignModal";
 import AutoAssignModal from "./modals/AutoAssignModal";
-import SubmitStatusModal from "./modals/SubmitStatusModal";
+import SubmitStatusModal from "./submitStatus/SubmitStatusModal";
 
 const ShiftControlButtons = ({
 	selectDate,
@@ -95,7 +95,7 @@ const ShiftControlButtons = ({
 				className="btn btn-sm border-gray02 text-gray02 font-bold bg-white shadow-none"
 				onClick={openSubmitStatusModal}
 			>
-				提出状況
+				シフト希望
 			</button>
 			<SubmitStatusModal
 				id="submit-status"
