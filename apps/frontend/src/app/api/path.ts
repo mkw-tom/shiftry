@@ -36,3 +36,9 @@ export const shiftNotificationApi = {
 export const aiApi = {
 	adjust: "shift/ai/adjust",
 };
+
+export const staffPreferenceApi = {
+	create: "staff_preference/create",
+	getAll: "staff_preference/all",
+	updateBulk: "staff_preference/update/bulk",
+};
