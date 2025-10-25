@@ -6,6 +6,7 @@ import type {
 	Member,
 	UserStoreLiteWithUserAndJobRoles,
 } from "@shared/api/common/types/prismaLite";
+import { add } from "date-fns";
 
 type MembersState = {
 	members: Member[];
@@ -22,8 +23,11 @@ export const userSlice = createSlice({
 		setMembers: (state, action: PayloadAction<Member[]>) => {
 			state.members = action.payload;
 		},
+		addMember: (state, action: PayloadAction<Member>) => {
+			state.members.push(action.payload);
+		},
 	},
 });
 
-export const { setMembers } = userSlice.actions;
+export const { setMembers, addMember } = userSlice.actions;
 export default userSlice.reducer;
