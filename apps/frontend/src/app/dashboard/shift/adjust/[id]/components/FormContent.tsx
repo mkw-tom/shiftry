@@ -1,22 +1,19 @@
 "use client";
+import { useGetStaffPreferenceAll } from "@/app/api/hook/staffPreference/useGetStaffPreferenceAll";
 import { useGetAssignShfit } from "@/app/api/hook/useGetAssignShift";
 import { useGetShiftRequestSpecific } from "@/app/api/hook/useGetShiftRequestSpecific";
 import { useGetSubmittedShfit } from "@/app/api/hook/useGetSubmittedShfit";
-import { dummyAssignShift } from "@/app/utils/dummyData/AssginShfit";
-import { dummyShiftRequest } from "@/app/utils/dummyData/ShiftRequest";
-import { dummySubmittedShiftList } from "@/app/utils/dummyData/SubmittedShifts";
 import {
 	demoAssignShift,
 	demoMembers,
 	demoSubmissions,
 	demoTemplateShift,
+	dummyStaffPreferences,
 } from "@/app/utils/dummyData/aiAdjustDemo";
-import { dummyMembers } from "@/app/utils/dummyData/member";
 import { TEST_MODE } from "@/lib/env";
 import { setMembers } from "@/redux/slices/members";
 import type { RootState } from "@/redux/store";
 import type {
-	AssignPositionType,
 	AssignPositionWithDateInput,
 	ShiftsOfAssignType,
 } from "@shared/api/shift/assign/validations/put";
@@ -33,9 +30,7 @@ import FormHead from "./FormHead";
 import ShiftControlButtons from "./ShiftControlButtons";
 import ShiftTableView from "./ShiftTableView";
 import Table from "./Table";
-import AutoAssignModal from "./modals/AutoAssignModal";
 import EditAssignPositionModal from "./modals/EditAssignPositionModal";
-import SubmitStatusModal from "./modals/SubmitStatusModal";
 
 const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 	const { viewMode } = useViewSwitch();
@@ -45,6 +40,7 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 		setShiftRequestData,
 		setAssignShiftData,
 		setSubmittedShiftList,
+		setStaffPreferences,
 	} = useAdjustShiftForm();
 	const [editAssignPosition, setEditAssignPosition] =
 		useState<AssignPositionWithDateInput>({
@@ -71,8 +67,14 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 		isLoading: ssLoading,
 		error: ssError,
 	} = useGetSubmittedShfit();
-	const isLoading = srLoading || asLoading || ssLoading;
-	const isError = srError || asError || ssError;
+	const {
+		getStaffPreferenceAll,
+		isLoading: spLoading,
+		error: spError,
+	} = useGetStaffPreferenceAll();
+
+	const isLoading = srLoading || asLoading || ssLoading || spLoading;
+	const isError = srError || asError || ssError || spError;
 	const dispatch = useDispatch();
 
 	// 初回のみ: shiftRequestData, assignShiftData, submittedShiftListを取得し、assignShiftDataのマージも初回のみ実行
@@ -85,6 +87,7 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 			setShiftRequestData(demoTemplateShift);
 			setAssignShiftData(demoAssignShift);
 			setSubmittedShiftList(demoSubmissions);
+			setStaffPreferences(dummyStaffPreferences);
 			dispatch(setMembers(demoMembers));
 		};
 
@@ -186,6 +189,15 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 				console.error(ssRes.message);
 				alert(`提出データの取得に失敗しました。error:${ssRes.message}`);
 			}
+
+			// 4. staffPreferences取得
+			const spRes = await getStaffPreferenceAll();
+			if (isMounted && spRes.ok) {
+				setStaffPreferences(spRes.staffPreferences);
+			} else if (isMounted && "message" in spRes) {
+				console.error(spRes.message);
+				alert(`スタッフ希望情報の取得に失敗しました。error:${spRes.message}`);
+			}
 		};
 
 		fetchTestModeData();
@@ -194,9 +206,11 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 			isMounted = false;
 		};
 	}, [
+		getStaffPreferenceAll,
 		getShiftRequestSpecific,
 		getAssignShift,
 		getSubmittedShfit,
+		setStaffPreferences,
 		setShiftRequestData,
 		setAssignShiftData,
 		setSubmittedShiftList,

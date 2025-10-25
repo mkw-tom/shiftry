@@ -1,8 +1,8 @@
 "use client";
-import { dummyAssignShift } from "@/app/utils/dummyData/AssginShfit";
 import type { AssignShiftDTO } from "@shared/api/shift/assign/dto";
 import type { ShiftRequestDTO } from "@shared/api/shift/request/dto";
 import type { SubmittedShiftDTO } from "@shared/api/shift/submit/dto";
+import type { StaffPreferenceDTO } from "@shared/api/staffPreference/dto";
 import { createContext, useContext, useState } from "react";
 
 type ContextType = {
@@ -16,6 +16,10 @@ type ContextType = {
 	>;
 	allJobRoles: string[];
 	setAllJobRoles: React.Dispatch<React.SetStateAction<string[]>>;
+	staffPreferences: StaffPreferenceDTO[];
+	setStaffPreferences: React.Dispatch<
+		React.SetStateAction<StaffPreferenceDTO[]>
+	>;
 };
 const adjustShiftFormContext = createContext<ContextType | undefined>(
 	undefined,
@@ -51,6 +55,10 @@ export const AdjustShiftFormContextProvider = ({
 	const [submittedShiftList, setSubmittedShiftList] = useState<
 		SubmittedShiftDTO[]
 	>([]);
+	const [staffPreferences, setStaffPreferences] = useState<
+		StaffPreferenceDTO[]
+	>([]);
+
 	const [allJobRoles, setAllJobRoles] = useState<string[]>([
 		"レジ",
 		"品出し",
@@ -71,6 +79,8 @@ export const AdjustShiftFormContextProvider = ({
 				setSubmittedShiftList,
 				allJobRoles,
 				setAllJobRoles,
+				staffPreferences,
+				setStaffPreferences,
 			}}
 		>
 			{children}

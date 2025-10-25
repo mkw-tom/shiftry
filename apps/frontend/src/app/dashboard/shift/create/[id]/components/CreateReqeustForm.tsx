@@ -3,12 +3,10 @@ import { useGetShiftRequestSpecific } from "@/app/api/hook/useGetShiftRequestSpe
 import { useToast } from "@/app/dashboard/common/context/ToastProvider";
 import { dummyShiftRequest } from "@/app/utils/dummyData/ShiftRequest";
 import { TEST_MODE } from "@/lib/env";
-import { set } from "date-fns";
 import React, { useEffect } from "react";
 import { useCreateRequest } from "../context/CreateRequestFormProvider";
 import ActionButton from "./ActionButton";
 import { RangeCalendar } from "./RangeCalendar";
-import AdjustPositionForm from "./adjustCalenderForm/AdjustForm";
 import RegistPositionForm from "./registerPositionForm/RegistPositionForm";
 
 const CreateReqeustForm = ({ shiftRequestId }: { shiftRequestId: string }) => {
@@ -68,7 +66,6 @@ const CreateReqeustForm = ({ shiftRequestId }: { shiftRequestId: string }) => {
 		<div className="w-full h-full">
 			{step === "select_date" && <RangeCalendar />}
 			{step === "regist_position" && <RegistPositionForm />}
-			{step === "adjust_position" && <AdjustPositionForm />}
 			<ActionButton />
 		</div>
 	);
