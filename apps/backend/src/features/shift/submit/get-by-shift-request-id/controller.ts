@@ -29,11 +29,10 @@ const getSubmittedShiftsSpesificController = async (
 
 		const submittedShiftsRaw = await getSubmittedShiftsSpecific(shiftRequestId);
 		if (submittedShiftsRaw.length === 0) {
-			res
-				.status(404)
-				.json({ ok: false, message: "submittedShifts is not found" });
+			res.status(200).json({ ok: true, submittedShifts: [] });
 			return;
 		}
+
 		const submittedShifts = submittedShiftsRaw.map((shift) => ({
 			...shift,
 			shifts:

@@ -31,7 +31,11 @@ export const updateStaffPreferenceController = async (
 		}
 		const data = parsed.data;
 
-		const staffPreference = await updateStaffPreference(userId, storeId, data);
+		const staffPreference = await updateStaffPreference(
+			parsed.data.userId,
+			storeId,
+			data,
+		);
 		const StaffPreferenceDTO = toStaffPreferenceDTO(staffPreference);
 
 		return void res.status(200).json({
