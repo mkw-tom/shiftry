@@ -91,6 +91,10 @@ const TimeSelecter: React.FC<TimeSelecterProps> = ({
 											onChange(opt);
 											setOpen(false);
 										}}
+										onTouchStart={() => {
+											onChange(opt);
+											setOpen(false);
+										}}
 									>
 										{opt}
 									</button>
