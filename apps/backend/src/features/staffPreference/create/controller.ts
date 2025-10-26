@@ -35,7 +35,7 @@ export const createStaffPreferenceController = async (
 
 		if (parsed.data.userId === "" && parsed.data.userName) {
 			const newUser = await createUserByHand(parsed.data.userName);
-			const userStore = await createUserStore(userId, storeId, "STAFF");
+			const userStore = await createUserStore(newUser.id, storeId, "STAFF");
 			const data = { ...parsed.data, storeId, userId: newUser.id };
 			const staffPreference = await createStaffPreference(data);
 			const StaffPreferenceDTO = toStaffPreferenceDTO(staffPreference);

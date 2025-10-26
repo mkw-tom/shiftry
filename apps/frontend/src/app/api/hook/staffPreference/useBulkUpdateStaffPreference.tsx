@@ -36,7 +36,7 @@ export const useBulkUpdateStaffPreference = () => {
 				const res = await useFetch<UpdateBulkStaffPreferenceResponse>({
 					jwt,
 					method: "PUT",
-					path: staffPreferenceApi.create,
+					path: staffPreferenceApi.updateBulk,
 					body: formData,
 				});
 
