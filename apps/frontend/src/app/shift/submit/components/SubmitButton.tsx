@@ -21,13 +21,13 @@ const SubmitButton = () => {
 	};
 
 	return (
-		<div className="absolute bottom-5 left-0 right-0 w-full mx-auto flex justify-between bg-base gap-1 px-3 pb-5 pt-3">
+		<div className="absolute bottom-5 left-0 right-0 w-full mx-auto flex justify-between gap-1 px-3 pb-5 pt-3">
 			<button
 				type="button"
-				className="btn w-full bg-green02 text-white border-none shadow-md"
+				className="btn w-full bg-green01 text-white border-none shadow-md"
 				onClick={onClickSubmit}
 			>
-				シフト提出を依頼
+				提出
 			</button>
 		</div>
 	);
