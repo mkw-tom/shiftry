@@ -4,7 +4,7 @@ import type {
 } from "@shared/api/common/types/errors.js";
 import type { UserLite } from "@shared/api/common/types/prismaLite.js";
 import type { CreateStaffPreferenceResponse } from "@shared/api/staffPreference/types/create.js";
-import { createEditStaffPreferenceValidatonExtendUserName } from "@shared/api/staffPreference/validations/create.js";
+import { createEditStaffPreferenceFormValidaton } from "@shared/api/staffPreference/validations/create.js";
 import type { Request, Response } from "express";
 import { createStaffPreference } from "../../../repositories/staffPreference.js";
 import { createUserByHand } from "../../../repositories/user.repository.js";
@@ -24,9 +24,7 @@ export const createStaffPreferenceController = async (
 		}
 		const [userId, storeId] = [auth.uid, auth.sid];
 
-		const parsed = createEditStaffPreferenceValidatonExtendUserName.safeParse(
-			req.body,
-		);
+		const parsed = createEditStaffPreferenceFormValidaton.safeParse(req.body);
 		if (!parsed.success) {
 			return void res.status(400).json({
 				ok: false,
@@ -35,7 +33,7 @@ export const createStaffPreferenceController = async (
 			});
 		}
 
-		if (parsed.data.userName) {
+		if (parsed.data.userId === "" && parsed.data.userName) {
 			const newUser = await createUserByHand(parsed.data.userName);
 			const userStore = await createUserStore(userId, storeId, "STAFF");
 			const data = { ...parsed.data, storeId, userId: newUser.id };
@@ -51,7 +49,7 @@ export const createStaffPreferenceController = async (
 			});
 		}
 
-		const data = { ...parsed.data, storeId, userId: auth.uid };
+		const data = { ...parsed.data, storeId };
 		const staffPreference = await createStaffPreference(data);
 		const StaffPreferenceDTO = toStaffPreferenceDTO(staffPreference);
 

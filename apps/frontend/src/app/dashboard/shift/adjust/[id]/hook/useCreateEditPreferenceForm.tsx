@@ -1,12 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-	type CreateEditStaffPreferenceExtendUserNameInput,
-	createEditStaffPreferenceValidatonExtendUserName,
+	type CreateEditStaffPreferenceFormInput,
+	createEditStaffPreferenceFormValidaton,
 } from "@shared/api/staffPreference/validations/create";
 
 import { useForm } from "react-hook-form";
 
-const initialPreferenceForm = {
+export const initialPreferenceForm = {
+	userId: "",
 	userName: "",
 	weekMin: 1,
 	weekMax: 1,
@@ -23,7 +24,7 @@ const initialPreferenceForm = {
 };
 
 const useCreatePreferenceForm = (
-	init?: Partial<CreateEditStaffPreferenceExtendUserNameInput>,
+	init?: Partial<CreateEditStaffPreferenceFormInput>,
 ) => {
 	const {
 		register,
@@ -34,13 +35,14 @@ const useCreatePreferenceForm = (
 		setValue,
 		handleSubmit,
 		reset,
-	} = useForm<CreateEditStaffPreferenceExtendUserNameInput>({
-		resolver: zodResolver(createEditStaffPreferenceValidatonExtendUserName),
+	} = useForm<CreateEditStaffPreferenceFormInput>({
+		resolver: zodResolver(createEditStaffPreferenceFormValidaton),
 		mode: "onChange",
 		defaultValues: {
-			userName: init?.userName ?? "",
-			weekMin: init?.weekMin ?? 1,
-			weekMax: init?.weekMax ?? 1,
+			userId: init?.userId,
+			userName: init?.userName,
+			weekMin: init?.weekMin,
+			weekMax: init?.weekMax,
 			weeklyAvailability: init?.weeklyAvailability ?? {
 				mon: "anytime",
 				tue: "anytime",
