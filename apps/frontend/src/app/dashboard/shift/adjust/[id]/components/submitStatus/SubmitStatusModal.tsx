@@ -1,6 +1,5 @@
 import { dummySubmittedShiftList } from "@/app/utils/dummyData/SubmittedShifts";
 import type { RootState } from "@/redux/store.js";
-import type { StaffPreferenceDTO } from "@shared/api/staffPreference/dto";
 import type { CreateEditStaffPreferenceFormInput } from "@shared/api/staffPreference/validations/create.js";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
@@ -25,7 +24,6 @@ const SubmitStatusModal = ({
 	endDate: Date;
 }) => {
 	const { members } = useSelector((state: RootState) => state.members);
-	console.log("members in SubmitStatusModal:", members);
 	const { submittedShiftList, staffPreferences } = useAdjustShiftForm();
 	const submittedIds = submittedShiftList.map((s) => s.userId);
 
@@ -77,7 +75,6 @@ const SubmitStatusModal = ({
 					Object.entries(data.weeklyAvailability).map(([k, v]) => [k, v ?? ""]),
 				),
 			});
-			console.log(preferenceInfo);
 		}
 		const modal = document.getElementById(
 			`staff-preference-modal-${preferenceInfo.userId}`,
@@ -109,7 +106,7 @@ const SubmitStatusModal = ({
 				userId={infoUserId}
 			/>
 			<dialog id={id} className="modal modal-bottom">
-				<div className="modal-box h-[600px] flex flex-col bg-white">
+				<div className="modal-box h-[600px] flex flex-col">
 					<SubmitStatusHead
 						startDate={startDate}
 						endDate={endDate}

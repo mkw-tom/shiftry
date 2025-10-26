@@ -83,7 +83,7 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 		let isMounted = true;
 
 		const fetchTestModeData = () => {
-			// if (!TEST_MODE) return;
+			if (!TEST_MODE) return;
 			setShiftRequestData(demoTemplateShift);
 			setAssignShiftData(demoAssignShift);
 			setSubmittedShiftList(demoSubmissions);
@@ -93,7 +93,6 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 
 		const fetchShiftData = async () => {
 			if (TEST_MODE) return;
-			// 1. shiftRequestData取得
 			const srRes = await getShiftRequestSpecific({ shiftRequestId });
 			if (isMounted && srRes.ok) {
 				setShiftRequestData((prev) => ({
@@ -108,10 +107,8 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 					createdAt: new Date(srRes.shiftRequest.createdAt as Date),
 					updatedAt: new Date(srRes.shiftRequest.updatedAt as Date),
 				}));
-				// 2. assignShiftData取得
 				const asRes = await getAssignShift({ shiftRequestId });
 				if (asRes.ok) {
-					// assignShiftDataにshiftRequestData.requestsのname/countをマージ
 					const shiftRequest = srRes.shiftRequest;
 					if (!asRes.assignShift) {
 						const newShifts = Object.entries(shiftRequest.requests).reduce(
@@ -201,7 +198,7 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 		};
 
 		fetchTestModeData();
-		// fetchShiftData();
+		fetchShiftData();
 		return () => {
 			isMounted = false;
 		};

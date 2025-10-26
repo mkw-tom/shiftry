@@ -49,7 +49,7 @@ const PreferenceList: React.FC<Props> = ({
 							</div>
 							<button
 								type="button"
-								className="btn btn-xs ml-auto bg-base text-gray-700 border-gray01 shadow-none"
+								className="btn btn-xs ml-auto bg-white text-green01 border-1 border-green01 shadow-none"
 								onClick={() => onEdit(user.user.id, user.user.name)}
 							>
 								編集
