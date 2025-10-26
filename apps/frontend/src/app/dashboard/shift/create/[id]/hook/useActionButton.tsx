@@ -56,6 +56,7 @@ const useActionButton = ({
 	const saveAndSendRequest = async () => {
 		const res = await handleUpsertShiftRequest({
 			...formData,
+			requests: buildRequestsFromPositions(formData, shiftPositioins),
 			status: "ADJUSTMENT",
 		});
 
@@ -89,11 +90,6 @@ const useActionButton = ({
 			nextStep("sr1");
 			return;
 		}
-
-		setFormData((prev) => ({
-			...prev,
-			requests: buildRequestsFromPositions(prev, shiftPositioins),
-		}));
 
 		await savePositionsAndJonroles();
 
