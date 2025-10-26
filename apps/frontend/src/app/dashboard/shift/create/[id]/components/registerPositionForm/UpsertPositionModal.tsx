@@ -104,16 +104,25 @@ const UpsertPositionModal = ({
 	};
 
 	return (
-		<dialog id={`position_${position.name}`} className="modal modal-bottom">
+		<dialog id={`position_${position.name}`} className="modal">
 			<form
 				onSubmit={handleSubmit(onSubmitRegiserPosition)}
-				className="modal-box h-auto bg-white"
+				className="modal-box h-auto bg-white overflow-visible"
 			>
-				<input
-					{...register("name")}
-					className="w-full outline-none text-gray-600 font-bold"
-					placeholder="ポジション名を入力（例：ホール担当)"
-				/>
+				<div className="flex items-center justify-between mb-2">
+					<input
+						{...register("name")}
+						className="w-4/5 outline-none text-gray-600 font-bold"
+						placeholder="ポジション名を入力（例：ホール担当)"
+					/>
+					<button
+						type="button"
+						className="btn btn-sm btn-circle absolute right-2 top-2 shadow-none bg-white text-gray02 border border-gray02"
+						onClick={() => closeUpsertPositionModal()}
+					>
+						✕
+					</button>
+				</div>
 				{errors.name && (
 					<span className="text-red-500 text-sm">{errors.name.message}</span>
 				)}
@@ -137,18 +146,8 @@ const UpsertPositionModal = ({
 				</div>
 				<div className="modal-action flex items-center gap-1 w-full">
 					<button
-						type="button"
-						className="btn bg-gray02 text-white w-1/3 border-none"
-						onClick={() => {
-							closeUpsertPositionModal();
-						}}
-					>
-						中止
-					</button>
-
-					<button
 						type="submit"
-						className="btn bg-green01 text-white w-2/3 border-none"
+						className="btn bg-green01 text-white w-full border-none shadow-sm"
 					>
 						<MdAdd className="text-lg" />
 						{editIndex !== null ? "編集" : "追加"}

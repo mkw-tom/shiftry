@@ -106,13 +106,22 @@ const EditAssignPositionModal = ({
 					? "new-position-modal"
 					: `${date}-${editAssignPosition.name}`
 			}
-			className="modal modal-bottom"
+			className="modal overflow-visible"
 		>
 			<form
 				onSubmit={handleSubmit(onSubmitSaveCalderPosition)}
-				className="modal-box h-auto bg-white"
+				className="modal-box h-auto bg-white overflow-visible"
 			>
-				<div className="text-gray02 font-bold mb-2">{YMDW(new Date(date))}</div>
+				<div className="flex items-center justify-between mb-2">
+					<div className="text-gray02 font-bold">{YMDW(new Date(date))}</div>
+					<button
+						type="button"
+						className="btn btn-sm btn-circle absolute right-2 top-2 shadow-none bg-white text-gray02 border border-gray02"
+						onClick={() => closeAdjustCalenerPositionModal()}
+					>
+						✕
+					</button>
+				</div>
 				<input
 					{...register("name")}
 					className="text-lg w-full outline-none text-gray-600 font-bold"
@@ -137,25 +146,13 @@ const EditAssignPositionModal = ({
 					/>
 				</div>
 
-				{/* <PriorityAndAbsoluteInput control={control} /> */}
-
 				<div className="modal-action flex items-center gap-1 w-full">
 					<button
-						type="button"
-						className="btn bg-gray02 text-white w-1/3 border-none"
-						onClick={() => {
-							closeAdjustCalenerPositionModal();
-						}}
-					>
-						中止
-					</button>
-
-					<button
 						type="submit"
-						className="btn bg-green01 text-white w-2/3 border-none"
+						className="btn bg-green01 text-white w-full border-none shadow-sm"
 					>
 						<MdAdd className="text-lg" />
-						{time === "new" ? "追加" : "編集"}
+						{mode === "new" ? "追加" : "編集"}
 					</button>
 				</div>
 			</form>

@@ -6,17 +6,13 @@ import { BiCalendar } from "react-icons/bi";
 import { FcCancel } from "react-icons/fc";
 import { MdCalendarToday } from "react-icons/md";
 
+import { time } from "node:console";
+import TimeSelecter from "@/app/dashboard/common/components/TimeSelecter";
 import { MDW } from "@shared/utils/formatDate";
 import { useSubmitShiftForm } from "../context/SubmitShiftFormContextProvider";
 import SubmitButton from "./SubmitButton";
 
 type ShiftValue = string | null;
-
-const options = [
-	{ value: "anytime", label: "指定なし" },
-	{ value: "off", label: "休み" },
-	{ value: "time", label: "時間指定" },
-] as const;
 
 const pad2 = (n: number) => String(n).padStart(2, "0");
 const toHHmm = (d: Date | null) =>
@@ -78,13 +74,12 @@ const SubmitForm = () => {
 	// モーダル操作
 	const [modalOpen, setModalOpen] = useState(false);
 	const [modalTargetDate, setModalTargetDate] = useState<string | null>(null);
-	const [timeStart, setTimeStart] = useState<Date | null>(null);
-	const [timeEnd, setTimeEnd] = useState<Date | null>(null);
-	const [timeMode, setTimeMode] = useState(false); // 時間指定モード
-
-	const currentValue: ShiftValue = modalTargetDate
-		? (formData.shifts[modalTargetDate] ?? "")
-		: "";
+	// 時間指定はstart/endで個別管理
+	const [startTime, setStartTime] = useState<string>("");
+	const [endTime, setEndTime] = useState<string>("");
+	const [currentOption, setCurrentOption] = useState<
+		"none" | "anytime" | "time"
+	>("anytime");
 
 	const openModal = (date: string) => {
 		setModalTargetDate(date);
@@ -93,22 +88,26 @@ const SubmitForm = () => {
 		const v = formData.shifts[date];
 		if (isRange(v)) {
 			const [s, e] = (v as string).split("-");
-			setTimeStart(parseHHmm(s));
-			setTimeEnd(parseHHmm(e));
-			setTimeMode(true);
+			setStartTime(/^\d{2}:\d{2}$/.test(s) ? s : "09:00");
+			setEndTime(/^\d{2}:\d{2}$/.test(e) ? e : "13:00");
+			setCurrentOption("time");
+		} else if (v === "anytime") {
+			setCurrentOption("anytime");
+			setStartTime("09:00");
+			setEndTime("13:00");
 		} else {
-			setTimeStart(null);
-			setTimeEnd(null);
-			setTimeMode(false);
+			setCurrentOption("none");
+			setStartTime("09:00");
+			setEndTime("13:00");
 		}
 	};
 
 	const closeModal = () => {
 		setModalOpen(false);
 		setModalTargetDate(null);
-		setTimeStart(null);
-		setTimeEnd(null);
-		setTimeMode(false);
+		setStartTime("09:00");
+		setEndTime("13:00");
+		setCurrentOption("anytime");
 	};
 
 	const setShiftForDate = (date: string, value: ShiftValue) => {
@@ -118,45 +117,32 @@ const SubmitForm = () => {
 		}));
 	};
 
-	const handleModalSelect = (value: (typeof options)[number]["value"]) => {
-		if (!modalTargetDate) return;
-		if (value === "off") {
-			setShiftForDate(modalTargetDate, null); // 休み
-			closeModal();
-			return;
-		}
-		if (value === "time") {
-			// 時間指定モードへ
-			setTimeMode(true);
-			if (!isRange(currentValue)) {
-				setTimeStart(null);
-				setTimeEnd(null);
-			}
-			return;
-		}
-		if (value === "anytime") {
-			setShiftForDate(modalTargetDate, "anytime"); // 終日
-			closeModal();
-			return;
-		}
-	};
-
 	const handleTimeConfirm = () => {
-		if (!modalTargetDate || !timeStart || !timeEnd) return;
-
-		const s = toHHmm(timeStart);
-		const e = toHHmm(timeEnd);
-		if (!s || !e) return;
-
-		// 時間の整合（開始 < 終了）
-		if (s >= e) {
+		if (!modalTargetDate || !startTime || !endTime) return;
+		if (startTime >= endTime) {
 			alert("終了時刻は開始時刻より後にしてください");
 			return;
 		}
+		setShiftForDate(modalTargetDate, `${startTime}-${endTime}`);
+	};
 
-		const value: ShiftValue = `${s}-${e}`;
-		setShiftForDate(modalTargetDate, value);
-		closeModal();
+	const handleSaveSelectModal = () => {
+		if (!modalTargetDate) return;
+		if (currentOption === "time") {
+			handleTimeConfirm();
+			closeModal();
+			return;
+		}
+		if (currentOption === "anytime") {
+			setShiftForDate(modalTargetDate, "anytime");
+			closeModal();
+			return;
+		}
+		if (currentOption === "none") {
+			setShiftForDate(modalTargetDate, null);
+			closeModal();
+			return;
+		}
 	};
 
 	return (
@@ -281,89 +267,71 @@ const SubmitForm = () => {
 			{/* モーダル */}
 			{modalOpen && modalTargetDate && (
 				<div className="fixed inset-0 z-50 flex items-center justify-center">
-					<div className="modal modal-open modal-bottom">
-						<div className="modal-box p-4 pb-12 bg-white">
-							<div className="flex justify-between items-start">
-								<h3 className="font-bold mb-2 text-lg text-gray02">
-									希望を選択
-								</h3>
+					<div className="modal modal-open">
+						<div
+							className={`modal-box p-4 bg-white ${
+								currentOption === "time" ? "overflow-visible" : "h-auto"
+							}`}
+						>
+							<p className="mb-4 text-green02 font-bold flex items-center gap-2">
+								<MdCalendarToday />
+								<span>{modalTargetDate}</span>
 								<button
 									type="button"
-									className="btn btn-link btn-xs text-gray02"
+									className="btn btn-link btn-xs text-gray02 ml-auto"
 									onClick={closeModal}
 								>
 									キャンセル
 								</button>
-							</div>
-							<p className="mb-4 text-green02 font-bold flex items-center gap-2">
-								<MdCalendarToday />
-								<span>{modalTargetDate}</span>
 							</p>
 
 							{/* options（ボタン） */}
-							<div className="flex flex-col gap-2">
-								{options.map((opt) => {
-									const active =
-										(opt.value === "off" && currentValue === null) ||
-										(opt.value === "time" && timeMode) ||
-										(opt.value === "anytime" && currentValue === "anytime");
-									return (
-										<button
-											key={opt.value}
-											type="button"
-											className={`btn btn-sm w-full  ${
-												active
-													? "btn-active bg-green02 text-white border-none shadow-md"
-													: " bg-base shadow-md border-gray01 text-gray-600"
-											}`}
-											onClick={() => handleModalSelect(opt.value)}
-										>
-											{opt.label}
-										</button>
-									);
-								})}
+							<div className="flex flex-col gap-2 w-full">
+								<select
+									className="select select-sm select-bordered bg-base text-gray-800 focus:outline-none w-full text-center"
+									value={currentOption}
+									onChange={(e) => {
+										const v = e.target.value as "none" | "anytime" | "time";
+										setCurrentOption(v);
+									}}
+								>
+									<option value="none">休み</option>
+									<option value="anytime">終日</option>
+									<option value="time">時間指定</option>
+								</select>
 							</div>
 
 							{/* 時間指定 UI */}
-							{timeMode && (
-								<div className="mt-4 flex flex-col gap-2">
-									<div className="flex items-center gap-2">
-										<span className="text-sm text-gray-600">開始</span>
-										<DatePicker
-											selected={timeStart}
-											onChange={(d) => setTimeStart(d)}
-											showTimeSelect
-											showTimeSelectOnly
-											timeIntervals={30}
-											timeCaption="開始"
-											dateFormat="HH:mm"
-											placeholderText="開始時間"
-											className="input input-bordered w-20 bg-base text-black border-gray-300 focus:outline-none focus:ring-2"
-										/>
-										<span className="text-gray-600">〜</span>
-										<span className="text-sm text-gray-600">終了</span>
-										<DatePicker
-											selected={timeEnd}
-											onChange={(d) => setTimeEnd(d)}
-											showTimeSelect
-											showTimeSelectOnly
-											timeIntervals={30}
-											timeCaption="終了"
-											dateFormat="HH:mm"
-											placeholderText="終了時間"
-											className="input input-bordered w-20 bg-base text-black border-gray-300 focus:outline-none focus:ring-2"
-										/>
-									</div>
-									<button
-										type="button"
-										className="btn btn-success btn-sm mt-2"
-										disabled={!timeStart || !timeEnd}
-										onClick={handleTimeConfirm}
-									>
-										時間を確定
-									</button>
+							{currentOption === "time" && (
+								<div className="flex gap-1 items-center mt-2 w-full ">
+									<TimeSelecter
+										value={startTime}
+										onChange={(newStart) => setStartTime(newStart || "09:00")}
+										step={30}
+										start="00:00"
+										end="23:30"
+										btnStyle="btn-sm bg-base w-34"
+										color="success"
+									/>
+									<span className="text-center mx-1 flex-1">~</span>
+									<TimeSelecter
+										value={endTime}
+										onChange={(newEnd) => setEndTime(newEnd || "13:00")}
+										step={30}
+										start="00:00"
+										end="23:30"
+										btnStyle="btn-sm bg-base w-34"
+										color="success"
+									/>
 								</div>
 							)}
+							<button
+								type="button"
+								className="w-full btn btn-sm btn-success mt-5"
+								onClick={handleSaveSelectModal}
+							>
+								保存
+							</button>
 						</div>
 					</div>
 				</div>
