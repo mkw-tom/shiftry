@@ -1,4 +1,5 @@
-import React, { useState, useRef } from "react";
+import type React from "react";
+import { useEffect, useRef, useState } from "react";
 import { BiTime } from "react-icons/bi";
 
 type TimeSelecterProps = {
@@ -12,12 +13,13 @@ type TimeSelecterProps = {
 	color?: string;
 };
 
-// 時刻文字列（"HH:mm"）を分に変換
+// "HH:mm" → 分
 const timeToMinutes = (time: string) => {
 	const [h, m] = time.split(":").map(Number);
 	return h * 60 + m;
 };
 
+// 分 → "HH:mm"
 const minutesToTime = (minutes: number) => {
 	const h = Math.floor(minutes / 60);
 	const m = minutes % 60;
@@ -45,9 +47,10 @@ const TimeSelecter: React.FC<TimeSelecterProps> = ({
 		options.push(minutesToTime(min));
 	}
 
-	React.useEffect(() => {
+	// 外側クリックで閉じる（スマホ対応）
+	useEffect(() => {
 		if (!open) return;
-		const handleClose = (e: Event) => {
+		const handleClose = (e: PointerEvent) => {
 			if (
 				dropdownRef.current &&
 				!dropdownRef.current.contains(e.target as Node)
@@ -55,18 +58,14 @@ const TimeSelecter: React.FC<TimeSelecterProps> = ({
 				setOpen(false);
 			}
 		};
-		document.addEventListener("mousedown", handleClose);
-		document.addEventListener("touchstart", handleClose);
-		return () => {
-			document.removeEventListener("mousedown", handleClose);
-			document.removeEventListener("touchstart", handleClose);
-		};
+		document.addEventListener("pointerdown", handleClose, { passive: true });
+		return () => document.removeEventListener("pointerdown", handleClose);
 	}, [open]);
 
 	return (
-		<div className={"flex flex-col gap-1"}>
+		<div className="flex flex-col gap-1">
 			{label && <span className="label-text mb-1">{label}</span>}
-			<div className={"dropdown relative  "} ref={dropdownRef}>
+			<div className="relative" ref={dropdownRef}>
 				<button
 					type="button"
 					className={`input input-bordered flex justify-between items-center cursor-pointer text-gray-700 ${btnStyle}`}
@@ -77,21 +76,18 @@ const TimeSelecter: React.FC<TimeSelecterProps> = ({
 						<BiTime />
 					</span>
 				</button>
+
 				{open && (
-					<div className="dropdown-content menu h-50 w-32 overflow-y-auto absolute right-0.5 shadow-lg bg-base-100 rounded-box">
-						<ul className={"grid grid-cols-2 p-0 text-gray-700"}>
+					<div className="absolute top-full mt-1 right-0 w-32 max-h-60 overflow-y-auto shadow-lg bg-base-100 rounded-box z-50">
+						<ul className="grid grid-cols-2 p-0 text-gray-700">
 							{options.map((opt) => (
 								<li key={opt}>
 									<button
 										type="button"
-										className={`w-full text-left  hover:bg-primary hover:text-primary-content ${
+										className={`w-full text-left px-2 py-1 hover:bg-primary hover:text-primary-content ${
 											opt === value ? `bg-${color} text-primary-content` : ""
 										}`}
 										onClick={() => {
-											onChange(opt);
-											setOpen(false);
-										}}
-										onTouchStart={() => {
 											onChange(opt);
 											setOpen(false);
 										}}
