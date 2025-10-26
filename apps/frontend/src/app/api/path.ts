@@ -40,5 +40,6 @@ export const aiApi = {
 export const staffPreferenceApi = {
 	create: "staff_preference/create",
 	getAll: "staff_preference/all",
+	update: "staff_preference/update",
 	updateBulk: "staff_preference/update/bulk",
 };
