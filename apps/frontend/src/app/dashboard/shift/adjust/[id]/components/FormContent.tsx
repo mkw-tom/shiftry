@@ -1,5 +1,4 @@
 "use client";
-import { create } from "node:domain";
 import { useGetStaffPreferenceAll } from "@/app/api/hook/staffPreference/useGetStaffPreferenceAll";
 import { useGetAssignShfit } from "@/app/api/hook/useGetAssignShift";
 import { useGetShiftRequestSpecific } from "@/app/api/hook/useGetShiftRequestSpecific";
@@ -19,10 +18,7 @@ import type {
 	ShiftsOfAssignType,
 } from "@shared/api/shift/assign/validations/put";
 import React, { useState, useEffect, useCallback } from "react";
-import { BiError } from "react-icons/bi";
-import { LuSend } from "react-icons/lu";
-import { MdAdd, MdErrorOutline } from "react-icons/md";
-import { RiArrowGoBackFill } from "react-icons/ri";
+import { MdErrorOutline } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { useAdjustShiftForm } from "../context/AdjustShiftFormContextProvider.tsx";
 import { useViewSwitch } from "../context/ViewSwitchProvider";
