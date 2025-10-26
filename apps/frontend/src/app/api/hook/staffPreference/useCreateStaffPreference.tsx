@@ -4,7 +4,7 @@ import type {
 	ValidationErrorResponse,
 } from "@shared/api/common/types/errors";
 import type { CreateStaffPreferenceResponse } from "@shared/api/staffPreference/types/create";
-import type { CreateEditStaffPreferenceExtendUserNameInput } from "@shared/api/staffPreference/validations/create";
+import type { CreateEditStaffPreferenceFormInput } from "@shared/api/staffPreference/validations/create";
 import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { staffPreferenceApi } from "../../path";
@@ -19,7 +19,7 @@ export const useCreateStaffPreference = () => {
 		async ({
 			formData,
 		}: {
-			formData: CreateEditStaffPreferenceExtendUserNameInput;
+			formData: CreateEditStaffPreferenceFormInput;
 		}): Promise<
 			CreateStaffPreferenceResponse | ErrorResponse | ValidationErrorResponse
 		> => {

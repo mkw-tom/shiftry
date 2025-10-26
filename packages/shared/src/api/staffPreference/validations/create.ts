@@ -33,8 +33,11 @@ export type CreateStaffPreference = z.infer<
 	typeof createStaffPreferenceValidation
 >;
 
-export const createEditStaffPreferenceValidatonExtendUserName =
+export const createEditStaffPreferenceFormValidaton =
 	createStaffPreferenceValidation
+		.omit({
+			storeId: true,
+		})
 		.extend({
 			userName: z
 				.string()
@@ -46,6 +49,6 @@ export const createEditStaffPreferenceValidatonExtendUserName =
 			message: "weekMinはweekMaxを超えてはいけません",
 		});
 
-export type CreateEditStaffPreferenceExtendUserNameInput = z.input<
-	typeof createEditStaffPreferenceValidatonExtendUserName
+export type CreateEditStaffPreferenceFormInput = z.input<
+	typeof createEditStaffPreferenceFormValidaton
 >;

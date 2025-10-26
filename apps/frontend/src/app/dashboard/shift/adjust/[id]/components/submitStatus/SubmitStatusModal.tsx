@@ -1,9 +1,11 @@
 import { dummySubmittedShiftList } from "@/app/utils/dummyData/SubmittedShifts";
 import type { RootState } from "@/redux/store.js";
 import type { StaffPreferenceDTO } from "@shared/api/staffPreference/dto";
+import type { CreateEditStaffPreferenceFormInput } from "@shared/api/staffPreference/validations/create.js";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useAdjustShiftForm } from "../../context/AdjustShiftFormContextProvider.tsx";
+import { initialPreferenceForm } from "../../hook/useCreateEditPreferenceForm";
 import CreateEditStaffPreferenceModal from "./CreateEditStaffPreferenceModal";
 import NotSubmitList from "./NotSubmitList";
 import PreferenceControlNav from "./PreferenceControlNav";
@@ -40,26 +42,8 @@ const SubmitStatusModal = ({
 
 	const [infoUserId, setInfoUserId] = useState<string | null>(null);
 
-	const [preferenceInfo, setPreferenceInfo] = useState<
-		Pick<
-			StaffPreferenceDTO,
-			"userId" | "weekMax" | "weekMin" | "weeklyAvailability"
-		> & { userName: string }
-	>({
-		userId: "",
-		userName: "",
-		weekMin: 1,
-		weekMax: 1,
-		weeklyAvailability: {
-			mon: "anytime",
-			tue: "anytime",
-			wed: "anytime",
-			thu: "anytime",
-			fri: "anytime",
-			sat: "anytime",
-			sun: "anytime",
-		},
-	});
+	const [preferenceInfo, setPreferenceInfo] =
+		useState<CreateEditStaffPreferenceFormInput>(initialPreferenceForm);
 
 	const openSubmitStaffInfoModal = (userId: string) => {
 		setInfoUserId(userId);
@@ -85,7 +69,7 @@ const SubmitStatusModal = ({
 				return;
 			}
 			setPreferenceInfo({
-				userId: data.userId,
+				userId: userId,
 				userName: userName,
 				weekMin: data.weekMin,
 				weekMax: data.weekMax,
@@ -93,6 +77,7 @@ const SubmitStatusModal = ({
 					Object.entries(data.weeklyAvailability).map(([k, v]) => [k, v ?? ""]),
 				),
 			});
+			console.log(preferenceInfo);
 		}
 		const modal = document.getElementById(
 			`staff-preference-modal-${preferenceInfo.userId}`,
@@ -105,21 +90,7 @@ const SubmitStatusModal = ({
 		) as HTMLDialogElement | null;
 		modal?.close();
 
-		setPreferenceInfo({
-			userId: "",
-			userName: "",
-			weekMin: 1,
-			weekMax: 1,
-			weeklyAvailability: {
-				mon: "anytime",
-				tue: "anytime",
-				wed: "anytime",
-				thu: "anytime",
-				fri: "anytime",
-				sat: "anytime",
-				sun: "anytime",
-			},
-		});
+		setPreferenceInfo(initialPreferenceForm);
 	};
 
 	const onClose = () => {

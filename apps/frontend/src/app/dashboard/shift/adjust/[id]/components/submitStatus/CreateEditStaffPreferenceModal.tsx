@@ -1,7 +1,7 @@
 import { useCreateStaffPreference } from "@/app/api/hook/staffPreference/useCreateStaffPreference";
+import TimeSelecter from "@/app/dashboard/common/components/TimeSelecter";
 import { addMember } from "@/redux/slices/members";
-import type { StaffPreferenceDTO } from "@shared/api/staffPreference/dto";
-import type { CreateEditStaffPreferenceExtendUserNameInput } from "@shared/api/staffPreference/validations/create.js";
+import type { CreateEditStaffPreferenceFormInput } from "@shared/api/staffPreference/validations/create.js";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAdjustShiftForm } from "../../context/AdjustShiftFormContextProvider.tsx";
@@ -9,10 +9,7 @@ import useCreatePreferenceForm from "../../hook/useCreateEditPreferenceForm";
 
 export type StaffPreference = {
 	onClose: (id: string) => void;
-	preferenceInfo: Pick<
-		StaffPreferenceDTO,
-		"userId" | "weekMax" | "weekMin" | "weeklyAvailability"
-	> & { userName: string };
+	preferenceInfo: CreateEditStaffPreferenceFormInput;
 };
 
 // 仮の曜日リスト
@@ -61,6 +58,7 @@ const CreateEditStaffPreferenceModal = ({
 	useEffect(() => {
 		if (preferenceInfo.userId === "") return;
 		reset({
+			userId: preferenceInfo.userId,
 			userName: preferenceInfo.userName ?? "",
 			weekMin: preferenceInfo.weekMin ?? 1,
 			weekMax: preferenceInfo.weekMax ?? 1,
@@ -90,9 +88,7 @@ const CreateEditStaffPreferenceModal = ({
 	const minOptions = Array.from({ length: 7 }, (_, i) => i + 1);
 	const maxOptions = Array.from({ length: 7 }, (_, i) => i + 1);
 
-	const testCreateLogic = (
-		formData: CreateEditStaffPreferenceExtendUserNameInput,
-	) => {
+	const testCreateLogic = (formData: CreateEditStaffPreferenceFormInput) => {
 		dispatch(
 			addMember({
 				user: {
@@ -119,9 +115,7 @@ const CreateEditStaffPreferenceModal = ({
 			},
 		]);
 	};
-	const onSubmit = async (
-		formData: CreateEditStaffPreferenceExtendUserNameInput,
-	) => {
+	const onSubmit = async (formData: CreateEditStaffPreferenceFormInput) => {
 		if (preferenceInfo.userId === "") {
 			if (process.env.NODE_ENV === "development") {
 				testCreateLogic(formData);
@@ -178,6 +172,7 @@ const CreateEditStaffPreferenceModal = ({
 		});
 	};
 
+	console.log(getValues());
 	return (
 		<dialog
 			id={`staff-preference-modal-${preferenceInfo?.userId}`}
@@ -199,7 +194,7 @@ const CreateEditStaffPreferenceModal = ({
 						<input
 							{...register("userName")}
 							value={userName}
-							className="input w-2/3 text-gray-700 font-bold bg-white border-none outeline-none focus:outline-none -ml-3"
+							className="w-full outline-none text-gray-600 font-bold"
 							placeholder="ユーザー名を入力"
 						/>
 					) : (
@@ -219,7 +214,7 @@ const CreateEditStaffPreferenceModal = ({
 						<span className="text-gray-500 text-sm w-16">最小</span>
 						<select
 							{...register("weekMin", { valueAsNumber: true })}
-							className="select select-sm select-bordered bg-base text-gray-800"
+							className="select select-sm select-bordered bg-base text-gray-800 focus:outline-none"
 						>
 							{minOptions.map((num) => (
 								<option key={num} value={num}>
@@ -232,7 +227,7 @@ const CreateEditStaffPreferenceModal = ({
 						<span className="text-gray-500 text-sm w-16">最大</span>
 						<select
 							{...register("weekMax", { valueAsNumber: true })}
-							className="select select-sm select-bordered bg-base text-gray-800"
+							className="select select-sm select-bordered bg-base text-gray-800 focus:outline-none"
 						>
 							{maxOptions.map((num) => (
 								<option key={num} value={num}>
@@ -259,46 +254,71 @@ const CreateEditStaffPreferenceModal = ({
 							<span className="text-gray-500 min-w-[40px] text-sm">
 								{label}
 							</span>
-							<select
-								className="select select-sm select-bordered bg-base text-gray-800"
-								value={
-									weeklyAvailability[key] === "null"
-										? "none"
-										: weeklyAvailability[key] === "anytime"
-											? "anytime"
-											: "time"
-								}
-								onChange={(e) => {
-									const v = e.target.value;
-									if (v === "none") handleChange(key, "null");
-									else if (v === "anytime") handleChange(key, "anytime");
-									else if (v === "time") handleChange(key, "09:00-13:00"); // デフォルト値
-								}}
-							>
-								<option value="none">休み</option>
-								<option value="anytime">終日</option>
-								<option value="time">時間指定</option>
-							</select>
-							{weeklyAvailability[key] &&
-								weeklyAvailability[key] !== "anytime" &&
-								weeklyAvailability[key] !== "null" && (
-									<input
-										type="text"
-										className="input input-sm input-bordered w-28 bg-base text-gray-800"
-										value={
-											weeklyAvailability[key] === "null" ||
-											weeklyAvailability[key] === "anytime"
-												? ""
-												: weeklyAvailability[key]
-										}
-										placeholder="00:00-00:00"
-										onChange={(e) => handleTimeInput(key, e.target.value)}
-										disabled={
-											weeklyAvailability[key] === "null" ||
-											weeklyAvailability[key] === "anytime"
-										}
-									/>
-								)}
+							<div className="flex flex-col gap-1 w-full">
+								<select
+									className="select select-sm select-bordered bg-base text-gray-800 focus:outline-none"
+									value={
+										weeklyAvailability[key] === "null"
+											? "none"
+											: weeklyAvailability[key] === "anytime"
+												? "anytime"
+												: "time"
+									}
+									onChange={(e) => {
+										const v = e.target.value;
+										if (v === "none") handleChange(key, "null");
+										else if (v === "anytime") handleChange(key, "anytime");
+										else if (v === "time") handleChange(key, "09:00-13:00"); // デフォルト値
+									}}
+								>
+									<option value="none">休み</option>
+									<option value="anytime">終日</option>
+									<option value="time">時間指定</option>
+								</select>
+								{/* 時間指定inputはselectの下に常に表示し、"時間指定"以外はdisabled */}
+								{(() => {
+									const timeValue =
+										weeklyAvailability[key] &&
+										typeof weeklyAvailability[key] === "string"
+											? weeklyAvailability[key]
+											: "09:00-13:00";
+									const [start, end] = timeValue.split("-");
+									const isTime =
+										weeklyAvailability[key] !== "null" &&
+										weeklyAvailability[key] !== "anytime";
+									return (
+										<div
+											className={`${
+												isTime ? "flex" : "hidden"
+											} gap-1 items-center mt-1`}
+										>
+											<TimeSelecter
+												value={start}
+												onChange={(newStart) =>
+													handleTimeInput(key, `${newStart}-${end}`)
+												}
+												step={30}
+												start="00:00"
+												end="23:30"
+												btnStyle="w-24 btn-sm bg-base"
+												color="success"
+											/>
+											<span className="mx-1">~</span>
+											<TimeSelecter
+												value={end}
+												onChange={(newEnd) =>
+													handleTimeInput(key, `${start}-${newEnd}`)
+												}
+												step={30}
+												start="00:00"
+												end="23:30"
+												btnStyle="w-24 btn-sm bg-base"
+												color="success"
+											/>
+										</div>
+									);
+								})()}
+							</div>
 						</div>
 					))}
 				</div>
