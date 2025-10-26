@@ -1,4 +1,5 @@
 "use client";
+import { create } from "node:domain";
 import { useGetStaffPreferenceAll } from "@/app/api/hook/staffPreference/useGetStaffPreferenceAll";
 import { useGetAssignShfit } from "@/app/api/hook/useGetAssignShift";
 import { useGetShiftRequestSpecific } from "@/app/api/hook/useGetShiftRequestSpecific";
@@ -93,6 +94,7 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 
 		const fetchShiftData = async () => {
 			if (TEST_MODE) return;
+			// 1. shiftRequestData取得
 			const srRes = await getShiftRequestSpecific({ shiftRequestId });
 			if (isMounted && srRes.ok) {
 				setShiftRequestData((prev) => ({
@@ -107,6 +109,8 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 					createdAt: new Date(srRes.shiftRequest.createdAt as Date),
 					updatedAt: new Date(srRes.shiftRequest.updatedAt as Date),
 				}));
+
+				// 2. assignShiftData取得＋shiftRequestData.requestsとマージ
 				const asRes = await getAssignShift({ shiftRequestId });
 				if (asRes.ok) {
 					const shiftRequest = srRes.shiftRequest;
@@ -181,18 +185,34 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 			// 3. submittedShiftList取得
 			const ssRes = await getSubmittedShfit({ shiftRequestId });
 			if (isMounted && ssRes.ok) {
-				setSubmittedShiftList(ssRes.submittedShifts);
+				setSubmittedShiftList(() => {
+					const parsedDatas = ssRes.submittedShifts.map((submission) => {
+						return {
+							...submission,
+							createdAt: new Date(submission.createdAt),
+							updatedAt: new Date(submission.updatedAt),
+						};
+					});
+					return parsedDatas;
+				});
 			} else if (isMounted && "message" in ssRes) {
-				console.error(ssRes.message);
 				alert(`提出データの取得に失敗しました。error:${ssRes.message}`);
 			}
 
 			// 4. staffPreferences取得
 			const spRes = await getStaffPreferenceAll();
 			if (isMounted && spRes.ok) {
-				setStaffPreferences(spRes.staffPreferences);
+				setStaffPreferences(() => {
+					const parsedDatas = spRes.staffPreferences.map((pref) => {
+						return {
+							...pref,
+							createdAt: new Date(pref.createdAt),
+							updatedAt: new Date(pref.updatedAt),
+						};
+					});
+					return parsedDatas;
+				});
 			} else if (isMounted && "message" in spRes) {
-				console.error(spRes.message);
 				alert(`スタッフ希望情報の取得に失敗しました。error:${spRes.message}`);
 			}
 		};
