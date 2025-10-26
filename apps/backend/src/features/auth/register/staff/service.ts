@@ -3,6 +3,7 @@ import type { RegisterStaffResponse } from "@shared/api/auth/types/register-staf
 import type { ErrorResponse } from "@shared/api/common/types/errors.js";
 import prisma from "../../../../config/database.js";
 import { aes, hmac } from "../../../../lib/env.js";
+import { createStaffPreference } from "../../../../repositories/staffPreference.js";
 import { getStoreCodeByHash } from "../../../../repositories/storeCode.repository.js";
 import { upsertUser } from "../../../../repositories/user.repository.js";
 import { getUserStoreByUserIdAndStoreId } from "../../../../repositories/userStore.repository.js";
@@ -60,6 +61,18 @@ const registerStaffService = async (
 					store: { select: { id: true, name: true, isActive: true } },
 				},
 			});
+
+			const staffPreference = await createStaffPreference(
+				{
+					storeId: code.storeId,
+					userId: user.id,
+					weekMax: 0,
+					weekMin: 0,
+					note: "",
+					weeklyAvailability: {},
+				},
+				tx,
+			);
 
 			return {
 				ok: true,

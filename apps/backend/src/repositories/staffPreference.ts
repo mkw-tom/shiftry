@@ -1,3 +1,4 @@
+import type { Prisma, PrismaClient } from "@prisma/client";
 import type { CreateStaffPreferenceInput } from "@shared/api/staffPreference/validations/create.js";
 import type { CreateBulkStaffPreferenceInput } from "@shared/api/staffPreference/validations/create_bulk.js";
 import type { UpdateStaffPreferenceInput } from "@shared/api/staffPreference/validations/update.js";
@@ -21,8 +22,9 @@ export const getStaffPreferencesByStoreId = async (storeId: string) => {
 // 1件作成
 export const createStaffPreference = async (
 	data: CreateStaffPreferenceInput,
+	db: Prisma.TransactionClient | PrismaClient = prisma,
 ) => {
-	return prisma.staffPreference.create({ data });
+	return db.staffPreference.create({ data });
 };
 
 // 複数件一括作成

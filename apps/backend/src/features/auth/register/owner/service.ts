@@ -6,6 +6,7 @@ import type { StoreNameType } from "@shared/api/auth/validations/register-owner.
 import type { ErrorResponse } from "@shared/api/common/types/errors.js";
 import prisma from "../../../../config/database.js";
 import { aes, hmac, lineMessageChannel } from "../../../../lib/env.js";
+import { createStaffPreference } from "../../../../repositories/staffPreference.js";
 import { createStore } from "../../../../repositories/store.repository.js";
 import { UpsertStoreCode } from "../../../../repositories/storeCode.repository.js";
 import { upsertUser } from "../../../../repositories/user.repository.js";
@@ -41,7 +42,19 @@ const registerOwnerService = async (
 		const store = await createStore(storeInput.name, tx);
 
 		const userStore = await createUserStore(user.id, store.id, "OWNER", tx);
-		return { user, store, userStore };
+
+		const staffPreference = await createStaffPreference(
+			{
+				storeId: store.id,
+				userId: user.id,
+				weekMax: 0,
+				weekMin: 0,
+				note: "",
+				weeklyAvailability: {},
+			},
+			tx,
+		);
+		return { user, store, userStore, staffPreference };
 	});
 
 	const codePlain = generateStoreCode();
