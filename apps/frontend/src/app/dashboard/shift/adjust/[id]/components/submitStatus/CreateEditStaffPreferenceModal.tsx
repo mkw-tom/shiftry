@@ -1,9 +1,10 @@
 import { useCreateStaffPreference } from "@/app/api/hook/staffPreference/useCreateStaffPreference";
+import { useUpdateStaffPreference } from "@/app/api/hook/staffPreference/useUpdateStaffPreference";
 import TimeSelecter from "@/app/dashboard/common/components/TimeSelecter";
 import { addMember } from "@/redux/slices/members";
 import type { CreateEditStaffPreferenceFormInput } from "@shared/api/staffPreference/validations/create.js";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useAdjustShiftForm } from "../../context/AdjustShiftFormContextProvider.tsx";
 import useCreatePreferenceForm from "../../hook/useCreateEditPreferenceForm";
 
@@ -32,6 +33,11 @@ const CreateEditStaffPreferenceModal = ({
 		isLoading: isCreateLoading,
 		error: createError,
 	} = useCreateStaffPreference();
+	const {
+		updateStaffPreference,
+		isLoading: isUpdateLoading,
+		error: updateError,
+	} = useUpdateStaffPreference();
 	const { setStaffPreferences, staffPreferences } = useAdjustShiftForm();
 	const dispatch = useDispatch();
 	const {
@@ -39,11 +45,7 @@ const CreateEditStaffPreferenceModal = ({
 		errors,
 		isDisabled,
 		userName,
-		weekMin,
-		weekMax,
 		weeklyAvailability,
-		control,
-		getValues,
 		setValue,
 		reset,
 		weekMinMaxValid,
@@ -56,7 +58,6 @@ const CreateEditStaffPreferenceModal = ({
 	});
 
 	useEffect(() => {
-		if (preferenceInfo.userId === "") return;
 		reset({
 			userId: preferenceInfo.userId,
 			userName: preferenceInfo.userName ?? "",
@@ -79,12 +80,10 @@ const CreateEditStaffPreferenceModal = ({
 		setValue(`weeklyAvailability.${key}`, value);
 	};
 
-	// 時間指定入力
 	const handleTimeInput = (key: string, value: string) => {
 		setValue(`weeklyAvailability.${key}`, value);
 	};
 
-	// 最小・最大出勤回数の選択肢（1〜7）
 	const minOptions = Array.from({ length: 7 }, (_, i) => i + 1);
 	const maxOptions = Array.from({ length: 7 }, (_, i) => i + 1);
 
@@ -115,6 +114,7 @@ const CreateEditStaffPreferenceModal = ({
 			},
 		]);
 	};
+
 	const onSubmit = async (formData: CreateEditStaffPreferenceFormInput) => {
 		if (preferenceInfo.userId === "") {
 			if (process.env.NODE_ENV === "development") {
@@ -122,7 +122,7 @@ const CreateEditStaffPreferenceModal = ({
 				handleClose();
 				return;
 			}
-			// 新規作成
+
 			const res = await createStaffPreference({ formData });
 			if (!res.ok) {
 				alert(createError + res.message);
@@ -135,15 +135,29 @@ const CreateEditStaffPreferenceModal = ({
 			setStaffPreferences((prev) => [...prev, res.staffPreference]);
 			handleClose();
 		} else {
+			const res = await updateStaffPreference({
+				formData: {
+					userId: preferenceInfo.userId,
+					weekMin: formData.weekMin,
+					weekMax: formData.weekMax,
+					weeklyAvailability: formData.weeklyAvailability,
+					note: formData.note,
+				},
+			});
+			if (!res.ok) {
+				alert(res.message);
+				handleClose();
+				return;
+			}
+
 			setStaffPreferences((prev) =>
 				prev.map((pref) => {
 					if (pref.userId === preferenceInfo.userId) {
 						return {
 							...pref,
-							userName: formData.userName,
-							weekMin: formData.weekMin,
-							weekMax: formData.weekMax,
-							weeklyAvailability: formData.weeklyAvailability,
+							weekMin: res.staffPreference.weekMin,
+							weekMax: res.staffPreference.weekMax,
+							weeklyAvailability: res.staffPreference.weeklyAvailability,
 						};
 					}
 					return pref;
@@ -172,7 +186,6 @@ const CreateEditStaffPreferenceModal = ({
 		});
 	};
 
-	console.log(getValues());
 	return (
 		<dialog
 			id={`staff-preference-modal-${preferenceInfo?.userId}`}
@@ -275,7 +288,6 @@ const CreateEditStaffPreferenceModal = ({
 									<option value="anytime">終日</option>
 									<option value="time">時間指定</option>
 								</select>
-								{/* 時間指定inputはselectの下に常に表示し、"時間指定"以外はdisabled */}
 								{(() => {
 									const timeValue =
 										weeklyAvailability[key] &&
@@ -329,17 +341,23 @@ const CreateEditStaffPreferenceModal = ({
 						</div>
 					)}
 				<div>
-					<button
-						type="submit"
-						className="btn btn-sm btn-success mt-4 w-full"
-						disabled={isCreateLoading || isDisabled}
-					>
-						{preferenceInfo.userId === ""
-							? isCreateLoading
-								? "作成中..."
-								: "作成"
-							: "保存"}
-					</button>
+					{preferenceInfo.userId === "" ? (
+						<button
+							type="submit"
+							className="btn btn-sm btn-success mt-4 w-full"
+							disabled={isCreateLoading || isDisabled}
+						>
+							{isCreateLoading ? "作成中..." : "作成"}
+						</button>
+					) : (
+						<button
+							type="submit"
+							className="btn btn-sm btn-success mt-4 w-full"
+							disabled={isUpdateLoading || isDisabled}
+						>
+							{isUpdateLoading ? "保存中..." : "編集を保存"}
+						</button>
+					)}
 				</div>
 			</form>
 		</dialog>
