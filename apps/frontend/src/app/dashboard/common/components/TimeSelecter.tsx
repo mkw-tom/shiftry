@@ -47,7 +47,7 @@ const TimeSelecter: React.FC<TimeSelecterProps> = ({
 
 	React.useEffect(() => {
 		if (!open) return;
-		const handleClick = (e: MouseEvent) => {
+		const handleClose = (e: Event) => {
 			if (
 				dropdownRef.current &&
 				!dropdownRef.current.contains(e.target as Node)
@@ -55,8 +55,12 @@ const TimeSelecter: React.FC<TimeSelecterProps> = ({
 				setOpen(false);
 			}
 		};
-		document.addEventListener("mousedown", handleClick);
-		return () => document.removeEventListener("mousedown", handleClick);
+		document.addEventListener("mousedown", handleClose);
+		document.addEventListener("touchstart", handleClose);
+		return () => {
+			document.removeEventListener("mousedown", handleClose);
+			document.removeEventListener("touchstart", handleClose);
+		};
 	}, [open]);
 
 	return (
@@ -65,7 +69,7 @@ const TimeSelecter: React.FC<TimeSelecterProps> = ({
 			<div className={"dropdown relative  "} ref={dropdownRef}>
 				<button
 					type="button"
-					className={`input input-bordered flex justify-between items-center cursor-pointer ${btnStyle}`}
+					className={`input input-bordered flex justify-between items-center cursor-pointer text-gray-700 ${btnStyle}`}
 					onClick={() => setOpen((v) => !v)}
 				>
 					<span>{value}</span>
@@ -75,7 +79,7 @@ const TimeSelecter: React.FC<TimeSelecterProps> = ({
 				</button>
 				{open && (
 					<div className="dropdown-content menu h-50 w-32 overflow-y-auto absolute right-0.5 shadow-lg bg-base-100 rounded-box">
-						<ul className={"grid grid-cols-2 p-0"}>
+						<ul className={"grid grid-cols-2 p-0 text-gray-700"}>
 							{options.map((opt) => (
 								<li key={opt}>
 									<button
