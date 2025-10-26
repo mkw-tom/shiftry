@@ -4,7 +4,10 @@ import type {
 } from "@shared/api/common/types/errors.js";
 import type { UserLite } from "@shared/api/common/types/prismaLite.js";
 import type { CreateStaffPreferenceResponse } from "@shared/api/staffPreference/types/create.js";
-import { createEditStaffPreferenceFormValidaton } from "@shared/api/staffPreference/validations/create.js";
+import {
+	type CreateStaffPreferenceInput,
+	createEditStaffPreferenceFormValidaton,
+} from "@shared/api/staffPreference/validations/create.js";
 import type { Request, Response } from "express";
 import { createStaffPreference } from "../../../repositories/staffPreference.js";
 import { createUserByHand } from "../../../repositories/user.repository.js";
@@ -36,7 +39,14 @@ export const createStaffPreferenceController = async (
 		if (parsed.data.userId === "" && parsed.data.userName) {
 			const newUser = await createUserByHand(parsed.data.userName);
 			const userStore = await createUserStore(newUser.id, storeId, "STAFF");
-			const data = { ...parsed.data, storeId, userId: newUser.id };
+			const data: CreateStaffPreferenceInput = {
+				storeId,
+				userId: newUser.id,
+				weekMax: parsed.data.weekMax,
+				weekMin: parsed.data.weekMin,
+				weeklyAvailability: parsed.data.weeklyAvailability,
+				note: parsed.data.note,
+			};
 			const staffPreference = await createStaffPreference(data);
 			const StaffPreferenceDTO = toStaffPreferenceDTO(staffPreference);
 			return void res.status(200).json({
