@@ -10,24 +10,14 @@ import Table from "@/app/dashboard/shift/adjust/[id]/components/Table";
 import EditAssignPositionModal from "@/app/dashboard/shift/adjust/[id]/components/modals/EditAssignPositionModal";
 import { useAdjustShiftForm } from "@/app/dashboard/shift/adjust/[id]/context/AdjustShiftFormContextProvider.tsx";
 import { useViewSwitch } from "@/app/dashboard/shift/adjust/[id]/context/ViewSwitchProvider";
-import { dummyAssignShift } from "@/app/utils/dummyData/AssginShfit";
-import { dummyShiftRequest } from "@/app/utils/dummyData/ShiftRequest";
-import { dummySubmittedShiftList } from "@/app/utils/dummyData/SubmittedShifts";
-import { dummyMembers } from "@/app/utils/dummyData/member";
-import { TEST_MODE } from "@/lib/env";
-import { setMembers } from "@/redux/slices/members";
 import type { RootState } from "@/redux/store.js";
 import type {
-	AssignPositionType,
 	AssignPositionWithDateInput,
 	ShiftsOfAssignType,
 } from "@shared/api/shift/assign/validations/put";
 import { useSearchParams } from "next/navigation";
-import React, { useState, useEffect, useCallback } from "react";
-import { BiError } from "react-icons/bi";
-import { LuSend } from "react-icons/lu";
-import { MdAdd, MdErrorOutline } from "react-icons/md";
-import { RiArrowGoBackFill } from "react-icons/ri";
+import React, { useState, useEffect } from "react";
+import { MdErrorOutline } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 
 const FormContent = () => {
@@ -76,16 +66,7 @@ const FormContent = () => {
 	useEffect(() => {
 		let isMounted = true;
 
-		const fetchTestModeData = () => {
-			if (!TEST_MODE) return;
-			setShiftRequestData(dummyShiftRequest);
-			setAssignShiftData(dummyAssignShift);
-			setSubmittedShiftList(dummySubmittedShiftList);
-			dispatch(setMembers(dummyMembers));
-		};
-
 		const fetchShiftData = async () => {
-			if (TEST_MODE) return;
 			if (!shiftRequestId) return;
 
 			// 1. shiftRequestData取得
@@ -186,7 +167,6 @@ const FormContent = () => {
 			}
 		};
 
-		fetchTestModeData();
 		fetchShiftData();
 		return () => {
 			isMounted = false;
@@ -199,7 +179,6 @@ const FormContent = () => {
 		setAssignShiftData,
 		setSubmittedShiftList,
 		shiftRequestId,
-		dispatch,
 	]);
 
 	const openSubmitStatusModal = () => {

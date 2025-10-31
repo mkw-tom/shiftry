@@ -14,14 +14,10 @@ import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getMe } from "./api";
 
-type Options = { liffId: string };
-
 export function useMe() {
 	const dispatch = useDispatch();
 	const [getting, setGetting] = useState(false);
 	const [error, setError] = useState<string | null>(null);
-
-	// const { jwt } = useSelector((state: RootState) => state.authToken);
 
 	const me = useCallback(
 		async ({

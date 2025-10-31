@@ -3,7 +3,6 @@ import { AdjustShiftFormContextProvider } from "@/app/dashboard/shift/adjust/[id
 import { ViewSwitchProvider } from "@/app/dashboard/shift/adjust/[id]/context/ViewSwitchProvider";
 import { liffId } from "@/lib/env";
 import AuthGate from "@/shared/components/AuthGate";
-import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import React from "react";
 import FormContent from "./FormContent";
