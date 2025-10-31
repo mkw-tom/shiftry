@@ -1,5 +1,4 @@
 import type { Prisma, PrismaClient } from "@prisma/client";
-import { ShiftRequestWithJson } from "@shared/api/common/types/merged.js";
 import type { ShiftRequest } from "@shared/api/common/types/prisma.js";
 import { addHours, startOfToday, subDays } from "date-fns";
 import prisma from "../config/database.js";
