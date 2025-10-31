@@ -9,6 +9,7 @@ import {
 	backfillToCount,
 	buildLockedSetAndStatus,
 	ensureAbsoluteAssigned,
+	hydrateAssignedFromProfiles,
 	mergeCurrentAssignments,
 	normalizeAiModified,
 	sanitizeAiModified,
@@ -28,57 +29,40 @@ export const getAIShiftAdjustment = async ({
 	} = datas;
 	/** ---- システムプロンプト ---- */
 	const systemPrompt = `
-あなたは小規模店舗向けのシフト調整AIです。
-出力は必ず純粋なJSONのみ。キーはすべてダブルクオート、コメント・末尾カンマ禁止。
+純JSONのみ。差分枠のみ返す（未変更枠は返さない）。updatedAt/updatedBy/sourceは出力禁止。
+既存currentAssignmentsは変更不可（assignedの既存要素・statusは維持）。
 
-[目的]
-- 現状の割当(currentAssignments)は変更せず、空き枠や不足分のみを「提出データ(可用時間)を最優先」に補完する。
-- 各枠で可能な限り count に到達するよう最大限埋める（候補が尽きた場合だけ vacancies を残す）。
-- 雛形(absolute/priority)は参考情報。提出データに反する場合は採用しない。
+候補条件:
+- 提出で可用一致（"anytime"=全時間、一致は部分重なり）
+- ロール適合: memberProfiles[uid].jobRoles ∩ requests[date][slot].jobRoles ≠ ∅
+- 「提出で可用一致した候補に限定したうえで、absolute > priority(level昇順) > その他（userId昇順）の順に必ず選定する。等価条件の場合のタイブレークは jobRoles の適合度が高い候補を優先し、それも等しい場合のみ userId 昇順とする。」
 
-[候補抽出の定義]
-- 可用一致の判定:
-  - "anytime" は当該日の全ての時間帯に一致。
-  - "HH:mm-HH:mm" は枠時間と重なっていれば一致（部分一致で可）。
-- 可用外は除外。提出データが無い(未提出)場合は不可とみなす。
+優先順位（すべて可用一致・ロール適合が前提）:
+1) absolute
+2) priority（level昇順）
+3) その他（ユーザーID昇順）
 
-[選定の順序（提出で可用一致する候補間の優先）]
-1) absolute に載っているユーザー
-2) priority に載っているユーザー（priority.level 昇順）
-3) 上記以外（ユーザーID昇順）
-※ いずれも「提出データで可用一致」が前提
+割り当て制約:
+- 時間帯が重なる枠への同一ユーザーの同時割当は禁止
+- assigned.length ≤ count、重複なし
+- assignedCount = assigned.length
+- vacancies = count - assigned.length (下限0)
+- テンプレに存在しない [date][slot] は返さない
+- 同一日の同一ユーザー重複アサイン禁止
 
-[厳守ルール]
-- 提出データ > currentAssignments > absolute/priority の優先順位で考慮。
-- 既存の currentAssignments は再配置・削除しない（維持）。status も変更しない。
-- "assigned.length" は "count" を超えない。重複ユーザー不可。
-- "assignedCount" は "assigned.length" と一致。
-- "vacancies" は "count - assigned.length"（下限0）。
-- "confirmed": 提出データで可用一致して割当てた場合のみ true を使用（false は出力しない）。
-- "updatedAt" と "updatedBy" は AI が生成しない（サーバで付与）。
+公平性・均等化（上位ルールに違反しない範囲で適用）:
+- 制約に準拠しつつ、公平性・均等化を最大化する
+- 週内のユニーク割当人数を最大化する（可能なら全員に少なくとも1回）
+- 同一ユーザーの週内割当回数の偏りを最小化（できるだけ均等配分）
+- 同一日に既に割当があるユーザーより、その日未割当のユーザーを優先
+- 等価条件なら userId 昇順（または同等の安定タイブレーク）で決定
 
-[充足アルゴリズム]
-- 各枠について、現状の assigned を維持しつつ、上記の優先順に候補を追加し、count に達するまで埋める。
-- 候補が完全に尽きたときのみ vacancies を残す。
-
-[出力形式]
-{
-  "ai_modified": {
-    "YYYY-MM-DD": {
-      "HH:mm-HH:mm": {
-        "name": "枠名",
-        "count": 2,
-        "jobRoles": ["任意"],
-        "assigned": [
-          { "uid": "user_001", "displayName": "氏名", "pictureUrl": "URL", "confirmed": true }
-        ],
-        "assignedCount": 1,
-        "vacancies": 1,
-        "status": "proposed"
-      }
-    }
-  }
-}
+返却形:
+{"ai_modified":{"YYYY-MM-DD":{"HH:mm-HH:mm":{
+  "name":"枠名","count":2,"jobRoles":["任意"],
+  "assigned":[{"uid":"user_001","displayName":"氏名","pictureUrl":"URL","confirmed":true}],
+  "assignedCount":1,"vacancies":1,"status":"proposed"
+}}}}
 `;
 
 	/** ---- ユーザープロンプト ---- */
@@ -151,7 +135,7 @@ ${JSON.stringify(constraints ?? {}, null, 2)}
 			submissions,
 			locked,
 			{
-				treatMissingAsUnavailable: true,
+				treatMissingAsUnavailable: false,
 			},
 		);
 	}
@@ -181,6 +165,15 @@ ${JSON.stringify(constraints ?? {}, null, 2)}
 	/** ---- 最終正規化（pictureUrl/重複/カウント整合） ---- */
 	if (aiModified) {
 		parsed.ai_modified = normalizeAiModified(aiModified);
+	}
+
+	if (aiModified) {
+		const { aiModified: hydrated } = hydrateAssignedFromProfiles(
+			parsed.ai_modified,
+			memberProfiles,
+			{ dropUnknownUid: false },
+		);
+		parsed.ai_modified = hydrated;
 	}
 
 	/** ---- status を最終的に既存優先で再適用（保険） ---- */

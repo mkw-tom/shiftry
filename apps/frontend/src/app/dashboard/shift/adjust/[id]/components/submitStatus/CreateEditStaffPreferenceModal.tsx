@@ -87,42 +87,8 @@ const CreateEditStaffPreferenceModal = ({
 	const minOptions = Array.from({ length: 7 }, (_, i) => i + 1);
 	const maxOptions = Array.from({ length: 7 }, (_, i) => i + 1);
 
-	const testCreateLogic = (formData: CreateEditStaffPreferenceFormInput) => {
-		dispatch(
-			addMember({
-				user: {
-					id: `new-id-${staffPreferences.length + 1}`,
-					name: formData.userName ?? "",
-					pictureUrl: "",
-					jobRoles: [],
-				},
-				role: "STAFF",
-			}),
-		);
-		setStaffPreferences((prev) => [
-			...prev,
-			{
-				createdAt: new Date(),
-				updatedAt: new Date(),
-				userId: `new-id-${staffPreferences.length + 1}`,
-				storeId: "",
-				userName: formData.userName,
-				weekMin: formData.weekMin,
-				weekMax: formData.weekMax,
-				weeklyAvailability: formData.weeklyAvailability,
-				note: formData.note ?? null,
-			},
-		]);
-	};
-
 	const onSubmit = async (formData: CreateEditStaffPreferenceFormInput) => {
 		if (preferenceInfo.userId === "") {
-			if (process.env.NODE_ENV === "development") {
-				testCreateLogic(formData);
-				handleClose();
-				return;
-			}
-
 			const res = await createStaffPreference({ formData });
 			if (!res.ok) {
 				alert(createError + res.message);

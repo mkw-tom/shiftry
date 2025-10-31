@@ -1,11 +1,5 @@
-import { demoMembers } from "@/app/utils/dummyData/aiAdjustDemo";
-import { dummyMembers } from "@/app/utils/dummyData/member";
-import { TEST_MODE } from "@/lib/env";
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
-import type {
-	Member,
-	UserStoreLiteWithUserAndJobRoles,
-} from "@shared/api/common/types/prismaLite";
+import type { Member } from "@shared/api/common/types/prismaLite";
 import { add } from "date-fns";
 
 type MembersState = {
@@ -13,7 +7,7 @@ type MembersState = {
 };
 
 const initialState: MembersState = {
-	members: TEST_MODE ? demoMembers : [],
+	members: [],
 };
 
 export const userSlice = createSlice({

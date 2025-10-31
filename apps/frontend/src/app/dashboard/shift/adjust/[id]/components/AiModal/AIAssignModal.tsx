@@ -4,12 +4,13 @@ import React, { use, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useAiAdjust } from "@/app/api/hook/useAiAdjust";
-import { demoMembers } from "@/app/utils/dummyData/aiAdjustDemo";
+import type { RootState } from "@/redux/store.js";
 import type {
 	AIShiftAdjustRequest,
 	MemberProfileType,
 } from "@shared/api/shift/ai/validations/post-adjust.js";
 import { ja, te } from "date-fns/locale";
+import { useSelector } from "react-redux";
 import { useAdjustShiftForm } from "../../context/AdjustShiftFormContextProvider.tsx";
 import { useAiAdjustMode } from "../../context/AiAdjustModeProvider";
 
@@ -25,6 +26,7 @@ const AIAssignModal = () => {
 		isLoading: isAiAdjustLoading,
 		error: aiAdjustError,
 	} = useAiAdjust();
+	const { members } = useSelector((state: RootState) => state.members);
 	const { startAiAdjustMode } = useAiAdjustMode();
 	const [datePicking, setDatePicking] = useState(false);
 	// const [checkedFields, setCheckedFields] = useState<string[]>([]);
@@ -103,7 +105,7 @@ const AIAssignModal = () => {
 		// }
 		if (!isInputValid()) return;
 
-		const memberProfiles: MemberProfileType[] = demoMembers.map((member) => ({
+		const memberProfiles: MemberProfileType[] = members.map((member) => ({
 			uid: member.user.id,
 			displayName: member.user.name,
 			pictureUrl: member.user.pictureUrl ?? undefined,

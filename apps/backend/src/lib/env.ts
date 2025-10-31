@@ -3,6 +3,10 @@ import type { SignOptions } from "jsonwebtoken";
 /// ポート
 export const PORT = process.env.PORT as string;
 
+//
+export const DEV_UID = process.env.DEV_UID as string;
+export const DEV_SID = process.env.DEV_SID as string;
+
 /// クロスオリジン
 export const CROSS_ORIGIN_PROD = process.env.CROSS_ORIGIN_PROD as string;
 export const CROSS_ORIGIN_DEV = process.env.CROSS_ORIGIN_DEV as string;

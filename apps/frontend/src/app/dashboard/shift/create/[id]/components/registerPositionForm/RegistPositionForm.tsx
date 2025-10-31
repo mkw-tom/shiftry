@@ -1,5 +1,4 @@
 import { toISO } from "@/app/utils/date";
-import { dummyShiftPositions } from "@/app/utils/dummyData/shiftPosition";
 import { TEST_MODE } from "@/lib/env";
 import type { UpsertShiftPositionBaseInput } from "@shared/api/shiftPosition/validations/put-bulk";
 import React, { use, useEffect, useRef, useState } from "react";
@@ -31,24 +30,24 @@ const RegistPositionForm = () => {
 	useEffect(() => {
 		if (loadedRef.current) return;
 		loadedRef.current = true;
-		const setTestData = () => {
-			if (!TEST_MODE) return;
-			setShiftPositions(
-				dummyShiftPositions.map((pos) => ({
-					...pos,
-					startTime: toISO(String(pos.startTime)),
-					endTime: toISO(String(pos.endTime)),
-					absolute: pos.absolute ?? [],
-					priority: pos.priority ?? [],
-					count:
-						typeof pos.count === "number" && pos.count !== null ? pos.count : 1,
-				})),
-			);
-			return;
-		};
+		// const setTestData = () => {
+		// 	if (!TEST_MODE) return;
+		// 	setShiftPositions(
+		// 		dummyShiftPositions.map((pos) => ({
+		// 			...pos,
+		// 			startTime: toISO(String(pos.startTime)),
+		// 			endTime: toISO(String(pos.endTime)),
+		// 			absolute: pos.absolute ?? [],
+		// 			priority: pos.priority ?? [],
+		// 			count:
+		// 				typeof pos.count === "number" && pos.count !== null ? pos.count : 1,
+		// 		})),
+		// 	);
+		// 	return;
+		// };
 
 		const fetchData = async () => {
-			if (TEST_MODE) return;
+			// if (TEST_MODE) return;
 			const res = await handleGetShiftPositions();
 			if (!res.ok && "message" in res) {
 				alert(res.message);
@@ -66,7 +65,7 @@ const RegistPositionForm = () => {
 				})),
 			);
 		};
-		setTestData();
+		// setTestData();
 		fetchData();
 	}, [handleGetShiftPositions, setShiftPositions]);
 

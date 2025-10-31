@@ -3,7 +3,6 @@ import type { GetSubmittedShiftMeResponse } from "@shared/api/shift/submit/types
 import type { SubmittedDataType } from "@shared/api/shift/submit/validations/put.js";
 import type { Request, Response } from "express";
 import { getSubmittedShiftUser } from "../../../../repositories/submittedShift.repository.js";
-import { verifyUserStore } from "../../../common/authorization.service.js";
 
 const getSubmittedShiftMeController = async (
 	req: Request,

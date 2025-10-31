@@ -1,23 +1,11 @@
 "use client";
-import Head from "@/app/dashboard/home/components/Head";
-import {
-	dummyShiftRequest,
-	dummyShiftRequests,
-} from "@/app/utils/dummyData/ShiftRequest";
-import { TEST_MODE } from "@/lib/env";
 import type { RootState } from "@/redux/store";
-import type { ShiftRequestWithJson } from "@shared/api/common/types/merged";
 import type { RequestStatus } from "@shared/api/common/types/prisma";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React, { useMemo, useState } from "react";
 import { LuSend } from "react-icons/lu";
 import { MdAdd } from "react-icons/md";
 import { useSelector } from "react-redux";
-import {
-	DrawerView,
-	useBottomDrawer,
-} from "../../../common/context/useBottomDrawer";
 import ShiftRequestCard from "./ShiftRequestCard";
 import ShiftRequestsListHead from "./ShiftRequestsListHead";
 
@@ -32,7 +20,7 @@ const ShiftRequestList = () => {
 	);
 
 	const filteredShiftRequests = useMemo(() => {
-		if (TEST_MODE) return dummyShiftRequests;
+		// if (TEST_MODE) return dummyShiftRequests;
 		if (shfitListFilter === "ALL") return activeShiftRequests;
 		return activeShiftRequests.filter(
 			(data) => data.status === shfitListFilter,
@@ -40,19 +28,13 @@ const ShiftRequestList = () => {
 	}, [shfitListFilter, activeShiftRequests]);
 
 	const showShiftRequests = () => {
-		if (TEST_MODE) {
-			if (user?.role === "STAFF") {
-				return dummyShiftRequests.filter((data) => data.status !== "HOLD");
-			}
-			return dummyShiftRequests;
-		}
 		if (user?.role === "STAFF") {
 			return filteredShiftRequests.filter((data) => data.status !== "HOLD");
 		}
 		return filteredShiftRequests;
 	};
 
-	if (activeShiftRequests.length === 0 && !TEST_MODE) {
+	if (activeShiftRequests.length === 0) {
 		return (
 			<section className="w-full h-auto mx-auto">
 				<ShiftRequestsListHead setShiftListFilter={setShiftListFilter} />
