@@ -12,3 +12,4 @@ export * from "./normalization.js";
 export * from "./mergeAndSanitize.js";
 export * from "./fill_vacancies/backFillToCount.js";
 export * from "./fill_vacancies/ensureAbsoluteAssigned.js";
+export * from "./hydrateAssignedFromProfiles.js";
