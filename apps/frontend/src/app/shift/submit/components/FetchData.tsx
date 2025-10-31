@@ -82,6 +82,8 @@ const FetchData = ({ children }: PropsWithChildren) => {
 					status: ssRes.submittedShift.status,
 					shifts: ssRes.submittedShift.shifts,
 					memo: ssRes.submittedShift.memo || "",
+					weekMax: ssRes.submittedShift.weekMax || 1,
+					weekMin: ssRes.submittedShift.weekMin || 1,
 				});
 			} else {
 				setFormData((prev) => ({

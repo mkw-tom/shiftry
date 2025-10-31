@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "biome": "npx @biomejs/biome check --write ./src",
-    "biome:fix": "npx @biomejs/biome check  --fix --unsafe ./src"
+    "biome:fix": "npx @biomejs/biome check  --fix --unsafe ./src", 
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",

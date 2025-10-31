@@ -105,7 +105,7 @@ const SubmitStatusModal = ({
 				userId={infoUserId}
 			/>
 			<dialog id={id} className="modal modal-bottom">
-				<div className="modal-box h-[600px] flex flex-col">
+				<div className="modal-box h-[600px] flex flex-col bg-white">
 					<SubmitStatusHead
 						startDate={startDate}
 						endDate={endDate}
