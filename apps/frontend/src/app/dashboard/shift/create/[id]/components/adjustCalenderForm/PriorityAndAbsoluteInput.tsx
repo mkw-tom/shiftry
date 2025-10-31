@@ -1,6 +1,5 @@
 import type { RootState } from "@/redux/store";
 import type { UserLite } from "@shared/api/common/types/prismaLite";
-import { PriorityType } from "@shared/api/shift/ai/validations/post-create";
 import type {
 	AbsoluteUserType,
 	PriorityUserType,

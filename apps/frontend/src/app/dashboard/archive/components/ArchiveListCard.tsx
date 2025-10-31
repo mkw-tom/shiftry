@@ -1,13 +1,8 @@
 import type { RootState } from "@/redux/store";
-import type { ShiftRequestWithJson } from "@shared/api/common/types/merged";
 import type { ShiftRequestDTO } from "@shared/api/shift/request/dto";
 import { MDW, YMDHM, YMDW } from "@shared/utils/formatDate";
 import React from "react";
 import { useSelector } from "react-redux";
-import {
-	DrawerView,
-	useBottomDrawer,
-} from "../../common/context/useBottomDrawer";
 
 const ArchiveListCard = ({
 	data,
@@ -16,7 +11,6 @@ const ArchiveListCard = ({
 	data: ShiftRequestDTO;
 	handleCheck: (id: string, checked: boolean) => void;
 }) => {
-	const { darawerOpen } = useBottomDrawer();
 	const { user } = useSelector((state: RootState) => state.user);
 
 	return (

@@ -5,7 +5,8 @@
   "scripts": {
     "build": "tsc",
     "biome": "npx @biomejs/biome check --write ./src",
-    "biome:fix": "npx @biomejs/biome check  --fix --unsafe ./src"
+    "biome:fix": "npx @biomejs/biome check  --fix --unsafe ./src",
+    "type-check": "tsc --noEmit"
   },
   "keywords": [],
   "author": "",

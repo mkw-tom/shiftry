@@ -39,12 +39,12 @@ export const SubmitShiftFormContextProvider = ({
 }) => {
 	const [shiftRequestData, setShiftRequestData] = useState<ShiftRequestDTO>();
 
-	// 初期値生成: weekStart〜weekEndの全日付でshiftsを作成
-
 	const [formData, setFormData] = useState<UpsertSubmittedShiftInput>({
 		shiftRequestId: "",
 		status: "ADJUSTMENT",
 		shifts: {},
+		weekMax: 1,
+		weekMin: 1,
 		memo: "",
 	});
 

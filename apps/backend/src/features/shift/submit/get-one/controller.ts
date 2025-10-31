@@ -5,6 +5,7 @@ import type { Request, Response } from "express";
 import { getSubmittedShiftUserOne } from "../../../../repositories/submittedShift.repository.js";
 // import { getSubmittedShiftUser } from "../../../../repositories/submittedShift.repository.js";
 import { verifyUserStore } from "../../../common/authorization.service.js";
+import { toSubmittedShiftDTO } from "../toDTO.js";
 
 const getSubmittedShiftUserOneController = async (
 	req: Request,
@@ -23,17 +24,12 @@ const getSubmittedShiftUserOneController = async (
 			auth.uid,
 			shiftRequestId,
 		);
+		if (!submittedShiftRaw) {
+			void res.status(404).json({ ok: true, submittedShift: null });
+			return;
+		}
 
-		const submittedShift = submittedShiftRaw
-			? {
-					...submittedShiftRaw,
-					shifts:
-						typeof submittedShiftRaw.shifts === "object" &&
-						submittedShiftRaw.shifts !== null
-							? (submittedShiftRaw.shifts as SubmittedDataType)
-							: {},
-				}
-			: null;
+		const submittedShift = toSubmittedShiftDTO(submittedShiftRaw);
 
 		res.status(200).json({ ok: true, submittedShift });
 	} catch (error) {

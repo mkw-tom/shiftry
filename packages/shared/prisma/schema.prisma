@@ -213,6 +213,8 @@ model SubmittedShift {
   storeId         String
   shiftRequestId  String
   shifts          Json
+  weekMin         Int?
+  weekMax         Int?
   memo            String?
   status          ShiftStatus
 

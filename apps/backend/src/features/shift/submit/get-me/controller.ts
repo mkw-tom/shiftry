@@ -3,6 +3,7 @@ import type { GetSubmittedShiftMeResponse } from "@shared/api/shift/submit/types
 import type { SubmittedDataType } from "@shared/api/shift/submit/validations/put.js";
 import type { Request, Response } from "express";
 import { getSubmittedShiftUser } from "../../../../repositories/submittedShift.repository.js";
+import { toSubmittedShiftsDTO } from "../toDTO.js";
 
 const getSubmittedShiftMeController = async (
 	req: Request,
@@ -21,13 +22,7 @@ const getSubmittedShiftMeController = async (
 				.json({ ok: false, message: "submittedShifts is not found" });
 			return;
 		}
-		const submittedShifts = submittedShiftsRaw.map((shift) => ({
-			...shift,
-			shifts:
-				typeof shift.shifts === "object" && shift.shifts !== null
-					? (shift.shifts as SubmittedDataType)
-					: {},
-		}));
+		const submittedShifts = toSubmittedShiftsDTO(submittedShiftsRaw);
 
 		res.status(200).json({
 			ok: true,

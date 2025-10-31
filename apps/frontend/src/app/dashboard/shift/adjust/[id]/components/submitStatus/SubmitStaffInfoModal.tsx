@@ -23,7 +23,7 @@ const SubmitStaffInfoModal = ({
 	if (!submitData || !member) return null;
 	return (
 		<dialog id={`submit-info-modal-${userId}`} className="modal modal-middle">
-			<div className="modal-box max-w-xs bg-white">
+			<div className="modal-box bg-white">
 				<button
 					type="button"
 					className="btn btn-sm btn-circle absolute right-2 top-2 bottom-0 bg-white text-gray02 border border-gray02 shadow-none"
@@ -63,6 +63,17 @@ const SubmitStaffInfoModal = ({
 						)}
 					</div>
 				</div>
+				<div className="mb-3 max-h-20">
+					<div className="flex items-center mb-1">
+						<span className="text-xs text-gray-700 font-bold">
+							{" "}
+							週の希望出勤回数
+						</span>
+					</div>
+					<div className="px-2 text-sm text-gray-500 overflow-y-auto max-h-16">
+						{submitData.weekMin}回〜{submitData.weekMax}回
+					</div>
+				</div>
 
 				<div className="mb-3 max-h-20">
 					<div className="flex items-center mb-1">
@@ -72,8 +83,9 @@ const SubmitStaffInfoModal = ({
 						{submitData.memo || "なし"}
 					</div>
 				</div>
+
 				<div className="mb-2 text-xs text-gray-700 font-bold">希望シフト</div>
-				<div className="max-h-60 overflow-y-auto">
+				<div className="max-h-70 overflow-y-auto">
 					{Object.entries(submitData.shifts).map(([date, value]) => (
 						<div
 							key={date}
