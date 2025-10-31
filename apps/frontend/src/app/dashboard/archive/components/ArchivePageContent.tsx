@@ -1,18 +1,11 @@
 "use client";
-import type { RootState } from "@/redux/store";
-import type { ShiftRequest } from "@shared/api/common/types/prisma";
-import { MDW, YMDHM, YMDW } from "@shared/utils/formatDate";
-import React, { useEffect, useState } from "react";
-import { LuHistory } from "react-icons/lu";
-import { MdDelete, MdErrorOutline } from "react-icons/md";
-import { useSelector } from "react-redux";
-import { ar } from "zod/v4/locales";
-
 import { useBottomDrawer } from "@/app/dashboard/common/context/useBottomDrawer";
 import Head from "@/app/dashboard/home/components/Head";
-import { dummyShiftRequests } from "@/app/utils/dummyData/ShiftRequest";
 import { TEST_MODE } from "@/lib/env";
 import type { ShiftRequestDTO } from "@shared/api/shift/request/dto";
+import React, { useEffect, useState } from "react";
+import { LuHistory } from "react-icons/lu";
+import { MdErrorOutline } from "react-icons/md";
 import { useGetArchiveShiftRequests } from "../api/get-archive-shift-request/hook";
 import ArchiveListCard from "./ArchiveListCard";
 import ArchiveListHead from "./ArchiveListHead";
@@ -41,10 +34,6 @@ const ArchivePageContent = () => {
 	const { darawerOpen } = useBottomDrawer();
 
 	useEffect(() => {
-		const fetchTestModeData = () => {
-			if (!TEST_MODE) return;
-			setArchiveData(dummyShiftRequests);
-		};
 		const fetchData = async () => {
 			if (TEST_MODE) return;
 			const res = await handleGetArchiveShiftRequests();
@@ -54,7 +43,6 @@ const ArchivePageContent = () => {
 			}
 			setArchiveData([...res.archiveShiftRequests]);
 		};
-		fetchTestModeData();
 		fetchData();
 	}, [handleGetArchiveShiftRequests]);
 

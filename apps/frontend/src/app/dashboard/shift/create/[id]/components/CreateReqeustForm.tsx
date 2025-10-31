@@ -1,8 +1,6 @@
 "use client";
 import { useGetShiftRequestSpecific } from "@/app/api/hook/useGetShiftRequestSpecific";
 import { useToast } from "@/app/dashboard/common/context/ToastProvider";
-import { dummyShiftRequest } from "@/app/utils/dummyData/ShiftRequest";
-import { TEST_MODE } from "@/lib/env";
 import React, { useEffect } from "react";
 import { useCreateRequest } from "../context/CreateRequestFormProvider";
 import ActionButton from "./ActionButton";
@@ -19,24 +17,6 @@ const CreateReqeustForm = ({ shiftRequestId }: { shiftRequestId: string }) => {
 			if (shiftRequestId === "new") return;
 
 			if (shiftRequestId) {
-				if (TEST_MODE) {
-					setFormData((prev) => ({
-						...prev,
-						type: dummyShiftRequest.type,
-						weekStart: dummyShiftRequest.weekStart
-							? String(dummyShiftRequest.weekStart)
-							: "",
-						weekEnd: dummyShiftRequest.weekEnd
-							? String(dummyShiftRequest.weekEnd)
-							: "",
-						deadline: dummyShiftRequest.deadline
-							? String(dummyShiftRequest.deadline)
-							: "",
-						status: dummyShiftRequest.status,
-						requests: dummyShiftRequest.requests,
-					}));
-					return;
-				}
 				const data = await getShiftRequestSpecific({
 					shiftRequestId,
 				});

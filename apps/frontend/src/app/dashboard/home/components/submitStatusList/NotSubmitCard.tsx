@@ -1,22 +1,15 @@
-import type { ShiftRequestWithJson } from "@shared/api/common/types/merged";
-import type { ShiftStatus } from "@shared/api/common/types/prisma";
 import type { ShiftRequestDTO } from "@shared/api/shift/request/dto";
 import { MDW, YMDHM, YMDW } from "@shared/utils/formatDate";
 import { useRouter } from "next/navigation";
-import React, { type JSX } from "react";
-import { BiCheck } from "react-icons/bi";
+import React from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { LuSend } from "react-icons/lu";
-import {
-	DrawerView,
-	useBottomDrawer,
-} from "../../../common/context/useBottomDrawer";
 
 const NotSubmitCard = ({ data }: { data: ShiftRequestDTO }) => {
 	const router = useRouter();
 
 	const gotoSumbmitShiftPage = (id: string) =>
-		router.push(`/shift/submit?shfitRequestId=${id}`);
+		router.push(`/shift/submit?shiftRequestId=${id}`);
 
 	return (
 		<li

@@ -1,6 +1,3 @@
-import { dummyShiftRequests } from "@/app/utils/dummyData/ShiftRequest";
-import { dummySubmittedShiftList } from "@/app/utils/dummyData/SubmittedShifts";
-import { TEST_MODE } from "@/lib/env";
 import type { RootState } from "@/redux/store";
 import type { ShiftRequestDTO } from "@shared/api/shift/request/dto";
 import React, { useEffect, useMemo, useState } from "react";
@@ -18,10 +15,7 @@ const SubmitStatusList = () => {
 		(state: RootState) => state.activeShiftRequests,
 	);
 	const shiftRequestStatusRequest = useMemo(() => {
-		if (TEST_MODE) {
-			return dummyShiftRequests.filter((data) => data.status === "REQUEST");
-		}
-		return activeShiftRequests.filter((data) => data.status === "REQUEST");
+		return activeShiftRequests.filter((data) => data.status === "ADJUSTMENT");
 	}, [activeShiftRequests]);
 
 	const [shiftRequestsSubmitted, setShiftRequestsSubmitted] = useState<
@@ -33,24 +27,6 @@ const SubmitStatusList = () => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			if (TEST_MODE) {
-				const submitted = dummySubmittedShiftList;
-
-				const submittedIds = new Set(submitted.map((s) => s.shiftRequestId));
-				const onSubmit: ShiftRequestDTO[] = [];
-				const notSubmit: ShiftRequestDTO[] = [];
-
-				shiftRequestStatusRequest.map((data) => {
-					if (submittedIds.has(data.id)) {
-						onSubmit.push(data as ShiftRequestDTO);
-					} else {
-						notSubmit.push(data as ShiftRequestDTO);
-					}
-				});
-				setShiftRequestsSubmitted(onSubmit);
-				setShiftRequestsNotSubmit(notSubmit);
-				return;
-			}
 			const res = await fetchGetSubmitShiftMe();
 			if (res?.ok) {
 				const submitted = res.submittedShifts;
@@ -76,7 +52,6 @@ const SubmitStatusList = () => {
 
 	return (
 		<section className="w-full h-auto mx-auto overflow-hidden">
-			{/* <Head /> */}
 			<div className="w-full mx-auto h-auto flex flex-col pt-3 pb-2 shadow-sm bg-white border-t-2 border-t-base">
 				<div className="w-full flex items-center justify-start mx-auto px-5 ">
 					<h2 className="text-green02 tracking-wide flex items-center gap-3 text-center font-bold">

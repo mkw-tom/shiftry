@@ -1,4 +1,3 @@
-import { dummySubmittedShiftList } from "@/app/utils/dummyData/SubmittedShifts";
 import type { RootState } from "@/redux/store.js";
 import type { CreateEditStaffPreferenceFormInput } from "@shared/api/staffPreference/validations/create.js";
 import React, { useState } from "react";
@@ -129,7 +128,7 @@ const SubmitStatusModal = ({
 						{tab === "submitted" && (
 							<SubmitList
 								members={submittedMembers}
-								submittedShiftList={dummySubmittedShiftList}
+								submittedShiftList={submittedShiftList}
 								onOpenInfo={openSubmitStaffInfoModal}
 							/>
 						)}

@@ -28,8 +28,8 @@ const InitGate = ({
 		return (
 			<main className="w-full h-lvh flex flex-col gap-2 items-center bg-white">
 				<MdErrorOutline className="text-gray02 text-2xl mt-20" />
-				<p className="text-gray02">認証エラー</p>
 				<p className="text-gray02">{error}</p>
+				<p className="text-gray02">認証エラー</p>
 				<p className="text-gray02">再度ページ読み込みをお試しください</p>
 			</main>
 		);

@@ -3,15 +3,6 @@ import { useGetStaffPreferenceAll } from "@/app/api/hook/staffPreference/useGetS
 import { useGetAssignShfit } from "@/app/api/hook/useGetAssignShift";
 import { useGetShiftRequestSpecific } from "@/app/api/hook/useGetShiftRequestSpecific";
 import { useGetSubmittedShfit } from "@/app/api/hook/useGetSubmittedShfit";
-import {
-	demoAssignShift,
-	demoMembers,
-	demoSubmissions,
-	demoTemplateShift,
-	dummyStaffPreferences,
-} from "@/app/utils/dummyData/aiAdjustDemo";
-import { TEST_MODE } from "@/lib/env";
-import { setMembers } from "@/redux/slices/members";
 import type { RootState } from "@/redux/store";
 import type {
 	AssignPositionWithDateInput,
@@ -79,17 +70,7 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 	useEffect(() => {
 		let isMounted = true;
 
-		const fetchTestModeData = () => {
-			if (!TEST_MODE) return;
-			setShiftRequestData(demoTemplateShift);
-			setAssignShiftData(demoAssignShift);
-			setSubmittedShiftList(demoSubmissions);
-			setStaffPreferences(dummyStaffPreferences);
-			dispatch(setMembers(demoMembers));
-		};
-
 		const fetchShiftData = async () => {
-			if (TEST_MODE) return;
 			// 1. shiftRequestData取得
 			const srRes = await getShiftRequestSpecific({ shiftRequestId });
 			if (isMounted && srRes.ok) {
@@ -213,7 +194,6 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 			}
 		};
 
-		fetchTestModeData();
 		fetchShiftData();
 		return () => {
 			isMounted = false;
@@ -228,7 +208,6 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 		setAssignShiftData,
 		setSubmittedShiftList,
 		shiftRequestId,
-		dispatch,
 	]);
 
 	const openSubmitStatusModal = () => {

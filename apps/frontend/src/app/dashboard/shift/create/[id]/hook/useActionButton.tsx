@@ -51,6 +51,8 @@ const useActionButton = ({
 			alert(jobRolesRes.message);
 			return;
 		}
+
+		return { shiftPositioins: spRes.shiftPositions };
 	};
 
 	const saveAndSendRequest = async () => {
@@ -65,6 +67,8 @@ const useActionButton = ({
 			alert(res.message);
 			return;
 		}
+
+		if (TEST_MODE) return { shiftRequest: res.shiftRequest };
 
 		const sendData: RequestShiftMessageType = {
 			deadline: String(res.shiftRequest.deadline),
@@ -84,13 +88,6 @@ const useActionButton = ({
 
 	const gotoAdjustPage = async () => {
 		alert("シフト雛形が作成され、調整画面へ進みます。よろしいですか？");
-		if (TEST_MODE) {
-			showToast("雛形シフトが作成されました！調整を行ってください", "success");
-			router.push("/dashboard/shift/adjust/sr1");
-			nextStep("sr1");
-			return;
-		}
-
 		await savePositionsAndJonroles();
 
 		const data = await saveAndSendRequest();

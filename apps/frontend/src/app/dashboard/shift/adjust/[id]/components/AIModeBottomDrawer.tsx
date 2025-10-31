@@ -137,7 +137,7 @@ const AIModeBottomDrawer = () => {
 														<div className="avatar border-none" key={staff.uid}>
 															<div className="w-5">
 																<img
-																	src={staff.pictureUrl}
+																	src={staff.pictureUrl || ""}
 																	alt={staff.displayName}
 																/>
 															</div>
