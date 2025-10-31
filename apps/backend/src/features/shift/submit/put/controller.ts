@@ -10,6 +10,7 @@ import {
 import type { Request, Response } from "express";
 import { upsertSubmittedShift } from "../../../../repositories/submittedShift.repository.js";
 import { verifyUserStore } from "../../../common/authorization.service.js";
+import { toSubmittedShiftDTO } from "../toDTO.js";
 // import { convertToSubmittedCalender } from "./service.js";
 
 const upsertSubmittedShiftController = async (
@@ -42,12 +43,7 @@ const upsertSubmittedShiftController = async (
 			parsed.data,
 		);
 
-		const submittedShift = {
-			...submittedShiftRaw,
-			shifts: (submittedShiftRaw.shifts === null
-				? {}
-				: submittedShiftRaw.shifts) as SubmittedDataType,
-		};
+		const submittedShift = toSubmittedShiftDTO(submittedShiftRaw);
 
 		res.json({ ok: true, submittedShift });
 	} catch (error) {

@@ -1,7 +1,5 @@
-import type { Prisma } from "@prisma/client";
 import type { SubmittedShift } from "@shared/api/common/types/prisma.js";
 import type { UpsertSubmittedShiftInput } from "@shared/api/shift/submit/validations/put.js";
-// import type { UpsertSubmittedShiftWithShifts } from "@shared/api/shift/submit/validations/put.js";
 import prisma from "../config/database.js";
 
 export const upsertSubmittedShift = async (
@@ -20,6 +18,8 @@ export const upsertSubmittedShift = async (
 			shifts: data.shifts,
 			memo: data.memo,
 			status: data.status,
+			weekMax: data.weekMax,
+			weekMin: data.weekMin,
 		},
 		create: {
 			userId: userId,
@@ -28,6 +28,8 @@ export const upsertSubmittedShift = async (
 			shifts: data.shifts,
 			memo: data.memo,
 			status: data.status,
+			weekMax: data.weekMax,
+			weekMin: data.weekMin,
 		},
 	});
 };

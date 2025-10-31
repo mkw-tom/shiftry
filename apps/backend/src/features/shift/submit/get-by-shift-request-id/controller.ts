@@ -5,6 +5,7 @@ import type { GetSubmittedShiftsSpecificResponse } from "@shared/api/shift/submi
 import type { SubmittedDataType } from "@shared/api/shift/submit/validations/put.js";
 import { getSubmittedShiftsSpecific } from "../../../../repositories/submittedShift.repository.js";
 import { verifyUserStore } from "../../../common/authorization.service.js";
+import { toSubmittedShiftsDTO } from "../toDTO.js";
 
 const getSubmittedShiftsSpesificController = async (
 	req: Request,
@@ -33,13 +34,7 @@ const getSubmittedShiftsSpesificController = async (
 			return;
 		}
 
-		const submittedShifts = submittedShiftsRaw.map((shift) => ({
-			...shift,
-			shifts:
-				typeof shift.shifts === "object" && shift.shifts !== null
-					? (shift.shifts as SubmittedDataType)
-					: {},
-		}));
+		const submittedShifts = toSubmittedShiftsDTO(submittedShiftsRaw);
 
 		res.status(200).json({ ok: true, submittedShifts });
 	} catch (error) {
