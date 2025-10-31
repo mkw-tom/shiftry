@@ -9,6 +9,8 @@ export const SubmittedShiftDTOValidate = z.object({
 	memo: z.string().nullable(),
 	shiftRequestId: z.string(),
 	shifts: SubmittedDataValidate,
+	weekMin: z.number().int().min(1).max(7),
+	weekMax: z.number().int().min(1).max(7),
 	userId: z.string(),
 	storeId: z.string(),
 	createdAt: z.coerce.date(),

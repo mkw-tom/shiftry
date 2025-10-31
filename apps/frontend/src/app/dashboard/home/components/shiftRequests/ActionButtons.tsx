@@ -1,19 +1,10 @@
 "use client";
-import { liffId, liffUrl } from "@/lib/env";
 import type { RootState } from "@/redux/store";
-import type { ShiftRequestWithJson } from "@shared/api/common/types/merged";
 import type { RequestStatus } from "@shared/api/common/types/prisma";
 import type { ShiftRequestDTO } from "@shared/api/shift/request/dto";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { LuSend } from "react-icons/lu";
-import { SiOpenai } from "react-icons/si";
-import { TbCalendarCheck } from "react-icons/tb";
 import { useSelector } from "react-redux";
-import {
-	DrawerView,
-	useBottomDrawer,
-} from "../../../common/context/useBottomDrawer";
 
 const ActionButtons = ({
 	status,
@@ -22,21 +13,12 @@ const ActionButtons = ({
 	status: RequestStatus;
 	data: ShiftRequestDTO;
 }) => {
-	const { darawerOpen } = useBottomDrawer();
-
 	const router = useRouter();
 
 	const gotoAdjustPage = (id: string) =>
 		router.push(`/dashboard/shift/adjust/${id}`);
 
 	const { user } = useSelector((state: RootState) => state.user);
-
-	const switchAdjustmentBtnAction = (data: ShiftRequestDTO) => {
-		if (user?.role === "STAFF") {
-			return router.push(`/shift/submit?shiftRequestId=${data.id}`);
-		}
-		return gotoAdjustPage(data.id);
-	};
 
 	switch (status) {
 		case "HOLD":
@@ -45,7 +27,6 @@ const ActionButtons = ({
 					href={`/dashboard/shift/create/${data.id}`}
 					className="btn btn-outline flex-1 text-gray02 bg-white  font-bold shadow-sm border-gray02 rounded-md"
 				>
-					{/* <FaRegEdit /> */}
 					下書き再開
 				</Link>
 			);

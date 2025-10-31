@@ -4,8 +4,3 @@ export type {
 	DefaultTimePositionsType,
 	RequestsType,
 } from "../../shift/request/validations/put.js";
-export type {
-	shiftsOfSubmittedType,
-	availableWeekType,
-	specificDatesType,
-} from "../../shift/submit/validations/put.js";
