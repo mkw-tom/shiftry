@@ -87,12 +87,9 @@ export const aiShiftAdjustController = async (
 
 		res.status(200).json(result);
 	} catch (error) {
-		res
-			.status(500)
-			.json({
-				ok: false,
-				message:
-					error instanceof Error ? error.message : "internal server error",
-			});
+		res.status(500).json({
+			ok: false,
+			message: error instanceof Error ? error.message : "internal server error",
+		});
 	}
 };
