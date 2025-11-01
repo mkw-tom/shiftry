@@ -262,7 +262,7 @@ const Button = () => {
 		return (
 			<div className="fixed bottom-0 left-0 w-full flex items-center justify-around gap-2  px-3 pt-3 pb-6 bg-white border-t border-gray01 z-10">
 				<div className="flex gap-2 items-center flex-1">
-					{viewMode === "table" ? (
+					{/* {viewMode === "table" ? (
 						<button
 							type="button"
 							onClick={toggleViewMode}
@@ -280,7 +280,7 @@ const Button = () => {
 							<BsTable className="text-lg" />
 							テーブル
 						</button>
-					)}
+					)} */}
 					<button
 						type="button"
 						className="btn btn-sm bg-green02 text-white border-none flex-1"
@@ -307,8 +307,8 @@ const Button = () => {
 
 	if (shiftRequestData.status === "ADJUSTMENT") {
 		return (
-			<div className="fixed bottom-0 left-0 w-full flex justify-center gap-2 px-3 pt-3 pb-6 bg-white border-t border-gray01 z-50 ">
-				{viewMode === "table" ? (
+			<div className="fixed bottom-0 left-0 w-full flex justify-center gap-2 px-3 pt-3 pb-6 bg-white/80 border-t border-gray01 z-50 ">
+				{/* {viewMode === "table" ? (
 					<button
 						type="button"
 						onClick={toggleViewMode}
@@ -326,7 +326,7 @@ const Button = () => {
 						<BsTable className="text-lg" />
 						テーブル
 					</button>
-				)}
+				)} */}
 
 				<div className="flex gap-2 items-center flex-1">
 					<button
@@ -338,12 +338,12 @@ const Button = () => {
 						<BiCheck />
 						シフト完成
 					</button>
-					<button
+					{/* <button
 						type="button"
 						className="btn btn-sm bg-gray02 text-white border-none"
 					>
 						ヘルプ通知
-					</button>
+					</button> */}
 				</div>
 			</div>
 		);

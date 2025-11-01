@@ -7,7 +7,7 @@ import type {
 import type { RequestPositionWithDateInput } from "@shared/api/shift/request/validations/put";
 import type React from "react";
 import { useState } from "react";
-import { BiCheck } from "react-icons/bi";
+import { BiCheck, BiTime } from "react-icons/bi";
 import { IoClose } from "react-icons/io5";
 import { LuUserRound } from "react-icons/lu";
 import { LuUserRoundPlus } from "react-icons/lu";
@@ -160,20 +160,22 @@ const AssignPositionList = ({
 										return (
 											<li
 												key={`${date}-${time}`}
-												className={`text-gray01 text-sm flex flex-col items-start gap-1 border-b border-gray01 py-3 px-2
+												className={`text-gray01 text-sm flex flex-col items-start gap-1 border-b border-gray01 py-4 px-2
 												
 												`}
 											>
 												<div className="flex items-center justify-between w-full">
-													<h1 className="text-gray02 border-l-4 border-l-gray02 font-bold pl-2 w-2/3 flex items-center gap-2 py-1.5">
-														{position.name}
+													<h1 className="w-2/3 flex items-center gap-3 py-1.5">
+														<span className="text-gray-500 pl-1 font-bold">
+															{position.name}
+														</span>
 														{/* バッジ表示: 緑=充足, 赤=不足 */}
 														{isFull ? (
-															<span className="badge badge-sm bg-green-500 text-white border-none">
-																充足
+															<span className="badge badge-sm bg-green-500 text-white font-bold rounded-full border-none">
+																充足 {assignedCount}/{requiredCount}
 															</span>
 														) : (
-															<span className="badge badge-sm bg-red-500 text-white border-none">
+															<span className="badge badge-sm bg-red-500 text-white font-bold rounded-full border-none">
 																不足 {assignedCount}/{requiredCount}
 															</span>
 														)}
@@ -184,11 +186,11 @@ const AssignPositionList = ({
 
 														{aiMode &&
 															(aiIsFull ? (
-																<span className="badge badge-sm bg-green-500 text-white border-none">
-																	充足
+																<span className="badge badge-sm bg-green-500 text-white font-bold rounded-full border-none">
+																	充足 {assignedCount}/{requiredCount}
 																</span>
 															) : (
-																<span className="badge badge-sm bg-red-500 text-white border-none">
+																<span className="badge badge-sm bg-red-500 text-white font-bold rounded-full border-none">
 																	不足 {assignedCount}/{requiredCount}
 																</span>
 															))}
@@ -246,13 +248,14 @@ const AssignPositionList = ({
 												<div className="w-full flex items-start justify-between px-1">
 													<div className="flex items-center ">
 														<div className="flex items-center gap-3">
-															<p className="flex items-center badge badge-sm bg-white text-gray-800 border-gray02">
+															{/* <p className="flex items-center badge badge-sm bg-white text-gray-800 border-gray02">
 																<LuUserRound className="text-black text-[14px]" />
 																<span className="text-black font-bold">
 																	{position.count}
 																</span>
-															</p>
-															<p className="text-black font-bold">
+															</p> */}
+															<BiTime className="text-gray-700" />
+															<p className="text-gray-700 font-bold">
 																{formatTimeRangeHHmm(time)}
 															</p>
 														</div>
@@ -371,7 +374,7 @@ const AssignPositionList = ({
 																)}
 																<button
 																	type="button"
-																	className="btn btn-sm flex-1 border-green01 text-green01 font-bold bg-white shadow-none"
+																	className="btn btn-sm flex-1 border-green01 text-green01  bg-white shadow-none border-dashed"
 																	onClick={() =>
 																		openAssignStaffModal(date, time, position)
 																	}

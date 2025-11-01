@@ -196,14 +196,14 @@ const AIModeBottomDrawer = () => {
 				</button>
 				<button
 					type="button"
-					className="btn btn-sm bg-purple-500 text-white border-none flex-1"
+					className="btn btn-sm bg-purple-500 text-white border-none flex-1 shadow-sm"
 					onClick={confrimAiAdjsut}
 				>
 					調整を適用
 				</button>
 				<button
 					type="button"
-					className="btn btn-sm bg-gray02 text-white border-none w-1/5"
+					className="btn btn-sm border-gray02 bg-white text-gray02 w-1/5 shadow-sm"
 					onClick={cancelAiAdjust}
 				>
 					中止

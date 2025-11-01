@@ -95,7 +95,7 @@ const Table = ({
 								onClick={() => setSelectDate(date)}
 								className={`px-1 py-1 border border-gray01 text-gray-700 text-center text-sm cursor-pointer transition-colors hover:bg-gray01 ${
 									date.toDateString() === selectDate?.toDateString()
-										? "bg-success"
+										? "bg-success/20"
 										: "bg-white"
 								}`}
 								onKeyDown={(e) => {
