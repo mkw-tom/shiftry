@@ -64,30 +64,35 @@ export const AiAdjustModeProvider = ({ children }: { children: ReactNode }) => {
 	const startAiAdjustMode = (modified: AiModifiedType) => {
 		setAiMode(true);
 		setAiModified(modified);
+		setAllowModifiedDatas(modified);
 	};
 
 	const allowModified = (date: string, time: string) => {
 		if (rejectModifiedDatas[date]?.[time]) {
 			setRejectModifiedDatas((prev) => {
 				const newState = { ...prev };
-				if (!newState[date]) {
-					newState[date] = {};
+				if (newState[date]) {
+					const dateObj = { ...newState[date] };
+					delete dateObj[time];
+					if (Object.keys(dateObj).length === 0) {
+						delete newState[date];
+					} else {
+						newState[date] = dateObj;
+					}
 				}
-				delete newState[date][time];
 				return newState;
 			});
 		}
 		setAllowModifiedDatas((prev) => {
 			const newState = { ...prev };
-			if (!newState[date]) {
-				newState[date] = {};
-			}
+			const dateObj = { ...(newState[date] || {}) };
 			if (
 				AiModified[date]?.[time] !== undefined &&
 				AiModified[date]?.[time] !== null
 			) {
-				newState[date][time] = AiModified[date][time];
+				dateObj[time] = AiModified[date][time];
 			}
+			newState[date] = dateObj;
 			return newState;
 		});
 		return true;
@@ -97,21 +102,25 @@ export const AiAdjustModeProvider = ({ children }: { children: ReactNode }) => {
 		if (allowModifiedDatas[date]?.[time]) {
 			setAllowModifiedDatas((prev) => {
 				const newState = { ...prev };
-				if (!newState[date]) {
-					newState[date] = {};
+				if (newState[date]) {
+					const dateObj = { ...newState[date] };
+					delete dateObj[time];
+					if (Object.keys(dateObj).length === 0) {
+						delete newState[date];
+					} else {
+						newState[date] = dateObj;
+					}
 				}
-				delete newState[date][time];
 				return newState;
 			});
 		}
 		setRejectModifiedDatas((prev) => {
 			const newState = { ...prev };
-			if (!newState[date]) {
-				newState[date] = {};
-			}
+			const dateObj = { ...(newState[date] || {}) };
 			if (AiModified[date]?.[time] !== undefined) {
-				newState[date][time] = AiModified[date][time];
+				dateObj[time] = AiModified[date][time];
 			}
+			newState[date] = dateObj;
 			return newState;
 		});
 		return true;

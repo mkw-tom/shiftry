@@ -6,7 +6,7 @@ export const testResponseService = (res: Response) => {
 	// dist/環境でもsrc/のテストファイルを参照する
 	const responsePath = path.resolve(
 		process.cwd(),
-		"src/features/shift/ai/adjust/test_values/test3_response.json",
+		"src/features/shift/ai/adjust/test_values/test4_response.json",
 	);
 	console.log("test3_response.json path:", responsePath);
 	if (!fs.existsSync(responsePath)) {
