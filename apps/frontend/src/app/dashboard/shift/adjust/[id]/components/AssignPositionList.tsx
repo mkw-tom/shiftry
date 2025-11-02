@@ -165,7 +165,7 @@ const AssignPositionList = ({
 												`}
 											>
 												<div className="flex items-center justify-between w-full">
-													<h1 className="w-2/3 flex items-center gap-3 py-1.5">
+													<h1 className="w-full flex items-center gap-3 py-1.5">
 														<span className="text-gray-500 pl-1 font-bold">
 															{position.name}
 														</span>
@@ -195,13 +195,6 @@ const AssignPositionList = ({
 																</span>
 															))}
 													</h1>
-
-													{aiMode && AiModified[date]?.[time] && (
-														<div className="text-xs flex items-center  text-purple-500 badge badge-sm badge-outline animate-pulse">
-															<PiOpenAiLogo className="" />
-															<span>AI調整中</span>
-														</div>
-													)}
 
 													{!aiMode &&
 														shiftRequestData.status === "ADJUSTMENT" &&

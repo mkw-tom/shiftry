@@ -2,11 +2,18 @@
 	"ok": true,
 	"ai_modified": {
 		"2025-11-24": {
-			"15:00-21:00": {
-				"name": "レジ2",
-				"count": 1,
-				"jobRoles": ["清掃"],
+			"10:00-18:00": {
+				"name": "キッチン",
+				"count": 3,
+				"jobRoles": ["料理"],
 				"assigned": [
+					{
+						"uid": "b6522743-1d95-4234-94fb-66214de838ef",
+						"displayName": "テスト1",
+						"pictureUrl": "URL",
+						"confirmed": true,
+						"source": "auto"
+					},
 					{
 						"uid": "c741f6b8-feff-4fdf-b4df-f7b069b30ad4",
 						"displayName": "テスト2",
@@ -15,57 +22,44 @@
 						"source": "manual"
 					}
 				],
-				"assignedCount": 1,
-				"vacancies": 0,
+				"assignedCount": 2,
+				"vacancies": 1,
 				"status": "draft",
-				"updatedAt": "2025-11-01T08:16:05.205Z",
+				"updatedAt": "2025-11-02T13:21:42.338Z",
 				"updatedBy": "ai_adjustment"
 			},
 			"09:00-18:00": {
 				"name": "レジ2",
 				"count": 1,
 				"jobRoles": [],
-				"assigned": [
-					{
-						"uid": "439965c5-3899-48da-a730-a9b00e739300",
-						"displayName": "owner-test",
-						"pictureUrl": "https://picurel.com",
-						"confirmed": false,
-						"source": "manual"
-					}
-				],
+				"assigned": [],
 				"status": "draft",
-				"assignedCount": 1,
-				"vacancies": 0,
-				"updatedAt": "2025-11-01T08:16:05.205Z",
+				"assignedCount": 0,
+				"vacancies": 1,
+				"updatedAt": "2025-11-02T13:21:42.338Z",
 				"updatedBy": "ai_adjustment"
 			}
 		},
 		"2025-11-25": {
-			"09:00-18:00": {
-				"name": "レジ2",
-				"count": 1,
-				"jobRoles": ["レジ"],
+			"10:00-18:00": {
+				"name": "キッチン",
+				"count": 3,
+				"jobRoles": ["料理"],
 				"assigned": [
+					{
+						"uid": "b6522743-1d95-4234-94fb-66214de838ef",
+						"displayName": "テスト1",
+						"pictureUrl": "URL",
+						"confirmed": true,
+						"source": "auto"
+					},
 					{
 						"uid": "439965c5-3899-48da-a730-a9b00e739300",
 						"displayName": "owner-test",
 						"pictureUrl": "https://picurel.com",
 						"confirmed": true,
-						"source": "auto"
-					}
-				],
-				"assignedCount": 1,
-				"vacancies": 0,
-				"status": "draft",
-				"updatedAt": "2025-11-01T08:16:05.205Z",
-				"updatedBy": "ai_adjustment"
-			},
-			"15:00-21:00": {
-				"name": "レジ2",
-				"count": 1,
-				"jobRoles": [],
-				"assigned": [
+						"source": "manual"
+					},
 					{
 						"uid": "c741f6b8-feff-4fdf-b4df-f7b069b30ad4",
 						"displayName": "テスト2",
@@ -74,31 +68,21 @@
 						"source": "manual"
 					}
 				],
-				"status": "draft",
-				"assignedCount": 1,
+				"assignedCount": 3,
 				"vacancies": 0,
-				"updatedAt": "2025-11-01T08:16:05.205Z",
+				"status": "draft",
+				"updatedAt": "2025-11-02T13:21:42.338Z",
 				"updatedBy": "ai_adjustment"
-			}
-		},
-		"2025-11-26": {
+			},
 			"09:00-18:00": {
 				"name": "レジ2",
 				"count": 1,
-				"jobRoles": ["レジ"],
-				"assigned": [
-					{
-						"uid": "439965c5-3899-48da-a730-a9b00e739300",
-						"displayName": "owner-test",
-						"pictureUrl": "https://picurel.com",
-						"confirmed": true,
-						"source": "manual"
-					}
-				],
-				"assignedCount": 1,
-				"vacancies": 0,
+				"jobRoles": [],
+				"assigned": [],
 				"status": "draft",
-				"updatedAt": "2025-11-01T08:16:05.205Z",
+				"assignedCount": 0,
+				"vacancies": 1,
+				"updatedAt": "2025-11-02T13:21:42.338Z",
 				"updatedBy": "ai_adjustment"
 			},
 			"15:00-21:00": {
@@ -109,7 +93,47 @@
 				"status": "draft",
 				"assignedCount": 0,
 				"vacancies": 1,
-				"updatedAt": "2025-11-01T08:16:05.205Z",
+				"updatedAt": "2025-11-02T13:21:42.338Z",
+				"updatedBy": "ai_adjustment"
+			}
+		},
+		"2025-11-26": {
+			"09:00-18:00": {
+				"name": "レジ2",
+				"count": 1,
+				"jobRoles": ["レジ"],
+				"assigned": [
+					{
+						"uid": "b6522743-1d95-4234-94fb-66214de838ef",
+						"displayName": "テスト1",
+						"pictureUrl": "URL",
+						"confirmed": true,
+						"source": "auto"
+					}
+				],
+				"assignedCount": 1,
+				"vacancies": 0,
+				"status": "draft",
+				"updatedAt": "2025-11-02T13:21:42.338Z",
+				"updatedBy": "ai_adjustment"
+			},
+			"15:00-21:00": {
+				"name": "レジ2",
+				"count": 1,
+				"jobRoles": [],
+				"assigned": [
+					{
+						"uid": "439965c5-3899-48da-a730-a9b00e739300",
+						"displayName": "owner-test",
+						"pictureUrl": "https://picurel.com",
+						"confirmed": true,
+						"source": "manual"
+					}
+				],
+				"status": "draft",
+				"assignedCount": 1,
+				"vacancies": 0,
+				"updatedAt": "2025-11-02T13:21:42.338Z",
 				"updatedBy": "ai_adjustment"
 			}
 		},
@@ -130,7 +154,7 @@
 				"assignedCount": 1,
 				"vacancies": 0,
 				"status": "draft",
-				"updatedAt": "2025-11-01T08:16:05.205Z",
+				"updatedAt": "2025-11-02T13:21:42.338Z",
 				"updatedBy": "ai_adjustment"
 			},
 			"15:00-21:00": {
@@ -149,7 +173,7 @@
 				"status": "draft",
 				"assignedCount": 1,
 				"vacancies": 0,
-				"updatedAt": "2025-11-01T08:16:05.205Z",
+				"updatedAt": "2025-11-02T13:21:42.338Z",
 				"updatedBy": "ai_adjustment"
 			}
 		},
@@ -170,7 +194,7 @@
 				"assignedCount": 1,
 				"vacancies": 0,
 				"status": "draft",
-				"updatedAt": "2025-11-01T08:16:05.205Z",
+				"updatedAt": "2025-11-02T13:21:42.338Z",
 				"updatedBy": "ai_adjustment"
 			},
 			"15:00-21:00": {
@@ -181,15 +205,15 @@
 				"status": "draft",
 				"assignedCount": 0,
 				"vacancies": 1,
-				"updatedAt": "2025-11-01T08:16:05.205Z",
+				"updatedAt": "2025-11-02T13:21:42.338Z",
 				"updatedBy": "ai_adjustment"
 			}
 		}
 	},
 	"meta": {
 		"model": "gpt-4o-mini-2024-07-18",
-		"promptTokens": 3139,
-		"completionTokens": 712,
-		"totalTokens": 3851
+		"promptTokens": 3061,
+		"completionTokens": 709,
+		"totalTokens": 3770
 	}
 }

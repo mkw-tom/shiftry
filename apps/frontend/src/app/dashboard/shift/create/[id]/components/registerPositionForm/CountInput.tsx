@@ -1,4 +1,3 @@
-// import type { RegisterPositionFormInput } from "@shared/api/shiftPosition/validations/put-bulk";
 import type { UpsertShiftPositionBaseInput } from "@shared/api/shiftPosition/validations/put-bulk";
 import React from "react";
 import { type Control, type UseFormSetValue, useWatch } from "react-hook-form";

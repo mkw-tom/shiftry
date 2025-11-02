@@ -2,7 +2,7 @@ import type { RequestStatus } from "@shared/api/common/types/prisma";
 import type { ShiftRequestDTO } from "@shared/api/shift/request/dto";
 import { MDW, YMDHM, YMDW } from "@shared/utils/formatDate";
 import React, { type JSX } from "react";
-import { BiCheck, BiEdit, BiEditAlt } from "react-icons/bi";
+import { BiCheck, BiEditAlt } from "react-icons/bi";
 import { LuSend } from "react-icons/lu";
 import ActionButtons from "./ActionButtons";
 

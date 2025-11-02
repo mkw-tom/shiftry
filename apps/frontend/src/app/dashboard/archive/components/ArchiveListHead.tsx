@@ -31,7 +31,6 @@ const ArchiveListHead = ({
 		<div className="w-full mx-auto h-auto flex flex-col pt-2 shadow-sm bg-white border-y-2 border-y-base">
 			<div className="w-full flex items-center justify-between mx-auto border-b-1 border-white pb-2 px-5">
 				<div className="flex items-center gap-2 text-green02">
-					期間：
 					<select
 						defaultValue="ALL"
 						className="select select-sm bg-base shadow-none w-32 font-bold border-gray-300 text-green02"

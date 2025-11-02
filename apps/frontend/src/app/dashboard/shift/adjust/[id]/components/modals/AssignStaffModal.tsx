@@ -7,7 +7,7 @@ import {
 } from "@shared/api/shift/assign/validations/put";
 import { YMDW } from "@shared/utils/formatDate";
 import React, { useEffect } from "react";
-import { BiCheck } from "react-icons/bi";
+import { BiCheck, BiTime } from "react-icons/bi";
 import { IoWarning } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
 import { LuUserRound } from "react-icons/lu";
@@ -152,23 +152,18 @@ const AssignStaffModal = ({
 						✕
 					</button>
 				</div>
-				<h2 className="font-bold text-green02 mb-3 ml-1 flex items-center justify-between">
+				<h2 className="font-bold text-gray-500 mb-3 ml-1 flex items-center justify-between">
 					<span>{assignStaffData.name}</span>
-					{aiMode && AiModified[date]?.[time] && (
-						<div className="text-xs flex items-center  text-purple-500 badge badge-sm badge-outline animate-pulse">
-							<PiOpenAiLogo className="" />
-							<span>AI調整中</span>
-						</div>
+
+					{previewVacancies > 0 ? (
+						<span className="badge badge-sm bg-red-500 text-white font-bold rounded-full border-none">{`不足 ${checkedUids.length}/${assignStaffData.count}`}</span>
+					) : (
+						<span className="badge badge-sm bg-green-500 text-white font-bold rounded-full border-none">{`充足 ${checkedUids.length}/${assignStaffData.count}`}</span>
 					)}
 				</h2>
 				<div className="flex items-center mb-3 ml-1">
 					<div className="flex items-center gap-3">
-						<p className="flex items-center badge badge-sm bg-white text-gray-800 border-gray02">
-							<LuUserRound className="text-gray-600 text-[14px]" />
-							<span className="text-gray-600 font-bold">
-								{assignStaffData.count}
-							</span>
-						</p>
+						<BiTime className="text-gray-700" />
 						<p className="text-gray-600 font-bold">
 							{formatTimeRangeHHmm(time)}
 						</p>
@@ -212,13 +207,11 @@ const AssignStaffModal = ({
 									const assignEnd = toMinutes(assignEndStr);
 									const hopeStart = toMinutes(hopeStartStr);
 									const hopeEnd = toMinutes(hopeEndStr);
-									// 希望時間帯がアサイン時間帯の範囲内に完全に収まる場合はマッチ扱い
 									if (hopeStart >= assignStart && hopeEnd <= assignEnd) {
 										isTimeMatch = true;
 									}
 								}
 							}
-							// 希望者かどうか
 							const isHope = hopeStaffIds.includes(m.user.id);
 							let sourceBadge = null;
 							const shiftPos = shiftRequestData.requests?.[date]?.[time];
@@ -278,13 +271,9 @@ const AssignStaffModal = ({
 													{m.role === "OWNER" ? "オーナー" : "スタッフ"}
 												</span>
 												{sourceBadge}
-												{/* {isAssignedOnly && (
-                          <span className="text-xs text-blue-500 ml-2"></span>
-                        )} */}
 											</div>
 
 											<div>
-												{/* 希望時間帯表示（存在する場合） */}
 												{hopeTime && hopeTime !== "anytime" && (
 													<span
 														className={
@@ -390,22 +379,14 @@ const AssignStaffModal = ({
 					) : (
 						<button
 							type="submit"
-							className={`btn flex-1 border-none ${
-								previewVacancies > 0
-									? "bg-red-500 text-white"
-									: "bg-green01 text-white"
-							}`}
+							className="btn flex items-cenetr gap-2 border-green01 bg-white text-green01  w-full shadow-sm"
 							onClick={(e) => {
 								e.preventDefault();
 								handleSave();
 							}}
 						>
 							<LuUserRound className="text-lg" />
-							{previewVacancies > 0 ? (
-								<span className="ml-2">{`不足 ${checkedUids.length}/${assignStaffData.count}`}</span>
-							) : (
-								<span className="ml-2">{`充足 ${checkedUids.length}/${assignStaffData.count}`}</span>
-							)}
+							<span className="ml-2">{`調整 ${checkedUids.length}/${assignStaffData.count}`}</span>
 						</button>
 					)}
 				</div>
