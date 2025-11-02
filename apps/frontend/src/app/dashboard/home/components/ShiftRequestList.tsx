@@ -1,10 +1,8 @@
 "use client";
 import type { RootState } from "@/redux/store";
 import type { RequestStatus } from "@shared/api/common/types/prisma";
-import Link from "next/link";
 import React, { useMemo, useState } from "react";
 import { LuSend } from "react-icons/lu";
-import { MdAdd } from "react-icons/md";
 import { useSelector } from "react-redux";
 import ShiftRequestCard from "./ShiftRequestCard";
 import ShiftRequestsListHead from "./ShiftRequestsListHead";
@@ -20,7 +18,6 @@ const ShiftRequestList = () => {
 	);
 
 	const filteredShiftRequests = useMemo(() => {
-		// if (TEST_MODE) return dummyShiftRequests;
 		if (shfitListFilter === "ALL") return activeShiftRequests;
 		return activeShiftRequests.filter(
 			(data) => data.status === shfitListFilter,
@@ -34,7 +31,7 @@ const ShiftRequestList = () => {
 		return filteredShiftRequests;
 	};
 
-	if (activeShiftRequests.length === 0) {
+	if (activeShiftRequests.length === 0 || showShiftRequests().length === 0) {
 		return (
 			<section className="w-full h-auto mx-auto">
 				<ShiftRequestsListHead setShiftListFilter={setShiftListFilter} />
@@ -46,15 +43,6 @@ const ShiftRequestList = () => {
 								データが存在しません
 							</p>
 						</div>
-
-						<Link
-							href={"/dashboard/shift/create"}
-							className="btn btn-sm w-auto border-none rounded-md bg-green02 text-white font-bold shadow-md"
-							// onClick={() => darawerOpen(DrawerView.CREATE_REQUEST, null)}
-						>
-							<MdAdd className="text-white. font-bold" />
-							シフト提出依頼を作成する
-						</Link>
 					</div>
 				</div>
 			</section>
@@ -63,12 +51,11 @@ const ShiftRequestList = () => {
 
 	return (
 		<section className="w-full h-auto mx-auto overflow-hidden">
-			{/* <Head /> */}
 			{user?.role !== "STAFF" && (
 				<ShiftRequestsListHead setShiftListFilter={setShiftListFilter} />
 			)}
 			<div className="w-full h-full overflow-hidden bg-white mt-1">
-				<ul className="w-full h-[420px] mx-auto flex flex-col overflow-y-scroll pt-1 pb-80 ">
+				<ul className="w-full h-[500px] mx-auto flex flex-col overflow-y-scroll pt-1 pb-50 ">
 					{showShiftRequests().map((data) => (
 						<ShiftRequestCard key={data.id} data={data} />
 					))}

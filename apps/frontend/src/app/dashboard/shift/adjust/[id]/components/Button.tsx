@@ -135,88 +135,11 @@ const Button = () => {
 		}
 	};
 
-	// const handleUpsertShiftData = async (status: ShiftStatus) => {
-	//   if (TEST_MODE) {
-	//     setShiftRequestData((prev) => ({ ...prev, status: status }));
-	//     setAssignShiftData((prev) => ({ ...prev, status: status }));
-	//     showToast("テストモードのため、保存処理はスキップされました", "success");
-	//     return;
-	//   }
-	//   const upsertAssignShiftData: UpsertAssignShfitInput = {
-	//     shiftRequestId: assignShiftData.shiftRequestId,
-	//     status: status,
-	//     shifts: assignShiftData.shifts,
-	//   };
-	//   const asRes = await upsertAssignShift({
-	//     upsertData: upsertAssignShiftData,
-	//     shiftRequestId: assignShiftData.shiftRequestId,
-	//   });
-	//   if (!asRes.ok) {
-	//     if ("errors" in asRes) {
-	//       asRes.errors.map((error) => {
-	//         alert(asRes.message);
-	//         showToast(
-	//           `割り当てデータの保存に失敗しました。validationError:${asRes.message} ${asRes.errors}`,
-	//           "error"
-	//         );
-	//       });
-	//       return;
-	//     }
-	//     alert(asRes.message);
-	//     showToast(
-	//       `割り当てデータの保存に失敗しました。error:${asRes.message}`,
-	//       "error"
-	//     );
-	//     return;
-	//   }
-
-	//   const upsertShiftRequestData: UpsertShiftRequetInput = {
-	//     type: shiftRequestData.type,
-	//     requests: shiftRequestData.requests,
-	//     status: status,
-	//     weekEnd: String(shiftRequestData.weekEnd),
-	//     weekStart: String(shiftRequestData.weekStart),
-	//     deadline: String(shiftRequestData.deadline),
-	//   };
-	//   const srRes = await upsertShiftRequest({
-	//     formData: upsertShiftRequestData,
-	//     shiftRequestId: assignShiftData.shiftRequestId,
-	//   });
-	//   if (!srRes.ok) {
-	//     if ("errors" in srRes) {
-	//       srRes.errors.map((error) => {
-	//         alert(srRes.message);
-	//         showToast(
-	//           `雛形データの更新に失敗しました。validationError:${srRes.message} ${srRes.errors}`,
-	//           "error"
-	//         );
-	//       });
-	//       return;
-	//     }
-	//     alert(srRes.message);
-	//     showToast(
-	//       `雛形データの更新に失敗しました。error:${srRes.message}`,
-	//       "error"
-	//     );
-	//     return;
-	//   }
-
-	//   setShiftRequestData((prev) => ({ ...prev, status: status }));
-	//   setAssignShiftData((prev) => ({ ...prev, status: status }));
-
-	//   if (status === "CONFIRMED") {
-	//     showToast("シフトが完成しました", "success");
-	//   }
-	//   if (status === "ADJUSTMENT") {
-	//     showToast("再調整に変更しました", "success");
-	//   }
-	// };
-
 	if (!shiftRequestData || !shiftRequestData.id) return <div />;
 
 	if (user?.role === "STAFF") {
 		return (
-			<div className="fixed bottom-0 left-0 w-full flex items-center justify-around gap-2  px-3 pt-3 pb-6 bg-white border-t border-gray01 z-10">
+			<div className="fixed bottom-10 left-0 w-full flex items-center justify-around gap-2  px-3 pt-3 pb-6 bg-white border-t border-gray01 z-10">
 				<div className="flex gap-2 items-center flex-1">
 					{viewMode === "table" ? (
 						<button
@@ -260,7 +183,7 @@ const Button = () => {
 
 	if (shiftRequestData.status === "CONFIRMED") {
 		return (
-			<div className="fixed bottom-0 left-0 w-full flex items-center justify-around gap-2  px-3 pt-3 pb-6 bg-white border-t border-gray01 z-10">
+			<div className="fixed bottom-10 left-0 w-full flex items-center justify-around gap-2  px-3 pt-3 pb-6 bg-white border-t border-gray01 z-10">
 				<div className="flex gap-2 items-center flex-1">
 					{/* {viewMode === "table" ? (
 						<button
@@ -307,28 +230,15 @@ const Button = () => {
 
 	if (shiftRequestData.status === "ADJUSTMENT") {
 		return (
-			<div className="fixed bottom-0 left-0 w-full flex justify-center gap-2 px-3 pt-3 pb-6 bg-white/80 border-t border-gray01 z-50 ">
-				{/* {viewMode === "table" ? (
-					<button
-						type="button"
-						onClick={toggleViewMode}
-						className="btn btn-sm border-gray01 bg-white text-black shadow-none w-28"
-					>
-						<RiFileListLine className="text-xl" />
-						リスト
-					</button>
-				) : (
-					<button
-						type="button"
-						onClick={toggleViewMode}
-						className="btn btn-sm border-gray01 bg-white text-black shadow-none w-28"
-					>
-						<BsTable className="text-lg" />
-						テーブル
-					</button>
-				)} */}
-
+			<div className="fixed bottom-16 left-0 w-full flex justify-center gap-2 px-3 pt-3 bg-white/80 border-t border-gray01 z-50 ">
 				<div className="flex gap-2 items-center flex-1">
+					{/* <div className="dropdown dropdown-top">
+						<div tabIndex={0} role="button" className="btn btn-sm m-1 border-green01 text-green01 bg-white shadow-sm">自動調整</div>
+						<ul tabIndex={-1} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+							<li><a>Item 1</a></li>
+							<li><a>Item 2</a></li>
+						</ul>
+					</div> */}
 					<button
 						type="button"
 						className="btn btn-sm bg-green02 text-white border-none flex-1"
@@ -338,12 +248,6 @@ const Button = () => {
 						<BiCheck />
 						シフト完成
 					</button>
-					{/* <button
-						type="button"
-						className="btn btn-sm bg-gray02 text-white border-none"
-					>
-						ヘルプ通知
-					</button> */}
 				</div>
 			</div>
 		);

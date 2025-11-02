@@ -1,6 +1,7 @@
 "use client";
 import { useUpsertAssignShift } from "@/app/api/hook/useUpsertAssignShift";
 import { useUpsertShiftReqeust } from "@/app/api/hook/useUpsertShiftReqeust";
+import PageBackButton from "@/app/dashboard/common/components/PageBackButton";
 import { useToast } from "@/app/dashboard/common/context/ToastProvider";
 import type { RootState } from "@/redux/store.js";
 import type { UpsertAssignShfitInput } from "@shared/api/shift/assign/validations/put";
@@ -72,16 +73,11 @@ const FormHead = () => {
 		return <div className="pt-4" />;
 
 	return (
-		<div className="w-full mx-auto pt-5 border-b border-gray01 pb-1 flex items-center px-3">
-			<h2 className="text-green02 font-bold text-sm ">シフト調整</h2>
-			<button
-				type="button"
-				className={`btn btn-sm btn-link text-gray-500 ml-auto ${aiMode && "opacity-40"}`}
-				onClick={handleUpsertDraftShiftData}
-				disabled={aiMode}
-			>
-				下書き保存
-			</button>
+		<div className="flex items-center gap-3 py-3 px-3 border-b border-gray01">
+			<PageBackButton saveDraftFunc={handleUpsertDraftShiftData} />
+			<span className="text-green02 font-bold w-full text-center text-sm">
+				シフト調整
+			</span>
 		</div>
 	);
 };

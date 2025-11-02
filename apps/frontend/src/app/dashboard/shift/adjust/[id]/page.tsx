@@ -16,7 +16,6 @@ export default async function Page({
 
 	return (
 		<main className="bg-white w-full min-h-screen">
-			<div className="mt-10" />
 			<ViewSwitchProvider>
 				<AiAdjustModeProvider>
 					<AdjustShiftFormContextProvider>

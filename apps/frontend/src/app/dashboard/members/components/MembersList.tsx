@@ -17,62 +17,18 @@ const MembersList = ({
 	const trigger = members.length === 0;
 	const { error, isLoading } = useMembersHook(trigger);
 
-	// const Dummymembers: Member[] = [
-	//   {
-	//     role: "OWNER", // or "STAFF" など
-	//     user: {
-	//       id: "u1",
-	//       name: "山田太郎",
-	//       pictureUrl: "https://example.com/yamada.png",
-	//       jobRoles: [
-	//         {
-	//           roleId: "r1",
-	//           role: {
-	//             id: "r1",
-	//             name: "レジ",
-	//           },
-	//         },
-	//         {
-	//           roleId: "r2",
-	//           role: {
-	//             id: "r2",
-	//             name: "接客",
-	//           },
-	//         },
-	//       ],
-	//     },
-	//   },
-	//   {
-	//     role: "STAFF",
-	//     user: {
-	//       id: "u2",
-	//       name: "佐藤花子",
-	//       pictureUrl: "https://example.com/sato.png",
-	//       jobRoles: [
-	//         {
-	//           roleId: "r3",
-	//           role: {
-	//             id: "r3",
-	//             name: "清掃",
-	//           },
-	//         },
-	//       ],
-	//     },
-	//   },
-	// ];
-
 	if (isLoading) {
 		return (
 			<div className="text-center mt-10">
-				<div className="loading loading-spinner loading-sm text-gray-400 mx-auto" />
-				<p className="text-xs text-gray-500 mt-2">読み込み中...</p>
+				<div className="loading loading-spinner loading-sm text-green02 mx-auto" />
+				<p className="text-xs text-green02 mt-2">読み込み中...</p>
 			</div>
 		);
 	}
 
 	return (
-		<section className="w-full mx-auto h-[400px] overflow-hidden bg-white pt-1">
-			<ul className="w-full h-[500px] mx-auto flex flex-col gap-1 overflow-y-scroll pt-2 pb-96">
+		<section className="w-full mx-auto h-[400px] overflow-hidden bg-white">
+			<ul className="w-full h-[600px] mx-auto flex flex-col gap-1 overflow-y-scroll pb-50">
 				{members.map((member: Member) => (
 					<MemberCard key={member.user.id} member={member} />
 				))}

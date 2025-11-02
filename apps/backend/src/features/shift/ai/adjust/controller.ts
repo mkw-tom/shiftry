@@ -55,9 +55,9 @@ export const aiShiftAdjustController = async (
 			return;
 		}
 
-		if (process.env.NODE_ENV === "test") {
-			return testResponseService(res);
-		}
+		// if (process.env.NODE_ENV === "test") {
+		// 	return testResponseService(res);
+		// }
 
 		const staffPreferences = await getStaffPreferencesByStoreId(auth.sid);
 		if (!staffPreferences) {

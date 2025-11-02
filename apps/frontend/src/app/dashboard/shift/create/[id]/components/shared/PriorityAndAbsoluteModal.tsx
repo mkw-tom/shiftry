@@ -1,4 +1,3 @@
-import { UserLite } from "@shared/api/common/types/prismaLite";
 import type {
 	AbsoluteUserType,
 	PriorityUserType,

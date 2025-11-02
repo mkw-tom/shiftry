@@ -8,11 +8,11 @@ import UserSection from "./sidebarSections/UserSection";
 
 const Sideber = () => {
 	return (
-		<div className="drawer drawer-end z-40 ">
+		<div className="drawer drawer-start z-40">
 			<input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
 			<div className="drawer-content">
 				<label htmlFor="my-drawer-4" className="drawer-button lg:hidden ">
-					<FiMenu className="text-xl lg:text-2xl text-green02 m-2 mr-4" />
+					<FiMenu className="text-lg lg:text-2xl text-green02 m-4" />
 				</label>
 			</div>
 			<div className="drawer-side ">
@@ -21,9 +21,8 @@ const Sideber = () => {
 					className="drawer-overlay"
 					aria-label="close sidebar"
 				/>
-				<ul className="menu bg-base lg:bg-white  text-base-content min-h-full w-72 p-4 scroll-auto border-t-[6px] border-green02 ">
+				<ul className="menu bg-base lg:bg-white  text-base-content min-h-full w-72 p-4 scroll-auto">
 					<UserSection />
-					<MemberListSection />
 					<ArchiveShiftSection />
 					{/* <PaymentSectioin /> */}
 					<StoresSection />
