@@ -7,7 +7,7 @@ import React from "react";
 const MemberCard = ({ member }: { member: Member }) => {
 	return (
 		<li className="w-full h-auto bg-white  flex items-center border-b-1 border-b-gray01 ">
-			<div className="flex justify-between p-5 w-full">
+			<div className="flex justify-between p-4 w-full">
 				<div className="w-1/2 flex items-center gap-4">
 					{member.user.pictureUrl === null ? (
 						<div className="w-8 h-8 rounded-full bg-gray01 " />

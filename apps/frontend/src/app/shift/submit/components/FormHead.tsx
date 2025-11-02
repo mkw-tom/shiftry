@@ -1,4 +1,5 @@
 "use client";
+import PageBackButton from "@/app/dashboard/common/components/PageBackButton";
 import { useToast } from "@/app/dashboard/common/context/ToastProvider";
 import React from "react";
 import { useUpsertSubmitShift } from "../api/upsert-submitted-shfit/hook";
@@ -9,7 +10,7 @@ const FormHead = () => {
 	const { showToast } = useToast();
 	const { handleUpsertSubmitShift } = useUpsertSubmitShift();
 
-	const onClickSubmitDraft = async () => {
+	const onSaveDraftSubmit = async () => {
 		const res = await handleUpsertSubmitShift({
 			formData: { ...formData, status: "ADJUSTMENT" },
 		});
@@ -25,15 +26,11 @@ const FormHead = () => {
 	};
 
 	return (
-		<div className="w-full mx-auto pt-5 border-b border-gray01 pb-1 flex items-center px-3">
-			<h2 className="text-green02 font-bold text-sm">シフト希望提出</h2>
-			<button
-				type="button"
-				className="btn btn-sm btn-link text-gray-500 ml-auto"
-				onClick={onClickSubmitDraft}
-			>
-				下書き保存
-			</button>
+		<div className="flex items-center gap-3 py-3 px-3 border-b border-gray01">
+			<PageBackButton saveDraftFunc={onSaveDraftSubmit} goHome={true} />
+			<span className="text-green02 font-bold w-full text-center text-sm">
+				シフト調整
+			</span>
 		</div>
 	);
 };

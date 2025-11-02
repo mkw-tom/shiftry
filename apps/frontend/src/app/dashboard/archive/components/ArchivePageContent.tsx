@@ -1,6 +1,5 @@
 "use client";
 import { useBottomDrawer } from "@/app/dashboard/common/context/useBottomDrawer";
-import Head from "@/app/dashboard/home/components/Head";
 import { TEST_MODE } from "@/lib/env";
 import type { ShiftRequestDTO } from "@shared/api/shift/request/dto";
 import React, { useEffect, useState } from "react";
@@ -9,6 +8,7 @@ import { MdErrorOutline } from "react-icons/md";
 import { useGetArchiveShiftRequests } from "../api/get-archive-shift-request/hook";
 import ArchiveListCard from "./ArchiveListCard";
 import ArchiveListHead from "./ArchiveListHead";
+import FormHead from "./FormHead";
 
 const ArchivePageContent = () => {
 	const [archiveData, setArchiveData] = useState<ShiftRequestDTO[]>([]);
@@ -53,18 +53,9 @@ const ArchivePageContent = () => {
 	});
 
 	return (
-		<div className="w-full h-full">
-			<div className="w-full h-auto pt-10 bg-green02 shadow-2xl ">
-				<Head />
-				{/* archive page head */}
-				<div className="w-full h-auto mx-auto bg-white -mt-1 pt-3 ">
-					<div className="mx-auto w-40 flex flex-col items-center">
-						<h2 className="text-center text-green02 font-bold text-sm pb-1">
-							過去のシフト履歴：
-							<span className="">{archiveData.length}</span>件
-						</h2>
-					</div>
-				</div>
+		<div className="w-full h-lvh bg-white">
+			<div className="w-full h-auto shadow-2xl">
+				<FormHead />
 
 				<ArchiveListHead
 					ids={ids}
@@ -73,17 +64,17 @@ const ArchivePageContent = () => {
 				/>
 			</div>
 
-			<main className="bg-white w-full h-lvh">
-				<div className="w-full h-full  flex flex-col items-center gap-5 pt-3">
-					<ul className="w-full ">
+			<main className="bg-white w-full h-auto">
+				<div className="w-full h-auto  flex flex-col items-center gap-5 pt-3">
+					<ul className="w-full h-auto bg-white">
 						{isLoading && (
-							<div className="w-full h-lvh flex flex-col items-center">
+							<div className="w-full h-full flex flex-col items-center">
 								<p className="loading loading-spinner text-green02 mt-20" />
 								<p className="text-green02 mt-2">読み込み中...</p>
 							</div>
 						)}
 						{error !== null && (
-							<div className="w-full h-lvh flex flex-col gap-2 items-center ">
+							<div className="w-full h-full flex flex-col gap-2 items-center ">
 								<MdErrorOutline className="text-gray02 text-2xl mt-20" />
 								<p className="text-gray02">読み込みに失敗しました</p>
 							</div>

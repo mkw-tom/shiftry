@@ -1,10 +1,12 @@
-import HomeContent from "./components/HomeContent";
+import Header from "../common/components/Header";
+import ShiftRequestList from "./components/ShiftRequestList";
 
 const Page = () => {
 	return (
 		<main className="bg-white w-full h-lvh">
 			<div className="w-full h-full ">
-				<HomeContent />
+				<Header />
+				<ShiftRequestList />
 			</div>
 		</main>
 	);
