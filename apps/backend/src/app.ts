@@ -6,6 +6,7 @@ import helmet from "helmet";
 import authRoutes from "./features/auth/route.js";
 import jobRoleRotes from "./features/jobRole/route.js";
 import paymentRoutes from "./features/payment/route.js";
+import pdfRoutes from "./features/pdf/route.js";
 import shiftPositionRoutes from "./features/shfitPosition/route.js";
 import aiRoutes from "./features/shift/ai/route.js";
 import assignShiftRoutes from "./features/shift/assign/route.js";
@@ -84,6 +85,7 @@ app.use("/api/jobrole", jobRoleRotes);
 app.use("/api/userjobrole", userJobRoleRotes);
 app.use("/api/shift-position", shiftPositionRoutes);
 app.use("/api/staff_preference", staffPreferenceRoutes);
+app.use("/api/pdf", pdfRoutes);
 
 app.use(
 	(
