@@ -43,3 +43,7 @@ export const staffPreferenceApi = {
 	update: "staff_preference/update",
 	updateBulk: "staff_preference/update/bulk",
 };
+
+export const pdfApi = {
+	shiftPdf: "pdf/shift",
+};
