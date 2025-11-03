@@ -1,3 +1,4 @@
+import FooterNav from "../common/components/FooterNav";
 import Header from "../common/components/Header";
 import ShiftRequestList from "./components/ShiftRequestList";
 
@@ -7,6 +8,7 @@ const Page = () => {
 			<div className="w-full h-full ">
 				<Header />
 				<ShiftRequestList />
+				<FooterNav />
 			</div>
 		</main>
 	);
