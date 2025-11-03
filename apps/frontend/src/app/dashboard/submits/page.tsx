@@ -1,3 +1,4 @@
+import FooterNav from "../common/components/FooterNav";
 import SubmitStatusList from "./components/SubmitStatusList";
 
 const Page = () => {
@@ -5,6 +6,7 @@ const Page = () => {
 		<main className="bg-white w-full h-lvh">
 			<div className="w-full h-full ">
 				<SubmitStatusList />
+				<FooterNav />
 			</div>
 		</main>
 	);

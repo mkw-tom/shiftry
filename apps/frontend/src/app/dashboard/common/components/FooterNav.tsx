@@ -18,7 +18,6 @@ const FooterNav = () => {
 		router.push(path);
 		setActivePath(path);
 	};
-
 	return (
 		<div className="dock bg-white/90 text-green02">
 			<button

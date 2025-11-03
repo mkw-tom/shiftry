@@ -30,7 +30,7 @@ const ActionButton = () => {
 
 	if (step === "select_date") {
 		return (
-			<div className="fixed bottom-16 left-0 w-full flex justify-center gap-2 px-3 pt-3 bg-white/80 border-t border-gray01 z-50 ">
+			<div className="fixed bottom-5 left-0 w-full flex justify-center gap-2 px-3 pt-3 bg-white/80 border-t border-gray01 z-50 ">
 				<button
 					type="button"
 					className="btn btn-sm w-full bg-green02 text-white border-none"
@@ -45,7 +45,7 @@ const ActionButton = () => {
 
 	if (step === "regist_position") {
 		return (
-			<div className="fixed bottom-16 left-0 w-full flex justify-center gap-2 px-3 pt-3 bg-white/80 border-t border-gray01 z-50 ">
+			<div className="fixed bottom-5 left-0 w-full flex justify-center gap-2 px-3 pt-3 bg-white/80 border-t border-gray01 z-50 ">
 				<button
 					type="button"
 					className="btn btn-sm w-1/3 bg-gray02 text-white border-none"
