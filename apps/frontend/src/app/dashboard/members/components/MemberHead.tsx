@@ -12,7 +12,6 @@ const MemberHead = ({
 }) => {
 	return (
 		<div className="flex items-center gap-3 py-3 px-3 border-b border-gray01">
-			<PageBackButton />
 			<span className="text-green02 font-bold w-full text-center text-sm">
 				スタッフ一覧
 			</span>

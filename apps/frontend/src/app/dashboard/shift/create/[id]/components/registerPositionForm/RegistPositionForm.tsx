@@ -1,17 +1,14 @@
 import { toISO } from "@/app/utils/date";
-import { TEST_MODE } from "@/lib/env";
 import type { UpsertShiftPositionBaseInput } from "@shared/api/shiftPosition/validations/put-bulk";
-import React, { use, useEffect, useRef, useState } from "react";
-import { LuUserRound } from "react-icons/lu";
+import { useEffect, useRef, useState } from "react";
 import { MdAdd } from "react-icons/md";
 import { useGetShfitPositions } from "../../api/get-shift-positions/hook";
 import { useCreateRequest } from "../../context/CreateRequestFormProvider";
-import PriorityAndAbsoluteModal from "../shared/PriorityAndAbsoluteModal";
 import Positionlist from "./PositionList";
 import UpsertPositionModal from "./UpsertPositionModal";
 
 const RegistPositionForm = () => {
-	const { shiftPositioins, setShiftPositions } = useCreateRequest();
+	const { setShiftPositions } = useCreateRequest();
 	const [position, setPosition] = useState<UpsertShiftPositionBaseInput>({
 		name: "",
 		startTime: "",
@@ -30,24 +27,8 @@ const RegistPositionForm = () => {
 	useEffect(() => {
 		if (loadedRef.current) return;
 		loadedRef.current = true;
-		// const setTestData = () => {
-		// 	if (!TEST_MODE) return;
-		// 	setShiftPositions(
-		// 		dummyShiftPositions.map((pos) => ({
-		// 			...pos,
-		// 			startTime: toISO(String(pos.startTime)),
-		// 			endTime: toISO(String(pos.endTime)),
-		// 			absolute: pos.absolute ?? [],
-		// 			priority: pos.priority ?? [],
-		// 			count:
-		// 				typeof pos.count === "number" && pos.count !== null ? pos.count : 1,
-		// 		})),
-		// 	);
-		// 	return;
-		// };
 
 		const fetchData = async () => {
-			// if (TEST_MODE) return;
 			const res = await handleGetShiftPositions();
 			if (!res.ok && "message" in res) {
 				alert(res.message);
@@ -65,7 +46,6 @@ const RegistPositionForm = () => {
 				})),
 			);
 		};
-		// setTestData();
 		fetchData();
 	}, [handleGetShiftPositions, setShiftPositions]);
 

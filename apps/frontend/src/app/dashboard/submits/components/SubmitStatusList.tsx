@@ -55,8 +55,7 @@ const SubmitStatusList = () => {
 
 	return (
 		<section className="w-full h-auto mx-auto overflow-hidden flex flex-col">
-			<div className="flex items-center gap-3 py-3 mx-3 ">
-				<PageBackButton />
+			<div className="flex items-center gap-3 py-3 border-b-1 border-b-gray01">
 				<span className="text-green02 font-bold w-full text-center text-sm">
 					提出一覧
 				</span>
@@ -76,7 +75,7 @@ const SubmitStatusList = () => {
 								activeTab === "all" ? "bg-green02" : "bg-gray01"
 							}`}
 						>
-							{activeShiftRequests.length}
+							{shiftRequestsSubmitted.length + shiftRequestsNotSubmit.length}
 						</div>
 					</button>
 					<button
