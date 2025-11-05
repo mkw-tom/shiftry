@@ -1,5 +1,5 @@
 import { useGenerateShiftPdf } from "@/app/api/hook/pdf/useGerateShiftPdf";
-import React, { use } from "react";
+import React from "react";
 import { BiDownload } from "react-icons/bi";
 import { useAdjustShiftForm } from "../context/AdjustShiftFormContextProvider.tsx";
 
@@ -7,9 +7,27 @@ const ShiftPdfButton = () => {
 	const { shiftRequestData, assignShiftData } = useAdjustShiftForm();
 	const { generateShiftPdf } = useGenerateShiftPdf();
 
+	const isInLINE = () => {
+		const ua = navigator.userAgent.toLowerCase();
+		return ua.includes("line/");
+	};
+
 	const handleGeneratePdf = async () => {
 		if (!shiftRequestData || !assignShiftData) return;
 
+		// LINEアプリ内の場合 → 外部ブラウザで同じURLを開かせる
+		if (isInLINE()) {
+			const confirmOpen = window.confirm(
+				"LINEアプリ内ではPDFを保存できません。\n外部ブラウザで開きますか？"
+			);
+			if (confirmOpen) {
+				// 現在のURLを外部ブラウザで開く
+				window.open(window.location.href, "_blank");
+			}
+			return;
+		}
+
+		// 通常ブラウザ時 → PDF生成処理
 		const transformedShifts = Object.fromEntries(
 			Object.entries(assignShiftData.shifts).map(([date, shiftObj]) => [
 				date,
@@ -31,9 +49,9 @@ const ShiftPdfButton = () => {
 							vacancies: shift.vacancies ?? 0,
 							jobRoles: shift.jobRoles ?? [],
 						},
-					]),
+					])
 				),
-			]),
+			])
 		);
 
 		const res = await generateShiftPdf({ jsonData: transformedShifts });
@@ -55,6 +73,7 @@ const ShiftPdfButton = () => {
 			alert("PDFの生成に失敗しました。");
 		}
 	};
+
 	return (
 		<button
 			type="button"
