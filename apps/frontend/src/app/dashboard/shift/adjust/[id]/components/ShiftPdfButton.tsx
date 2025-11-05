@@ -18,7 +18,7 @@ const ShiftPdfButton = () => {
 		// LINEアプリ内の場合 → 外部ブラウザで同じURLを開かせる
 		if (isInLINE()) {
 			const confirmOpen = window.confirm(
-				"LINEアプリ内ではPDFを保存できません。\n外部ブラウザで開きますか？"
+				"LINEアプリ内ではPDFを保存できません。\n外部ブラウザで開きますか？",
 			);
 			if (confirmOpen) {
 				// 現在のURLを外部ブラウザで開く
@@ -49,9 +49,9 @@ const ShiftPdfButton = () => {
 							vacancies: shift.vacancies ?? 0,
 							jobRoles: shift.jobRoles ?? [],
 						},
-					])
+					]),
 				),
-			])
+			]),
 		);
 
 		const res = await generateShiftPdf({ jsonData: transformedShifts });
