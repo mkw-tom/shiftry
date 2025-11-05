@@ -130,8 +130,8 @@ const Positionlist = ({
 										<p className="text-black">固定</p>
 										<div className="avatar-group -space-x-1">
 											{targetPosition.absolute.map((staff) => (
-												<div className="avatar" key={staff.id}>
-													<div className="w-4">
+												<div className="avatar border-none" key={staff.id}>
+													<div className="w-5">
 														<img src={staff.pictureUrl} alt={staff.name} />
 													</div>
 												</div>
@@ -156,8 +156,8 @@ const Positionlist = ({
 										<p className="text-black">優先</p>
 										<div className="avatar-group -space-x-2">
 											{targetPosition.priority.map((staff) => (
-												<div className="avatar" key={staff.id}>
-													<div className="w-4">
+												<div className="avatar border-none" key={staff.id}>
+													<div className="w-5">
 														<img src={staff.pictureUrl} alt={staff.name} />
 													</div>
 												</div>

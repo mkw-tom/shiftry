@@ -6,14 +6,11 @@ import { useToast } from "@/app/dashboard/common/context/ToastProvider";
 import type { RootState } from "@/redux/store.js";
 import type { UpsertAssignShfitInput } from "@shared/api/shift/assign/validations/put";
 import type { UpsertShiftRequetInput } from "@shared/api/shift/request/validations/put";
-import { useRouter } from "next/navigation";
 import React from "react";
 import { useSelector } from "react-redux";
 import { useAdjustShiftForm } from "../context/AdjustShiftFormContextProvider.tsx";
-import { useAiAdjustMode } from "../context/AiAdjustModeProvider";
 
 const FormHead = () => {
-	const { aiMode } = useAiAdjustMode();
 	const { upsertAssignShift } = useUpsertAssignShift();
 	const { assignShiftData, shiftRequestData } = useAdjustShiftForm();
 	const { upsertShiftRequest } = useUpsertShiftReqeust();
@@ -69,12 +66,14 @@ const FormHead = () => {
 		}
 	};
 
-	if (shiftRequestData.status === "CONFIRMED" || user?.role === "STAFF")
-		return <div className="pt-4" />;
-
 	return (
 		<div className="flex items-center gap-3 py-3 px-3 border-b border-gray01">
-			<PageBackButton saveDraftFunc={handleUpsertDraftShiftData} />
+			<PageBackButton
+				saveDraftFunc={handleUpsertDraftShiftData}
+				saveSkip={
+					shiftRequestData.status === "CONFIRMED" || user?.role === "STAFF"
+				}
+			/>
 			<span className="text-green02 font-bold w-full text-center text-sm">
 				シフト調整
 			</span>
