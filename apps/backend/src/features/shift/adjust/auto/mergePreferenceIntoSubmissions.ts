@@ -1,8 +1,7 @@
-import {
-	type SubmissionsInput,
-	type TemplateShiftInput,
-	TemplateShiftType,
-} from "@shared/api/shift/ai/validations/post-adjust.js";
+import type {
+	SubmissionsInput,
+	TemplateShiftInput,
+} from "@shared/api/shift/adjust/validations/auto.js";
 import type { StaffPreferenceDTO } from "@shared/api/staffPreference/dto.js";
 
 const weekday = (dateStr: string) =>

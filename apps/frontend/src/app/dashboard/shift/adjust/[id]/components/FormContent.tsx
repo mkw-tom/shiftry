@@ -10,10 +10,13 @@ import type {
 } from "@shared/api/shift/assign/validations/put";
 import React, { useState, useEffect, useCallback } from "react";
 import { MdErrorOutline } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useAdjustShiftForm } from "../context/AdjustShiftFormContextProvider.tsx";
+import { useAutoAdjustMode } from "../context/AutoAdjustModeProvider";
 import { useViewSwitch } from "../context/ViewSwitchProvider";
 import AssignPositionList from "./AssignPositionList";
+import AutoAssignDrawer from "./AutoAssignDrawer";
+import Button from "./Button";
 import FormHead from "./FormHead";
 import ShiftControlButtons from "./ShiftControlButtons";
 import ShiftTableView from "./ShiftTableView";
@@ -23,6 +26,8 @@ import EditAssignPositionModal from "./modals/EditAssignPositionModal";
 const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 	const { viewMode } = useViewSwitch();
 	const { user } = useSelector((state: RootState) => state.user);
+	const { autoMode } = useAutoAdjustMode();
+
 	const {
 		shiftRequestData,
 		setShiftRequestData,
@@ -63,7 +68,6 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 
 	const isLoading = srLoading || asLoading || ssLoading || spLoading;
 	const isError = srError || asError || ssError || spError;
-	const dispatch = useDispatch();
 
 	// 初回のみ: shiftRequestData, assignShiftData, submittedShiftListを取得し、assignShiftDataのマージも初回のみ実行
 
@@ -267,7 +271,7 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 		7 * (daysSplitIndex + 1),
 	);
 	const [selectDate, setSelectDate] = useState<Date>(
-		daysWithSevenDays[0] ?? new Date(shiftRequestData.weekStart),
+		daysWithSevenDays[0] ?? new Date(daysWithSevenDays[0]),
 	);
 
 	if (isError) {
@@ -338,6 +342,15 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 				setEditAssignPosition={setEditAssignPosition}
 				openEditAssignPositionModal={openEditAssignPositionModal}
 			/>
+
+			{autoMode ? (
+				<AutoAssignDrawer
+					selectDate={selectDate}
+					setSelectDate={setSelectDate}
+				/>
+			) : (
+				<Button />
+			)}
 		</div>
 	);
 };

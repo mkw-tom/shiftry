@@ -3,23 +3,23 @@ import type {
 	ErrorResponse,
 	ValidationErrorResponse,
 } from "@shared/api/common/types/errors";
-import type { AIShiftAdjustResponse } from "@shared/api/shift/ai/types/post-adjust";
-import type { AIShiftAdjustRequest } from "@shared/api/shift/ai/validations/post-adjust";
+import type { AutoShiftAdjustResponse } from "@shared/api/shift/adjust/types/auto";
+import type { AutoShiftAdjustRequest } from "@shared/api/shift/adjust/validations/auto";
 import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
-import { aiApi } from "../path";
+import { shiftAdjust } from "../path";
 import { useFetch } from "../useFetch";
 
-export const useAiAdjust = () => {
+export const useAutoAdjust = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const { jwt } = useSelector((state: RootState) => state.authToken);
 
-	const aiAdjust = useCallback(
+	const autoAdjust = useCallback(
 		async (
-			body: AIShiftAdjustRequest,
+			body: AutoShiftAdjustRequest,
 		): Promise<
-			AIShiftAdjustResponse | ErrorResponse | ValidationErrorResponse
+			AutoShiftAdjustResponse | ErrorResponse | ValidationErrorResponse
 		> => {
 			setIsLoading(true);
 			setError(null);
@@ -29,10 +29,10 @@ export const useAiAdjust = () => {
 					throw new Error("認証トークンが不足しています");
 				}
 
-				const res = await useFetch<AIShiftAdjustResponse>({
+				const res = await useFetch<AutoShiftAdjustResponse>({
 					jwt,
 					method: "POST",
-					path: aiApi.adjust,
+					path: shiftAdjust.auto,
 					body,
 				});
 
@@ -55,5 +55,5 @@ export const useAiAdjust = () => {
 		[jwt],
 	);
 
-	return { aiAdjust, isLoading, error };
+	return { autoAdjust, isLoading, error };
 };
