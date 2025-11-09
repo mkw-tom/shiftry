@@ -3,7 +3,7 @@ import { YMDW } from "@shared/utils/formatDate";
 import React, { use, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useAiAdjust } from "@/app/api/hook/useAiAdjust";
+import { useAutoAdjust } from "@/app/api/hook/useAutoAdjust";
 import type { RootState } from "@/redux/store.js";
 import type {
 	AutoShiftAdjustRequest,
@@ -21,11 +21,7 @@ const AIAssignModal = () => {
 		setAssignShiftData,
 		submittedShiftList,
 	} = useAdjustShiftForm();
-	const {
-		aiAdjust,
-		isLoading: isAiAdjustLoading,
-		error: aiAdjustError,
-	} = useAiAdjust();
+	const { autoAdjust, isLoading, error } = useAutoAdjust();
 	const { members } = useSelector((state: RootState) => state.members);
 	const { startAutoAdjustMode } = useAutoAdjustMode();
 	const [datePicking, setDatePicking] = useState(false);
@@ -130,7 +126,7 @@ const AIAssignModal = () => {
 				dateFilter: dateFilter,
 			},
 		};
-		const res = await aiAdjust(body);
+		const res = await autoAdjust(body);
 		if (!res.ok) {
 			showToast(`AI調整に失敗しました。${"通信エラー"}`, "error");
 			return;
@@ -140,7 +136,7 @@ const AIAssignModal = () => {
 	};
 
 	useEffect(() => {
-		if (!isAiAdjustLoading && successAssign) {
+		if (!isLoading && successAssign) {
 			// モーダルを閉じる
 			const modal = document.getElementById(
 				"ai-assign-modal",
@@ -150,7 +146,7 @@ const AIAssignModal = () => {
 			showToast("AI調整が完了しました", "success");
 			setSuccessAssign(false);
 		}
-	}, [isAiAdjustLoading, successAssign, showToast]);
+	}, [isLoading, successAssign, showToast]);
 
 	return (
 		<>
@@ -163,7 +159,7 @@ const AIAssignModal = () => {
 					<button
 						type="button"
 						className="btn btn-sm btn-circle absolute right-2 top-2 shadow-none bg-white text-gray02 border border-gray02"
-						disabled={isAiAdjustLoading}
+						disabled={isLoading}
 						onClick={() => onCloseAutoAssignModal()}
 					>
 						✕
@@ -185,7 +181,7 @@ const AIAssignModal = () => {
 										setAssignRange(e.target.value as "all" | "range" | "single")
 									}
 									className="radio radio-sm radio-success"
-									disabled={isAiAdjustLoading}
+									disabled={isLoading}
 								/>
 								<span className="text-sm text-gray-700">全体</span>
 							</label>
@@ -198,7 +194,7 @@ const AIAssignModal = () => {
 										setAssignRange(e.target.value as "all" | "range" | "single")
 									}
 									className="radio radio-sm radio-success"
-									disabled={isAiAdjustLoading}
+									disabled={isLoading}
 								/>
 								<span className="text-sm text-gray-700">特定期間</span>
 							</label>
@@ -211,7 +207,7 @@ const AIAssignModal = () => {
 										setAssignRange(e.target.value as "all" | "range" | "single")
 									}
 									className="radio radio-sm radio-success"
-									disabled={isAiAdjustLoading}
+									disabled={isLoading}
 								/>
 								<span className="text-sm text-gray-700">1日だけ</span>
 							</label>
@@ -305,9 +301,9 @@ const AIAssignModal = () => {
 							!isInputValid() && "opacity-40"
 						}`}
 						onClick={() => handleAiAssign()}
-						disabled={isAiAdjustLoading || !isInputValid()}
+						disabled={isLoading || !isInputValid()}
 					>
-						{isAiAdjustLoading ? (
+						{isLoading ? (
 							<span className="loading loading-dots" />
 						) : (
 							"自動調整を実行"

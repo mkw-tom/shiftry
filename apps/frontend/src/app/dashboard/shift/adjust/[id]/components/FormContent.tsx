@@ -271,7 +271,7 @@ const FormContent = ({ shiftRequestId }: { shiftRequestId: string }) => {
 		7 * (daysSplitIndex + 1),
 	);
 	const [selectDate, setSelectDate] = useState<Date>(
-		daysWithSevenDays[0] ?? new Date(shiftRequestData.weekStart),
+		daysWithSevenDays[0] ?? new Date(daysWithSevenDays[0]),
 	);
 
 	if (isError) {
