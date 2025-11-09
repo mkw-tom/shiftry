@@ -1,16 +1,12 @@
 import { formatTimeRangeHHmm } from "@/app/utils/times";
-import {
-	type AssignPositionType,
-	AssignPositionWithDateInput,
-} from "@shared/api/shift/assign/validations/put";
+import type { AssignPositionType } from "@shared/api/shift/assign/validations/put";
 import { YMDW } from "@shared/utils/formatDate";
 import React from "react";
-import { LuUserRound } from "react-icons/lu";
 import {
 	MdKeyboardDoubleArrowDown,
 	MdKeyboardDoubleArrowRight,
 } from "react-icons/md";
-import { useAiAdjustMode } from "../../context/AiAdjustModeProvider";
+import { useAutoAdjustMode } from "../../context/AutoAdjustModeProvider";
 
 const ShowAssignListModal = ({
 	date,
@@ -22,8 +18,7 @@ const ShowAssignListModal = ({
 	position: AssignPositionType;
 }) => {
 	const { name, assigned, count, vacancies } = position;
-	const { aiMode, AiModified, allowModifiedDatas, rejectModifiedDatas } =
-		useAiAdjustMode();
+	const { autoMode, autoModified } = useAutoAdjustMode();
 	const onCloseAssignListModal = () => {
 		const modal = document.getElementById(
 			`assign-list-${date}-${time}-${name}`,
@@ -31,8 +26,8 @@ const ShowAssignListModal = ({
 		modal?.close();
 	};
 	const aiIsFull =
-		aiMode && AiModified[date]?.[time]
-			? AiModified[date][time].assignedCount >= AiModified[date][time].count
+		autoMode && autoModified[date]?.[time]
+			? autoModified[date][time].assignedCount >= autoModified[date][time].count
 			: false;
 
 	return (
@@ -74,21 +69,21 @@ const ShowAssignListModal = ({
 							</span>
 						)}
 
-						{aiMode && AiModified[date]?.[time] && (
+						{autoMode && autoModified[date]?.[time] && (
 							<MdKeyboardDoubleArrowRight className="text-purple-500" />
 						)}
 
-						{aiMode &&
-							AiModified[date]?.[time] &&
+						{autoMode &&
+							autoModified[date]?.[time] &&
 							(aiIsFull ? (
 								<span className="badge badge-sm bg-green-500 text-white border-none">
-									充足 {aiMode && AiModified[date]?.[time].assignedCount}/
-									{aiMode && AiModified[date]?.[time].count}
+									充足 {autoMode && autoModified[date]?.[time].assignedCount}/
+									{autoMode && autoModified[date]?.[time].count}
 								</span>
 							) : (
 								<span className="badge badge-sm bg-red-500 text-white border-none">
-									不足 {aiMode && AiModified[date]?.[time].assignedCount}/
-									{aiMode && AiModified[date]?.[time].count}
+									不足 {autoMode && autoModified[date]?.[time].assignedCount}/
+									{autoMode && autoModified[date]?.[time].count}
 								</span>
 							))}
 					</h2>
@@ -123,11 +118,11 @@ const ShowAssignListModal = ({
 						))
 					)}
 				</div>
-				{aiMode && AiModified[date]?.[time] && (
+				{autoMode && autoModified[date]?.[time] && (
 					<>
 						<MdKeyboardDoubleArrowDown className="text-purple-500/30 mx-auto text-2xl my-2" />
 						<div className="border-1 border-purple-500 p-3 bg-purple-50 flex flex-col gap-2">
-							{AiModified[date]?.[time]?.assigned.map((user) => (
+							{autoModified[date]?.[time]?.assigned.map((user) => (
 								<div key={user.uid} className="flex items-center gap-3">
 									<div className="avatar">
 										<div className="w-8 rounded-full">

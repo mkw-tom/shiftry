@@ -6,13 +6,13 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useAiAdjust } from "@/app/api/hook/useAiAdjust";
 import type { RootState } from "@/redux/store.js";
 import type {
-	AIShiftAdjustRequest,
+	AutoShiftAdjustRequest,
 	MemberProfileType,
-} from "@shared/api/shift/ai/validations/post-adjust.js";
+} from "@shared/api/shift/adjust/validations/auto.js";
 import { ja, te } from "date-fns/locale";
 import { useSelector } from "react-redux";
 import { useAdjustShiftForm } from "../../context/AdjustShiftFormContextProvider.tsx";
-import { useAiAdjustMode } from "../../context/AiAdjustModeProvider";
+import { useAutoAdjustMode } from "../../context/AutoAdjustModeProvider";
 
 const AIAssignModal = () => {
 	const {
@@ -27,7 +27,7 @@ const AIAssignModal = () => {
 		error: aiAdjustError,
 	} = useAiAdjust();
 	const { members } = useSelector((state: RootState) => state.members);
-	const { startAiAdjustMode } = useAiAdjustMode();
+	const { startAutoAdjustMode } = useAutoAdjustMode();
 	const [datePicking, setDatePicking] = useState(false);
 	// const [checkedFields, setCheckedFields] = useState<string[]>([]);
 	const [successAssign, setSuccessAssign] = useState<boolean>(false);
@@ -85,24 +85,24 @@ const AIAssignModal = () => {
 
 	const handleAiAssign = async () => {
 		setSuccessAssign(false);
-		// let period: {
-		// 	type: "all" | "range" | "single";
-		// 	start?: string;
-		// 	end?: string;
-		// 	date?: string;
-		// } = { type: assignRange };
-		// if (assignRange === "range" && rangeStart && rangeEnd) {
-		// 	period = {
-		// 		type: "range",
-		// 		start: formatDateLocal(rangeStart),
-		// 		end: formatDateLocal(rangeEnd),
-		// 	};
-		// } else if (assignRange === "single" && singleDate) {
-		// 	period = {
-		// 		type: "single",
-		// 		date: formatDateLocal(singleDate),
-		// 	};
-		// }
+		let dateFilter:
+			| { mode: "ALL" }
+			| { mode: "RANGE"; from: string; to: string }
+			| { mode: "SINGLE"; date: string };
+		if (assignRange === "range" && rangeStart && rangeEnd) {
+			dateFilter = {
+				mode: "RANGE",
+				from: formatDateLocal(rangeStart),
+				to: formatDateLocal(rangeEnd),
+			};
+		} else if (assignRange === "single" && singleDate) {
+			dateFilter = {
+				mode: "SINGLE",
+				date: formatDateLocal(singleDate),
+			};
+		} else {
+			dateFilter = { mode: "ALL" };
+		}
 		if (!isInputValid()) return;
 
 		const memberProfiles: MemberProfileType[] = members.map((member) => ({
@@ -117,22 +117,25 @@ const AIAssignModal = () => {
 				: [],
 		}));
 
-		const body: AIShiftAdjustRequest = {
+		const body: AutoShiftAdjustRequest = {
 			templateShift: shiftRequestData,
 			submissions: submittedShiftList,
 			currentAssignments: assignShiftData.shifts,
 			memberProfiles: memberProfiles,
-			// assignPeriod: period,
+			constraints: {
+				dailyMaxPerUser: 1,
+				allowPartialOverlap: false,
+				maximizeDistinctAssignments: false,
+				countScope: "WEEK",
+				dateFilter: dateFilter,
+			},
 		};
 		const res = await aiAdjust(body);
-		if (!res.ok || !("ai_modified" in res)) {
-			showToast(
-				`AI調整に失敗しました。${res.message || "通信エラー"}`,
-				"error",
-			);
+		if (!res.ok) {
+			showToast(`AI調整に失敗しました。${"通信エラー"}`, "error");
 			return;
 		}
-		startAiAdjustMode(res.ai_modified);
+		startAutoAdjustMode(res.auto_modified);
 		setSuccessAssign(true);
 	};
 
@@ -165,7 +168,7 @@ const AIAssignModal = () => {
 					>
 						✕
 					</button>
-					<h3 className="font-bold  text-purple-500 mb-1">AIシフト調整</h3>
+					<h3 className="font-bold  text-green01 mb-1">シフト自動調整</h3>
 					<h3 className="text-gray-600 text-sm mb-3 ml-1">
 						{YMDW(shiftRequestData.weekStart)} ~{" "}
 						{YMDW(shiftRequestData.weekEnd)}
@@ -181,7 +184,7 @@ const AIAssignModal = () => {
 									onChange={(e) =>
 										setAssignRange(e.target.value as "all" | "range" | "single")
 									}
-									className="radio radio-sm radio-primary"
+									className="radio radio-sm radio-success"
 									disabled={isAiAdjustLoading}
 								/>
 								<span className="text-sm text-gray-700">全体</span>
@@ -194,7 +197,7 @@ const AIAssignModal = () => {
 									onChange={(e) =>
 										setAssignRange(e.target.value as "all" | "range" | "single")
 									}
-									className="radio radio-sm radio-primary"
+									className="radio radio-sm radio-success"
 									disabled={isAiAdjustLoading}
 								/>
 								<span className="text-sm text-gray-700">特定期間</span>
@@ -207,7 +210,7 @@ const AIAssignModal = () => {
 									onChange={(e) =>
 										setAssignRange(e.target.value as "all" | "range" | "single")
 									}
-									className="radio radio-sm radio-primary"
+									className="radio radio-sm radio-success"
 									disabled={isAiAdjustLoading}
 								/>
 								<span className="text-sm text-gray-700">1日だけ</span>
@@ -296,32 +299,9 @@ const AIAssignModal = () => {
 							</div>
 						)}
 					</div>
-					{/* <div className="flex items-center gap-4 mb-6">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                className="checkbox checkbox-sm checkbox-primary"
-                checked={!!checkedFields.includes("absolute")}
-                onChange={() => checkFunc("absolute")}
-                disabled={isLoading}
-              />
-              <span className="text-gray-700 text-sm">固定</span>
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                className="checkbox checkbox-sm checkbox-primary"
-                value={"priority"}
-                checked={!!checkedFields.includes("priority")}
-                onChange={() => checkFunc("priority")}
-                disabled={isLoading}
-              />
-              <span className="text-gray-700 text-sm">優先</span>
-            </label>
-          </div> */}
 					<button
 						type="button"
-						className={`btn border-purple-500 text-purple-500 bg-white btn-block shadow-none bg-none ${
+						className={`btn border-green01 text-green01 bg-white btn-block shadow-none bg-none ${
 							!isInputValid() && "opacity-40"
 						}`}
 						onClick={() => handleAiAssign()}
@@ -330,7 +310,7 @@ const AIAssignModal = () => {
 						{isAiAdjustLoading ? (
 							<span className="loading loading-dots" />
 						) : (
-							"AI調整を実行"
+							"自動調整を実行"
 						)}
 					</button>
 				</div>

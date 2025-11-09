@@ -8,19 +8,16 @@ import type { ShiftStatus } from "@shared/api/common/types/prisma.js";
 import type { UpsertAssignShfitInput } from "@shared/api/shift/assign/validations/put";
 import type { UpsertShiftRequetInput } from "@shared/api/shift/request/validations/put.js";
 import React from "react";
-import { BiCheck, BiDownload } from "react-icons/bi";
+import { BiCheck } from "react-icons/bi";
 import { BsTable } from "react-icons/bs";
 import { RiArrowGoBackFill, RiFileListLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
 import { useAdjustShiftForm } from "../context/AdjustShiftFormContextProvider.tsx";
-import { useAiAdjustMode } from "../context/AiAdjustModeProvider";
 import { useViewSwitch } from "../context/ViewSwitchProvider";
-import AIModeBottomDrawer from "./AIModeBottomDrawer";
 import ShiftPdfButton from "./ShiftPdfButton";
 
 const Button = () => {
 	const { viewMode, toggleViewMode } = useViewSwitch();
-	const { aiMode } = useAiAdjustMode();
 	const { upsertAssignShift } = useUpsertAssignShift();
 	const {
 		assignShiftData,
@@ -156,8 +153,6 @@ const Button = () => {
 			</div>
 		);
 	}
-
-	if (aiMode) return <AIModeBottomDrawer />;
 
 	if (shiftRequestData.status === "CONFIRMED") {
 		return (
