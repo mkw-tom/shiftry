@@ -1,20 +1,16 @@
-// import { dummyMembers } from "@/app/utils/dummyData/member";
 import { formatTimeRangeHHmm } from "@/app/utils/times";
 import type { RootState } from "@/redux/store.js";
-import {
-	type AssignPositionType,
-	AssignPositionWithDateInput,
-} from "@shared/api/shift/assign/validations/put";
+import type { AssignPositionType } from "@shared/api/shift/assign/validations/put";
 import { YMDW } from "@shared/utils/formatDate";
 import React, { useEffect } from "react";
 import { BiCheck, BiTime } from "react-icons/bi";
 import { IoWarning } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
 import { LuUserRound } from "react-icons/lu";
-import { PiOpenAiLogo } from "react-icons/pi";
+import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { useAdjustShiftForm } from "../../context/AdjustShiftFormContextProvider.tsx";
-import { useAiAdjustMode } from "../../context/AiAdjustModeProvider";
+import { useAutoAdjustMode } from "../../context/AutoAdjustModeProvider";
 
 const AssignStaffModal = ({
 	date,
@@ -30,13 +26,13 @@ const AssignStaffModal = ({
 	};
 }) => {
 	const {
-		aiMode,
-		AiModified,
+		autoMode,
+		autoModified,
 		allowModified,
 		rejectModified,
 		rejectModifiedDatas,
 		allowModifiedDatas,
-	} = useAiAdjustMode();
+	} = useAutoAdjustMode();
 	const {
 		assignShiftData,
 		submittedShiftList,
@@ -154,12 +150,26 @@ const AssignStaffModal = ({
 				</div>
 				<h2 className="font-bold text-gray-500 mb-3 ml-1 flex items-center justify-between">
 					<span>{assignStaffData.name}</span>
+					<div className="flex gap-2 items-center">
+						{/* 通常バッジ */}
+						{previewVacancies > 0 ? (
+							<span className="badge badge-sm bg-red-500 text-white font-bold rounded-full border-none">{`不足 ${checkedUids.length}/${assignStaffData.count}`}</span>
+						) : (
+							<span className="badge badge-sm bg-green-500 text-white font-bold rounded-full border-none">{`充足 ${checkedUids.length}/${assignStaffData.count}`}</span>
+						)}
 
-					{previewVacancies > 0 ? (
-						<span className="badge badge-sm bg-red-500 text-white font-bold rounded-full border-none">{`不足 ${checkedUids.length}/${assignStaffData.count}`}</span>
-					) : (
-						<span className="badge badge-sm bg-green-500 text-white font-bold rounded-full border-none">{`充足 ${checkedUids.length}/${assignStaffData.count}`}</span>
-					)}
+						{autoMode && (
+							<MdKeyboardDoubleArrowRight className="text-green01" />
+						)}
+
+						{autoMode &&
+							autoModified[date]?.[time] &&
+							(autoModified[date][time].vacancies > 0 ? (
+								<span className="badge badge-sm bg-red-500 text-whifont-bold rounded-full border-none">{`不足 ${autoModified[date][time].assigned.length}/${autoModified[date][time].count}`}</span>
+							) : (
+								<span className="badge badge-sm bg-green-500 text-white font-bold rounded-full border-none">{`充足 ${autoModified[date][time].assigned.length}/${autoModified[date][time].count}`}</span>
+							))}
+					</div>
 				</h2>
 				<div className="flex items-center mb-3 ml-1">
 					<div className="flex items-center gap-3">
@@ -234,11 +244,11 @@ const AssignStaffModal = ({
 								<li
 									key={m.user.id}
 									className={`flex items-center justify-between gap-2 w-full p-2 ${
-										aiMode &&
-										AiModified[date]?.[time]?.assigned.some(
+										autoMode &&
+										autoModified[date]?.[time]?.assigned.some(
 											(a) => a.uid === m.user.id,
 										)
-											? "bg-purple-100"
+											? "bg-green-100"
 											: !isHope && !checkedUids.includes(m.user.id)
 												? "opacity-40"
 												: ""
@@ -246,7 +256,7 @@ const AssignStaffModal = ({
                   ${
 										rejectModifiedDatas[date]?.[time]?.assigned.some(
 											(a) => a.uid === m.user.id,
-										) && "bg-purple-100"
+										) && "bg-green-100"
 									}`}
 								>
 									<div className="flex items-center gap-2 flex-1">
@@ -299,15 +309,15 @@ const AssignStaffModal = ({
 									<input
 										type="checkbox"
 										className={`checkbox checkbox-sm mr-2
-                      ${aiMode && "pointer-events-none"}
+                      ${autoMode && "pointer-events-none"}
                       ${
 												rejectModifiedDatas[date]?.[time]
 													? isChecked && "checkbox-success"
-													: aiMode &&
-															AiModified[date]?.[time]?.assigned.some(
+													: autoMode &&
+															autoModified[date]?.[time]?.assigned.some(
 																(a) => a.uid === m.user.id,
 															)
-														? "checkbox-primary"
+														? "checkbox-success"
 														: isChecked && "checkbox-success"
 											}
                     `}
@@ -315,8 +325,8 @@ const AssignStaffModal = ({
 											rejectModifiedDatas[date]?.[time]
 												? isChecked
 												: isChecked ||
-													(aiMode &&
-														AiModified[date]?.[time]?.assigned.some(
+													(autoMode &&
+														autoModified[date]?.[time]?.assigned.some(
 															(a) => a.uid === m.user.id,
 														))
 										}
@@ -337,14 +347,14 @@ const AssignStaffModal = ({
 					)}
 				</ul>
 				<div className="modal-action flex items-center gap-1 w-full">
-					{aiMode && AiModified[date]?.[time] ? (
+					{autoMode && autoModified[date]?.[time] ? (
 						<>
 							<button
 								type="submit"
 								className={`btn w-2/3  ${
 									allowModifiedDatas[date]?.[time]
-										? "bg-purple-500 border-none text-white"
-										: "btn-outline bg-white text-purple-500"
+										? "bg-green01 border-none text-white"
+										: "btn-outline bg-white text-green-500"
 								}`}
 								onClick={(e) => {
 									e.preventDefault();
@@ -353,10 +363,10 @@ const AssignStaffModal = ({
 								}}
 							>
 								<BiCheck className="text-lg" />
-								{AiModified[date]?.[time]?.vacancies > 0 ? (
-									<span className="ml-2">{`不足 ${AiModified[date]?.[time]?.assigned.length}/${AiModified[date]?.[time]?.count}`}</span>
+								{autoModified[date]?.[time]?.vacancies > 0 ? (
+									<span className="ml-2">{`不足 ${autoModified[date]?.[time]?.assigned.length}/${autoModified[date]?.[time]?.count}`}</span>
 								) : (
-									<span className="ml-2">{`適用 ${AiModified[date]?.[time]?.assigned.length}/${AiModified[date]?.[time]?.count}`}</span>
+									<span className="ml-2">{`適用 ${autoModified[date]?.[time]?.assigned.length}/${autoModified[date]?.[time]?.count}`}</span>
 								)}
 							</button>
 							<button

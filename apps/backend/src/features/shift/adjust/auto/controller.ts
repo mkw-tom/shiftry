@@ -2,19 +2,18 @@ import type {
 	ErrorResponse,
 	ValidationErrorResponse,
 } from "@shared/api/common/types/errors.js";
-import type { AIShiftAdjustResponse } from "@shared/api/shift/ai/types/post-adjust.js";
-import { AiShiftAdjustValidate } from "@shared/api/shift/ai/validations/post-adjust.js";
+import type { AutoShiftAdjustResponse } from "@shared/api/shift/adjust/types/auto.js";
+import { AutoShiftAdjustValidate } from "@shared/api/shift/adjust/validations/auto.js";
 import type { Request, Response } from "express";
 import { getStaffPreferencesByStoreId } from "../../../../repositories/staffPreference.js";
 import { toStaffPreferencesDTO } from "../../../staffPreference/toDTO.js";
-import { getAIShiftAdjustment } from "./service.js";
-import { testResponseService } from "./test.service.js";
-import { mergePrefsIntoSubmissions } from "./utils/mergePreferenceIntoSubmissions.js";
+import { assignShiftsDeterministic } from "./engine/assigner.js";
+import { mergePrefsIntoSubmissions } from "./mergePreferenceIntoSubmissions.js";
 
-export const aiShiftAdjustController = async (
+export const autoShiftAdjustController = async (
 	req: Request,
 	res: Response<
-		ValidationErrorResponse | ErrorResponse | AIShiftAdjustResponse
+		AutoShiftAdjustResponse | ErrorResponse | ValidationErrorResponse
 	>,
 ): Promise<void> => {
 	try {
@@ -24,7 +23,7 @@ export const aiShiftAdjustController = async (
 			return;
 		}
 
-		const parsed = AiShiftAdjustValidate.safeParse(req.body);
+		const parsed = AutoShiftAdjustValidate.safeParse(req.body);
 		if (!parsed.success) {
 			res.status(400).json({
 				ok: false,
@@ -55,10 +54,6 @@ export const aiShiftAdjustController = async (
 			return;
 		}
 
-		// if (process.env.NODE_ENV === "test") {
-		// 	return testResponseService(res);
-		// }
-
 		const staffPreferences = await getStaffPreferencesByStoreId(auth.sid);
 		if (!staffPreferences) {
 			res.status(403).json({
@@ -75,16 +70,18 @@ export const aiShiftAdjustController = async (
 			staffPreferencesDTO,
 		);
 
-		const result = await getAIShiftAdjustment({
-			datas: {
-				templateShift,
-				submissions: mergetPreferencesIntoSubmissions.mergedSubmissions,
-				currentAssignments,
-				memberProfiles,
-				constraints,
+		const result = assignShiftsDeterministic({
+			templateShift,
+			submissions: mergetPreferencesIntoSubmissions.mergedSubmissions,
+			currentAssignments,
+			memberProfiles,
+			constraints: {
+				dailyMaxPerUser: 1,
+				allowPartialOverlap: false,
+				maximizeDistinctAssignments: true,
+				dateFilter: constraints?.dateFilter ?? { mode: "ALL" },
 			},
 		});
-
 		res.status(200).json(result);
 	} catch (error) {
 		res.status(500).json({

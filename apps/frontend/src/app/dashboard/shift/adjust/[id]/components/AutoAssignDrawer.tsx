@@ -1,35 +1,55 @@
 import { useToast } from "@/app/dashboard/common/context/ToastProvider";
 import { YMDW } from "@shared/utils/formatDate";
 import React from "react";
-import { BiCheck } from "react-icons/bi";
-import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { IoClose } from "react-icons/io5";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { RxUpdate } from "react-icons/rx";
 import { useAdjustShiftForm } from "../context/AdjustShiftFormContextProvider.tsx";
-import { useAiAdjustMode } from "../context/AiAdjustModeProvider";
+import { useAutoAdjustMode } from "../context/AutoAdjustModeProvider";
 
-const AIModeBottomDrawer = () => {
+const AutoAssignDrawer = ({
+	selectDate,
+	setSelectDate,
+}: {
+	selectDate: Date;
+	setSelectDate: React.Dispatch<React.SetStateAction<Date>>;
+}) => {
 	const { assignShiftData, setAssignShiftData } = useAdjustShiftForm();
 	const { showToast } = useToast();
-	const { AiModified, setAiMode, validate, clearStates, allowModifiedDatas } =
-		useAiAdjustMode();
-	const modifiedKeys = Object.keys(AiModified);
-	const [currentIdx, setCurrentIdx] = React.useState(0);
+	const {
+		autoModified,
+		setAutoMode,
+		validate,
+		clearStates,
+		allowModifiedDatas,
+	} = useAutoAdjustMode();
+	// selectDateに一致するキーのみ表示
+	const modifiedKeys = Object.keys(autoModified).filter(
+		(date) => new Date(date).toDateString() === selectDate.toDateString(),
+	);
+	// selectDateに一致するキーがなければ空
+	const currentKey = modifiedKeys[0] ?? "";
+	const currentValue = currentKey ? autoModified[currentKey] : undefined;
 	const [collapsed, setCollapsed] = React.useState(true);
+	// 前日・翌日への移動
+	const allKeys = Object.keys(autoModified).sort();
+	const currentIdx = allKeys.findIndex(
+		(date) => new Date(date).toDateString() === selectDate.toDateString(),
+	);
 	const handlePrev = () => {
-		setCurrentIdx((prev) => (prev > 0 ? prev - 1 : prev));
+		if (currentIdx > 0) {
+			setSelectDate(new Date(allKeys[currentIdx - 1]));
+		}
 	};
 	const handleNext = () => {
-		setCurrentIdx((prev) => (prev < modifiedKeys.length - 1 ? prev + 1 : prev));
+		if (currentIdx < allKeys.length - 1) {
+			setSelectDate(new Date(allKeys[currentIdx + 1]));
+		}
 	};
-	const currentKey = modifiedKeys[currentIdx];
-	const currentValue = AiModified[currentKey];
 	const handleCollapse = () => setCollapsed((prev) => !prev);
 
 	const prevAssigned =
-		assignShiftData.shifts[currentKey][
+		assignShiftData.shifts[currentKey]?.[
 			currentValue ? Object.keys(currentValue)[0] : ""
 		].assigned;
 
@@ -63,37 +83,37 @@ const AIModeBottomDrawer = () => {
 				shifts: newShifts,
 			};
 		});
-		setAiMode(false);
+		setAutoMode(false);
 		clearStates();
 		showToast("AIの提案を適用しました。", "success");
 	};
 
 	const cancelAiAdjust = () => {
-		setAiMode(false);
+		setAutoMode(false);
 		clearStates();
 	};
 
 	return (
-		<div className="fixed bottom-0 left-0 w-full flex flex-col bg-white/95 border-t-2 border-purple-500 z-50 ">
-			<div className="flex items-center justify-center gap-2 bg-purple-50 px-3 pt-4 pb-3">
+		<div className="fixed bottom-0 left-0 w-full flex flex-col bg-white/95 border-t-2 border-green-500 z-50 ">
+			<div className="flex items-center justify-center gap-2 bg-green-50 px-3 pt-4 pb-3">
 				<button
 					type="button"
-					className="text-purple-500 text-2xl mb-auto"
+					className="text-green01 text-2xl mb-auto"
 					onClick={handlePrev}
 					disabled={currentIdx === 0}
 				>
 					<IoIosArrowBack />
 				</button>
 				<div className="flex-1 overflow-x-auto">
-					{modifiedKeys.length > 0 ? (
+					{currentKey ? (
 						<div className="flex flex-col gap-2">
 							<div className="text-sm text-gray-600 font-bold flex items-center gap-4 justify-between mx-3">
 								<h3 className="flex items-center gap-4">
 									<p>{YMDW(new Date(currentKey))} </p>
-									<p className="text-purple-500 flex items-center gap-1">
+									<p className="text-green01 flex items-center gap-1">
 										<RxUpdate className="text-xs" />
 										<span>
-											{currentIdx + 1}/{modifiedKeys.length}
+											{currentIdx + 1}/{allKeys.length}
 										</span>
 									</p>
 								</h3>
@@ -148,14 +168,14 @@ const AIModeBottomDrawer = () => {
 												)}
 											</div>
 
-											<MdKeyboardDoubleArrowRight className="text-purple-500" />
+											<MdKeyboardDoubleArrowRight className="text-green01" />
 
 											<div className="avatar-group -space-x-1">
 												{Array.isArray(info?.assigned) &&
 												info.assigned.length > 0 ? (
 													info?.assigned.map((staff) => (
 														<div
-															className="avatar border-1 border-purple-400"
+															className="avatar border-1 border-green-400"
 															key={staff.uid}
 														>
 															<div className="w-5">
@@ -181,22 +201,20 @@ const AIModeBottomDrawer = () => {
 
 				<button
 					type="button"
-					className="text-purple-500 text-2xl mb-auto"
+					className="text-green01 text-2xl mb-auto"
 					onClick={handleNext}
-					disabled={
-						currentIdx === modifiedKeys.length - 1 || modifiedKeys.length === 0
-					}
+					disabled={currentIdx === allKeys.length - 1 || allKeys.length === 0}
 				>
 					<IoIosArrowForward />
 				</button>
 			</div>
 			<div className="flex justify-end gap-2 items-center w-full py-3 border-t pb-6 px-3">
-				<button type="button" className="btn-sm btn btn-link text-purple-500 ">
+				<button type="button" className="btn-sm btn btn-link text-green01 ">
 					AIの提案
 				</button>
 				<button
 					type="button"
-					className="btn btn-sm bg-purple-500 text-white border-none flex-1 shadow-sm"
+					className="btn btn-sm bg-green01 text-white border-none flex-1 shadow-sm"
 					onClick={confrimAiAdjsut}
 				>
 					調整を適用
@@ -213,4 +231,4 @@ const AIModeBottomDrawer = () => {
 	);
 };
 
-export default AIModeBottomDrawer;
+export default AutoAssignDrawer;

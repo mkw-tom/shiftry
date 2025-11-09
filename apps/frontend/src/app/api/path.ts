@@ -33,8 +33,8 @@ export const shiftNotificationApi = {
 	confirm: "shift/confirm",
 };
 
-export const aiApi = {
-	adjust: "shift/ai/adjust",
+export const shiftAdjust = {
+	auto: "shift/adjust/auto",
 };
 
 export const staffPreferenceApi = {

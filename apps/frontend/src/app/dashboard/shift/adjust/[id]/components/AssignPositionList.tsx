@@ -9,13 +9,11 @@ import type React from "react";
 import { useState } from "react";
 import { BiCheck, BiTime } from "react-icons/bi";
 import { IoClose } from "react-icons/io5";
-import { LuUserRound } from "react-icons/lu";
 import { LuUserRoundPlus } from "react-icons/lu";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
-import { PiOpenAiLogo } from "react-icons/pi";
 import { useSelector } from "react-redux";
 import { useAdjustShiftForm } from "../context/AdjustShiftFormContextProvider.tsx";
-import { useAiAdjustMode } from "../context/AiAdjustModeProvider";
+import { useAutoAdjustMode } from "../context/AutoAdjustModeProvider";
 import AssignStaffModal from "./modals/AssignStaffModal";
 import EditAssignPositionModal from "./modals/EditAssignPositionModal";
 import ShowAssignListModal from "./modals/ShowAssignListModal";
@@ -38,13 +36,13 @@ const AssignPositionList = ({
 	>;
 }) => {
 	const {
-		aiMode,
-		AiModified,
+		autoMode,
+		autoModified,
 		allowModified,
 		rejectModified,
 		allowModifiedDatas,
 		rejectModifiedDatas,
-	} = useAiAdjustMode();
+	} = useAutoAdjustMode();
 	const { assignShiftData, setAssignShiftData, shiftRequestData } =
 		useAdjustShiftForm();
 	const [assignStaffData, setAssignStaffData] = useState<{
@@ -146,16 +144,17 @@ const AssignPositionList = ({
 										const assignedCount =
 											position.assignedCount ?? position.assigned?.length ?? 0;
 										const requiredCount = position.count ?? 0;
-										// vacancies（不足人数）を正しく計算
-										// assignShiftDataのvacancies値があればそれを優先
-										const vacancies =
-											position.vacancies ?? requiredCount - assignedCount;
+
+										const autoAssignedCount = autoModified[date]?.[time]
+											? autoModified[date][time].assignedCount
+											: 0;
+
 										const isFull = assignedCount >= requiredCount;
 
 										const aiIsFull =
-											aiMode && AiModified[date]?.[time]
-												? AiModified[date][time].assignedCount >=
-													AiModified[date][time].count
+											autoMode && autoModified[date]?.[time]
+												? autoModified[date][time].assignedCount >=
+													autoModified[date][time].count
 												: false;
 										return (
 											<li
@@ -171,7 +170,7 @@ const AssignPositionList = ({
 														</span>
 														{/* バッジ表示: 緑=充足, 赤=不足 */}
 														{isFull ? (
-															<span className="badge badge-sm bg-green-500 text-white font-bold rounded-full border-none">
+															<span className="badge badge-sm bg-green01 text-white font-bold rounded-full border-none">
 																充足 {assignedCount}/{requiredCount}
 															</span>
 														) : (
@@ -180,23 +179,23 @@ const AssignPositionList = ({
 															</span>
 														)}
 
-														{aiMode && (
-															<MdKeyboardDoubleArrowRight className="text-purple-500" />
+														{autoMode && (
+															<MdKeyboardDoubleArrowRight className="text-green01" />
 														)}
 
-														{aiMode &&
+														{autoMode &&
 															(aiIsFull ? (
 																<span className="badge badge-sm bg-green-500 text-white font-bold rounded-full border-none">
-																	充足 {assignedCount}/{requiredCount}
+																	充足 {autoAssignedCount}/{requiredCount}
 																</span>
 															) : (
 																<span className="badge badge-sm bg-red-500 text-white font-bold rounded-full border-none">
-																	不足 {assignedCount}/{requiredCount}
+																	不足 {autoAssignedCount}/{requiredCount}
 																</span>
 															))}
 													</h1>
 
-													{!aiMode &&
+													{!autoMode &&
 														shiftRequestData.status === "ADJUSTMENT" &&
 														user?.role !== "STAFF" && (
 															<div className="flex items-center">
@@ -241,12 +240,6 @@ const AssignPositionList = ({
 												<div className="w-full flex items-start justify-between px-1">
 													<div className="flex items-center ">
 														<div className="flex items-center gap-3">
-															{/* <p className="flex items-center badge badge-sm bg-white text-gray-800 border-gray02">
-																<LuUserRound className="text-black text-[14px]" />
-																<span className="text-black font-bold">
-																	{position.count}
-																</span>
-															</p> */}
 															<BiTime className="text-gray-700" />
 															<p className="text-gray-700 font-bold">
 																{formatTimeRangeHHmm(time)}
@@ -302,15 +295,15 @@ const AssignPositionList = ({
 																	</div>
 																))}
 															</div>
-															{aiMode && (
+															{autoMode && (
 																<>
-																	<MdKeyboardDoubleArrowRight className="text-purple-500 mt-0.5" />
+																	<MdKeyboardDoubleArrowRight className="text-green01 mt-0.5" />
 
 																	<div className="avatar-group -space-x-1">
-																		{AiModified[date]?.[time]?.assigned.map(
+																		{autoModified[date]?.[time]?.assigned.map(
 																			(staff) => (
 																				<div
-																					className="avatar border-1 border-purple-500"
+																					className="avatar border-1 border-green-500"
 																					key={staff.uid}
 																				>
 																					<div className="w-5">
@@ -337,14 +330,14 @@ const AssignPositionList = ({
 													{shiftRequestData.status === "ADJUSTMENT" &&
 														user?.role !== "STAFF" && (
 															<div className="w-full flex items-center gap-1">
-																{aiMode && AiModified[date]?.[time] && (
+																{autoMode && autoModified[date]?.[time] && (
 																	<>
 																		<button
 																			type="button"
 																			className={`btn btn-sm w-1/4 font-bold shadow-none ${
 																				allowModifiedDatas[date]?.[time]
-																					? "bg-purple-500 text-white border-none"
-																					: "btn-outline bg-white text-purple-500"
+																					? "bg-green01 text-white border-none"
+																					: "btn-outline bg-white text-green01"
 																			}`}
 																			onClick={() => allowModified(date, time)}
 																		>
